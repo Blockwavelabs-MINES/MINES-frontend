@@ -5,12 +5,17 @@ import styled from "styled-components";
 const PrimaryButton = styled.button`
   min-width: ${({ size }) =>
     size === "large" ? "115px" : size === "small" ? "101px" : "108px"};
+  width: ${({ size }) => (size === "large" ? "100%" : "")};
   height: ${({ size }) =>
     size === "large" ? "56px" : size === "small" ? "36px" : "40px"};
   border-radius: ${({ size }) =>
     size === "large" ? "18px" : size === "small" ? "10px" : "12px"};
   // padding: ${({ size }) =>
-    size === "large" ? "18px 16px" : size === "small" ? "8px 16px" : "10px 16px"};
+    size === "large"
+      ? "18px 16px"
+      : size === "small"
+      ? "8px 16px"
+      : "10px 16px"};
   display: flex;
   justify-content: center;
   gap: 2px;
@@ -37,12 +42,17 @@ const PrimaryButton = styled.button`
 const SecondaryButton = styled.button`
   min-width: ${({ size }) =>
     size === "large" ? "115px" : size === "small" ? "101px" : "108px"};
+  width: ${({ size }) => (size === "large" ? "100%" : "")};
   height: ${({ size }) =>
     size === "large" ? "56px" : size === "small" ? "36px" : "40px"};
   border-radius: ${({ size }) =>
     size === "large" ? "18px" : size === "small" ? "10px" : "12px"};
   // padding: ${({ size }) =>
-    size === "large" ? "18px 16px" : size === "small" ? "8px 16px" : "10px 16px"};
+    size === "large"
+      ? "18px 16px"
+      : size === "small"
+      ? "8px 16px"
+      : "10px 16px"};
   display: flex;
   justify-content: center;
   gap: 2px;
@@ -58,7 +68,7 @@ const SecondaryButton = styled.button`
     styles === "filled"
       ? "hidden"
       : styles === "outlined"
-      ? `1px solid ${palette.blue_3}`
+      ? `1px solid ${palette.grey_6}`
       : "hidden"};
   border: ${({ styles, states }) =>
     states === "disabled" && styles === "outlined"
@@ -69,6 +79,7 @@ const SecondaryButton = styled.button`
 const IconContainer = styled.img`
   width: 20px;
   height: 20px;
+  margin: auto 0px;
 `;
 
 const PrimaryTextBox = styled.div`
@@ -115,11 +126,18 @@ const ContainedButton = ({
   label,
   icon,
   show_txt = true,
+  onClick,
 }) => {
   return (
     <>
       {type === "primary" ? (
-        <PrimaryButton size={size} states={states} type={type} styles={styles}>
+        <PrimaryButton
+          size={size}
+          states={states}
+          type={type}
+          styles={styles}
+          onClick={onClick}
+        >
           {icon ? <IconContainer src={icon} /> : <></>}
           {show_txt ? (
             <PrimaryTextBox styles={styles} states={states} size={size}>
@@ -130,7 +148,13 @@ const ContainedButton = ({
           )}
         </PrimaryButton>
       ) : (
-        <SecondaryButton size={size} states={states} type={type} styles={styles}>
+        <SecondaryButton
+          size={size}
+          states={states}
+          type={type}
+          styles={styles}
+          onClick={onClick}
+        >
           {icon ? <IconContainer src={icon} /> : <></>}
           {show_txt ? (
             <SecondaryTextBox styles={styles} states={states} size={size}>

@@ -1,5 +1,5 @@
 import "./App.css";
-import { ComponentTestPage } from "./pages";
+import { ComponentTestPage, IntroPage, CreateLinkPage } from "./pages";
 import React from "react";
 import styled from "styled-components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -17,8 +17,15 @@ const BodyInner = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100vh;
+  background-color: ${palette.background};
+  // background-color: ${palette.white};
+`;
 
-  // background-color: ${palette.background};
+const WebAppContainer = styled.div`
+  width: 100%;
+  max-width: 600px;
+  height: 100%;
   background-color: ${palette.white};
 `;
 
@@ -27,11 +34,14 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <BodyInner>
-          <ScrollToTop />
-          <Routes>
-            {/* <Route exact path="/" element={<ComponentTestPage />} /> */}
-            <Route path="/components" element={<ComponentTestPage />} />
-          </Routes>
+          <WebAppContainer>
+            <ScrollToTop />
+            <Routes>
+              <Route exact path="/" element={<IntroPage />} />
+              <Route path="/components" element={<ComponentTestPage />} />
+              <Route path="/createLink" element={<CreateLinkPage />} />
+            </Routes>
+          </WebAppContainer>
         </BodyInner>
       </BrowserRouter>
     </div>

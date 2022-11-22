@@ -34,6 +34,7 @@ const InputContainer = styled.input`
       ? `1px solid ${palette.red_1}`
       : `1px solid ${palette.grey_6}`};
   padding: 15px 16px;
+  padding-left: ${({ fixedMentSize }) => fixedMentSize};
   border-radius: 8px;
   ${Typograpy.Headline3}
   &::-webkit-input-placeholder {
@@ -74,15 +75,47 @@ const MessageText = styled.div`
       : palette.grey_3};
 `;
 
+const InputFullBox = styled.div`
+  position: relative;
+`;
+
+const FixedMentBox = styled.div`
+  position: absolute;
+  display: block;
+  left: 15px;
+  top: 16px;
+  ${Typograpy.Headline3}
+  color: ${palette.Black};
+`;
+
 // state = ["inactive", "filled", "typing", "verified", "error", "help"]
-const InputBox = ({ label, state, isRequired, placeholder, message }) => {
+const InputBox = ({
+  label,
+  state,
+  isRequired,
+  placeholder,
+  message,
+  fixedMent,
+  fixedMentSize,
+  value,
+  onChange,
+}) => {
   return (
     <InputBoxContainer>
       <LableFullBox>
         <LabelBox>{label}</LabelBox>
         {isRequired ? <RequiredMark>*</RequiredMark> : <></>}
       </LableFullBox>
-      <InputContainer placeholder={placeholder} state={state} />
+      <InputFullBox>
+        <InputContainer
+          placeholder={placeholder}
+          state={state}
+          fixedMentSize={fixedMentSize}
+          value={value}
+          onChange={onChange}
+        />
+        {fixedMent ? <FixedMentBox>{fixedMent}</FixedMentBox> : <></>}
+      </InputFullBox>
       {message ? (
         <MessageBox>
           <MessageIcon state={state} />
