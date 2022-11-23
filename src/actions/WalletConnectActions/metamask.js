@@ -1,3 +1,5 @@
+import metamaskMobileOnClick from "./metamaskMobile";
+
 function isMobileDevice() {
   return "ontouchstart" in window || "onmsgesturechange" in window;
 }
@@ -18,7 +20,7 @@ const metamaskOnClick = (onConnected) => {
         //   },
         // ],
       });
-      
+
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
       });
@@ -28,12 +30,13 @@ const metamaskOnClick = (onConnected) => {
       onConnected(accounts[0]);
     } catch (error) {
       if (isMobileDevice()) {
-        try{
-          const accounts = await window.ethereum.request({
-            method: "eth_requestAccounts",
-          });
-        
-          onConnected(accounts[0]);
+        try {
+          //   const accounts = await window.ethereum.request({
+          //     method: "eth_requestAccounts",
+          //   });
+
+          //   onConnected(accounts[0]);
+          metamaskMobileOnClick();
         } catch (error) {
           alert(error.message);
           console.error(error.message);

@@ -18,3 +18,4 @@ export { default as EmptyLink } from "./empty-link.svg";
 export { default as EmptyWallet } from "./empty-wallet.svg";
 export { default as LinkIcon } from "./link-icon.svg";
 export { default as MetamaskIcon } from "./metamask-icon.svg";
+export { default as CameraIcon } from "./camera-icon.svg";

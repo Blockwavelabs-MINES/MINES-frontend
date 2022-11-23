@@ -3,7 +3,7 @@ import Typograpy from "../../utils/style/Typography";
 import styled from "styled-components";
 
 const PrimaryButton = styled.button`
-  min-width: ${({ size }) =>
+  // min-width: ${({ size }) =>
     size === "large" ? "75px" : size === "small" ? "68px" : "75px"};
   height: 30px;
   border-radius: 15px;
@@ -14,6 +14,8 @@ const PrimaryButton = styled.button`
   }
   display: flex;
   justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
 `;
 
 const PrimaryTextBox = styled.div`
@@ -37,9 +39,14 @@ const PrimaryTextBox = styled.div`
 // Show icon=false;
 // Show txt=true;
 
-const TextButton = ({ styles, states, size, label }) => {
+const TextButton = ({ styles, states, size, label, onClick }) => {
   return (
-    <PrimaryButton size={size} states={states} styles={styles}>
+    <PrimaryButton
+      size={size}
+      states={states}
+      styles={styles}
+      onClick={onClick}
+    >
       <PrimaryTextBox styles={styles} states={states} size={size}>
         {label}
       </PrimaryTextBox>

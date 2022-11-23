@@ -123,7 +123,7 @@ const SecondaryButton = styled.button`
 // size="large";
 // Show icon=false;
 
-const IconButton = ({ type, styles, states, size, icon, onClick }) => {
+const IconButton = ({ type, styles, states, size, icon, onClick, style }) => {
   return (
     <>
       {type === "primary" ? (
@@ -134,6 +134,7 @@ const IconButton = ({ type, styles, states, size, icon, onClick }) => {
           styles={styles}
           icon={icon}
           onClick={onClick}
+          style={style}
         />
       ) : (
         <SecondaryButton
@@ -143,6 +144,7 @@ const IconButton = ({ type, styles, states, size, icon, onClick }) => {
           styles={styles}
           icon={icon}
           onClick={onClick}
+          style={style}
         />
       )}
     </>

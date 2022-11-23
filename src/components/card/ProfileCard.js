@@ -51,7 +51,7 @@ const IntroductionBox = styled.div`
   text-align: center;
 `;
 
-const ProfileCard = ({ profileImg, userName, introduction }) => {
+const ProfileCard = ({ profileImg, userName, introduction, onClick }) => {
   const editOnClick = () => {
     alert("준비중입니다.");
   };
@@ -68,7 +68,7 @@ const ProfileCard = ({ profileImg, userName, introduction }) => {
           size="large"
           label="수정하기"
           icon={ProfileEdit}
-          onClick={editOnClick}
+          onClick={onClick}
         />
       </InnerContainer>
     </FullContainer>

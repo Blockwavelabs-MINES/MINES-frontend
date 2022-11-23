@@ -35,14 +35,14 @@ const ListContainer = styled.div`
 
 const LinkComponent = () => {
   const [linkList, setLinkList] = useState([
-    {
-      title: "MEPE",
-      url: "https://mepe.com",
-    },
-    {
-      title: "Web3Tree",
-      url: "https://3tree.io",
-    },
+    // {
+    //   title: "MEPE",
+    //   url: "https://mepe.com",
+    // },
+    // {
+    //   title: "Web3Tree",
+    //   url: "https://3tree.io",
+    // },
   ]);
   const [deleteModalOn, setDeleteModalOn] = useState(false);
   const [realDelete, setRealDelete] = useState(false);

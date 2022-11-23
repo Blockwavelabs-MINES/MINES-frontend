@@ -36,9 +36,9 @@ function BottomModal({
         visible={visible}
       >
         <ModalInner tabIndex="0" className="modal-inner">
-          <ContentContainer>
-            <CloseButton onClick={closeOnClick} />
-          </ContentContainer>
+          {/* <ContentContainer> */}
+          <CloseButton onClick={closeOnClick} />
+          {/* </ContentContainer> */}
           {_renderInput()}
         </ModalInner>
       </ModalWrapper>
@@ -60,7 +60,7 @@ const ModalWrapper = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 901;
   overflow: hidden;
   //   overflow: auto;
   //   outline: 0;
@@ -75,7 +75,7 @@ const ModalOverlay = styled.div`
   bottom: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.6);
-  z-index: 999;
+  z-index: 900;
   overflow: hidden;
 `;
 
@@ -105,7 +105,7 @@ const ContentContainer = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 5;
+  z-index: 902;
 `;
 
 const CloseButton = styled.button`
@@ -117,7 +117,7 @@ const CloseButton = styled.button`
   position: absolute;
   top: 37px;
   right: 20px;
-  z-index: 5;
+  z-index: 904;
   background-image: url(${BottomModalX});
   background-size: 24px 24px;
   background-repeat: no-repeat;

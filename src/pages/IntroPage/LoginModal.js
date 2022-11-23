@@ -15,7 +15,7 @@ const FullContainer = styled.div`
   position: relative;
   //   margin-top: 109px;
   padding: 20px;
-  z-index: 1002;
+  z-index: 903;
 `;
 
 const IntroTextBox = styled.div`

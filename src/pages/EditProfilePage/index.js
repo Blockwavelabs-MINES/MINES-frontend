@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { EditProfileHeader } from "../../components/header";
+import { SettingProfileHeader } from "../../components/header";
 import { ContainedButton } from "../../components/button";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
-import { AddLinkModal, LinkComponent, WalletComponent } from "./components";
+import {
+  AddLinkModal,
+  LinkComponent,
+  WalletComponent,
+  EditMyInfo,
+} from "./components";
 import { ProfileCard } from "../../components/card";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 
@@ -24,6 +29,7 @@ const Divider = styled.div`
 const EditProfilePage = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState();
+  const [editMyInfo, setEditMyInfo] = useState();
 
   useEffect(() => {
     var globalUserInfo = getLocalUserInfo();
@@ -36,28 +42,39 @@ const EditProfilePage = () => {
   const closeLoginModal = () => {
     setLoginModalVisible(false);
   };
+
+  const editOnClick = () => {
+    setEditMyInfo(true);
+  };
   return (
-    <FullContainer>
-      <EditProfileHeader title="프로필 관리" />
-      {loginModalVisible ? (
-        <AddLinkModal
-          visible={loginModalVisible}
-          closable={true}
-          maskClosable={true}
-          onClose={closeLoginModal}
-        />
+    <>
+      {editMyInfo ? (
+        <EditMyInfo userInfo={userInfo} setEditMyInfo={setEditMyInfo} />
       ) : (
-        <></>
+        <FullContainer>
+          <SettingProfileHeader title="프로필 관리" />
+          {loginModalVisible ? (
+            <AddLinkModal
+              visible={loginModalVisible}
+              closable={true}
+              maskClosable={true}
+              onClose={closeLoginModal}
+            />
+          ) : (
+            <></>
+          )}
+          <ProfileCard
+            profileImg={userInfo?.profileImg}
+            userName={userInfo?.userId}
+            introduction={userInfo?.introduction}
+            onClick={editOnClick}
+          />
+          <LinkComponent />
+          <Divider />
+          <WalletComponent />
+        </FullContainer>
       )}
-      <ProfileCard
-        profileImg={userInfo?.profileImg}
-        userName={userInfo?.userId}
-        introduction={userInfo?.introduction}
-      />
-      <LinkComponent />
-      <Divider />
-      <WalletComponent />
-    </FullContainer>
+    </>
   );
 };
 

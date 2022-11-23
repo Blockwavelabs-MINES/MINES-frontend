@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import Typograpy from "../../utils/style/Typography";
-import { IconButton, TextButton } from "../button";
+import { IconButton } from "../button";
 import { ProfileSmall, ChevronLeft, ExternalLink } from "../../assets/icons";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 
@@ -20,9 +20,6 @@ const InnerContainer = styled.div`
   margin: auto 0px;
   display: flex;
   justify-content: space-between;
-  //   display: grid;
-  //   gap: 9px;
-  //   grid-template-columns: repeat(3, 1fr);
 `;
 
 const TitleContainer = styled.div`
@@ -32,13 +29,11 @@ const TitleContainer = styled.div`
   margin: auto 0px;
 `;
 
-const EditProfileHeader = ({
+const SettingProfileHeader = ({
   onVisible,
   title,
   iconLeft = ChevronLeft,
   iconRight = ExternalLink,
-  leftOnClick,
-  rightOnClick,
 }) => {
   const [userInfo, setUserInfo] = useState();
   const [dropBoxOn, setDropBoxOn] = useState(false);
@@ -71,39 +66,29 @@ const EditProfileHeader = ({
     alert("준비중입니다.");
   };
 
-  const leftIconOnClick = () => {
-    leftOnClick(false);
-  };
-
-  const rightIconOnClick = () => {
-    // rightOnClick();
-    alert("준비중입니다.");
-  };
-
   return (
     <HeaderContainer>
       <InnerContainer>
-        <div style={{ width: "57px" }}>
-          <IconButton
-            type="secondary"
-            styles="outlined"
-            states="default"
-            size="xs"
-            icon={iconLeft}
-            onClick={leftIconOnClick}
-          />
-        </div>
-        <TitleContainer>{title}</TitleContainer>
-        <TextButton
-          styles="active"
+        <IconButton
+          type="secondary"
+          styles="outlined"
           states="default"
-          size="large"
-          label="저장"
-          onClick={rightIconOnClick}
+          size="xs"
+          icon={iconLeft}
+          onClick={backOnClick}
+        />
+        <TitleContainer>{title}</TitleContainer>
+        <IconButton
+          type="primary"
+          styles="filled"
+          states="default"
+          size="xs"
+          icon={iconRight}
+          onClick={externalOnClick}
         />
       </InnerContainer>
     </HeaderContainer>
   );
 };
 
-export default EditProfileHeader;
+export default SettingProfileHeader;

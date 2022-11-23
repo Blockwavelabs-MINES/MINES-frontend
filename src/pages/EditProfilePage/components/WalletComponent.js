@@ -46,16 +46,16 @@ const walletConvert = (walletAddress) => {
 
 const WalletComponent = () => {
   const [walletList, setWalletList] = useState([
-    {
-      type: "Metamask",
-      address: "0x07B0ea6D444B9B66F3A7709FB1fA75BcDCD67A16",
-      icon: MetamaskIcon,
-    },
-    {
-      type: "Metamask",
-      address: "0xed6631bD706BC910A37cdc41ACd48a5d94F7bCC0",
-      icon: MetamaskIcon,
-    },
+    // {
+    //   type: "Metamask",
+    //   address: "0x07B0ea6D444B9B66F3A7709FB1fA75BcDCD67A16",
+    //   icon: MetamaskIcon,
+    // },
+    // {
+    //   type: "Metamask",
+    //   address: "0xed6631bD706BC910A37cdc41ACd48a5d94F7bCC0",
+    //   icon: MetamaskIcon,
+    // },
   ]);
   const [deleteModalOn, setDeleteModalOn] = useState(false);
   const [realDelete, setRealDelete] = useState(false);

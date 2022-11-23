@@ -9,10 +9,10 @@ import { InputBox } from "../../../components/input";
 const FullContainer = styled.div`
   width: 100%;
   height: 100%;
-  position: relative;
+  position: absolute;
   //   margin-top: 109px;
   padding: 20px;
-  z-index: 1002;
+  z-index: 903;
 `;
 
 const IntroTextBox = styled.div`
