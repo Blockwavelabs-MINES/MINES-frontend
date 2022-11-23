@@ -7,6 +7,7 @@ import { SocialGoogle } from "../../assets/icons";
 import { GoogleLogin } from "react-google-login";
 // import { GoogleLogin } from "@react-oauth/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { setLocalUserInfo } from "../../utils/functions/setLocalVariable";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -46,6 +47,17 @@ const TermsBox = styled.div`
 const LoginModalInner = () => {
   const responseGoogle = (response) => {
     console.log(response);
+
+    const userData = {
+      userId: "Sejin Jung",
+      userToken: "",
+      profileImg: "",
+      introduction:
+        "Product ManagerProduct Manager & Designer @BlockwaveLabs | HackATOM Seoul Winner @0xMEPE | Member of medium.com/jewelboxdao | Design, Web3, NFT, Front-end and Future✨",
+    };
+
+    setLocalUserInfo({ type: "init", data: userData });
+
     window.location.href = "/createLink";
   };
 

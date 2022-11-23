@@ -34,8 +34,9 @@ const ButtonContainer = styled.div`
   width: 100%;
   padding: 30px 20px;
   position: absolute;
-  top: 460px;
+  // top: 460px;
   //   bottom: 100px;
+  bottom: 60px;
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(1, 1fr);
@@ -48,6 +49,13 @@ const SuccessImage = styled.img`
 `;
 
 const CreateSuccess = () => {
+  const settingOnClick = () => {
+    window.location.href = "/editProfile";
+  };
+
+  const copyOnClick = () => {
+    alert("준비중입니다.");
+  };
   return (
     <>
       <IntroTextBox>
@@ -64,6 +72,7 @@ const CreateSuccess = () => {
           states="default"
           size="large"
           label="프로필 관리하기"
+          onClick={settingOnClick}
         />
         <ContainedButton
           type="primary"
@@ -71,6 +80,7 @@ const CreateSuccess = () => {
           states="default"
           size="large"
           label="프로필 복사하기"
+          onClick={copyOnClick}
         />
       </ButtonContainer>
     </>

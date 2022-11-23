@@ -1,9 +1,16 @@
-import { ContainedButton, TextButton } from "../../components/button";
+import {
+  ContainedButton,
+  TextButton,
+  IconButton,
+} from "../../components/button";
 import { InputBox } from "../../components/input";
 import { EditableCard } from "../../components/card";
 import styled from "styled-components";
+import { ExternalLink } from "../../assets/icons";
 
-const FullBox = styled.div``;
+const FullBox = styled.div`
+  padding: 20px;
+`;
 
 const ButtonBox = styled.div`
   display: grid;
@@ -40,6 +47,9 @@ const inputState = [
 const placeholder = "Place holder";
 const message = "Verified Message or Error Message";
 
+const iconSizeList = ["large", "medium", "small", "xs"];
+const iconEx = ExternalLink;
+
 const cardMetaData = [
   {
     icon: "https://daotool.s3.ap-northeast-2.amazonaws.com/static/wallet-icon/4fd1f1fe-5869-43c9-a2bf-cdee14c0e4c38.png",
@@ -58,6 +68,29 @@ const cardMetaData = [
 const ComponentTestPage = () => {
   return (
     <>
+      <FullBox>
+        {iconSizeList.map((size, sizeIdx) => (
+          <ButtonBox>
+            {typeList.map((type, typeIdx) => (
+              <ButtonOneContainer>
+                {statesList.map((state, stateIdx) => (
+                  <>
+                    {styleList.map((style, styleIdx) => (
+                      <IconButton
+                        type={type}
+                        styles={style}
+                        states={state}
+                        size={size}
+                        icon={iconEx}
+                      />
+                    ))}
+                  </>
+                ))}
+              </ButtonOneContainer>
+            ))}
+          </ButtonBox>
+        ))}
+      </FullBox>
       <FullBox>
         {sizeList.map((size, sizeIdx) => (
           <ButtonBox>

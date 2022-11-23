@@ -42,8 +42,9 @@ const ButtonContainer = styled.div`
   width: 100%;
   padding: 30px 20px;
   position: absolute;
-  top: 460px;
+  // top: 460px;
   // bottom: 100px;
+  bottom: 136px; // +76px
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(1, 1fr);
@@ -113,8 +114,8 @@ const CreateLinkPage = () => {
               state={state}
               placeholder={"your_link"}
               message={errorComment}
-              fixedMent={"Web3tree.io/"}
-              fixedMentSize={"103px"}
+              fixedMent={"3tree.io/@"}
+              fixedMentSize={"85px"}
               value={linkId}
               onChange={(e) => {
                 linkIdOnChange(e);

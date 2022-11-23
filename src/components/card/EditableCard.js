@@ -5,15 +5,15 @@ import { CardEdit, CardTrash } from "../../assets/icons";
 
 const CardContainer = styled.div`
   width: 100%;
-//   min-width: 350px;
+  //   min-width: 350px;
   padding: 18px 16px;
   border-radius: 16px;
   background-color: ${palette.white};
   display: flex;
   justify-content: space-between;
-  box-shadow: 0px 0px 6px 0px #F0F1F2;
-//   box-shadow: 0px 4px 20px 0px #E9EAEC33;
-//   border: 1px solid;
+  box-shadow: 0px 0px 6px 0px #f0f1f2;
+  //   box-shadow: 0px 4px 20px 0px #E9EAEC33;
+  //   border: 1px solid;
 `;
 
 const CardInfoBox = styled.div`
@@ -50,7 +50,14 @@ const CardToolButton = styled.button`
   border: hidden;
 `;
 
-const EditableCard = ({ label, icon, isEdit, isTrash }) => {
+const EditableCard = ({
+  label,
+  icon,
+  isEdit,
+  isTrash,
+  deleteOnClick,
+  editOnClick,
+}) => {
   return (
     <CardContainer>
       <CardInfoBox>
@@ -58,8 +65,16 @@ const EditableCard = ({ label, icon, isEdit, isTrash }) => {
         <CardLabel>{label}</CardLabel>
       </CardInfoBox>
       <CardToolBox>
-        {isEdit ? <CardToolButton icon={CardEdit} /> : <></>}
-        {isTrash ? <CardToolButton icon={CardTrash} /> : <></>}
+        {isEdit ? (
+          <CardToolButton icon={CardEdit} onClick={editOnClick} />
+        ) : (
+          <></>
+        )}
+        {isTrash ? (
+          <CardToolButton icon={CardTrash} onClick={deleteOnClick} />
+        ) : (
+          <></>
+        )}
       </CardToolBox>
     </CardContainer>
   );

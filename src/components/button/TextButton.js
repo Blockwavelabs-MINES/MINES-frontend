@@ -19,7 +19,7 @@ const PrimaryButton = styled.button`
 const PrimaryTextBox = styled.div`
   ${Typograpy.Caption1}
   font-size: ${({ size }) =>
-    size === "large" ? "" : size === "small" ? "10px" : ""};
+    size === "large" ? "15px" : size === "small" ? "10px" : "15px"};
   color: ${({ styles }) =>
     styles === "active"
       ? palette.blue_1

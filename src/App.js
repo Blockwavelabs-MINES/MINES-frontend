@@ -1,5 +1,10 @@
 import "./App.css";
-import { ComponentTestPage, IntroPage, CreateLinkPage } from "./pages";
+import {
+  ComponentTestPage,
+  IntroPage,
+  CreateLinkPage,
+  EditProfilePage,
+} from "./pages";
 import React from "react";
 import styled from "styled-components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -40,6 +45,7 @@ function App() {
               <Route exact path="/" element={<IntroPage />} />
               <Route path="/components" element={<ComponentTestPage />} />
               <Route path="/createLink" element={<CreateLinkPage />} />
+              <Route path="/editProfile" element={<EditProfilePage />} />
             </Routes>
           </WebAppContainer>
         </BodyInner>

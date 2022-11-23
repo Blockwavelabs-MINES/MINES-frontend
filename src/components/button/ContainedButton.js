@@ -80,6 +80,7 @@ const IconContainer = styled.img`
   width: 20px;
   height: 20px;
   margin: auto 0px;
+  margin-right: 6px;
 `;
 
 const PrimaryTextBox = styled.div`
@@ -127,6 +128,7 @@ const ContainedButton = ({
   icon,
   show_txt = true,
   onClick,
+  style,
 }) => {
   return (
     <>
@@ -137,6 +139,7 @@ const ContainedButton = ({
           type={type}
           styles={styles}
           onClick={onClick}
+          style={style}
         >
           {icon ? <IconContainer src={icon} /> : <></>}
           {show_txt ? (
@@ -154,6 +157,7 @@ const ContainedButton = ({
           type={type}
           styles={styles}
           onClick={onClick}
+          style={style}
         >
           {icon ? <IconContainer src={icon} /> : <></>}
           {show_txt ? (

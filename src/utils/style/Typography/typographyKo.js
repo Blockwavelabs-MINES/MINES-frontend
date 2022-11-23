@@ -43,7 +43,7 @@ const Title3 = css`
 const Headline1 = css`
   //styleName: Headline-1;
   font-family: Pretendard;
-  font-size: 22px;
+  font-size: 23px;
   font-weight: 600;
   line-height: 32px;
   letter-spacing: -0.015em;

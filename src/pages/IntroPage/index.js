@@ -35,7 +35,8 @@ const ButtonContainer = styled.div`
   width: 100%;
   padding: 30px 20px;
   position: absolute;
-  bottom: 0px;
+  bottom: 60px;
+  //   top: 542px;
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(1, 1fr);
@@ -46,6 +47,13 @@ const IntroPage = () => {
 
   const closeLoginModal = () => {
     setLoginModalVisible(false);
+  };
+
+  const profileSettingOnClick = () => {
+    window.location.href = "/editProfile";
+  };
+  const sendOnClick = () => {
+    alert("준비중입니다.");
   };
   return (
     <FullContainer>
@@ -76,6 +84,7 @@ const IntroPage = () => {
           states="default"
           size="large"
           label="송금하기"
+          onClick={sendOnClick}
         />
         <ContainedButton
           type="primary"
@@ -83,6 +92,7 @@ const IntroPage = () => {
           states="default"
           size="large"
           label="프로필 관리하기"
+          onClick={profileSettingOnClick}
         />
       </ButtonContainer>
     </FullContainer>
