@@ -28,7 +28,7 @@ const EmptyCard = ({ icon, text }) => {
     <FullContainer>
       <ImageContainer src={icon} />
       <TextContainer>
-        아직 연결된 {text}가 없어요. <br />
+        아직 연결된 {text} 없어요. <br />
         새로운 링크를 추가해보세요!
       </TextContainer>
     </FullContainer>

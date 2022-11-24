@@ -15,8 +15,10 @@ import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 
 const FullContainer = styled.div`
   width: 100%;
-  height: 100%;
+  //   height: 100%;
+  min-height: 100vh;
   position: relative;
+  padding-top: 75px;
 `;
 
 const Divider = styled.div`
@@ -46,6 +48,7 @@ const EditProfilePage = () => {
   const editOnClick = () => {
     setEditMyInfo(true);
   };
+
   return (
     <>
       {editMyInfo ? (
@@ -68,10 +71,11 @@ const EditProfilePage = () => {
             userName={userInfo?.userId}
             introduction={userInfo?.introduction}
             onClick={editOnClick}
+            isEditable={true}
           />
-          <LinkComponent />
+          <LinkComponent userInfoProps={userInfo?.linkList} />
           <Divider />
-          <WalletComponent />
+          <WalletComponent userInfoProps={userInfo?.walletList} />
         </FullContainer>
       )}
     </>

@@ -10,13 +10,24 @@ function BottomModal({
   visible,
   renderInput,
 }) {
+  useEffect(() => {
+    console.log(visible);
+    if (visible) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [visible]);
+
   const onMaskClick = (e) => {
     if (e.target === e.currentTarget) {
+      document.body.style.overflow = "auto";
       onClose(e);
     }
   };
 
   const closeOnClick = () => {
+    document.body.style.overflow = "auto";
     onClose();
   };
 
@@ -56,7 +67,7 @@ const ModalWrapper = styled.div`
   display: ${(props) => (props.visible ? "block" : "none")};
   position: fixed;
   //   top: 200px;
-  top: 0px;
+  top: 0;
   right: 0;
   bottom: 0;
   left: 0;
@@ -89,23 +100,10 @@ const ModalInner = styled.div`
   max-width: 600px;
   height: 100%;
   margin: 0 auto;
-  margin-top: 200px;
-  // padding: 40px 20px;
-  color: white;
-  text-align: center;
-  font-size: 17px;
-  font-style: normal;
-  font-weight: 600;
+  margin-top: 20vh;
   border: none;
   border-radius: 30px 30px 0px 0px;
   background-color: rgba(255, 255, 255, 1);
-`;
-
-const ContentContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: 902;
 `;
 
 const CloseButton = styled.button`

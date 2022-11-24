@@ -4,6 +4,7 @@ import {
   IntroPage,
   CreateLinkPage,
   EditProfilePage,
+  ProfilePage,
 } from "./pages";
 import React from "react";
 import styled from "styled-components";
@@ -22,7 +23,7 @@ const BodyInner = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   background-color: ${palette.background};
   // background-color: ${palette.white};
 `;
@@ -32,6 +33,7 @@ const WebAppContainer = styled.div`
   max-width: 600px;
   height: 100%;
   background-color: ${palette.white};
+  // position: absolute;
 `;
 
 function App() {
@@ -46,6 +48,7 @@ function App() {
               <Route path="/components" element={<ComponentTestPage />} />
               <Route path="/createLink" element={<CreateLinkPage />} />
               <Route path="/editProfile" element={<EditProfilePage />} />
+              <Route path="/@:id" element={<ProfilePage />} />
             </Routes>
           </WebAppContainer>
         </BodyInner>

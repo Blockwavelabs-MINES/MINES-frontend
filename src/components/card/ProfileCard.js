@@ -51,25 +51,36 @@ const IntroductionBox = styled.div`
   text-align: center;
 `;
 
-const ProfileCard = ({ profileImg, userName, introduction, onClick }) => {
+const ProfileCard = ({
+  profileImg,
+  userName,
+  introduction,
+  onClick,
+  isEditable,
+  style,
+}) => {
   const editOnClick = () => {
     alert("준비중입니다.");
   };
   return (
-    <FullContainer>
+    <FullContainer style={style}>
       <InnerContainer>
         <ProfileImageBox profileImg={profileImg} />
         <UserNameBox>{userName}</UserNameBox>
         <IntroductionBox>{introduction}</IntroductionBox>
-        <ContainedButton
-          type="primary"
-          styles="outlined"
-          states="default"
-          size="large"
-          label="수정하기"
-          icon={ProfileEdit}
-          onClick={onClick}
-        />
+        {isEditable ? (
+          <ContainedButton
+            type="primary"
+            styles="outlined"
+            states="default"
+            size="large"
+            label="수정하기"
+            icon={ProfileEdit}
+            onClick={onClick}
+          />
+        ) : (
+          <></>
+        )}
       </InnerContainer>
     </FullContainer>
   );

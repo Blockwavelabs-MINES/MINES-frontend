@@ -5,10 +5,12 @@ import { InputBox } from "../../components/input";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import CreateSuccess from "./CreateSuccess";
+import { setLocalUserInfo } from "../../utils/functions/setLocalVariable";
 
 const FullContainer = styled.div`
   width: 100%;
-  height: 100%;
+  // height: 100%;
+  min-height: 100vh;
   position: relative;
   padding-top: 70px;
 `;
@@ -42,7 +44,8 @@ const ButtonContainer = styled.div`
   width: 100%;
   padding: 30px 20px;
   position: absolute;
-  // top: 460px;
+  top: 460px;
+  padding-bottom: 160px;
   // bottom: 100px;
   bottom: 136px; // +76px
   display: grid;
@@ -93,6 +96,7 @@ const CreateLinkPage = () => {
   };
 
   const createOnClick = () => {
+    setLocalUserInfo({ type: "edit", editKey: "userId", editValue: linkId });
     setCreateSuccess(true);
   };
   return (

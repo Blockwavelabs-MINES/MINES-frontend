@@ -7,6 +7,7 @@ import { EmptyCard, EditableCard } from "../../../components/card";
 import { EmptyWallet, MetamaskIcon } from "../../../assets/icons";
 import { DeleteModal } from "../../../components/modal";
 import { MetamaskOnClick } from "../../../actions/WalletConnectActions";
+import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -30,7 +31,7 @@ const ListContainer = styled.div`
   width: 100%;
   padding-top: 40px;
   display: grid;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const walletConvert = (walletAddress) => {
@@ -44,29 +45,34 @@ const walletConvert = (walletAddress) => {
   return returnAddress;
 };
 
-const WalletComponent = () => {
-  const [walletList, setWalletList] = useState([
-    // {
-    //   type: "Metamask",
-    //   address: "0x07B0ea6D444B9B66F3A7709FB1fA75BcDCD67A16",
-    //   icon: MetamaskIcon,
-    // },
-    // {
-    //   type: "Metamask",
-    //   address: "0xed6631bD706BC910A37cdc41ACd48a5d94F7bCC0",
-    //   icon: MetamaskIcon,
-    // },
-  ]);
+function isMobileDevice() {
+  return (
+    ("ontouchstart" in window || "onmsgesturechange" in window) &&
+    !window.ethereum
+  );
+}
+
+const WalletComponent = ({ userInfoProps }) => {
+  const [walletList, setWalletList] = useState(userInfoProps);
   const [deleteModalOn, setDeleteModalOn] = useState(false);
   const [realDelete, setRealDelete] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState(-1);
   const [addedWallet, setAddedWallet] = useState();
 
   useEffect(() => {
+    setWalletList(userInfoProps);
+  }, [userInfoProps]);
+
+  useEffect(() => {
     if (realDelete) {
       // 지우는 action
       var tmpWalletList = walletList;
       tmpWalletList.splice(deleteIdx, 1);
+      setLocalUserInfo({
+        type: "edit",
+        editKey: "walletList",
+        editValue: tmpWalletList,
+      });
       setWalletList(tmpWalletList);
 
       setDeleteIdx(-1);
@@ -82,6 +88,11 @@ const WalletComponent = () => {
         type: "Metamask",
         address: addedWallet,
         icon: MetamaskIcon,
+      });
+      setLocalUserInfo({
+        type: "edit",
+        editKey: "walletList",
+        editValue: tmpWalletList,
       });
       setWalletList(tmpWalletList);
 
@@ -99,7 +110,7 @@ const WalletComponent = () => {
   };
 
   const walletConnectOnClick = () => {
-    MetamaskOnClick(setAddedWallet);
+    MetamaskOnClick(walletList, setAddedWallet);
   };
 
   return (
@@ -110,7 +121,7 @@ const WalletComponent = () => {
           closable={true}
           maskClosable={true}
           onClose={closeDeleteModal}
-          text={<>이 지갑를 정말 삭제하시겠어요?</>}
+          text={<>이 지갑을 정말 삭제하시겠어요?</>}
           setRealDelete={setRealDelete}
         />
       ) : (
@@ -118,34 +129,64 @@ const WalletComponent = () => {
       )}
       <TitleContainer>
         <TItleText>지갑</TItleText>
-        {walletList.length > 0 ? (
-          <ContainedButton
-            type="secondary"
-            styles="filled"
-            states="default"
-            size="small"
-            label="지갑 추가"
-            onClick={walletConnectOnClick}
-          />
+        {walletList?.length > 0 ? (
+          <>
+            {isMobileDevice() ? (
+              <a href="https://metamask.app.link/dapp/3tree.io">
+                <ContainedButton
+                  type="secondary"
+                  styles="filled"
+                  states="default"
+                  size="small"
+                  label="지갑 추가"
+                  onClick={walletConnectOnClick}
+                />
+              </a>
+            ) : (
+              <ContainedButton
+                type="secondary"
+                styles="filled"
+                states="default"
+                size="small"
+                label="지갑 추가"
+                onClick={walletConnectOnClick}
+              />
+            )}
+          </>
         ) : (
           <></>
         )}
       </TitleContainer>
-      {walletList.length == 0 ? (
+      {walletList?.length == 0 ? (
         <>
-          <EmptyCard icon={EmptyWallet} text="지갑" />
-          <ContainedButton
-            type="primary"
-            styles="filled"
-            states="default"
-            size="large"
-            label="지갑 추가하기"
-            onClick={walletConnectOnClick}
-          />
+          <EmptyCard icon={EmptyWallet} text="지갑이" />
+          <>
+            {isMobileDevice() ? (
+              <a href="https://metamask.app.link/dapp/3tree.io">
+                <ContainedButton
+                  type="primary"
+                  styles="filled"
+                  states="default"
+                  size="large"
+                  label="지갑 추가하기"
+                  onClick={walletConnectOnClick}
+                />
+              </a>
+            ) : (
+              <ContainedButton
+                type="primary"
+                styles="filled"
+                states="default"
+                size="large"
+                label="지갑 추가하기"
+                onClick={walletConnectOnClick}
+              />
+            )}
+          </>
         </>
       ) : (
         <ListContainer>
-          {walletList.map((wallet, idx) => (
+          {walletList?.map((wallet, idx) => (
             <EditableCard
               label={walletConvert(wallet.address)}
               isEdit={false}

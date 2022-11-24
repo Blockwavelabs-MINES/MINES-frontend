@@ -8,10 +8,14 @@ import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 
 const HeaderContainer = styled.div`
   width: 100%;
+  max-width: 600px;
   height: 74px;
   border-bottom: 1px solid ${palette.grey_7};
-  padding: 17px 20px;
-  position: relative;
+  padding: 22px 20px 12px 20px;
+  background-color: ${palette.white};
+  position: fixed;
+  top: 0px;
+  z-index: 10;
 `;
 
 const InnerContainer = styled.div`
@@ -20,9 +24,6 @@ const InnerContainer = styled.div`
   margin: auto 0px;
   display: flex;
   justify-content: space-between;
-  //   display: grid;
-  //   gap: 9px;
-  //   grid-template-columns: repeat(3, 1fr);
 `;
 
 const TitleContainer = styled.div`
@@ -76,8 +77,8 @@ const EditProfileHeader = ({
   };
 
   const rightIconOnClick = () => {
-    // rightOnClick();
-    alert("준비중입니다.");
+    rightOnClick();
+    // alert("준비중입니다.");
   };
 
   return (

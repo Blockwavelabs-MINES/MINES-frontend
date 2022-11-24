@@ -9,10 +9,14 @@ import { ProfileDropbox } from "./components";
 
 const HeaderContainer = styled.div`
   width: 100%;
+  max-width: 600px;
   height: 75px;
   border-bottom: 1px solid ${palette.grey_7};
-  padding: 17px 20px;
-  position: relative;
+  padding: 22px 20px 12px 20px;
+  background-color: ${palette.white};
+  position: fixed;
+  top: 0px;
+  z-index: 10;
 `;
 
 const InnerContainer = styled.div`

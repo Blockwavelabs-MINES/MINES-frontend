@@ -33,10 +33,10 @@ const SecondIntro = styled.div`
 const ButtonContainer = styled.div`
   width: 100%;
   padding: 30px 20px;
+  padding-bottom: 160px;
   position: absolute;
-  // top: 460px;
+  top: 460px;
   //   bottom: 100px;
-  bottom: 60px;
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(1, 1fr);

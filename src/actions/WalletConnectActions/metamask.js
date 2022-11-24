@@ -1,10 +1,8 @@
-import metamaskMobileOnClick from "./metamaskMobile";
-
 function isMobileDevice() {
   return "ontouchstart" in window || "onmsgesturechange" in window;
 }
 
-const metamaskOnClick = (onConnected) => {
+const metamaskOnClick = (walletList, onConnected) => {
   // if (!window.ethereum) {
   //   alert("Get MetaMask!");
   //   return;
@@ -26,17 +24,22 @@ const metamaskOnClick = (onConnected) => {
       });
 
       console.log(accounts[0]);
-      localStorage.setItem("currentAddress", accounts[0]);
-      onConnected(accounts[0]);
+      console.log(walletList.findIndex((v) => v.address === accounts[0]));
+      if (walletList.findIndex((v) => v.address == accounts[0]) > -1) {
+        console.log(walletList);
+        alert("중복되는 주소가 있습니다.");
+      } else {
+        // localStorage.setItem("currentAddress", accounts[0]);
+        onConnected(accounts[0]);
+      }
     } catch (error) {
       if (isMobileDevice()) {
         try {
-          //   const accounts = await window.ethereum.request({
-          //     method: "eth_requestAccounts",
-          //   });
+          const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+          });
 
-          //   onConnected(accounts[0]);
-          metamaskMobileOnClick();
+          onConnected(accounts[0]);
         } catch (error) {
           alert(error.message);
           console.error(error.message);

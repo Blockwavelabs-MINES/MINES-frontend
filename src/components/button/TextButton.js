@@ -7,7 +7,7 @@ const PrimaryButton = styled.button`
     size === "large" ? "75px" : size === "small" ? "68px" : "75px"};
   height: 30px;
   border-radius: 15px;
-  background-color: ${palette.white};
+  background-color: transparent;
   border: hidden;
   &:hover {
     background-color: ${palette.grey_6};

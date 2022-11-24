@@ -7,6 +7,7 @@ import { EmptyCard, EditableCard } from "../../../components/card";
 import { EmptyLink, LinkIcon } from "../../../assets/icons";
 import { DeleteModal } from "../../../components/modal";
 import AddLinkModal from "./AddLinkModal";
+import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -30,30 +31,30 @@ const ListContainer = styled.div`
   width: 100%;
   padding-top: 40px;
   display: grid;
-  gap: 10px;
+  gap: 20px;
 `;
 
-const LinkComponent = () => {
-  const [linkList, setLinkList] = useState([
-    // {
-    //   title: "MEPE",
-    //   url: "https://mepe.com",
-    // },
-    // {
-    //   title: "Web3Tree",
-    //   url: "https://3tree.io",
-    // },
-  ]);
+const LinkComponent = ({ userInfoProps }) => {
+  const [linkList, setLinkList] = useState(userInfoProps);
   const [deleteModalOn, setDeleteModalOn] = useState(false);
   const [realDelete, setRealDelete] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState(-1);
   const [linkModalOn, setLinkModalOn] = useState(false);
 
   useEffect(() => {
+    setLinkList(userInfoProps);
+  }, [userInfoProps]);
+
+  useEffect(() => {
     if (realDelete) {
       // 지우는 action
       var tmpLinkList = linkList;
       tmpLinkList.splice(deleteIdx, 1);
+      setLocalUserInfo({
+        type: "edit",
+        editKey: "linkList",
+        editValue: tmpLinkList,
+      });
       setLinkList(tmpLinkList);
 
       setDeleteIdx(-1);
@@ -88,6 +89,11 @@ const LinkComponent = () => {
     tmpLinkList.push({
       title: title,
       url: url,
+    });
+    setLocalUserInfo({
+      type: "edit",
+      editKey: "linkList",
+      editValue: tmpLinkList,
     });
     setLinkList(tmpLinkList);
   };
@@ -125,7 +131,7 @@ const LinkComponent = () => {
       )}
       <TitleContainer>
         <TItleText>링크</TItleText>
-        {linkList.length > 0 ? (
+        {linkList?.length > 0 ? (
           <ContainedButton
             type="secondary"
             styles="filled"
@@ -138,9 +144,9 @@ const LinkComponent = () => {
           <></>
         )}
       </TitleContainer>
-      {linkList.length == 0 ? (
+      {linkList?.length == 0 ? (
         <>
-          <EmptyCard icon={EmptyLink} text="링크" />
+          <EmptyCard icon={EmptyLink} text="링크가" />
           <ContainedButton
             type="primary"
             styles="filled"
@@ -152,7 +158,7 @@ const LinkComponent = () => {
         </>
       ) : (
         <ListContainer>
-          {linkList.map((link, idx) => (
+          {linkList?.map((link, idx) => (
             <EditableCard
               label={link.title}
               isEdit={true}

@@ -8,10 +8,14 @@ import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 
 const HeaderContainer = styled.div`
   width: 100%;
+  max-width: 600px;
   height: 74px;
   border-bottom: 1px solid ${palette.grey_7};
-  padding: 17px 20px;
-  position: relative;
+  padding: 22px 20px 12px 20px;
+  background-color: ${palette.white};
+  position: fixed;
+  top: 0px;
+  z-index: 10;
 `;
 
 const InnerContainer = styled.div`
@@ -63,7 +67,8 @@ const SettingProfileHeader = ({
   };
 
   const externalOnClick = () => {
-    alert("준비중입니다.");
+    // alert("준비중입니다.");
+    window.location.href = "/@" + userInfo?.userId;
   };
 
   return (

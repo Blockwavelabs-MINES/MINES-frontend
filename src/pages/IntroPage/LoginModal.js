@@ -49,11 +49,13 @@ const LoginModalInner = () => {
     console.log(response);
 
     const userData = {
-      userId: "Sejin Jung",
+      userId: "anonymous",
       userToken: "",
       profileImg: "",
       introduction:
-        "Product ManagerProduct Manager & Designer @BlockwaveLabs | HackATOM Seoul Winner @0xMEPE | Member of medium.com/jewelboxdao | Design, Web3, NFT, Front-end and Future✨",
+        "Please edit introduction in profile setting page.",
+      linkList: [],
+      walletList: [],
     };
 
     setLocalUserInfo({ type: "init", data: userData });
