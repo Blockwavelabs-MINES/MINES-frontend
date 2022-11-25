@@ -54,7 +54,8 @@ const IntroPage = () => {
     window.location.href = "/editProfile";
   };
   const sendOnClick = () => {
-    alert("준비중입니다.");
+    // alert("준비중입니다.");
+    window.location.href = "/sendToken";
   };
   return (
     <FullContainer>

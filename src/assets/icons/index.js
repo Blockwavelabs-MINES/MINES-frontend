@@ -19,3 +19,6 @@ export { default as EmptyWallet } from "./empty-wallet.svg";
 export { default as LinkIcon } from "./link-icon.svg";
 export { default as MetamaskIcon } from "./metamask-icon.svg";
 export { default as CameraIcon } from "./camera-icon.svg";
+export { default as DropIcon } from "./icon-caretDownBlack.svg";
+export { default as GoogleIcon } from "./google-icon.svg";
+export { default as CopyIcon } from "./copy-icon.svg";

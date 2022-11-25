@@ -5,6 +5,7 @@ import {
   CreateLinkPage,
   EditProfilePage,
   ProfilePage,
+  SendTokenPage,
 } from "./pages";
 import React from "react";
 import styled from "styled-components";
@@ -48,6 +49,7 @@ function App() {
               <Route path="/components" element={<ComponentTestPage />} />
               <Route path="/createLink" element={<CreateLinkPage />} />
               <Route path="/editProfile" element={<EditProfilePage />} />
+              <Route path="/sendToken" element={<SendTokenPage />} />
               <Route path="/@:id" element={<ProfilePage />} />
             </Routes>
           </WebAppContainer>
