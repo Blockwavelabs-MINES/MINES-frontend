@@ -47,9 +47,9 @@ const EditProfileHeader = ({
   useEffect(() => {
     var globalUserInfo = getLocalUserInfo();
     if (globalUserInfo) {
-      setUserInfo(JSON.parse(globalUserInfo));
+      setUserInfo(globalUserInfo);
     }
-  }, [getLocalUserInfo()]);
+  }, []);
 
   const loginOnClick = () => {
     console.log("jell");

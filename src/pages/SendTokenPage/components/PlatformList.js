@@ -1,28 +1,14 @@
+import { GoogleIcon } from "../../../assets/icons";
+
 const PlatformList = [
   {
-    pageProps: {
-      chain: {
-        name: "Google",
-        chain: "ETH",
-        icon: "ethereum",
-        networkId: "google",
-        nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
-        infoURL: "https://google.com",
-      },
-    },
+    emailName: "Google",
+    emailIcon: GoogleIcon,
   },
-  {
-    pageProps: {
-      chain: {
-        name: "Twitter",
-        chain: "ETH",
-        icon: "ethereum",
-        networkId: "twitter",
-        nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
-        infoURL: "https://twitter.com",
-      },
-    },
-  },
+  // {
+  //   emailName: "Twitter",
+  //   emailIcon: "twitter icon",
+  // },
 ];
 
 export default PlatformList;

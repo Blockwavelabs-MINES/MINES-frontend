@@ -101,15 +101,15 @@ const EditMyInfo = ({ userInfo, setEditMyInfo }) => {
     //   introduction: introduction,
     // };
     // setLocalUserInfo({ type: "init", data: saveData });
-    setLocalUserInfo({ type: "edit", editKey: "userId", editValue: name });
+    setLocalUserInfo({ type: "edit", editKey: ["user", "profile_name"], editValue: name });
     setLocalUserInfo({
       type: "edit",
-      editKey: "profileImg",
+      editKey: ["user", "profile_img"],
       editValue: profileImage.imagePreviewUrl,
     });
     setLocalUserInfo({
       type: "edit",
-      editKey: "introduction",
+      editKey: ["user", "profile_bio"],
       editValue: introduction,
     });
 

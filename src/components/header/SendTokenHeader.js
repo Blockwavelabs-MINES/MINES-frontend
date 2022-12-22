@@ -38,8 +38,8 @@ const SendTokenHeader = ({
   title,
   iconLeft = ChevronLeft,
   leftOnClick,
+  rightOnClick,
 }) => {
-
   const leftIconOnClick = () => {
     leftOnClick(false);
   };
@@ -47,7 +47,7 @@ const SendTokenHeader = ({
   return (
     <HeaderContainer>
       <InnerContainer>
-        <div style={{ width: "57px" }}>
+        <div style={{ width: "58px" }}>
           <IconButton
             type="secondary"
             styles="outlined"
@@ -58,7 +58,19 @@ const SendTokenHeader = ({
           />
         </div>
         <TitleContainer>{title}</TitleContainer>
-        <div style={{ width: "57px" }} />
+        <div style={{ width: "58px" }}>
+          {rightOnClick ? (
+            <TextButton
+              styles="active"
+              states="default"
+              size="large"
+              label="닫기"
+              onClick={rightOnClick}
+            />
+          ) : (
+            <></>
+          )}
+        </div>
       </InnerContainer>
     </HeaderContainer>
   );

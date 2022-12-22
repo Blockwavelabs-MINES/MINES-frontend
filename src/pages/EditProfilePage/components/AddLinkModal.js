@@ -36,9 +36,9 @@ const InputContainer = styled.div`
   margin-bottom: 30px;
 `;
 
-function AddLinkModalInner(saveAction, onClose) {
-  const [title, setTitle] = useState("");
-  const [url, setUrl] = useState("");
+function AddLinkModalInner(saveAction, onClose, original) {
+  const [title, setTitle] = useState(original ? original.link_title : "");
+  const [url, setUrl] = useState(original ? original.link_url : "");
   const [canSave, setCanSave] = useState(false);
 
   useEffect(() => {
@@ -48,6 +48,12 @@ function AddLinkModalInner(saveAction, onClose) {
       setCanSave(false);
     }
   }, [title, url]);
+
+  useEffect(() => {
+    console.log(original);
+    setTitle(original?.link_title);
+    setUrl(original?.link_url);
+  }, [original]);
 
   const titleOnChange = (e) => {
     setTitle(e.target.value);
@@ -114,6 +120,7 @@ const AddLinkModal = ({
   maskClosable,
   onClose,
   saveAction,
+  original,
 }) => {
   return (
     <BottomModal
@@ -121,7 +128,7 @@ const AddLinkModal = ({
       closable={closable}
       maskClosable={maskClosable}
       onClose={onClose}
-      renderInput={() => AddLinkModalInner(saveAction, onClose)}
+      renderInput={() => AddLinkModalInner(saveAction, onClose, original)}
     />
   );
 };

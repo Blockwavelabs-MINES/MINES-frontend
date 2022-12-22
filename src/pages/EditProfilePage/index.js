@@ -12,6 +12,7 @@ import {
 } from "./components";
 import { ProfileCard } from "../../components/card";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
+import { getUserInfo } from "../../utils/api/auth";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -32,14 +33,23 @@ const EditProfilePage = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState();
   const [editMyInfo, setEditMyInfo] = useState();
+  const [infoChange, setInfoChange] = useState(false);
 
   useEffect(() => {
     var globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
-      setUserInfo(JSON.parse(globalUserInfo));
-    }
-    console.log(JSON.parse(globalUserInfo));
-  }, [getLocalUserInfo()]);
+    // if (globalUserInfo) {
+    //   setUserInfo(globalUserInfo);
+    // }
+    console.log(globalUserInfo);
+    (async () => {
+      const getUserInfoResult = await getUserInfo(
+        globalUserInfo.user.user_id
+      ).then((data) => {
+        console.log(data);
+        setUserInfo(data);
+      });
+    })();
+  }, [infoChange]);
 
   const closeLoginModal = () => {
     setLoginModalVisible(false);
@@ -52,10 +62,15 @@ const EditProfilePage = () => {
   return (
     <>
       {editMyInfo ? (
-        <EditMyInfo userInfo={userInfo} setEditMyInfo={setEditMyInfo} />
+        <EditMyInfo
+          userInfo={userInfo}
+          setEditMyInfo={setEditMyInfo}
+          setInfoChange={setInfoChange}
+          infoChange={infoChange}
+        />
       ) : (
         <FullContainer>
-          <SettingProfileHeader title="프로필 관리" />
+          <SettingProfileHeader info={userInfo} title="프로필 관리" />
           {loginModalVisible ? (
             <AddLinkModal
               visible={loginModalVisible}
@@ -67,15 +82,23 @@ const EditProfilePage = () => {
             <></>
           )}
           <ProfileCard
-            profileImg={userInfo?.profileImg}
-            userName={userInfo?.userId}
-            introduction={userInfo?.introduction}
+            profileImg={userInfo?.user.profile_img}
+            userName={userInfo?.user.profile_name}
+            introduction={userInfo?.user.profile_bio}
             onClick={editOnClick}
             isEditable={true}
           />
-          <LinkComponent userInfoProps={userInfo?.linkList} />
+          <LinkComponent
+            userInfoProps={userInfo}
+            setInfoChange={setInfoChange}
+            infoChange={infoChange}
+          />
           <Divider />
-          <WalletComponent userInfoProps={userInfo?.walletList} />
+          <WalletComponent
+            userInfoProps={userInfo}
+            setInfoChange={setInfoChange}
+            infoChange={infoChange}
+          />
         </FullContainer>
       )}
     </>

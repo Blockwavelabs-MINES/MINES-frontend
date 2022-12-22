@@ -1,13 +1,20 @@
 import styled from "styled-components";
-import { ContainedButton } from "../../components/button";
+import { ContainedButton } from "../button";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
-import { BottomModal } from "../../components/modal";
+import { BottomModal } from ".";
 import { SocialGoogle } from "../../assets/icons";
-import { GoogleLogin } from "react-google-login";
-// import { GoogleLogin } from "@react-oauth/google";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+// import { GoogleLogin } from "react-google-login";
+import { GoogleLogin } from "@react-oauth/google";
+import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
 import { setLocalUserInfo } from "../../utils/functions/setLocalVariable";
+import {
+  createUser,
+  loginUser,
+  getUserInfo,
+  getInfoFromAccessToken,
+  editProfile,
+} from "../../utils/api/auth";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -44,24 +51,50 @@ const TermsBox = styled.div`
   color: ${palette.grey_5};
 `;
 
-const LoginModalInner = () => {
-  const responseGoogle = (response) => {
-    console.log(response);
-
-    const userData = {
-      userId: "anonymous",
-      userToken: "",
-      profileImg: "",
-      introduction:
-        "Please edit introduction in profile setting page.",
-      linkList: [],
-      walletList: [],
-    };
-
-    setLocalUserInfo({ type: "init", data: userData });
-
-    window.location.href = "/createLink";
+const LoginModalInner = (type, setStatus, onClose) => {
+  const responseGoogle = async (accessToken) => {
+    const getInfoFromAccessTokenResult = await getInfoFromAccessToken(
+      accessToken
+    ).then(async (res) => {
+      const createUserResult = await createUser(res.email, "GOOGLE")
+        .then(async (userInfo) => {
+          const editProfileResult = await editProfile(
+            userInfo.user_id,
+            res.name,
+            `${res.name}님의 3TREE 페이지입니다 :)`
+          );
+          const loginUserResult = await loginUser(res.email)
+            .then((data) => console.log(data))
+            .then(() => {
+              if (type == "receive") {
+                setStatus(true);
+              } else {
+                window.location.href = "/createLink";
+              }
+              onClose()
+            });
+        })
+        .catch(async (error) => {
+          const loginUserResult = await loginUser(res.email)
+            .then((data) => console.log(data))
+            .then(() => {
+              if (type == "receive") {
+                setStatus(true);
+              } else {
+                window.location.href = "/";
+              }
+              onClose()
+            });
+        });
+    });
   };
+
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse) => {
+      console.log(codeResponse);
+      responseGoogle(codeResponse.access_token);
+    },
+  });
 
   const googleLoginOnClick = () => {
     console.log("hi");
@@ -76,7 +109,7 @@ const LoginModalInner = () => {
           <br /> 디지털 아이덴티티를 확장해보세요
         </SecondIntro>
       </IntroTextBox>
-      <GoogleLogin
+      {/* <GoogleLogin
         clientId={process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID}
         buttonText="Login"
         onSuccess={responseGoogle}
@@ -97,7 +130,7 @@ const LoginModalInner = () => {
             }}
           />
         )}
-      />
+      /> */}
       {/* <ContainedButton
         type="secondary"
         styles="outlined"
@@ -108,16 +141,26 @@ const LoginModalInner = () => {
         className={"googleButton"}
         onClick={googleLoginOnClick}
       /> */}
-      {/* <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID}>
-        <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            console.log(credentialResponse);
-          }}
+      {/* <GoogleOAuthProvider
+        clientId={process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID}
+      > */}
+      {/* <GoogleLogin
+          onSuccess={responseGoogle}
           onError={() => {
             console.log("Login Failed");
           }}
-        />
-      </GoogleOAuthProvider> */}
+        /> */}
+      <ContainedButton
+        type="secondary"
+        styles="outlined"
+        states="default"
+        size="large"
+        label="구글로 시작하기"
+        icon={SocialGoogle}
+        className={"googleButton"}
+        onClick={login}
+      />
+      {/* </GoogleOAuthProvider> */}
       <TermsBox>
         로그인은 <a>개인정보 보호 정책</a> 및 <a>서비스 약관</a>에 동의하는 것을
         의미하며, 이용을 위해 이메일과 이름, 프로필 이미지를 수집합니다.
@@ -126,14 +169,21 @@ const LoginModalInner = () => {
   );
 };
 
-const LoginModal = ({ visible, closable, maskClosable, onClose }) => {
+const LoginModal = ({
+  visible,
+  closable,
+  maskClosable,
+  onClose,
+  type,
+  setStatus,
+}) => {
   return (
     <BottomModal
       visible={visible}
       closable={closable}
       maskClosable={maskClosable}
       onClose={onClose}
-      renderInput={LoginModalInner}
+      renderInput={()=>LoginModalInner(type, setStatus, onClose)}
     />
   );
 };

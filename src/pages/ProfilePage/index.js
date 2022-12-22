@@ -14,6 +14,7 @@ import { ProfileCard } from "../../components/card";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { useLocation } from "react-router-dom";
 import { MetamaskIcon } from "../../assets/icons";
+import { getUserInfo } from "../../utils/api/auth";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -38,64 +39,101 @@ const ProfilePage = () => {
   const location = useLocation();
 
   useEffect(() => {
-    var globalUserInfo = JSON.parse(getLocalUserInfo());
-    console.log(globalUserInfo);
+    (async () => {
+      var globalUserInfo = getLocalUserInfo();
+      console.log(globalUserInfo);
 
-    var currentPageUserId = location.pathname.slice(1).split("/")[0].substr(1);
-    console.log(currentPageUserId);
+      var currentPageUserId = location.pathname
+        .slice(1)
+        .split("/")[0]
+        .substr(1);
+      console.log(currentPageUserId);
 
-    const MetaUserInfo = {
-      userId: currentPageUserId,
-      userToken: "",
-      profileImg: "",
-      introduction: `hello, I am ${currentPageUserId}`,
-      linkList: [
-        {
-          title: "MEPE",
-          url: "https://mepe.app",
+      const MetaUserInfo = {
+        links: [
+          {
+            index: 3,
+            user_index: 10,
+            link_title: "MEPE",
+            link_url: "https://mepe.app",
+          },
+          {
+            index: 3,
+            user_index: 10,
+            link_title: "Web3Tree",
+            link_url: "https://3tree.io",
+          },
+        ],
+        wallets: [
+          {
+            index: 3,
+            user_index: 10,
+            wallet_address: "0x0000000000000000000",
+          },
+        ],
+        user: {
+          index: 10,
+          profile_name: null,
+          profile_img: null,
+          profile_bio: `hello, I am ${currentPageUserId}`,
+          user_id: currentPageUserId,
+          social_id: "gkrry2723",
+          social_platform: "GOOGLE",
+          role: null,
         },
-        {
-          title: "Web3Tree",
-          url: "https://3tree.io",
-        },
-      ],
-      walletList: [
-        {
-          type: "Metamask",
-          address: "0x07B0ea6D444B9B66F3A7709FB1fA75BcDCD67A16",
-          icon: MetamaskIcon,
-        },
-        {
-          type: "Metamask",
-          address: "0xed6631bD706BC910A37cdc41ACd48a5d94F7bCC0",
-          icon: MetamaskIcon,
-        },
-      ],
-    };
-    if (currentPageUserId != globalUserInfo.userId) {
-      setIsUserPage(true);
-      setUserInfo(MetaUserInfo);
-    } else {
-      setUserInfo(globalUserInfo);
-    }
-  }, [getLocalUserInfo()]);
+      };
+      if (currentPageUserId != globalUserInfo.user.user_id) {
+        setIsUserPage(true);
+        // setUserInfo(MetaUserInfo);
+        const getUserInfoResult = await getUserInfo(currentPageUserId).then(
+          (data) => {
+            console.log(data);
+            setUserInfo(data);
+          }
+        );
+      } else {
+        const getUserInfoResult = await getUserInfo(
+          globalUserInfo.user.user_id
+        ).then((data) => {
+          console.log(data);
+          setUserInfo(data);
+        });
+      }
+    })();
+  }, []);
 
   return (
     <>
       <FullContainer>
         <ProfileHeader />
         <ProfileCard
-          profileImg={userInfo?.profileImg}
-          userName={userInfo?.userId}
-          introduction={userInfo?.introduction}
+          profileImg={userInfo?.user.profile_img}
+          userName={userInfo?.user.profile_name}
+          introduction={userInfo?.user.profile_bio}
           style={{
             paddingTop: "135px",
             backgroundColor: "transparent",
           }}
         />
-        <LinkComponent userLinkList={userInfo?.linkList} />
-        <Divider />
-        <WalletComponent userWalletList={userInfo?.walletList} />
+        {userInfo ? (
+          <>
+            {userInfo.links.length ? (
+              <LinkComponent userLinkList={userInfo?.links} />
+            ) : (
+              <></>
+            )}
+            {userInfo.wallets.length ? (
+              <>
+                <Divider />
+                <WalletComponent userWalletList={userInfo?.wallets} />
+              </>
+            ) : (
+              <></>
+            )}
+          </>
+        ) : (
+          <>존재하지 않는 사용자입니다.</>
+        )}
       </FullContainer>
     </>
   );

@@ -29,6 +29,7 @@ function DeleteModal({
   visible,
   text,
   setRealDelete,
+  buttonText,
 }) {
   const onMaskClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -63,7 +64,7 @@ function DeleteModal({
                 styles="filled"
                 states="default"
                 size="large"
-                label="삭제"
+                label={buttonText ? buttonText : "삭제"}
                 style={{ backgroundColor: palette.red_2 }}
                 onClick={realDeleteOnClick}
               />

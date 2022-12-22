@@ -99,6 +99,7 @@ const InputBox = ({
   fixedMentSize,
   value,
   onChange,
+  height,
 }) => {
   return (
     <InputBoxContainer>
@@ -108,6 +109,7 @@ const InputBox = ({
       </LableFullBox>
       <InputFullBox>
         <InputContainer
+          style={height ? { height: `${height}px` } : {}}
           placeholder={placeholder}
           state={state}
           fixedMentSize={fixedMentSize}

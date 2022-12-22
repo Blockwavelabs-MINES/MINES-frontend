@@ -5,7 +5,11 @@ import { InputBox } from "../../components/input";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import CreateSuccess from "./CreateSuccess";
-import { setLocalUserInfo } from "../../utils/functions/setLocalVariable";
+import {
+  setLocalUserInfo,
+  getLocalUserInfo,
+} from "../../utils/functions/setLocalVariable";
+import { createUserId, checkUserId } from "../../utils/api/auth";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -61,6 +65,15 @@ const CreateLinkPage = () => {
   const [state, setState] = useState("inactive");
   const [createSuccess, setCreateSuccess] = useState(false);
   const [errorComment, setErrorComment] = useState("");
+  const [userInfo, setUserInfo] = useState();
+
+  useEffect(() => {
+    var globalUserInfo = getLocalUserInfo();
+    if (globalUserInfo) {
+      setUserInfo(globalUserInfo);
+      console.log(globalUserInfo);
+    }
+  }, []);
 
   useEffect(() => {
     if (linkId.length > 0) {
@@ -95,9 +108,28 @@ const CreateLinkPage = () => {
     setLinkId(e.target.value);
   };
 
-  const createOnClick = () => {
-    setLocalUserInfo({ type: "edit", editKey: "userId", editValue: linkId });
-    setCreateSuccess(true);
+  const createOnClick = async () => {
+    const checkUserIdResult = await checkUserId(linkId).then(
+      async (data) => {
+        console.log(data);
+        if (data == false) {
+          const createUserIdResult = await createUserId(
+            linkId,
+            userInfo.user.index
+          ).then((data) => {
+            setLocalUserInfo({
+              type: "edit",
+              editKey: ["user", "user_id"],
+              editValue: linkId,
+            });
+            setCreateSuccess(true);
+          });
+        } else {
+          setState("error");
+          setErrorComment(`The link "${linkId}" is already taken.`);
+        }
+      }
+    );
   };
   return (
     <FullContainer>

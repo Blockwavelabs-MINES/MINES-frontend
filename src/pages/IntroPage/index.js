@@ -4,7 +4,7 @@ import { LoginHeader } from "../../components/header";
 import { ContainedButton } from "../../components/button";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
-import LoginModal from "./LoginModal";
+import { LoginModal } from "../../components/modal";
 
 const FullContainer = styled.div`
   width: 100%;

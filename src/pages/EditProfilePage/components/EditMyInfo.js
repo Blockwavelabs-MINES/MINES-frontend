@@ -8,6 +8,7 @@ import { ProfileCard } from "../../../components/card";
 import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 import { CameraIcon, ProfileLarge } from "../../../assets/icons";
 import { InputBox, TextAreaBox } from "../../../components/input";
+import { editProfile } from "../../../utils/api/auth";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -57,19 +58,27 @@ const ProfileFilter = styled.div`
   right: 0px;
 `;
 
-const EditMyInfo = ({ userInfo, setEditMyInfo }) => {
+const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [profileImage, setProfileImage] = useState({
-    file: userInfo.profileImg,
-    imagePreviewUrl: userInfo.profileImg,
+    file: userInfo?.user.profile_img,
+    imagePreviewUrl: userInfo?.user.profile_img,
   });
   const [profileImageChange, setProfileImageChange] = useState(false);
-  const [name, setName] = useState(userInfo.userId);
-  const [introduction, setIntroduction] = useState(userInfo.introduction);
+  const [name, setName] = useState(userInfo?.user.profile_name);
+  const [introduction, setIntroduction] = useState(userInfo?.user.profile_bio);
+
+  // useEffect(() => {
+  //   if (introduction.length > 100) {
+  //     setIntroduction(introduction.substr(0, 100));
+  //   }
+  // }, [introduction]);
 
   const handleClick = (event) => {
-    hiddenFileInput.current.click();
-    console.log("??");
+    // hiddenFileInput.current.click();
+    // console.log("??");
+
+    alert("준비중인 기능입니다.");
   };
 
   const handleChange = (event) => {
@@ -90,10 +99,14 @@ const EditMyInfo = ({ userInfo, setEditMyInfo }) => {
   };
 
   const introductionOnChange = (e) => {
-    setIntroduction(e.target.value);
+    if (e.target.value.length < 101) {
+      setIntroduction(e.target.value);
+    } else {
+      setIntroduction(e.target.value.substr(0, 100));
+    }
   };
 
-  const saveEditUserInfo = () => {
+  const saveEditUserInfo = async () => {
     // const saveData = {
     //   userId: name,
     //   userToken: "",
@@ -101,19 +114,33 @@ const EditMyInfo = ({ userInfo, setEditMyInfo }) => {
     //   introduction: introduction,
     // };
     // setLocalUserInfo({ type: "init", data: saveData });
-    setLocalUserInfo({ type: "edit", editKey: "userId", editValue: name });
-    setLocalUserInfo({
-      type: "edit",
-      editKey: "profileImg",
-      editValue: profileImage.imagePreviewUrl,
-    });
-    setLocalUserInfo({
-      type: "edit",
-      editKey: "introduction",
-      editValue: introduction,
-    });
+    console.log(userInfo?.user.profile_name);
 
-    setEditMyInfo();
+    const editProfileResult = await editProfile(
+      userInfo?.user.user_id,
+      name,
+      introduction
+    ).then((data) => {
+      console.log(data);
+      // setLocalUserInfo({
+      //   type: "edit",
+      //   editKey: ["user", "profile_name"],
+      //   editValue: name,
+      // });
+      // setLocalUserInfo({
+      //   type: "edit",
+      //   editKey: ["user", "profile_img"],
+      //   editValue: profileImage.imagePreviewUrl,
+      // });
+      // setLocalUserInfo({
+      //   type: "edit",
+      //   editKey: ["user", "profile_bio"],
+      //   editValue: introduction,
+      // });
+
+      setEditMyInfo();
+      setInfoChange(!infoChange);
+    });
   };
 
   const hiddenFileInput = useRef(null);

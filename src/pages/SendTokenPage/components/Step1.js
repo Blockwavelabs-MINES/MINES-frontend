@@ -5,29 +5,24 @@ import { COLORS as palette } from "../../../utils/style/Color/colors";
 import DropBox from "./Dropbox";
 import MetamaskChainList from "./MetamaskChainlist";
 import PlatformList from "./PlatformList";
+import { InputBox } from "../../../components/input";
 
 const Container = styled.div`
   width: 100%;
-  display: flex;
-  gap: 10px;
 `;
 
 const PlatformBox = styled.div`
-  width: 40%;
+  width: 100%;
 `;
 
 const EmailBox = styled.div`
-  width: 60%;
+  width: 100%;
+  margin-top: 30px;
 `;
 
-const BoxHeader = styled.li`
-  font-family: Pretendard;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 14px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: ${palette.gray};
+const BoxHeader = styled.div`
+  ${Typography.Headline4}
+  color: ${palette.grey_3};
   margin-bottom: 4px;
 `;
 
@@ -46,6 +41,7 @@ const EmailInputBox = styled.input`
 
 const Step1 = ({
   setPlatform,
+  setPlatformIcon,
   email,
   setEmail,
   setTrash,
@@ -53,7 +49,18 @@ const Step1 = ({
   platform,
 }) => {
   const [Chainlist, setChainlist] = useState(MetamaskChainList);
-  const [isSet, setIsSet] = useState(false);
+  const [isSet, setIsSet] = useState(true);
+  const [isInit, setIsInit] = useState(true);
+  const [platformIdx, setPlatformIdx] = useState(0);
+
+  useEffect(() => {
+    setIsSet(false);
+  }, [platform]);
+
+  useEffect(() => {
+    setPlatform(PlatformList[platformIdx].emailName);
+    setPlatformIcon(PlatformList[platformIdx].emailIcon);
+  }, [platformIdx]);
 
   const emailOnChange = (e) => {
     setEmail(e.target.value);
@@ -64,21 +71,20 @@ const Step1 = ({
       <PlatformBox>
         <BoxHeader>Platform</BoxHeader>
         <DropBox
-          setChainNetwork={setPlatform}
-          setCurrency={setTrash}
+          setIdx={setPlatformIdx}
           itemList={PlatformList}
-          dropboxType="chain"
-          realType="platform"
-          //   isSet={isSet}
-          //   urlInfo={urlInfo}
+          dropboxType="myEmail"
         />
       </PlatformBox>
       <EmailBox>
-        <BoxHeader>{platform} email</BoxHeader>
-        <EmailInputBox
+        <InputBox
+          label="Social Account"
+          state="filled"
+          isRequired={false}
+          placeholder="3tree@gmail.com"
           value={email}
+          height={51}
           onChange={(e) => emailOnChange(e)}
-          placeholder="abc@gmail.com"
         />
       </EmailBox>
     </Container>

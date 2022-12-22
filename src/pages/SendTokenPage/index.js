@@ -12,7 +12,10 @@ import {
   Step3,
   FinalConfirmation,
   SendSuccess,
+  LoadingComponent,
 } from "./components";
+import { DeleteModal } from "../../components/modal";
+import { ContainedButton } from "../../components/button";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -24,8 +27,9 @@ const FullContainer = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 80px;
 `;
 
 const StepStatusBox = styled.div`
@@ -33,16 +37,30 @@ const StepStatusBox = styled.div`
   position: relative;
   padding-top: 105px;
   align-items: center;
+  justify-content: left;
+`;
+
+const StepingCircle = styled.div`
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  ${Typography.Headline3}
+  font-family: Montserrat;
+  color: ${palette.blue_2};
+  background-color: ${palette.white};
+  box-shadow: 0px 0px 0px 2px ${palette.blue_2} inset;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  z-index: 3;
 `;
 
 const StepCircle = styled.div`
   width: 24px;
   height: 24px;
   border-radius: 12px;
-  font-family: Pretendard;
-  font-size: 12px;
-  font-weight: 700;
+  ${Typography.Headline3}
+  font-family: Montserrat;
   color: ${palette.white};
   background-color: ${palette.blue_2};
   display: flex;
@@ -55,13 +73,11 @@ const StepUnCircle = styled.div`
   width: 24px;
   height: 24px;
   border-radius: 12px;
-  box-shadow: 0px 0px 0px 2px ${palette.blue_4} inset;
-  font-family: Pretendard;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 14px;
-  color: ${palette.blue_4};
-  background-color: ${palette.white};
+  box-shadow: 0px 0px 0px 2px ${palette.grey_6} inset;
+  ${Typography.Headline3}
+  font-family: Montserrat;
+  color: ${palette.grey_5};
+  background-color: ${palette.grey_7};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,7 +85,7 @@ const StepUnCircle = styled.div`
 `;
 
 const StepLine = styled.div`
-  width: 40px;
+  width: 30px;
   height: 2px;
   margin-left: -2px;
   margin-right: -2px;
@@ -78,11 +94,11 @@ const StepLine = styled.div`
 `;
 
 const StepUnLine = styled.div`
-  width: 40px;
+  width: 30px;
   height: 2px;
   margin-left: -2px;
   margin-right: -2px;
-  background-color: ${palette.blue_4};
+  background-color: ${palette.grey_6};
   z-index: 2;
 `;
 
@@ -135,12 +151,17 @@ const StepRightButton = styled.button`
   box-shadow: 0px 10px 10px 0px #e6e6e640;
 `;
 
+const StepComponentBox = styled.div`
+  min-height: 40vh;
+`;
+
 const SendTokenPage = () => {
   const [userInfo, setUserInfo] = useState();
   const [stepStatus, setStepStatus] = useState(1);
   const [finalModalVisible, setFinalModalVisible] = useState(false);
   const [platform, setPlatform] = useState("google");
   const [email, setEmail] = useState("");
+  const [platformIcon, setPlatformIcon] = useState("");
   const [trash, setTrash] = useState("");
   const [senderAddress, setSenderAddress] = useState("");
   const [currency, setCurrency] = useState("");
@@ -150,20 +171,31 @@ const SendTokenPage = () => {
   const [amount, setAmount] = useState("");
   const [walletType, setWalletType] = useState("");
   const [sendDone, setSendDone] = useState(false);
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [expired, setExpired] = useState("");
+  const [finalLink, setFinalLink] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     var globalUserInfo = getLocalUserInfo();
     if (globalUserInfo) {
-      setUserInfo(JSON.parse(globalUserInfo));
+      setUserInfo(globalUserInfo);
     }
-  }, [getLocalUserInfo()]);
+  }, []);
 
   const StepList = [
     {
       id: 1,
-      text: "토큰을 보낼 소셜 계정을 입력해주세요.",
+      text: (
+        <>
+          토큰을 보낼 소셜 계정을
+          <br />
+          입력해주세요.
+        </>
+      ),
       component: Step1({
         setPlatform: setPlatform,
+        setPlatformIcon: setPlatformIcon,
         setEmail: setEmail,
         setTrash: setTrash,
         email: email,
@@ -173,30 +205,42 @@ const SendTokenPage = () => {
     },
     {
       id: 2,
-      text: "해당 지갑 주소와 네트워크에서 토큰을 보내는게 맞는지 확인해주세요.",
+      text: "",
       component: Step2({
         setWalletType: setWalletType,
         setAddress: setSenderAddress,
         setNetwork: setNetwork,
         setNetworkId: setNetworkId,
         setCurrency: setCurrency,
+        setStepStatus: setStepStatus,
         walletType: walletType,
         address: senderAddress,
         network: network,
         networkId: networkId,
         currency: currency,
+        email: email,
+        platformIcon: platformIcon,
+        userId: userInfo?.user?.user_id,
+        stepStatus: stepStatus,
+        userIdx: userInfo?.user?.index,
+        setExpired: setExpired,
+        setFinalLink: setFinalLink,
+        setLoading: setLoading,
       }),
     },
     {
       id: 3,
-      text: "보낼 토큰과 수량을 작성해주세요.",
+      text: "",
       component: Step3({
         setAmount: setAmount,
         setCurrency: setCurrency,
         setToken: setToken,
         amount: amount,
         token: token,
+        networkId: networkId,
         currency: currency,
+        expired: expired,
+        finalLink: finalLink,
       }),
     },
   ];
@@ -217,81 +261,129 @@ const SendTokenPage = () => {
     }
   };
 
+  const headerRightOnClick = () => {
+    setCancelModalOpen(true);
+    console.log(cancelModalOpen);
+  };
+
+  const closeCancelModal = () => {
+    setCancelModalOpen(false);
+  };
+
+  const setRealDelete = () => {
+    window.location.href = "/";
+  };
+
   return (
     <>
-      {finalModalVisible ? (
-        <FinalConfirmation
-          platform={platform}
-          email={email}
-          amount={amount}
-          currency={currency}
-          networkId={networkId}
-          walletType={walletType}
-          address={senderAddress}
-          network={network}
-          userId={userInfo.userId}
-          setVisible={setFinalModalVisible}
-          setSendDone={setSendDone}
-        />
+      {loading ? (
+        <LoadingComponent />
       ) : (
         <>
-          {sendDone ? (
-            <SendSuccess />
+          {cancelModalOpen ? (
+            <DeleteModal
+              visible={cancelModalOpen}
+              closable={true}
+              maskClosable={true}
+              onClose={closeCancelModal}
+              text={
+                <>
+                  지금까지 입력한 정보가
+                  <br /> 모두 초기화됩니다. 초기화 하시겠어요?
+                </>
+              }
+              setRealDelete={setRealDelete}
+              buttonText={"초기화 하기"}
+            />
           ) : (
-            <FullContainer>
-              <SendTokenHeader title="Send Token" leftOnClick={leftOnClick} />
-              <StepStatusBox>
-                {StepList.map((step, idx) => (
-                  <>
-                    {idx == 0 ? (
-                      <>
-                        <StepCircle>{step.id}</StepCircle>
-                      </>
-                    ) : (
-                      <>
-                        {idx < stepStatus ? (
-                          <>
-                            <StepLine />
-                            <StepCircle>{step.id}</StepCircle>
-                          </>
-                        ) : (
-                          <>
-                            <StepUnLine />
-                            <StepUnCircle>{step.id}</StepUnCircle>
-                          </>
-                        )}
-                      </>
-                    )}
-                  </>
-                ))}
-              </StepStatusBox>
-              <ContentContainer>
-                <StepHeader>
-                  Step 0{stepStatus}.<br />
-                  {StepList[stepStatus - 1].text}
-                </StepHeader>
-                {StepList[stepStatus - 1].component}
-                <StepButtonContainer>
-                  {stepStatus == 1 ? (
-                    <>
-                      <div />{" "}
-                      <StepRightButton onClick={rightOnClick}>
-                        다음
-                      </StepRightButton>
-                    </>
-                  ) : (
-                    <>
-                      <StepLeftButton onClick={leftOnClick}>
-                        이전
-                      </StepLeftButton>
-                      <StepRightButton onClick={rightOnClick}>
-                        다음
-                      </StepRightButton>
-                    </>
-                  )}
-                </StepButtonContainer>
-              </ContentContainer>
-            </FullContainer>
+            <></>
+          )}
+          {finalModalVisible ? (
+            <FinalConfirmation
+              platform={platform}
+              email={email}
+              amount={amount}
+              currency={currency}
+              networkId={networkId}
+              walletType={walletType}
+              address={senderAddress}
+              network={network}
+              userId={userInfo.userId}
+              setVisible={setFinalModalVisible}
+              setSendDone={setSendDone}
+            />
+          ) : (
+            <>
+              {sendDone ? (
+                <SendSuccess />
+              ) : (
+                <FullContainer>
+                  <SendTokenHeader
+                    title="송금하기"
+                    leftOnClick={leftOnClick}
+                    rightOnClick={headerRightOnClick}
+                  />
+                  <ContentContainer>
+                    <StepStatusBox>
+                      {StepList.map((step, idx) => (
+                        <>
+                          {idx == 0 ? (
+                            <>
+                              {idx == stepStatus - 1 ? (
+                                <StepingCircle>{step.id}</StepingCircle>
+                              ) : (
+                                <StepCircle>{step.id}</StepCircle>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              {idx < stepStatus - 1 ? (
+                                <>
+                                  <StepLine />
+                                  <StepCircle>{step.id}</StepCircle>
+                                </>
+                              ) : (
+                                <>
+                                  {idx == stepStatus - 1 ? (
+                                    <>
+                                      <StepUnLine />
+                                      <StepingCircle>{step.id}</StepingCircle>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <StepUnLine />
+                                      <StepUnCircle>{step.id}</StepUnCircle>
+                                    </>
+                                  )}
+                                </>
+                              )}
+                            </>
+                          )}
+                        </>
+                      ))}
+                    </StepStatusBox>
+                    <StepHeader>{StepList[stepStatus - 1].text}</StepHeader>
+                    <StepComponentBox>
+                      {StepList[stepStatus - 1].component}
+                    </StepComponentBox>
+                    <StepButtonContainer>
+                      {stepStatus == 1 ? (
+                        <ContainedButton
+                          type="primary"
+                          styles="filled"
+                          states="default"
+                          size="large"
+                          label="다음"
+                          onClick={rightOnClick}
+                        />
+                      ) : (
+                        <></>
+                      )}
+                    </StepButtonContainer>
+                  </ContentContainer>
+                </FullContainer>
+              )}
+            </>
           )}
         </>
       )}

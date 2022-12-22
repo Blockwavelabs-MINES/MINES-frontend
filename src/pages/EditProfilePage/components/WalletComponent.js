@@ -8,6 +8,7 @@ import { EmptyWallet, MetamaskIcon } from "../../../assets/icons";
 import { DeleteModal } from "../../../components/modal";
 import { MetamaskOnClick } from "../../../actions/WalletConnectActions";
 import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
+import { addWallet, deleteWallet } from "../../../utils/api/wallets";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -52,52 +53,74 @@ function isMobileDevice() {
   );
 }
 
-const WalletComponent = ({ userInfoProps }) => {
-  const [walletList, setWalletList] = useState(userInfoProps);
+const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
+  const [walletList, setWalletList] = useState(userInfoProps?.wallets);
   const [deleteModalOn, setDeleteModalOn] = useState(false);
   const [realDelete, setRealDelete] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState(-1);
   const [addedWallet, setAddedWallet] = useState();
+  const [userInfo, setUserInfo] = useState(userInfoProps);
 
   useEffect(() => {
-    setWalletList(userInfoProps);
+    setWalletList(userInfoProps?.wallets);
+    setUserInfo(userInfoProps);
+    console.log(userInfoProps);
   }, [userInfoProps]);
 
   useEffect(() => {
-    if (realDelete) {
-      // 지우는 action
-      var tmpWalletList = walletList;
-      tmpWalletList.splice(deleteIdx, 1);
-      setLocalUserInfo({
-        type: "edit",
-        editKey: "walletList",
-        editValue: tmpWalletList,
-      });
-      setWalletList(tmpWalletList);
+    (async () => {
+      if (realDelete) {
+        // 지우는 action
+        const deleteWalletResult = await deleteWallet(
+          walletList[deleteIdx].index
+        ).then((data) => {
+          console.log(data);
 
-      setDeleteIdx(-1);
-      setRealDelete(false);
-    }
+          setDeleteIdx(-1);
+          setRealDelete(false);
+          setInfoChange(!infoChange);
+        });
+
+        // var tmpWalletList = walletList;
+        // tmpWalletList.splice(deleteIdx, 1);
+        // setLocalUserInfo({
+        //   type: "edit",
+        //   editKey: "wallets",
+        //   editValue: tmpWalletList,
+        // });
+        // setWalletList(tmpWalletList);
+      }
+    })();
   }, [realDelete]);
 
   useEffect(() => {
-    if (addedWallet) {
-      // 추가하는 action
-      var tmpWalletList = walletList;
-      tmpWalletList.push({
-        type: "Metamask",
-        address: addedWallet,
-        icon: MetamaskIcon,
-      });
-      setLocalUserInfo({
-        type: "edit",
-        editKey: "walletList",
-        editValue: tmpWalletList,
-      });
-      setWalletList(tmpWalletList);
+    (async () => {
+      if (addedWallet) {
+        // 추가하는 action
+        const addWalletResult = await addWallet(
+          userInfo.user.user_id,
+          "METAMASK",
+          addedWallet
+        ).then((data) => {
+          console.log(data);
+          var tmpWalletList = walletList;
+          tmpWalletList.push({
+            // type: "Metamask",
+            wallet_address: addedWallet,
+            // icon: MetamaskIcon,
+          });
+          // setLocalUserInfo({
+          //   type: "edit",
+          //   editKey: "wallets",
+          //   editValue: tmpWalletList,
+          // });
+          // setWalletList(tmpWalletList);
 
-      setAddedWallet();
-    }
+          setAddedWallet();
+          setInfoChange(!infoChange);
+        });
+      }
+    })();
   }, [addedWallet]);
 
   const deleteOnClick = (idx) => {
@@ -188,10 +211,11 @@ const WalletComponent = ({ userInfoProps }) => {
         <ListContainer>
           {walletList?.map((wallet, idx) => (
             <EditableCard
-              label={walletConvert(wallet.address)}
+              label={walletConvert(wallet.wallet_address)}
               isEdit={false}
               isTrash={true}
-              icon={wallet.icon}
+              // icon={wallet.icon}
+              icon={MetamaskIcon}
               deleteOnClick={() => deleteOnClick(idx)}
             />
           ))}

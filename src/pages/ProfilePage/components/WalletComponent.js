@@ -66,8 +66,9 @@ const WalletComponent = ({ userWalletList }) => {
         <ListContainer>
           {walletList?.map((wallet, idx) => (
             <EditableCard
-              label={walletConvert(wallet.address)}
-              icon={wallet.icon}
+              label={walletConvert(wallet.wallet_address)}
+              // icon={wallet.icon}
+              icon={MetamaskIcon}
             />
           ))}
         </ListContainer>

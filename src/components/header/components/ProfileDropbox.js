@@ -5,12 +5,13 @@ import {
   DropboxBubbleTail,
   DropboxLogout,
   DropboxSettings,
+  DropboxFeedback
 } from "../../../assets/icons";
 import Typography from "../../../utils/style/Typography";
 
 const DropBoxContainer = styled.div`
   width: 92px;
-  height: 85px;
+  height: 128px;
   border-radius: 8px;
   background-color: ${palette.white};
   position: absolute;
@@ -49,7 +50,9 @@ const TapButton = styled.button`
   background-color: transparent;
   border: hidden;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  padding-left: 12px;
+  padding-right: 12px;
   gap: 4px;
 `;
 
@@ -87,6 +90,10 @@ const ProfileDropbox = ({ className, onClose, maskClosable, visible }) => {
     window.location.href = "editProfile";
   };
 
+  const feedbackOnClick = () => {
+    window.open("https://forms.gle/PvgL1PV8tKcNkzmy5")
+  }
+
   return (
     <>
       <ModalOverlay visible={visible} />
@@ -107,6 +114,11 @@ const ProfileDropbox = ({ className, onClose, maskClosable, visible }) => {
             <TapButton onClick={settingOnClick}>
               <TapText>계정설정</TapText>
               <TapIcon src={DropboxSettings} />
+            </TapButton>
+            <Divider />
+            <TapButton onClick={feedbackOnClick}>
+              <TapText>피드백</TapText>
+              <TapIcon src={DropboxFeedback} />
             </TapButton>
             <Divider />
             <TapButton onClick={logoutOnClick}>

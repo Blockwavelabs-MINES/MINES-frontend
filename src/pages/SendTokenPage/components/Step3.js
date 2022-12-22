@@ -5,7 +5,9 @@ import { COLORS as palette } from "../../../utils/style/Color/colors";
 import DropBox from "./Dropbox";
 import MetamaskChainList from "./MetamaskChainlist";
 import PlatformList from "./PlatformList";
-import { MetamaskIcon } from "../../../assets/icons";
+import { MetamaskIcon, InputHelp, CopyIconGray } from "../../../assets/icons";
+import { Tooltip } from "../../../components/card";
+import { TimerImage } from "../../../assets/images";
 
 const Container = styled.div`
   width: 100%;
@@ -13,144 +15,118 @@ const Container = styled.div`
   gap: 10px;
 `;
 
-const ConnectedBox = styled.div`
-  width: 100%;
-`;
-
-const NetworkBox = styled.div`
-  width: 100%;
-`;
-
-const BoxHeader = styled.li`
-  font-family: Pretendard;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 14px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: ${palette.gray};
-  margin-bottom: 4px;
-`;
-
-const WalletContainer = styled.div`
-  height: 40px;
-  width: 100%;
-  border-radius: 10px;
-  padding-left: 16px;
-  padding-right: 16px;
-  background-color: ${palette.background};
-  display: flex;
-  justify-content: left;
-  align-items: center;
-`;
-
-const IconBox = styled.img`
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
-`;
-
-const AddressBox = styled.div`
-  font-family: Roboto Mono;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 21px;
-  letter-spacing: 0em;
-  text-align: center;
-`;
-
-const TokenBox = styled.div`
-  height: 37px;
-  width: 100%;
-  border-radius: 8px;
-  padding: 12px;
-  border: 1px solid ${palette.light_gray};
-  font-family: Pretendard;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 17px;
-  letter-spacing: 0em;
-  text-align: left;
-  background-color: ${palette.grey_6};
-  color: ${palette.dark_gray};
-`;
-
-const AmountInputBox = styled.input`
-  width: 100%;
-  height: 37px;
-  border-radius: 8px;
-  padding-left: 12px;
-  border: 1px solid ${palette.light_gray};
-  font-family: Pretendard;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 13px;
-  letter-spacing: 0em;
-  position: relative;
-  &::-webkit-input-placeholder {
-    color: ${palette.light_gray};
-  }
-`;
-
-const BalanceBox = styled.div`
-  width: 100%;
-  margin-top: 4px;
-  text-align: right;
-  padding-right: 10px;
-  color: ${palette.gray};
-  font-family: Pretendard;
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 14px;
-  letter-spacing: 0em;
-`;
-
-const Divider = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: ${palette.light_gray};
-  margin-top: 27px;
-  margin-bottom: 27px;
+const HelpText = styled.div`
+  ${Typography.Headline4}
+  color: ${palette.grey_4};
 `;
 
 const HelpTextContainer = styled.div`
   width: 100%;
-  font-family: Pretendard;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 14px;
-  letter-spacing: 0em;
-  text-align: left;
+  display: flex;
   color: ${palette.gray};
-  margin-bottom: 30px;
+  align-items: center;
 `;
 
-const HelpTextLi = styled.li`
-  padding-left: 1.28571429em;
-  text-indent: -1.28571429em;
+const Title = styled.div`
+  ${Typography.Headline1}
+  margin-bottom: 14px;
 `;
 
-const MaxButton = styled.button`
-  height: 25px;
-  width: 64px;
-  position: absolute;
-  top: 6px;
-  right: 7px;
-  border-radius: 4px;
-  font-family: Pretendard;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 17px;
-  letter-spacing: 0em;
-  text-align: center;
+const SemiTitle = styled.div`
+  ${Typography.Body}
+  color: ${palette.grey_2}
+`;
+
+const TooltipStyle = styled.div`
+  ${Typography.Footer}
   color: ${palette.white};
-  background-color: ${palette.gray};
-  border: hidden;
+  text-align: left;
+  font-family: Montserrat;
 `;
 
-const AmountContent = styled.div`
-  width: 100%;
+const NoticeIcon = styled.button`
+  width: 16px;
+  height: 16px;
+  background-image: url(${InputHelp});
+  background-size: 13px 13px;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: hidden;
+  background-color: transparent;
   position: relative;
+  margin-left: 4px;
+`;
+
+const ExpiredCard = styled.div`
+  width: 100%;
+  min-height: 96px;
+  padding: 24px 10px;
+  border-radius: 16px;
+  display: flex;
+  gap: 16px;
+  margin-top: 22px;
+  margin-bottom: 22px;
+  border: 1px solid ${palette.sky_3};
+  background-color: ${palette.sky_4};
+  align-items: center;
+`;
+
+const TimerBox = styled.img`
+  width: 48px;
+`;
+
+const ExpiredInfobox = styled.div``;
+
+const ExpiredInfoTitle = styled.div`
+  ${Typography.Caption1}
+  color: ${palette.grey_1};
+  margin-bottom: 7px;
+`;
+
+const ExpiredDateBox = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+`;
+
+const ExpiredDate = styled.div`
+  ${Typography.Headline2}
+  color: ${palette.blue_1};
+`;
+
+const ExpiredDateText = styled.div`
+  ${Typography.Subhead}
+  color: ${palette.Black};
+`;
+
+const CopyBox = styled.div`
+  width: 100%;
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 18px;
+  background-color: ${palette.white};
+  border: 1px solid ${palette.grey_6};
+  align-items: center;
+  padding: 18px 16px;
+`;
+
+const LinkText = styled.div`
+  font-family: Montserrat;
+  font-size: 17px;
+  font-weight: 600;
+  color: ${palette.Black};
+`;
+
+const CopyButton = styled.button`
+  width: 20px;
+  height: 20px;
+  background-image: url(${CopyIconGray});
+  background-color: transparent;
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: hidden;
 `;
 
 const walletConvert = (walletAddress) => {
@@ -171,85 +147,77 @@ const Step3 = ({
   currency,
   amount,
   token,
+  networkId,
+  createdLink,
+  expired,
+  finalLink,
 }) => {
-  const [balance, setBalance] = useState("0");
+  const [notiClick, setNotiClick] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      await window.ethereum.enable();
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      const account = accounts[0];
+  const TooltipText = (
+    <TooltipStyle>
+      수령은 전송일로부터 3일 내에 해당 소셜계정으로 인증하면 수령할 수 있으며,
+      기한 내 미수령시 반환됩니다.
+      <br />
+      <br />
+      미수령으로 인한 반환시에는 보낸 토큰의 0.5%를 제한 토큰이 자동반환됩니다.
+    </TooltipStyle>
+  );
 
-      const balance = await window.ethereum.request({
-        method: "eth_getBalance",
-        params: [account, "latest"],
-      });
-      // const balance = accounts[0];
-
-      const decimal = parseInt(balance, 16) / Math.pow(10, 18);
-      console.log(decimal);
-      setBalance(decimal);
-
-      window.ethereum.on("chainChanged", async function (chainId) {
-        // Time to reload your interface with accounts[0]!
-        const balance2 = await window.ethereum.request({
-          method: "eth_getBalance",
-          params: [account, "latest"],
-        });
-        // const balance = accounts[0];
-
-        const decimal2 = parseInt(balance2, 16) / Math.pow(10, 18);
-        console.log(decimal2);
-        setBalance(decimal2);
-      });
-    })();
-  }, []);
-
-  useEffect(() => {
-    setToken(currency);
-    // setCurrency(MetamaskChainList[MetamaskChainList.findIndex((v)=>v.pageProps.chain.chainId)].pageProps.chain.nativeCurrency.symbol);
-  }, [token]);
-
-  const amountOnChange = (e) => {
-    setAmount(e.target.value);
+  const notiOnClose = () => {
+    setNotiClick(false);
   };
 
-  const maxOnClick = () => {
-    setAmount(balance);
+  const copyOnClick = () => {
+    const handleCopyClipBoard = async (text) => {
+      var textarea = document.createElement("textarea");
+      textarea.value = text; // 복사할 메시지
+      document.body.appendChild(textarea);
+      textarea.select();
+      textarea.setSelectionRange(0, 9999); // For IOS
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      alert("링크 복사 완료!");
+    };
+
+    handleCopyClipBoard(`3tree.io/receiveToken/${finalLink}`);
   };
 
   return (
     <Container>
-      <ConnectedBox>
-        <BoxHeader>Token</BoxHeader>
-        <TokenBox>{currency}</TokenBox>
-      </ConnectedBox>
-      <NetworkBox>
-        <BoxHeader>Amount</BoxHeader>
-        <AmountContent>
-          <AmountInputBox
-            placeholder="0.1"
-            value={amount}
-            onChange={(e) => amountOnChange(e)}
-          />
-          <MaxButton onClick={maxOnClick}>max</MaxButton>
-        </AmountContent>
-        <BalanceBox>Balance: {balance}</BalanceBox>
-      </NetworkBox>
-      <Divider />
+      <Title>송금 완료!</Title>
+      <SemiTitle>받는 분께 3일 내에 송금 링크를 공유해요</SemiTitle>
       <HelpTextContainer>
-        유의사항 <br />
-        <HelpTextLi>
-          수령은 전송일로부터 3일 내에 해당 소셜계정으로 인증하면 수령할 수
-          있으며, 기한 내 미수령시 반환됩니다.
-        </HelpTextLi>
-        <HelpTextLi>
-          미수령으로 인한 반환시에는 보낸 토큰의 0.5%을 제한 토큰이 자동
-          반환됩니다.
-        </HelpTextLi>
+        <HelpText>유의사항</HelpText>
+        <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
+          {notiClick ? (
+            <Tooltip
+              text={TooltipText}
+              visible={notiClick}
+              closable={true}
+              maskClosable={true}
+              onClose={notiOnClose}
+            />
+          ) : (
+            <></>
+          )}
+        </NoticeIcon>
       </HelpTextContainer>
+      <ExpiredCard>
+        <TimerBox src={TimerImage} />
+        <ExpiredInfobox>
+          <ExpiredInfoTitle>송금 받기 유효 기간</ExpiredInfoTitle>
+          <ExpiredDateBox>
+            {/* <ExpiredDate>2022년 11월 24일 19:27</ExpiredDate> */}
+            <ExpiredDate>{expired}</ExpiredDate>
+            <ExpiredDateText>까지</ExpiredDateText>
+          </ExpiredDateBox>
+        </ExpiredInfobox>
+      </ExpiredCard>
+      <CopyBox>
+        <LinkText>3tree.io/receiveToken/{finalLink}</LinkText>
+        <CopyButton onClick={copyOnClick}/>
+      </CopyBox>
     </Container>
   );
 };

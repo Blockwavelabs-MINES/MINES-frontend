@@ -40,6 +40,10 @@ const LinkComponent = ({ userLinkList }) => {
     setLinkList(userLinkList);
   }, [userLinkList]);
 
+  const linkOnClick = (idx) => {
+    window.location.href = linkList[idx].link_url;
+  };
+
   return (
     <FullContainer>
       <TitleContainer>
@@ -52,7 +56,11 @@ const LinkComponent = ({ userLinkList }) => {
       ) : (
         <ListContainer>
           {linkList?.map((link, idx) => (
-            <EditableCard label={link.title} icon={LinkIcon} />
+            <EditableCard
+              label={link.link_title}
+              icon={LinkIcon}
+              onClick={() => linkOnClick(idx)}
+            />
           ))}
         </ListContainer>
       )}

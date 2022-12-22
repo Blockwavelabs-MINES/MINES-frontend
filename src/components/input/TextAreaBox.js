@@ -60,15 +60,19 @@ const TextAreaBox = ({
   value,
   onChange,
 }) => {
-  const [text, setText] = useState(value.substr(0, maxSize));
+  // const [text, setText] = useState(value ? value.substr(0, maxSize) : "");
 
-  useEffect(() => {
-    if (value.length > maxSize) {
-      setText(value.substr(0, maxSize));
-    } else {
-      setText(value);
-    }
-  }, [value]);
+  // useEffect(() => {
+  //   console.log("value");
+  //   if (value?.length > maxSize) {
+  //     value = value?.substr(0, maxSize);
+  //     // setText(value?.substr(0, maxSize));
+  //   } else if (!value) {
+  //     setText("");
+  //   } else {
+  //     setText(value);
+  //   }
+  // }, [value]);
 
   return (
     <InputBoxContainer>
@@ -78,12 +82,12 @@ const TextAreaBox = ({
       </LableFullBox>
       <InputFullBox>
         <TextareaContainer
-          value={text}
+          value={value}
           placeholder={placeholder}
           onChange={onChange}
         />
         <TypeNumber>
-          {text.length}/{maxSize}
+          {value?.length}/{maxSize}
         </TypeNumber>
       </InputFullBox>
     </InputBoxContainer>
