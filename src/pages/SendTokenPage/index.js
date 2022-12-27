@@ -180,6 +180,9 @@ const SendTokenPage = () => {
     var globalUserInfo = getLocalUserInfo();
     if (globalUserInfo) {
       setUserInfo(globalUserInfo);
+    } else {
+      alert("로그인이 필요한 서비스입니다.");
+      window.location.href = "/";
     }
   }, []);
 
@@ -368,14 +371,26 @@ const SendTokenPage = () => {
                     </StepComponentBox>
                     <StepButtonContainer>
                       {stepStatus == 1 ? (
-                        <ContainedButton
-                          type="primary"
-                          styles="filled"
-                          states="default"
-                          size="large"
-                          label="다음"
-                          onClick={rightOnClick}
-                        />
+                        <>
+                          {email ? (
+                            <ContainedButton
+                              type="primary"
+                              styles="filled"
+                              states="default"
+                              size="large"
+                              label="다음"
+                              onClick={rightOnClick}
+                            />
+                          ) : (
+                            <ContainedButton
+                              type="primary"
+                              styles="filled"
+                              states="disabled"
+                              size="large"
+                              label="다음"
+                            />
+                          )}
+                        </>
                       ) : (
                         <></>
                       )}

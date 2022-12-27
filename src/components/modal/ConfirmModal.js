@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Typography from "../../utils/style/Typography";
-import { ContainedButton } from "../../components/button";
+import { ContainedButton } from "../button";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 
 const InnerContainer = styled.div`
@@ -22,15 +22,14 @@ const ButtonContainer = styled.div`
   gap: 8px;
 `;
 
-function DeleteModal({
+function ConfirmModal({
   className,
   onClose,
   maskClosable,
   visible,
   text,
-  setRealDelete,
   buttonText,
-  subDeleteOnClick
+  subActionOnClick,
 }) {
   const onMaskClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -38,10 +37,8 @@ function DeleteModal({
     }
   };
 
-  const realDeleteOnClick = () => {
-    setRealDelete(true);
-    subDeleteOnClick();
-    console.log("hi")
+  const realConfirmOnClick = () => {
+    subActionOnClick();
     onClose();
   };
 
@@ -68,8 +65,8 @@ function DeleteModal({
                 states="default"
                 size="large"
                 label={buttonText ? buttonText : "삭제"}
-                style={{ backgroundColor: palette.red_2 }}
-                onClick={realDeleteOnClick}
+                style={{ backgroundColor: palette.blue_1 }}
+                onClick={realConfirmOnClick}
               />
               <ContainedButton
                 type="secondary"
@@ -87,7 +84,7 @@ function DeleteModal({
   );
 }
 
-DeleteModal.propTypes = {
+ConfirmModal.propTypes = {
   visible: PropTypes.bool,
 };
 
@@ -132,4 +129,4 @@ const ModalInner = styled.div`
   background-color: rgba(255, 255, 255, 1);
 `;
 
-export default DeleteModal;
+export default ConfirmModal;

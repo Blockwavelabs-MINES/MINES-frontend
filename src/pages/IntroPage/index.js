@@ -4,7 +4,9 @@ import { LoginHeader } from "../../components/header";
 import { ContainedButton } from "../../components/button";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
-import { LoginModal } from "../../components/modal";
+import { LoginModal, SingleModal } from "../../components/modal";
+import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
+import { MainImage } from "../../assets/images";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -43,19 +45,45 @@ const ButtonContainer = styled.div`
   grid-template-columns: repeat(1, 1fr);
 `;
 
+const MainImageBanner = styled.img`
+  width: 90%;
+  margin-top: 30px;
+`;
+
 const IntroPage = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
+  const [loginAlertModalVisible, setLoginAlertModalVisible] = useState(false);
+  const [userInfo, setUserInfo] = useState();
+
+  useEffect(() => {
+    var globalUserInfo = getLocalUserInfo();
+    if (globalUserInfo) {
+      setUserInfo(globalUserInfo);
+    }
+  }, []);
 
   const closeLoginModal = () => {
     setLoginModalVisible(false);
   };
 
+  const closeLoginAlertModal = () => {
+    setLoginAlertModalVisible(false);
+  };
+
   const profileSettingOnClick = () => {
-    window.location.href = "/editProfile";
+    if (userInfo) {
+      window.location.href = "/editProfile";
+    } else {
+      setLoginAlertModalVisible(true);
+    }
   };
   const sendOnClick = () => {
     // alert("준비중입니다.");
-    window.location.href = "/sendToken";
+    if (userInfo) {
+      window.location.href = "/sendToken";
+    } else {
+      setLoginAlertModalVisible(true);
+    }
   };
   return (
     <FullContainer>
@@ -68,7 +96,21 @@ const IntroPage = () => {
           onClose={closeLoginModal}
         />
       ) : (
-        <></>
+        <>
+          {loginAlertModalVisible ? (
+            <SingleModal
+              visible={setLoginAlertModalVisible}
+              closable={true}
+              maskClosable={true}
+              onClose={closeLoginAlertModal}
+              text={<>해당 기능을 이용하려면 로그인을 먼저 해야해요.</>}
+              setStatus={setLoginModalVisible}
+              buttonText={"로그인하기"}
+            />
+          ) : (
+            <></>
+          )}
+        </>
       )}
       <IntroTextBox>
         <FirstIntro>
@@ -79,6 +121,7 @@ const IntroPage = () => {
           나만의 링크를 생성하고 <br /> 디지털 아이덴티티를 확장해보세요
         </SecondIntro>
       </IntroTextBox>
+      <MainImageBanner src={MainImage} />
       <ButtonContainer>
         <ContainedButton
           type="primary"

@@ -202,7 +202,15 @@ const LoginModalInner = (
       const Web3 = require("web3");
       const rpcURL = process.env.REACT_APP_GO_URL;
       // const web3 = new Web3(rpcURL);
-      const web3 = new Web3(window.ethereum);
+      let metamaskProvider = "";
+      if (window.ethereum.providers) {
+        metamaskProvider = window.ethereum.providers.find(
+          (provider) => provider.isMetaMask
+        );
+      } else {
+        metamaskProvider = window.ethereum;
+      }
+      const web3 = new Web3(metamaskProvider);
       // const tempProvider = new ethers.providers.Web3Provider(window.ethereum);
       // const tempSigner = web3.getSigner();
       const tempContract = new web3.eth.Contract(
@@ -264,7 +272,15 @@ const LoginModalInner = (
         .catch((error) => console.error);
     } else {
       // 보내고 tx값 받은 다음 백호출
-      await window.ethereum
+      let metamaskProvider = "";
+      if (window.ethereum.providers) {
+        metamaskProvider = window.ethereum.providers.find(
+          (provider) => provider.isMetaMask
+        );
+      } else {
+        metamaskProvider = window.ethereum;
+      }
+      await metamaskProvider
         .request({
           method: "eth_sendTransaction",
           params: [

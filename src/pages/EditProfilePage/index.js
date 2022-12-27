@@ -37,18 +37,20 @@ const EditProfilePage = () => {
 
   useEffect(() => {
     var globalUserInfo = getLocalUserInfo();
-    // if (globalUserInfo) {
-    //   setUserInfo(globalUserInfo);
-    // }
-    console.log(globalUserInfo);
-    (async () => {
-      const getUserInfoResult = await getUserInfo(
-        globalUserInfo.user.user_id
-      ).then((data) => {
-        console.log(data);
-        setUserInfo(data);
-      });
-    })();
+    if (globalUserInfo) {
+      console.log(globalUserInfo);
+      (async () => {
+        const getUserInfoResult = await getUserInfo(
+          globalUserInfo.user.user_id
+        ).then((data) => {
+          console.log(data);
+          setUserInfo(data);
+        });
+      })();
+    } else {
+      alert("로그인이 필요한 서비스입니다.");
+      window.location.href = "/";
+    }
   }, [infoChange]);
 
   const closeLoginModal = () => {

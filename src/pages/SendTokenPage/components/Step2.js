@@ -318,6 +318,7 @@ const Step2 = ({
   const [tokenInfo, setTokenInfo] = useState({});
   const [undefinedChain, setUndefinedChain] = useState(true);
   const [isFinalCheck, setIsFinalCheck] = useState(false);
+  const [realBalance, setRealBalance] = useState();
   const TooltipText = (
     <TooltipStyle>
       {/* 이더리움 메인넷 (ETH)
@@ -351,11 +352,20 @@ const Step2 = ({
     console.log(isInt(Number(amount)));
     console.log(isFloat(Number(amount)));
     if (!(isInt(Number(amount)) || isFloat(Number(amount)))) {
-      setErrorMessage("숫자 내놔");
+      setErrorMessage("숫자만 입력하세요.");
     } else if (Number(amount) > Number(balance)) {
-      setErrorMessage("주제에 맞는 값을 입력하도록.");
-    } else if (amount == "") {
-      setErrorMessage("값을 입력해");
+      setErrorMessage("보유량 만큼만 입력할 수 있어요.");
+    } else if (amount == "" || Number(amount) == 0) {
+      console.log(Number(amount));
+      setErrorMessage("0보다 큰 수치를 입력하세요.");
+    } else if (Number(amount) < 0) {
+      setErrorMessage("양수만 입력할 수 있어요.");
+    } else if (isFloat(Number(amount)) && amount.split(".")[1]) {
+      if (amount.split(".")[1].length > 18) {
+        setErrorMessage("소숫점 아래 18 자리까지만 입력할 수 있어요.");
+      } else {
+        setErrorMessage("");
+      }
     } else {
       setErrorMessage("");
     }
@@ -404,13 +414,31 @@ const Step2 = ({
         .then(function (result) {
           console.log(result);
           if (String(result).includes("e")) {
-            setBalance((result)*Math.pow(10,18-tokenInfo.decimals).toFixed(12));
+            setBalance(
+              result * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+            );
+            setRealBalance(
+              result * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+            );
           } else {
             setBalance(result);
+            setRealBalance(result);
           }
         })
         .catch(async () => {
-          const balance = await window.ethereum.request({
+          let metamaskProvider = "";
+          if (window.ethereum.providers) {
+            metamaskProvider = window.ethereum.providers.find(
+              (provider) => provider.isMetaMask
+            );
+          } else {
+            metamaskProvider = window.ethereum;
+          }
+
+          const isMetamask = metamaskProvider.isMetaMask;
+
+          console.log("isMetamask? ", isMetamask);
+          const balance = await metamaskProvider.request({
             method: "eth_getBalance",
             params: [address, "latest"],
           });
@@ -418,9 +446,15 @@ const Step2 = ({
           const decimal = parseInt(balance, 16) / Math.pow(10, 18);
           console.log(decimal);
           if (String(decimal).includes("e")) {
-            setBalance((decimal)*Math.pow(10,18-tokenInfo.decimals).toFixed(12));
+            setBalance(
+              decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+            );
+            setRealBalance(
+              decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+            );
           } else {
             setBalance(decimal);
+            setRealBalance(decimal);
           }
         });
       // get balance of custom token (end)
@@ -430,9 +464,21 @@ const Step2 = ({
   useEffect(() => {
     (async () => {
       setWalletType("Metamask");
+      let metamaskProvider = "";
+      if (window.ethereum.providers) {
+        metamaskProvider = window.ethereum.providers.find(
+          (provider) => provider.isMetaMask
+        );
+      } else {
+        metamaskProvider = window.ethereum;
+      }
 
-      await window.ethereum.enable();
-      const accounts = await window.ethereum.request({
+      const isMetamask = metamaskProvider.isMetaMask;
+
+      console.log("isMetamask? ", isMetamask);
+
+      await metamaskProvider.enable();
+      const accounts = await metamaskProvider.request({
         method: "eth_requestAccounts",
       });
 
@@ -440,12 +486,12 @@ const Step2 = ({
       console.log(account);
       setAddress(account);
 
-      const balance = await window.ethereum.request({
+      const balance = await metamaskProvider.request({
         method: "eth_getBalance",
         params: [account, "latest"],
       });
 
-      window.ethereum.on("accountsChanged", function (accounts) {
+      metamaskProvider.on("accountsChanged", function (accounts) {
         // Time to reload your interface with accounts[0]!
         console.log(accounts[0]);
         setAddress(accounts[0]);
@@ -454,14 +500,18 @@ const Step2 = ({
       const decimal = parseInt(balance, 16) / Math.pow(10, 18);
       console.log(decimal);
       if (String(decimal).includes("e")) {
-        setBalance((decimal)*Math.pow(10,18-tokenInfo.decimals).toFixed(12));
+        setBalance(decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12));
+        setRealBalance(
+          decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+        );
       } else {
         setBalance(decimal);
+        setRealBalance(decimal);
       }
 
-      window.ethereum.on("chainChanged", async function (chainId) {
+      metamaskProvider.on("chainChanged", async function (chainId) {
         // Time to reload your interface with accounts[0]!
-        const balance2 = await window.ethereum.request({
+        const balance2 = await metamaskProvider.request({
           method: "eth_getBalance",
           params: [account, "latest"],
         });
@@ -470,23 +520,35 @@ const Step2 = ({
         const decimal2 = parseInt(balance2, 16) / Math.pow(10, 18);
         console.log(decimal2);
         if (String(decimal2).includes("e")) {
-          setBalance((decimal2)*Math.pow(10,18-tokenInfo.decimals).toFixed(12));
+          setBalance(
+            decimal2 * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+          );
+          setRealBalance(
+            decimal2 * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+          );
         } else {
           setBalance(decimal2);
+          setRealBalance(decimal2);
         }
       });
 
-      const currentNetwork = window.ethereum.networkVersion;
+      const currentNetwork = metamaskProvider.networkVersion;
       console.log(currentNetwork);
       setNetworkId(currentNetwork);
       console.log(MetamaskChainList);
-      setNetwork(
-        MetamaskChainList[
-          MetamaskChainList.findIndex(
-            (v) => v.pageProps.chain.chainId == currentNetwork
-          )
-        ].pageProps.chain.name
-      );
+      if (currentNetwork == 5) {
+        // 현재 지원하는 네트워크 유효성 검사
+        setNetwork(
+          MetamaskChainList[
+            MetamaskChainList.findIndex(
+              (v) => v.pageProps.chain.chainId == currentNetwork
+            )
+          ].pageProps.chain.name
+        );
+      } else {
+        setNetwork("지원하지 않는 네트워크");
+      }
+
       setCurrency(
         MetamaskChainList[
           MetamaskChainList.findIndex(
@@ -494,16 +556,22 @@ const Step2 = ({
           )
         ].pageProps.chain.nativeCurrency.symbol
       );
-      window.ethereum.on("chainChanged", function (chainId) {
+      metamaskProvider.on("chainChanged", function (chainId) {
         // Time to reload your interface with accounts[0]!
         console.log(chainId);
-        setNetwork(
-          MetamaskChainList[
-            MetamaskChainList.findIndex(
-              (v) => v.pageProps.chain.chainId == chainId
-            )
-          ].pageProps.chain.name
-        );
+        if (chainId == 5) {
+          // 현재 지원하는 네트워크 유효성 검사
+          setNetwork(
+            MetamaskChainList[
+              MetamaskChainList.findIndex(
+                (v) => v.pageProps.chain.chainId == chainId
+              )
+            ].pageProps.chain.name
+          );
+        } else {
+          setNetwork("지원하지 않는 네트워크");
+        }
+
         setNetworkId(chainId);
         setCurrency(
           MetamaskChainList[
@@ -594,6 +662,19 @@ const Step2 = ({
           value={amount}
           onChange={(e) => {
             setAmount(e.target.value);
+            if (
+              (isInt(Number(e.target.value)) ||
+                isFloat(Number(e.target.value))) &&
+              !(Number(e.target.value) > Number(realBalance))
+            ) {
+              setBalance(Number(realBalance) - Number(e.target.value));
+              console.log(
+                "전송 후 잔액 , ",
+                Number(realBalance) - Number(e.target.value)
+              );
+            } else {
+              setBalance(realBalance);
+            }
           }}
         />
         {errorMessage ? (
@@ -616,17 +697,20 @@ const Step2 = ({
       </SendContainer>
       <NetworkWalletInfoBox>
         <NetworkNameBox>
-          <NetworkStatusCircle />
-          <NetworkName>
-            {" "}
-            {
-              MetamaskChainList[
-                MetamaskChainList.findIndex(
-                  (v) => v.pageProps.chain.chainId == networkId
-                )
-              ]?.pageProps.chain.name
-            }
-          </NetworkName>
+          {network.startsWith("지") ? (
+            <>
+              {/* <NetworkStatusCircle style={{backgroundColor:palette.red_2}}/> */}
+              <NetworkName style={{ color: palette.red_2 }}>
+                {" "}
+                {network}
+              </NetworkName>
+            </>
+          ) : (
+            <>
+              <NetworkStatusCircle />
+              <NetworkName> {network}</NetworkName>
+            </>
+          )}
         </NetworkNameBox>
         <WalletTitle>연결된 내 지갑</WalletTitle>
         <WalletContainer>

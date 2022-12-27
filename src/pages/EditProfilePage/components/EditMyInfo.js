@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { EditProfileHeader } from "../../../components/header";
 import { IconButton } from "../../../components/button";
+import { DeleteModal } from "../../../components/modal";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { ProfileCard } from "../../../components/card";
@@ -67,7 +68,8 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   const [profileImageChange, setProfileImageChange] = useState(false);
   const [name, setName] = useState(userInfo?.user.profile_name);
   const [introduction, setIntroduction] = useState(userInfo?.user.profile_bio);
-
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [realDelete, setRealDelete] = useState(false);
   // useEffect(() => {
   //   if (introduction.length > 100) {
   //     setIntroduction(introduction.substr(0, 100));
@@ -145,14 +147,48 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
 
   const hiddenFileInput = useRef(null);
 
+  const closeCancelModal = () => {
+    setCancelModalOpen(false);
+  };
+
+  const leftOnClick = () => {
+    setCancelModalOpen(true)
+  }
+
+  const subDeleteOnClick = () => {
+    setEditMyInfo(false)
+    console.log("hi")
+  }
+
   return (
     <>
       <FullContainer>
         <EditProfileHeader
           title="내 정보 수정"
-          leftOnClick={setEditMyInfo}
+          leftOnClick={leftOnClick}
           rightOnClick={saveEditUserInfo}
         />
+        <>
+          {cancelModalOpen ? (
+            <DeleteModal
+              visible={cancelModalOpen}
+              closable={true}
+              maskClosable={true}
+              onClose={closeCancelModal}
+              text={
+                <>
+                  지금까지 입력한 정보가
+                  <br /> 모두 초기화됩니다. 초기화 하시겠어요?
+                </>
+              }
+              setRealDelete={setRealDelete}
+              buttonText={"초기화 하기"}
+              subDeleteOnClick={subDeleteOnClick}
+            />
+          ) : (
+            <></>
+          )}
+        </>
         <ProfileImageButtonContainer>
           <ProfileImageButton
             onClick={handleClick}

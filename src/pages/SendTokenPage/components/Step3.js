@@ -7,6 +7,8 @@ import MetamaskChainList from "./MetamaskChainlist";
 import PlatformList from "./PlatformList";
 import { MetamaskIcon, InputHelp, CopyIconGray } from "../../../assets/icons";
 import { Tooltip } from "../../../components/card";
+import { ContainedButton } from "../../../components/button";
+import { ConfirmModal } from "../../../components/modal";
 import { TimerImage } from "../../../assets/images";
 
 const Container = styled.div`
@@ -109,6 +111,7 @@ const CopyBox = styled.div`
   border: 1px solid ${palette.grey_6};
   align-items: center;
   padding: 18px 16px;
+  margin-bottom: 100px;
 `;
 
 const LinkText = styled.div`
@@ -128,6 +131,28 @@ const CopyButton = styled.button`
   background-position: center;
   border: hidden;
 `;
+
+function pad(n) {
+  return n < 10 ? "0" + n : n;
+}
+
+const convertDateFormat = (dateString) => {
+  const toTimestamp = Date.parse(dateString);
+  console.log(toTimestamp);
+  const convertedDate =
+    pad(new Date(toTimestamp).getFullYear().toString()) +
+    "년 " +
+    pad(new Date(toTimestamp).getUTCMonth() + 1) +
+    "월 " +
+    pad(new Date(toTimestamp).getUTCDate()) +
+    "일 " +
+    pad(new Date(toTimestamp).getUTCHours()) +
+    ":" +
+    pad(new Date(toTimestamp).getUTCMinutes());
+  // ":" +
+  // pad(new Date(toTimestamp).getUTCSeconds());
+  return convertedDate;
+};
 
 const walletConvert = (walletAddress) => {
   var returnAddress = walletAddress;
@@ -153,6 +178,7 @@ const Step3 = ({
   finalLink,
 }) => {
   const [notiClick, setNotiClick] = useState(false);
+  const [completeModalVisible, setCompleteModalVisible] = useState(false);
 
   const TooltipText = (
     <TooltipStyle>
@@ -177,10 +203,18 @@ const Step3 = ({
       textarea.setSelectionRange(0, 9999); // For IOS
       document.execCommand("copy");
       document.body.removeChild(textarea);
-      alert("링크 복사 완료!");
     };
 
     handleCopyClipBoard(`3tree.io/receiveToken/${finalLink}`);
+  };
+
+  const closeConfirmModal = () => {
+    setCompleteModalVisible(false);
+  };
+
+  const subActionOnClick = () => {
+    copyOnClick();
+    window.location.href = "/";
   };
 
   return (
@@ -209,15 +243,41 @@ const Step3 = ({
           <ExpiredInfoTitle>송금 받기 유효 기간</ExpiredInfoTitle>
           <ExpiredDateBox>
             {/* <ExpiredDate>2022년 11월 24일 19:27</ExpiredDate> */}
-            <ExpiredDate>{expired}</ExpiredDate>
+            <ExpiredDate>{convertDateFormat(expired)}</ExpiredDate>
             <ExpiredDateText>까지</ExpiredDateText>
           </ExpiredDateBox>
         </ExpiredInfobox>
       </ExpiredCard>
       <CopyBox>
         <LinkText>3tree.io/receiveToken/{finalLink}</LinkText>
-        <CopyButton onClick={copyOnClick}/>
+        <CopyButton onClick={copyOnClick} />
       </CopyBox>
+      <ContainedButton
+        type="primary"
+        styles="filled"
+        states="default"
+        size="large"
+        label="송금 완료하기"
+        onClick={() => setCompleteModalVisible(true)}
+      />
+      {completeModalVisible ? (
+        <ConfirmModal
+          visible={completeModalVisible}
+          closable={true}
+          maskClosable={true}
+          onClose={closeConfirmModal}
+          text={
+            <>
+              송금을 완료했어요!
+              <br /> 복사한 링크는 받는 분께 전달해주세요
+            </>
+          }
+          buttonText={"링크 복사하고 닫기"}
+          subActionOnClick={subActionOnClick}
+        />
+      ) : (
+        <></>
+      )}
     </Container>
   );
 };

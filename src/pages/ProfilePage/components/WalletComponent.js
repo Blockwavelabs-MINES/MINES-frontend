@@ -50,10 +50,26 @@ function isMobileDevice() {
 
 const WalletComponent = ({ userWalletList }) => {
   const [walletList, setWalletList] = useState(userWalletList);
+  const [copyPivotVisible, setCopyPivotVisible] = useState(false);
 
   useEffect(() => {
     setWalletList(userWalletList);
   }, [userWalletList]);
+
+  const walletOnClick = (walletAddress) => {
+    const handleCopyClipBoard = async (text) => {
+      var textarea = document.createElement("textarea");
+      textarea.value = text; // 복사할 메시지
+      document.body.appendChild(textarea);
+      textarea.select();
+      textarea.setSelectionRange(0, 9999); // For IOS
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      alert("링크 복사 완료!");
+    };
+
+    handleCopyClipBoard(walletAddress);
+  };
 
   return (
     <FullContainer>
@@ -69,6 +85,7 @@ const WalletComponent = ({ userWalletList }) => {
               label={walletConvert(wallet.wallet_address)}
               // icon={wallet.icon}
               icon={MetamaskIcon}
+              onClick={()=>walletOnClick(wallet.wallet_address)}
             />
           ))}
         </ListContainer>

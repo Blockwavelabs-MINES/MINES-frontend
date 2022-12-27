@@ -8,7 +8,12 @@ import { COLORS as palette } from "../../utils/style/Color/colors";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { useLocation } from "react-router-dom";
 import { MetamaskIcon, InfoIcon } from "../../assets/icons";
-import { PigImage, TimerImage, CloudImage } from "../../assets/images";
+import {
+  PigImage,
+  TimerImage,
+  CloudImage,
+  CheckImage,
+} from "../../assets/images";
 import { LoginModal } from "../../components/modal";
 import { getUserInfo, getUserInfoByIndex } from "../../utils/api/auth";
 import { SelectWallet } from "./components";
@@ -126,6 +131,50 @@ const TooltipStyle = styled.div`
   font-family: Montserrat;
 `;
 
+const TextLine = styled.div`
+  ${Typography.Headline1}
+  text-align: center;
+  margin-bottom: 14px;
+  font-family: Montserrat;
+`;
+
+const CheckTxTitle = styled.div`
+  ${Typography.Subhead}
+  color: ${palette.grey_1};
+  text-align: center;
+  margin-bottom: 80px;
+`;
+
+const ComplainLink = styled.a`
+  font-family: Montserrat;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+  color: ${palette.grey_4};
+`;
+
+function pad(n) {
+  return n < 10 ? "0" + n : n;
+}
+
+const convertDateFormat = (dateString) => {
+  const toTimestamp = Date.parse(dateString);
+  console.log(toTimestamp);
+  const convertedDate =
+    pad(new Date(toTimestamp).getFullYear().toString()) +
+    "년 " +
+    pad(new Date(toTimestamp).getUTCMonth() + 1) +
+    "월 " +
+    pad(new Date(toTimestamp).getUTCDate()) +
+    "일 " +
+    pad(new Date(toTimestamp).getUTCHours()) +
+    ":" +
+    pad(new Date(toTimestamp).getUTCMinutes());
+  // ":" +
+  // pad(new Date(toTimestamp).getUTCSeconds());
+  return convertedDate;
+};
+
 const ReceiveTokenPage = () => {
   const [userInfo, setUserInfo] = useState();
   const [stepStatus, setStepStatus] = useState(1);
@@ -136,6 +185,7 @@ const ReceiveTokenPage = () => {
   const [notiClick, setNotiClick] = useState(false);
   const [loginDone, setLoginDone] = useState(false);
   const [isValid, setIsValid] = useState(true);
+  const [isExpired, setIsExpired] = useState(false);
   const TooltipText = (
     <TooltipStyle>
       수령은 전송일로부터 3일 내에 해당 소셜계정으로 인증하면 수령할 수 있으며,
@@ -158,13 +208,23 @@ const ReceiveTokenPage = () => {
           } else if (!data._valid) {
             console.log(data._valid);
             setIsValid(false);
+            setLinkInfo(data);
+            if (Date.parse(new Date()) > Date.parse(data.expired_at)) {
+              setIsExpired(true);
+            }
           } else {
             const getUserInfoByIndexResult = await getUserInfoByIndex(
               data.sender_user_index
             ).then((res) => {
               setSenderUser(res.user.user_id);
             });
+            console.log(data);
             setLinkInfo(data);
+            //  + 32400000는 한국시간 때문!
+            if (Date.parse(new Date()) + 32400000 > Date.parse(data.expired_at)) {
+              setIsExpired(true);
+              setIsValid(false);
+            }
           }
         }
       );
@@ -207,6 +267,8 @@ const ReceiveTokenPage = () => {
     setNotiClick(false);
   };
 
+  console.log(linkInfo);
+
   return (
     <>
       {" "}
@@ -247,7 +309,9 @@ const ReceiveTokenPage = () => {
                     <ExpiredInfobox>
                       <ExpiredInfoTitle>송금 받기 유효 기간</ExpiredInfoTitle>
                       <ExpiredDateBox>
-                        <ExpiredDate>{linkInfo?.expired_at}</ExpiredDate>
+                        <ExpiredDate>
+                          {convertDateFormat(linkInfo?.expired_at)}
+                        </ExpiredDate>
                         <ExpiredDateText>까지</ExpiredDateText>
                       </ExpiredDateBox>
                     </ExpiredInfobox>
@@ -281,10 +345,39 @@ const ReceiveTokenPage = () => {
                 </>
               ) : (
                 <>
-                  <ImageContainer src={CloudImage} />
-                  <InfoLine>
-                    <InfoText>유효하지 않은 링크입니다.</InfoText>
-                  </InfoLine>
+                  {linkInfo._expired != undefined ? (
+                    <>
+                      {isExpired ? (
+                        <>
+                          <ImageContainer src={CloudImage} />
+                          <TextLine>수령 가능일이 지난 링크입니다</TextLine>
+                          <CheckTxTitle>
+                            @{senderUser}님에게 토큰이 다시 반환 되었어요
+                          </CheckTxTitle>
+                        </>
+                      ) : (
+                        <>
+                          <ImageContainer src={CheckImage} />
+                          <TextLine>이미 송금 받은 링크입니다.</TextLine>
+                          <CheckTxTitle>
+                            지갑에서 송금 받은 내역을 확인 해주세요!
+                          </CheckTxTitle>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <ImageContainer src={CloudImage} />
+                      <TextLine>유효하지 않은 링크입니다</TextLine>
+                      <CheckTxTitle>링크를 다시 확인해주세요!</CheckTxTitle>
+                    </>
+                  )}
+                  <ComplainLink
+                    href="https://forms.gle/4CGoKQAWzJVG2dd69"
+                    target="_blank"
+                  >
+                    문제가 생겼나요?
+                  </ComplainLink>
                 </>
               )}
             </ContentContainer>
