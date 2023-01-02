@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { SendTokenHeader, LoginHeader } from "../../components/header";
-import { Tooltip } from "../../components/card";
+import { Tooltip, LoadingComponent } from "../../components/card";
 import { ContainedButton } from "../../components/button";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
@@ -175,6 +175,32 @@ const convertDateFormat = (dateString) => {
   return convertedDate;
 };
 
+function convert(n) {
+  if (n) {
+    var sign = +n < 0 ? "-" : "",
+      toStr = n.toString();
+    if (!/e/i.test(toStr)) {
+      return n;
+    }
+    var [lead, decimal, pow] = n
+      .toString()
+      .replace(/^-/, "")
+      .replace(/^([0-9]+)(e.*)/, "$1.$2")
+      .split(/e|\./);
+    return +pow < 0
+      ? sign +
+          "0." +
+          "0".repeat(Math.max(Math.abs(pow) - 1 || 0, 0)) +
+          lead +
+          decimal
+      : sign +
+          lead +
+          (+pow >= decimal.length
+            ? decimal + "0".repeat(Math.max(+pow - decimal.length || 0, 0))
+            : decimal.slice(0, +pow) + "." + decimal.slice(+pow));
+  }
+}
+
 const ReceiveTokenPage = () => {
   const [userInfo, setUserInfo] = useState();
   const [stepStatus, setStepStatus] = useState(1);
@@ -208,7 +234,10 @@ const ReceiveTokenPage = () => {
           } else if (!data._valid) {
             console.log(data._valid);
             setIsValid(false);
-            setLinkInfo(data);
+            let tmpData = data;
+            tmpData.token_amount = convert(data.token_amount);
+            console.log(tmpData);
+            setLinkInfo(tmpData);
             if (Date.parse(new Date()) > Date.parse(data.expired_at)) {
               setIsExpired(true);
             }
@@ -219,9 +248,15 @@ const ReceiveTokenPage = () => {
               setSenderUser(res.user.user_id);
             });
             console.log(data);
-            setLinkInfo(data);
+            let tmpData = data;
+            tmpData.token_amount = convert(data.token_amount);
+            console.log(tmpData);
+            setLinkInfo(tmpData);
             //  + 32400000는 한국시간 때문!
-            if (Date.parse(new Date()) + 32400000 > Date.parse(data.expired_at)) {
+            if (
+              Date.parse(new Date()) + 32400000 >
+              Date.parse(data.expired_at)
+            ) {
               setIsExpired(true);
               setIsValid(false);
             }

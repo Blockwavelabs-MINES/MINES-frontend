@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import Lottie from "reactjs-lottie";
-import animation from "../../../assets/lottie/airplane-lottie.json";
+import Typography from "../../utils/style/Typography/index";
+import { COLORS as palette } from "../../utils/style/Color/colors";
+import Lottie from "react-lottie-player";
+import animation from "../../assets/lottie/airplane-lottie.json";
 
 const ContentContainer = styled.div`
   padding-left: 20px;
@@ -40,23 +40,16 @@ const ComplainLink = styled.a`
   color: ${palette.grey_4};
 `;
 
-
 const LoadingComponent = () => {
-
   return (
     <>
       <ContentContainer>
         <LottieContainer>
-          <Lottie
-            options={{
-              animationData: animation,
-              loop: true,
-            }}
-          />
+          <Lottie animationData={animation} loop={true} play/>
         </LottieContainer>
         <TextLine>토큰을 보내는 중이에요</TextLine>
         <CheckTxTitle>
-          토큰을 보낼 때 최대 30초 정도 시간이 필요해요.
+          네트워크 환경에 따라 소요되는 시간이 달라져요.
           <br />
           잠시만 기다려주세요!
         </CheckTxTitle>

@@ -120,11 +120,14 @@ export const getUserInfo = async (userId) => {
 export const getUserInfoByIndex = async (userIndex) => {
   let returnValue = 0;
   const result = await axios
-    .get(process.env.REACT_APP_DB_HOST + `/users/userInfo?userIndex=${userIndex}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    .get(
+      process.env.REACT_APP_DB_HOST + `/users/userInfo?userIndex=${userIndex}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
     .then((data) => {
       console.log(data.data);
       returnValue = data.data.result;

@@ -7,7 +7,8 @@ import WalletComponent from "./WalletComponent";
 import { getLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 import { getUserInfo } from "../../../utils/api/auth";
 import ReceiveComplete from "./ReceiveComplete";
-import LoadingComponent from "./LoadingComponent";
+import { LoadingComponent } from "../../../components/card";
+import FailComponent from "./FailComponent";
 
 const ContentContainer = styled.div`
   padding-left: 20px;
@@ -34,8 +35,10 @@ const SelectWallet = ({ linkInfo }) => {
   const [userInfo, setUserInfo] = useState({});
   const [infoChange, setInfoChange] = useState(false);
   const [complete, setComplete] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [receiveInfo, setReceiveInfo] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [sendOnClick, setSendOnClick] = useState(null);
 
   useEffect(() => {
     var globalUserInfo = getLocalUserInfo();
@@ -67,24 +70,32 @@ const SelectWallet = ({ linkInfo }) => {
             <LoadingComponent />
           ) : (
             <>
-              <SendTokenHeader title="송금받기" leftOnClick={leftOnClick} />
-              <ContentContainer>
-                <TextBox>
-                  <HeaderBox>송금 받을 지갑을 선택해주세요</HeaderBox>
-                  <SubtextBox>
-                    선택한 지갑으로 토큰을 받을 수 있어요!
-                  </SubtextBox>
-                </TextBox>
-              </ContentContainer>
-              <WalletComponent
-                userInfoProps={userInfo}
-                setInfoChange={setInfoChange}
-                infoChange={infoChange}
-                setComplete={setComplete}
-                setReceiveInfo={setReceiveInfo}
-                linkInfo={linkInfo}
-                setLoading={setLoading}
-              />
+              {failed ? (
+                <FailComponent buttonOnClick={sendOnClick} />
+              ) : (
+                <>
+                  <SendTokenHeader title="송금받기" leftOnClick={leftOnClick} />
+                  <ContentContainer>
+                    <TextBox>
+                      <HeaderBox>송금 받을 지갑을 선택해주세요</HeaderBox>
+                      <SubtextBox>
+                        선택한 지갑으로 토큰을 받을 수 있어요!
+                      </SubtextBox>
+                    </TextBox>
+                  </ContentContainer>
+                  <WalletComponent
+                    userInfoProps={userInfo}
+                    setInfoChange={setInfoChange}
+                    infoChange={infoChange}
+                    setComplete={setComplete}
+                    setReceiveInfo={setReceiveInfo}
+                    linkInfo={linkInfo}
+                    setLoading={setLoading}
+                    setFailed={setFailed}
+                    setSendOnClick={setSendOnClick}
+                  />
+                </>
+              )}
             </>
           )}
         </>

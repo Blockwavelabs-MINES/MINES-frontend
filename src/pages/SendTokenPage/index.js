@@ -12,10 +12,10 @@ import {
   Step3,
   FinalConfirmation,
   SendSuccess,
-  LoadingComponent,
 } from "./components";
 import { DeleteModal } from "../../components/modal";
 import { ContainedButton } from "../../components/button";
+import { LoadingComponent } from "../../components/card";
 
 const FullContainer = styled.div`
   width: 100%;

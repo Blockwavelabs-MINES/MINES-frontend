@@ -227,7 +227,7 @@ const LoginModalInner = (
             web3.utils.toHex(Number(amount) * Math.pow(10, tokenInfo.decimals))
             // { from: address }
           )
-          .send({ from: address })
+          .send({ from: address });
         // .encodeABI();
         console.log(data);
         return data;
@@ -250,6 +250,7 @@ const LoginModalInner = (
           const escrowId = "1234";
           const expiredDate = setExpiredDate();
           console.log(expiredDate);
+          console.log(amount);
           const sendTrxsResult = await sendTrxs(
             userIdx,
             address,
@@ -280,6 +281,36 @@ const LoginModalInner = (
       } else {
         metamaskProvider = window.ethereum;
       }
+
+      const Web3 = require("web3");
+      const TokenABI = require("../../../utils/abis/IERC20_ABI");
+      const web3 = new Web3(
+        window.ethereum
+        // new Web3.providers.Web3Provider(window.ethereum)
+      );
+
+      const getGasAmount = async (fromAddress, toAddress, amount) => {
+        const gasAmount = await web3.eth.estimateGas({
+          to: toAddress,
+          from: fromAddress,
+          value: web3.utils.toWei(`${amount}`, "ether"),
+        });
+        console.log(gasAmount);
+        return gasAmount;
+      };
+
+      const gasPrice = await web3.eth.getGasPrice();
+      const gasAmount = await getGasAmount(
+        address,
+        process.env.REACT_APP_3TREE_ADDRESS,
+        amount
+        // web3.utils.toHex((Math.pow(10, 18) * amount).toString(16))
+      );
+      console.log(gasPrice);
+      console.log(gasAmount);
+      // const fee = Number(gasPrice) + gasAmount;
+      const fee = gasAmount;
+
       await metamaskProvider
         .request({
           method: "eth_sendTransaction",
@@ -287,7 +318,8 @@ const LoginModalInner = (
             {
               nonce: "0x00", // ignored by MetaMask
               gasPrice: (Math.pow(10, 8) * 0.1).toString(16), // customizable by user during MetaMask confirmation.
-              gas: (Math.pow(10, 6) * 0.1).toString(16), // customizable by user during MetaMask confirmation.
+              // gas: (Math.pow(10, 6) * 0.1).toString(16), // customizable by user during MetaMask confirmation.
+              gas: String(fee),
               to: process.env.REACT_APP_3TREE_ADDRESS, // Required except during contract publications.
               from: address, // must match user's active address.
               value: (Math.pow(10, 18) * amount).toString(16), // Only required to send ether to the recipient from the initiating external account.

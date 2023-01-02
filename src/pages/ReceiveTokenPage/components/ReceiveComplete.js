@@ -4,7 +4,7 @@ import { ContainedButton } from "../../../components/button";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { EditableCard } from "../../../components/card";
-import Lottie from "reactjs-lottie";
+import Lottie from "react-lottie-player";
 import animation from "../../../assets/lottie/check-lottie.json";
 import { MetamaskIcon, GreenCheck, ChevronRight } from "../../../assets/icons";
 import { CompasImage } from "../../../assets/images";
@@ -122,12 +122,7 @@ const ReceiveComplete = ({ receiveInfo }) => {
     <>
       <ContentContainer>
         <LottieContainer>
-          <Lottie
-            options={{
-              animationData: animation,
-              loop: false,
-            }}
-          />
+          <Lottie animationData={animation} loop={false} play/>
         </LottieContainer>
         <TextLine>
           {receiveInfo?.token_amount} {receiveInfo?.token_udenom}

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
-import Lottie from "reactjs-lottie";
-import animation from "../../../assets/lottie/airplane-lottie.json";
+import { CrossImage } from "../../../assets/images";
+import { ContainedButton } from "../../../components/button";
 
 const ContentContainer = styled.div`
   padding-left: 20px;
@@ -12,10 +12,15 @@ const ContentContainer = styled.div`
 `;
 
 const LottieContainer = styled.div`
-  width: 380px;
+  width: 200px;
   margin: 0px auto;
   padding-top: 100px;
   margin-bottom: 2px;
+`;
+
+const CrossImageBox = styled.img`
+  width: 200px;
+  height: 200px;
 `;
 
 const TextLine = styled.div`
@@ -29,7 +34,7 @@ const CheckTxTitle = styled.div`
   ${Typography.Subhead}
   color: ${palette.grey_1};
   text-align: center;
-  margin-bottom: 80px;
+  margin-bottom: 30px;
 `;
 
 const ComplainLink = styled.a`
@@ -40,26 +45,27 @@ const ComplainLink = styled.a`
   color: ${palette.grey_4};
 `;
 
-
-const LoadingComponent = () => {
-
+const FailComponent = ({ buttonOnClick }) => {
+  console.log(buttonOnClick);
   return (
     <>
       <ContentContainer>
         <LottieContainer>
-          <Lottie
-            options={{
-              animationData: animation,
-              loop: true,
-            }}
-          />
+          <CrossImageBox src={CrossImage} />
         </LottieContainer>
-        <TextLine>토큰을 받는 중이에요</TextLine>
-        <CheckTxTitle>
-          토큰을 받을 때 최대 30초 정도 시간이 필요해요.
-          <br />
-          잠시만 기다려주세요!
-        </CheckTxTitle>
+        <TextLine>토큰 보내기에 실패했어요</TextLine>
+        <CheckTxTitle>다시 한 번 시도해주세요!</CheckTxTitle>
+        <ContainedButton
+          type="primary"
+          styles="filled"
+          states="default"
+          size="large"
+          label="다시보내기"
+          onClick={async () => {
+            const promise = await buttonOnClick();
+          }}
+          style={{ marginBottom: "22px" }}
+        />
         <ComplainLink
           href="https://forms.gle/4CGoKQAWzJVG2dd69"
           target="_blank"
@@ -71,4 +77,4 @@ const LoadingComponent = () => {
   );
 };
 
-export default LoadingComponent;
+export default FailComponent;
