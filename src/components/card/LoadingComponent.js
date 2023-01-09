@@ -4,11 +4,13 @@ import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import Lottie from "react-lottie-player";
 import animation from "../../assets/lottie/airplane-lottie.json";
+import { useTranslation } from "react-i18next";
 
 const ContentContainer = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 50px;
+  min-height: 100vh;
 `;
 
 const LottieContainer = styled.div`
@@ -41,23 +43,25 @@ const ComplainLink = styled.a`
 `;
 
 const LoadingComponent = () => {
+  const { t } = useTranslation();
+
   return (
     <>
       <ContentContainer>
         <LottieContainer>
-          <Lottie animationData={animation} loop={true} play/>
+          <Lottie animationData={animation} loop={true} play />
         </LottieContainer>
-        <TextLine>토큰을 보내는 중이에요</TextLine>
+        <TextLine>{t("sendPage03Pending1")}</TextLine>
         <CheckTxTitle>
-          네트워크 환경에 따라 소요되는 시간이 달라져요.
+        {t("sendPage03Pending2")}
           <br />
-          잠시만 기다려주세요!
+          {t("sendPage03Pending3")}
         </CheckTxTitle>
         <ComplainLink
           href="https://forms.gle/4CGoKQAWzJVG2dd69"
           target="_blank"
         >
-          문제가 생겼나요?
+          {t("sendPage03Fail4")}
         </ComplainLink>
       </ContentContainer>
     </>

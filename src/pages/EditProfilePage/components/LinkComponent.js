@@ -9,6 +9,7 @@ import { DeleteModal } from "../../../components/modal";
 import AddLinkModal from "./AddLinkModal";
 import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 import { addLink, deleteLink, editLink } from "../../../utils/api/link";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -44,6 +45,7 @@ const LinkComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
   const [linkModalOn, setLinkModalOn] = useState(false);
   const [editLinkModalOn, setEditLinkModalOn] = useState(false);
   const [userInfo, setUserInfo] = useState(userInfoProps);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setLinkList(userInfoProps?.links);
@@ -138,8 +140,8 @@ const LinkComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
           onClose={closeDeleteModal}
           text={
             <>
-              이 링크를 정말 삭제하시겠어요?
-              <br /> 삭제 된 항목은 되돌릴 수 없어요.
+              {t("manageProfilePageAlertDeleteLink1")}
+              <br /> {t("manageProfilePageAlertDeleteLink2")}
             </>
           }
           setRealDelete={setRealDelete}
@@ -173,14 +175,14 @@ const LinkComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
         </>
       )}
       <TitleContainer>
-        <TItleText>링크</TItleText>
+        <TItleText>{t("manageProfilePage1")}</TItleText>
         {linkList?.length > 0 ? (
           <ContainedButton
             type="secondary"
             styles="filled"
             states="default"
             size="small"
-            label="링크 추가"
+            label={t("manageProfilePage2")}
             onClick={addLinkOnClick}
           />
         ) : (
@@ -189,13 +191,13 @@ const LinkComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
       </TitleContainer>
       {linkList?.length == 0 ? (
         <>
-          <EmptyCard icon={EmptyLink} text="링크가" />
+          <EmptyCard icon={EmptyLink} text={t("selectWalletPage3_4")} />
           <ContainedButton
             type="primary"
             styles="filled"
             states="default"
             size="large"
-            label="링크 추가하기"
+            label={t("manageProfilePage7")}
             onClick={addLinkOnClick}
           />
         </>

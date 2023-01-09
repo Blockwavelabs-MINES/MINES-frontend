@@ -39,13 +39,14 @@ const PrimaryTextBox = styled.div`
 // Show icon=false;
 // Show txt=true;
 
-const TextButton = ({ styles, states, size, label, onClick }) => {
+const TextButton = ({ styles, states, size, label, onClick, style }) => {
   return (
     <PrimaryButton
       size={size}
       states={states}
       styles={styles}
       onClick={onClick}
+      style={style}
     >
       <PrimaryTextBox styles={styles} states={states} size={size}>
         {label}

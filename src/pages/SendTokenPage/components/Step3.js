@@ -10,6 +10,7 @@ import { Tooltip } from "../../../components/card";
 import { ContainedButton } from "../../../components/button";
 import { ConfirmModal } from "../../../components/modal";
 import { TimerImage } from "../../../assets/images";
+import { useTranslation } from "react-i18next";
 
 const Container = styled.div`
   width: 100%;
@@ -136,19 +137,50 @@ function pad(n) {
   return n < 10 ? "0" + n : n;
 }
 
-const convertDateFormat = (dateString) => {
+const convertDateFormat = (dateString, a, b, c, d) => {
   const toTimestamp = Date.parse(dateString);
   console.log(toTimestamp);
-  const convertedDate =
-    pad(new Date(toTimestamp).getFullYear().toString()) +
-    "년 " +
-    pad(new Date(toTimestamp).getUTCMonth() + 1) +
-    "월 " +
-    pad(new Date(toTimestamp).getUTCDate()) +
-    "일 " +
-    pad(new Date(toTimestamp).getUTCHours()) +
-    ":" +
-    pad(new Date(toTimestamp).getUTCMinutes());
+  let convertedDate = "";
+  if (JSON.parse(localStorage.getItem("language"))?.lang == "en") {
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    convertedDate =
+      a +
+      pad(new Date(toTimestamp).getUTCHours()) +
+      ":" +
+      pad(new Date(toTimestamp).getUTCMinutes()) +
+      b +
+      monthNames[Number(new Date(toTimestamp).getUTCMonth())] +
+      " " +
+      pad(new Date(toTimestamp).getUTCDate()) +
+      d+" " +
+      pad(new Date(toTimestamp).getFullYear().toString());
+  } else {
+    convertedDate =
+      a +
+      pad(new Date(toTimestamp).getFullYear().toString()) +
+      b +
+      pad(new Date(toTimestamp).getUTCMonth() + 1) +
+      c +
+      pad(new Date(toTimestamp).getUTCDate()) +
+      d +
+      pad(new Date(toTimestamp).getUTCHours()) +
+      ":" +
+      pad(new Date(toTimestamp).getUTCMinutes());
+  }
   // ":" +
   // pad(new Date(toTimestamp).getUTCSeconds());
   return convertedDate;
@@ -179,14 +211,14 @@ const Step3 = ({
 }) => {
   const [notiClick, setNotiClick] = useState(false);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
+  const { t } = useTranslation();
 
   const TooltipText = (
     <TooltipStyle>
-      수령은 전송일로부터 3일 내에 해당 소셜계정으로 인증하면 수령할 수 있으며,
-      기한 내 미수령시 반환됩니다.
+      {t("sendPage03_2")}
       <br />
       <br />
-      미수령으로 인한 반환시에는 보낸 토큰의 0.5%를 제한 토큰이 자동반환됩니다.
+      {t("sendPage03_3")}
     </TooltipStyle>
   );
 
@@ -219,10 +251,10 @@ const Step3 = ({
 
   return (
     <Container>
-      <Title>송금 완료!</Title>
-      <SemiTitle>받는 분께 3일 내에 송금 링크를 공유해요</SemiTitle>
+      <Title>{t("sendPage03Success1")}</Title>
+      <SemiTitle>{t("sendPage03Success2")}</SemiTitle>
       <HelpTextContainer>
-        <HelpText>유의사항</HelpText>
+        <HelpText>{t("sendPage03_1")}</HelpText>
         <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
           {notiClick ? (
             <Tooltip
@@ -240,11 +272,19 @@ const Step3 = ({
       <ExpiredCard>
         <TimerBox src={TimerImage} />
         <ExpiredInfobox>
-          <ExpiredInfoTitle>송금 받기 유효 기간</ExpiredInfoTitle>
+          <ExpiredInfoTitle>{t("sendPage03_4")}</ExpiredInfoTitle>
           <ExpiredDateBox>
             {/* <ExpiredDate>2022년 11월 24일 19:27</ExpiredDate> */}
-            <ExpiredDate>{convertDateFormat(expired)}</ExpiredDate>
-            <ExpiredDateText>까지</ExpiredDateText>
+            <ExpiredDate>
+              {convertDateFormat(
+                expired,
+                t("receiveTokenPage5"),
+                t("receiveTokenPage6"),
+                t("receiveTokenPage7"),
+                t("receiveTokenPage8")
+              )}
+            </ExpiredDate>
+            <ExpiredDateText>{t("receiveTokenPage9")}</ExpiredDateText>
           </ExpiredDateBox>
         </ExpiredInfobox>
       </ExpiredCard>
@@ -257,7 +297,7 @@ const Step3 = ({
         styles="filled"
         states="default"
         size="large"
-        label="송금 완료하기"
+        label={t("sendPage03_11")}
         onClick={() => setCompleteModalVisible(true)}
       />
       {completeModalVisible ? (
@@ -268,11 +308,11 @@ const Step3 = ({
           onClose={closeConfirmModal}
           text={
             <>
-              송금을 완료했어요!
-              <br /> 복사한 링크는 받는 분께 전달해주세요
+              {t("sendPage03_12")}
+              <br /> {t("sendPage03_13")}
             </>
           }
-          buttonText={"링크 복사하고 닫기"}
+          buttonText={t("sendPage03_14")}
           subActionOnClick={subActionOnClick}
         />
       ) : (

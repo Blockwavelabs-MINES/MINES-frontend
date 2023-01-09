@@ -9,8 +9,9 @@ import { DeleteModal } from "../../../components/modal";
 import { MetamaskOnClick } from "../../../actions/WalletConnectActions";
 import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 import { addWallet, deleteWallet } from "../../../utils/api/wallets";
-import { receiveTrxs } from "../../../utils/api/trxs";
+import { receiveTrxs, getTrxsLinkInfo } from "../../../utils/api/trxs";
 import Chainlist from "../../SendTokenPage/data/SimpleTokenList";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -63,8 +64,14 @@ function toFixed(x) {
   if (Math.abs(x) < 1.0) {
     var e = parseInt(x.toString().split("e-")[1]);
     if (e) {
-      x *= Math.pow(10, e - 1);
+      // console.log(e)
+      // console.log(x*1000000)
+      // x *= Math.pow(10, e - 1);
+      x = Math.imul(x, Math.pow(10, e - 1))
+      // console.log(Math.pow(10, e - 1))
+      console.log(x)
       x = "0." + new Array(e).join("0") + x.toString().substring(2);
+      console.log(x)
     }
   } else {
     var e = parseInt(x.toString().split("+")[1]);
@@ -87,6 +94,9 @@ const WalletComponent = ({
   setLoading,
   setFailed,
   setSendOnClick,
+  resend,
+  select,
+  setSelect,
 }) => {
   const [walletList, setWalletList] = useState(userInfoProps?.wallets);
   const [deleteModalOn, setDeleteModalOn] = useState(false);
@@ -94,16 +104,32 @@ const WalletComponent = ({
   const [deleteIdx, setDeleteIdx] = useState(-1);
   const [addedWallet, setAddedWallet] = useState();
   const [userInfo, setUserInfo] = useState(userInfoProps);
-  const [select, setSelect] = useState(0);
   const [transactionHash, setTransactionHash] = useState(null);
   const [transactionStatus, setTransactionStatus] = useState(null);
   const [checkStatus, setCheckStatus] = useState(false);
+  const { t } = useTranslation();
 
   const Web3 = require("web3");
   const TokenABI = require("../../../utils/abis/IERC20_ABI");
-  const web3 = new Web3(
-    new Web3.providers.HttpProvider(process.env.REACT_APP_GO_URL)
-  );
+  let web3 = "";
+  console.log(Number(linkInfo.network_id));
+  if (Number(linkInfo.network_id) == 137) {
+    web3 = new Web3(
+      new Web3.providers.HttpProvider(process.env.REACT_APP_POLYGON_URL)
+    );
+  } else { // linkInfo.network_id == 5
+    web3 = new Web3(
+      new Web3.providers.HttpProvider(process.env.REACT_APP_GO_URL)
+    );
+  }
+
+  useEffect(() => {
+    console.log(resend);
+    if (resend) {
+      getTokenOnClick();
+      // setLoading(true);
+    }
+  }, []);
 
   useEffect(() => {
     console.log(getTokenOnClick);
@@ -218,392 +244,427 @@ const WalletComponent = ({
   };
 
   const getTokenOnClick2 = async () => {
-    setTransactionHash("hihihihi");
+    // setTransactionHash("hihihihi");
+    console.log(linkInfo.network_id);
   };
 
   const getTokenOnClick = async () => {
-    console.log(linkInfo);
-    const chainIndex = Chainlist.findIndex(
-      (v) => v.chainId == 5 // 지금은 goerli 밖에 없으니까..
-    );
-    const chainInfo = Chainlist[chainIndex]?.tokenList;
-    const tokenIndex = chainInfo.findIndex(
-      (v) => v.symbol == linkInfo.token_udenom
-    );
-    const tokenInfo = chainInfo[tokenIndex];
-    console.log(tokenInfo);
+    const getTrxsLinkInfoResult = await getTrxsLinkInfo(linkInfo.link_key).then(
+      async (infoRes) => {
+        console.log(infoRes);
+        if (infoRes._valid) {
+          if (resend) {
+            setLoading(true);
+          }
+          console.log(linkInfo);
+          const chainIndex = Chainlist.findIndex(
+            (v) => v.chainId == Number(linkInfo.network_id) // 지금은 goerli 밖에 없으니까..
+          );
+          const chainInfo = Chainlist[chainIndex]?.tokenList;
+          const tokenIndex = chainInfo.findIndex(
+            (v) => v.symbol == linkInfo.token_udenom
+          );
+          const tokenInfo = chainInfo[tokenIndex];
+          console.log(tokenInfo);
 
-    const account = await web3.eth.accounts.privateKeyToAccount(
-      process.env.REACT_APP_WALLET_PRIVATE_KEY
-    );
-    console.log(account);
+          const account = await web3.eth.accounts.privateKeyToAccount(
+            process.env.REACT_APP_WALLET_PRIVATE_KEY
+          );
+          console.log(account);
 
-    if (tokenInfo.symbol == "USDC" || tokenInfo.symbol == "USDT") {
-      let minABI = [
-        // balanceOf
-        {
-          constant: true,
-          inputs: [{ name: "_owner", type: "address" }],
-          name: "balanceOf",
-          outputs: [{ name: "balance", type: "uint256" }],
-          type: "function",
-        },
-        // decimals
-        {
-          constant: true,
-          inputs: [],
-          name: "decimals",
-          outputs: [{ name: "", type: "uint8" }],
-          type: "function",
-        },
-        //transfer
-        {
-          constant: false,
-          inputs: [
-            { name: "_to", type: "address" },
-            { name: "_value", type: "uint256" },
-          ],
-          name: "transfer",
-          outputs: [{ name: "", type: "bool" }],
-          payable: false,
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        //approve
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "spender",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "amount",
-              type: "uint256",
-            },
-          ],
-          name: "approve",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-      ];
+          if (tokenInfo.symbol == "USDC" || tokenInfo.symbol == "USDT") {
+            let minABI = [
+              // balanceOf
+              {
+                constant: true,
+                inputs: [{ name: "_owner", type: "address" }],
+                name: "balanceOf",
+                outputs: [{ name: "balance", type: "uint256" }],
+                type: "function",
+              },
+              // decimals
+              {
+                constant: true,
+                inputs: [],
+                name: "decimals",
+                outputs: [{ name: "", type: "uint8" }],
+                type: "function",
+              },
+              //transfer
+              {
+                constant: false,
+                inputs: [
+                  { name: "_to", type: "address" },
+                  { name: "_value", type: "uint256" },
+                ],
+                name: "transfer",
+                outputs: [{ name: "", type: "bool" }],
+                payable: false,
+                stateMutability: "nonpayable",
+                type: "function",
+              },
+              //approve
+              {
+                inputs: [
+                  {
+                    internalType: "address",
+                    name: "spender",
+                    type: "address",
+                  },
+                  {
+                    internalType: "uint256",
+                    name: "amount",
+                    type: "uint256",
+                  },
+                ],
+                name: "approve",
+                outputs: [
+                  {
+                    internalType: "bool",
+                    name: "",
+                    type: "bool",
+                  },
+                ],
+                stateMutability: "nonpayable",
+                type: "function",
+              },
+            ];
 
-      const tempContract = new web3.eth.Contract(
-        minABI,
-        tokenInfo.address
-        // tempSigner
-      );
+            const tempContract = new web3.eth.Contract(
+              minABI,
+              tokenInfo.address
+              // tempSigner
+            );
 
-      let res = await tempContract.methods.approve(tokenInfo.address, 1000000);
+            let res = await tempContract.methods.approve(
+              tokenInfo.address,
+              1000000
+            );
 
-      async function sendToken() {
-        console.log(Number(linkInfo.token_amount));
-        setLoading(true);
-        console.log("set loading...");
-        let data = tempContract.methods
-          .transfer(
-            walletList[select].wallet_address,
-            web3.utils.toHex(
-              toFixed(
-                Number(linkInfo.token_amount) * Math.pow(10, tokenInfo.decimals)
-              )
-            )
-          )
-          .encodeABI();
-        console.log(data);
-        return data;
-      }
-      //            Number(linkInfo.token_amount) * Math.pow(10, tokenInfo.decimals)
+            async function sendToken() {
+              console.log(Number(linkInfo.token_amount));
+              setLoading(true);
+              console.log("set loading...");
+              let data = tempContract.methods
+                .transfer(
+                  walletList[select].wallet_address,
+                  web3.utils.toHex(
+                    toFixed(
+                      Number(linkInfo.token_amount) *
+                        Math.pow(10, tokenInfo.decimals)
+                    )
+                  )
+                )
+                .encodeABI();
+              console.log(data);
+              return data;
+            }
+            //            Number(linkInfo.token_amount) * Math.pow(10, tokenInfo.decimals)
 
-      sendToken().then(async (data) => {
-        console.log(data);
-        const getGasAmount = async (fromAddress, toAddress, amount) => {
-          const gasAmount = await web3.eth.estimateGas({
-            to: toAddress,
-            from: fromAddress,
-            value: web3.utils.toWei(`${amount}`, "ether"),
-          });
-          return gasAmount;
-        };
+            sendToken().then(async (data) => {
+              console.log(data);
+              const getGasAmount = async (fromAddress, toAddress, amount) => {
+                const gasAmount = await web3.eth.estimateGas({
+                  to: toAddress,
+                  from: fromAddress,
+                  value: web3.utils.toWei(`${amount}`, "ether"),
+                });
+                return gasAmount;
+              };
 
-        const gasPrice = await web3.eth.getGasPrice();
-        console.log(Number(linkInfo.token_amount));
-        const gasAmount = await getGasAmount(
-          account.address,
-          tokenInfo.address,
-          toFixed(Number(linkInfo.token_amount))
-          // web3.utils.toHex(Number(linkInfo.token_amount) * Math.pow(10, 18))
-        );
-        // const fee = Number(gasPrice) + gasAmount;
-        const fee = gasAmount;
-        // const fee = gasPrice * 32000;
-        console.log(fee);
+              const gasPrice = await web3.eth.getGasPrice();
+              console.log(Number(linkInfo.token_amount));
+              const gasAmount = await getGasAmount(
+                account.address,
+                tokenInfo.address,
+                toFixed(Number(linkInfo.token_amount))
+                // web3.utils.toHex(Number(linkInfo.token_amount) * Math.pow(10, 18))
+              );
+              // const fee = Number(gasPrice) + gasAmount;
+              const fee = gasAmount;
+              // const fee = gasPrice * 32000;
+              console.log(fee);
 
-        const txObj = {
-          data: data,
-          value: 0,
-          // value: web3.utils.toHex(
-          //   Number(linkInfo.token_amount) * 0.001 * Math.pow(10, 18)
-          // ),
-          // gas: web3.utils.toHex(25000000),
-          // gas: 4000000,
-          gas: fee,
-          // gas: 21000,
-          // gas: 32000,
-          to: tokenInfo.address,
-          // from: account.address,
-        };
+              const txObj = {
+                data: data,
+                value: 0,
+                // value: web3.utils.toHex(
+                //   Number(linkInfo.token_amount) * 0.001 * Math.pow(10, 18)
+                // ),
+                // gas: web3.utils.toHex(25000000),
+                // gas: 4000000,
+                gas: fee,
+                // gas: 21000,
+                // gas: 32000,
+                to: tokenInfo.address,
+                // from: account.address,
+              };
 
-        console.log(txObj);
-        console.log(process.env.REACT_APP_WALLET_PRIVATE_KEY);
+              console.log(txObj);
+              console.log(process.env.REACT_APP_WALLET_PRIVATE_KEY);
 
-        await web3.eth.accounts.signTransaction(
-          txObj,
-          process.env.REACT_APP_WALLET_PRIVATE_KEY,
-          async (err, signedTx) => {
-            if (err) {
-              // return callback(err);
-              console.log(err);
-              return err;
-            } else {
-              console.log(signedTx);
-              setTransactionHash(signedTx.transactionHash) // asnyc 문제 때문에 
-
-              return await web3.eth.sendSignedTransaction(
-                signedTx.rawTransaction,
-                async (err, res) => {
+              await web3.eth.accounts.signTransaction(
+                txObj,
+                process.env.REACT_APP_WALLET_PRIVATE_KEY,
+                async (err, signedTx) => {
                   if (err) {
+                    // return callback(err);
                     console.log(err);
+                    return err;
                   } else {
-                    console.log(res); // 저장해야할 hash값
-                    setTransactionHash(res);
+                    console.log(signedTx);
+                    setTransactionHash(signedTx.transactionHash); // asnyc 문제 때문에
 
-                    let tmpReceiveInfo = linkInfo;
-                    tmpReceiveInfo.receiver_wallet_address =
-                      walletList[select].wallet_address;
-                    tmpReceiveInfo.transaction_escrow_hash = res;
-                    // const receiveTrxsResult = await receiveTrxs(
-                    //   walletList[select].wallet_address,
-                    //   "METAMASK",
-                    //   0.000001,
-                    //   linkInfo.index
-                    // );
-                    setReceiveInfo(tmpReceiveInfo);
-                    setLoading(true);
-                    setCheckStatus(!checkStatus);
-                    console.log("here");
+                    return await web3.eth.sendSignedTransaction(
+                      signedTx.rawTransaction,
+                      async (err, res) => {
+                        if (err) {
+                          console.log(err);
+                        } else {
+                          console.log(res); // 저장해야할 hash값
+                          setTransactionHash(res);
 
+                          let tmpReceiveInfo = linkInfo;
+                          tmpReceiveInfo.receiver_wallet_address =
+                            walletList[select].wallet_address;
+                          tmpReceiveInfo.transaction_escrow_hash = res;
+                          const receiveTrxsResult = await receiveTrxs(
+                            walletList[select].wallet_address,
+                            "METAMASK",
+                            0.000001,
+                            linkInfo.index
+                          );
+                          setReceiveInfo(tmpReceiveInfo);
+                          setLoading(true);
+                          setCheckStatus(!checkStatus);
+                          console.log("here");
+                        }
+                      }
+                    );
                   }
                 }
               );
-            }
-          }
-        );
-      });
-    } else {
-      let minABI = TokenABI;
-
-      const getGasAmount = async (fromAddress, toAddress, amount) => {
-        const gasAmount = await web3.eth.estimateGas({
-          to: toAddress,
-          from: fromAddress,
-          value: web3.utils.toWei(`${amount}`, "ether"),
-        });
-        return gasAmount;
-      };
-
-      const gasPrice = await web3.eth.getGasPrice();
-      console.log(Number(linkInfo.token_amount));
-      const gasAmount = await getGasAmount(
-        account.address,
-        walletList[select].wallet_address,
-        toFixed(Number(linkInfo.token_amount))
-        // web3.utils.toHex(Number(linkInfo.token_amount) * Math.pow(10, 18))
-      );
-      // const fee = Number(gasPrice) + gasAmount;
-      const fee = gasAmount;
-      console.log(fee);
-      console.log(gasPrice);
-      console.log(gasAmount);
-      // const fee = gasPrice * 32000;
-
-      console.log(Number(linkInfo.token_amount));
-      const txObj = {
-        // data: data,
-        value: web3.utils.toHex(
-          toFixed(Number(linkInfo.token_amount) * Math.pow(10, 18))
-        ),
-        // gas: web3.utils.toHex(25000000),
-        gas: fee,
-        // gas: 21000,
-        // gas: 32000,
-        to: walletList[select].wallet_address,
-        from: account.address,
-      };
-
-      console.log(txObj);
-      console.log(process.env.REACT_APP_WALLET_PRIVATE_KEY);
-      await web3.eth.accounts.signTransaction(
-        txObj,
-        process.env.REACT_APP_WALLET_PRIVATE_KEY,
-        async (err, signedTx) => {
-          if (err) {
-            // return callback(err);
-            console.log(err);
-            return err;
+            });
           } else {
-            console.log(signedTx);
-            setTransactionHash(signedTx.transactionHash) // asnyc 문제 때문에 
+            let minABI = TokenABI;
 
-            return await web3.eth.sendSignedTransaction(
-              signedTx.rawTransaction,
-              async (err, res) => {
-                
+            const getGasAmount = async (fromAddress, toAddress, amount) => {
+              const gasAmount = await web3.eth.estimateGas({
+                to: toAddress,
+                from: fromAddress,
+                value: web3.utils.toWei(`${amount}`, "ether"),
+              });
+              return gasAmount;
+            };
+
+            const gasPrice = await web3.eth.getGasPrice();
+            console.log(Number(linkInfo.token_amount));
+            console.log(toFixed(Number(linkInfo.token_amount)))
+            const gasAmount = await getGasAmount(
+              account.address,
+              walletList[select].wallet_address,
+              toFixed(Number(linkInfo.token_amount))
+              // web3.utils.toHex(Number(linkInfo.token_amount) * Math.pow(10, 18))
+            );
+            // const fee = Number(gasPrice) + gasAmount;
+            const fee = gasAmount;
+            console.log(fee);
+            console.log(gasPrice);
+            console.log(gasAmount);
+            // const fee = gasPrice * 32000;
+
+            console.log(Number(linkInfo.token_amount));
+            const txObj = {
+              // data: data,
+              value: web3.utils.toHex(
+                toFixed(Number(linkInfo.token_amount) * Math.pow(10, 18))
+              ),
+              // gas: web3.utils.toHex(25000000),
+              gas: fee,
+              // gas: 21000,
+              // gas: 32000,
+              to: walletList[select].wallet_address,
+              from: account.address,
+            };
+
+            console.log(txObj);
+            console.log(process.env.REACT_APP_WALLET_PRIVATE_KEY);
+            await web3.eth.accounts.signTransaction(
+              txObj,
+              process.env.REACT_APP_WALLET_PRIVATE_KEY,
+              async (err, signedTx) => {
                 if (err) {
+                  // return callback(err);
                   console.log(err);
-                  setFailed(true);
+                  return err;
                 } else {
-                  console.log(res); // 저장해야할 hash값
-                  setTransactionHash(res);
+                  console.log(signedTx);
+                  console.log(signedTx.transactionHash);
+                  setTransactionHash(signedTx.transactionHash); // asnyc 문제 때문에
 
-                  let tmpReceiveInfo = linkInfo;
-                  tmpReceiveInfo.receiver_wallet_address =
-                    walletList[select].wallet_address;
-                  tmpReceiveInfo.transaction_escrow_hash = res;
-                  // const receiveTrxsResult = await receiveTrxs(
-                  //   walletList[select].wallet_address,
-                  //   "METAMASK",
-                  //   0.000001,
-                  //   linkInfo.index
-                  // );
+                  return await web3.eth.sendSignedTransaction(
+                    signedTx.rawTransaction,
+                    async (err, res) => {
+                      if (err) {
+                        console.log(walletList[select].wallet_address);
+                        console.log(String(err));
+                        if (
+                          String(err).startsWith(
+                            "Error: Returned error: already known"
+                          ) ||
+                          String(err).startsWith(
+                            "Error: Returned error: replacement transaction underpriced"
+                          )
+                        ) {
+                          setLoading(false);
+                          setFailed(true);
+                        }
+                      } else {
+                        console.log(res); // 저장해야할 hash값
+                        setTransactionHash(res);
 
-                  setReceiveInfo(tmpReceiveInfo);
-                  setLoading(true);
-                  setCheckStatus(!checkStatus);
-                  console.log("here");
+                        let tmpReceiveInfo = linkInfo;
+                        tmpReceiveInfo.receiver_wallet_address =
+                          walletList[select].wallet_address;
+                        tmpReceiveInfo.transaction_escrow_hash = res;
+                        const receiveTrxsResult = await receiveTrxs(
+                          walletList[select].wallet_address,
+                          "METAMASK",
+                          0.000001,
+                          linkInfo.index
+                        );
 
+                        setReceiveInfo(tmpReceiveInfo);
+                        setLoading(true);
+                        setCheckStatus(!checkStatus);
+                        console.log("here");
+                      }
+                    }
+                  );
                 }
               }
             );
           }
+        } else {
+          alert(t("receiveTokenAlreadyReceived1"));
+          window.location.href = "/";
         }
-      );
-    }
+      }
+    );
+
     console.log("done");
   };
 
   // setSendOnClick(getTokenOnClick);
 
   return (
-    <FullContainer>
-      {deleteModalOn ? (
-        <DeleteModal
-          visible={deleteModalOn}
-          closable={true}
-          maskClosable={true}
-          onClose={closeDeleteModal}
-          text={<>이 지갑을 정말 삭제하시겠어요?</>}
-          setRealDelete={setRealDelete}
-        />
-      ) : (
-        <></>
-      )}
-      <TitleContainer>
-        <TItleText>지갑</TItleText>
-        {walletList?.length > 0 ? (
-          <>
-            {isMobileDevice() ? (
-              <a href="https://metamask.app.link/dapp/3tree.io">
-                <ContainedButton
-                  type="secondary"
-                  styles="filled"
-                  states="default"
-                  size="small"
-                  label="지갑 추가"
-                  onClick={walletConnectOnClick}
-                />
-              </a>
+    <>
+      {!resend ? (
+        <FullContainer>
+          {deleteModalOn ? (
+            <DeleteModal
+              visible={deleteModalOn}
+              closable={true}
+              maskClosable={true}
+              onClose={closeDeleteModal}
+              text={<>{t("manageProfilePageAlertDeleteWallet1")}</>}
+              setRealDelete={setRealDelete}
+            />
+          ) : (
+            <></>
+          )}
+          <TitleContainer>
+            <TItleText>{t("manageProfilePage3")}</TItleText>
+            {walletList?.length > 0 ? (
+              <>
+                {isMobileDevice() ? (
+                  <a href="https://metamask.app.link/dapp/3tree.io">
+                    <ContainedButton
+                      type="secondary"
+                      styles="filled"
+                      states="default"
+                      size="small"
+                      label={t("manageProfilePage4")}
+                      onClick={walletConnectOnClick}
+                    />
+                  </a>
+                ) : (
+                  <ContainedButton
+                    type="secondary"
+                    styles="filled"
+                    states="default"
+                    size="small"
+                    label={t("manageProfilePage4")}
+                    onClick={walletConnectOnClick}
+                  />
+                )}
+              </>
             ) : (
-              <ContainedButton
-                type="secondary"
-                styles="filled"
-                states="default"
-                size="small"
-                label="지갑 추가"
-                onClick={walletConnectOnClick}
-              />
+              <></>
             )}
-          </>
-        ) : (
-          <></>
-        )}
-      </TitleContainer>
-      {walletList?.length == 0 ? (
-        <>
-          <EmptyCard icon={EmptyWallet} text="지갑이" />
-          <>
-            {isMobileDevice() ? (
-              <a href="https://metamask.app.link/dapp/3tree.io">
-                <ContainedButton
-                  type="primary"
-                  styles="filled"
-                  states="default"
-                  size="large"
-                  label="지갑 추가하기"
-                  onClick={walletConnectOnClick}
-                />
-              </a>
-            ) : (
+          </TitleContainer>
+          {walletList?.length == 0 ? (
+            <>
+              <EmptyCard icon={EmptyWallet} text={t("selectWalletPage3_3")} />
+              <>
+                {isMobileDevice() ? (
+                  <a href="https://metamask.app.link/dapp/3tree.io">
+                    <ContainedButton
+                      type="primary"
+                      styles="filled"
+                      states="default"
+                      size="large"
+                      label={t("selectWalletPage5")}
+                      onClick={walletConnectOnClick}
+                    />
+                  </a>
+                ) : (
+                  <ContainedButton
+                    type="primary"
+                    styles="filled"
+                    states="default"
+                    size="large"
+                    label={t("selectWalletPage5")}
+                    onClick={walletConnectOnClick}
+                  />
+                )}
+              </>
+            </>
+          ) : (
+            <>
+              <WalletListBox>
+                <ListContainer>
+                  {walletList?.map((wallet, idx) => (
+                    <EditableCard
+                      label={walletConvert(wallet.wallet_address)}
+                      isEdit={false}
+                      isTrash={false}
+                      isCheck={true}
+                      select={select}
+                      idx={idx}
+                      // icon={wallet.icon}
+                      icon={MetamaskIcon}
+                      deleteOnClick={() => deleteOnClick(idx)}
+                      checkOnClick={handleSelectChange}
+                    ></EditableCard>
+                  ))}
+                </ListContainer>
+              </WalletListBox>
               <ContainedButton
                 type="primary"
                 styles="filled"
                 states="default"
                 size="large"
-                label="지갑 추가하기"
-                onClick={walletConnectOnClick}
+                label={t("selectWalletPage8")}
+                onClick={getTokenOnClick}
               />
-            )}
-          </>
-        </>
+            </>
+          )}
+        </FullContainer>
       ) : (
-        <>
-          <WalletListBox>
-            <ListContainer>
-              {walletList?.map((wallet, idx) => (
-                <EditableCard
-                  label={walletConvert(wallet.wallet_address)}
-                  isEdit={false}
-                  isTrash={false}
-                  isCheck={true}
-                  select={select}
-                  idx={idx}
-                  // icon={wallet.icon}
-                  icon={MetamaskIcon}
-                  deleteOnClick={() => deleteOnClick(idx)}
-                  checkOnClick={handleSelectChange}
-                ></EditableCard>
-              ))}
-            </ListContainer>
-          </WalletListBox>
-          <ContainedButton
-            type="primary"
-            styles="filled"
-            states="default"
-            size="large"
-            label="토큰 받기"
-            onClick={getTokenOnClick}
-          />
-        </>
+        <></>
       )}
-    </FullContainer>
+    </>
   );
 };
 

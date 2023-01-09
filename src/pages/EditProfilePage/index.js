@@ -13,6 +13,7 @@ import {
 import { ProfileCard } from "../../components/card";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { getUserInfo } from "../../utils/api/auth";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -34,6 +35,7 @@ const EditProfilePage = () => {
   const [userInfo, setUserInfo] = useState();
   const [editMyInfo, setEditMyInfo] = useState();
   const [infoChange, setInfoChange] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     var globalUserInfo = getLocalUserInfo();
@@ -48,7 +50,7 @@ const EditProfilePage = () => {
         });
       })();
     } else {
-      alert("로그인이 필요한 서비스입니다.");
+      alert(t("introPageAlert1"));
       window.location.href = "/";
     }
   }, [infoChange]);
@@ -72,7 +74,7 @@ const EditProfilePage = () => {
         />
       ) : (
         <FullContainer>
-          <SettingProfileHeader info={userInfo} title="프로필 관리" />
+          <SettingProfileHeader info={userInfo} title={t("manageProfilePageHeader")} />
           {loginModalVisible ? (
             <AddLinkModal
               visible={loginModalVisible}

@@ -6,6 +6,7 @@ import { ContainedButton } from "../button";
 import { ProfileSmall } from "../../assets/icons";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { ProfileDropbox } from "./components";
+import { useTranslation } from "react-i18next";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -48,11 +49,13 @@ const ProfileButton = styled.button`
 const LoginHeader = ({ onVisible }) => {
   const [userInfo, setUserInfo] = useState();
   const [dropBoxOn, setDropBoxOn] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     var globalUserInfo = getLocalUserInfo();
     if (globalUserInfo) {
       setUserInfo(globalUserInfo);
+      console.log(globalUserInfo);
     }
   }, []);
 
@@ -85,7 +88,7 @@ const LoginHeader = ({ onVisible }) => {
         <LogoContainer>3TREE</LogoContainer>
         {userInfo ? (
           <ProfileButton
-            img={userInfo.profileImg}
+            img={userInfo.user.profile_img}
             onClick={profileImgOnClick}
           />
         ) : (
@@ -94,7 +97,7 @@ const LoginHeader = ({ onVisible }) => {
             styles="outlined"
             states="default"
             size="medium"
-            label="로그인"
+            label={t("introPageHeader1")}
             onClick={loginOnClick}
           />
         )}

@@ -9,6 +9,7 @@ import { DeleteModal } from "../../../components/modal";
 import { MetamaskOnClick } from "../../../actions/WalletConnectActions";
 import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 import { addWallet, deleteWallet } from "../../../utils/api/wallets";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -60,6 +61,7 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
   const [deleteIdx, setDeleteIdx] = useState(-1);
   const [addedWallet, setAddedWallet] = useState();
   const [userInfo, setUserInfo] = useState(userInfoProps);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setWalletList(userInfoProps?.wallets);
@@ -144,14 +146,14 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
           closable={true}
           maskClosable={true}
           onClose={closeDeleteModal}
-          text={<>이 지갑을 정말 삭제하시겠어요?</>}
+          text={<>{t("manageProfilePageAlertDeleteWallet1")}</>}
           setRealDelete={setRealDelete}
         />
       ) : (
         <></>
       )}
       <TitleContainer>
-        <TItleText>지갑</TItleText>
+        <TItleText>{t("selectWalletPage6")}</TItleText>
         {walletList?.length > 0 ? (
           <>
             {isMobileDevice() ? (
@@ -161,7 +163,7 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
                   styles="filled"
                   states="default"
                   size="small"
-                  label="지갑 추가"
+                  label={t("selectWalletPage7")}
                   onClick={walletConnectOnClick}
                 />
               </a>
@@ -171,7 +173,7 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
                 styles="filled"
                 states="default"
                 size="small"
-                label="지갑 추가"
+                label={t("selectWalletPage7")}
                 onClick={walletConnectOnClick}
               />
             )}
@@ -182,7 +184,7 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
       </TitleContainer>
       {walletList?.length == 0 ? (
         <>
-          <EmptyCard icon={EmptyWallet} text="지갑이" />
+          <EmptyCard icon={EmptyWallet} text={t("selectWalletPage3_3")} />
           <>
             {isMobileDevice() ? (
               <a href="https://metamask.app.link/dapp/3tree.io">
@@ -191,7 +193,7 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
                   styles="filled"
                   states="default"
                   size="large"
-                  label="지갑 추가하기"
+                  label={t("selectWalletPage5")}
                   onClick={walletConnectOnClick}
                 />
               </a>
@@ -201,7 +203,7 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
                 styles="filled"
                 states="default"
                 size="large"
-                label="지갑 추가하기"
+                label={t("selectWalletPage5")}
                 onClick={walletConnectOnClick}
               />
             )}

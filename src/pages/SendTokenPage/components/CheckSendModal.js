@@ -5,6 +5,7 @@ import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { BottomModal } from "../../../components/modal";
 import { Sender3TreeIcon } from "../../../assets/icons";
 import { sendTrxs } from "../../../utils/api/trxs";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -159,6 +160,8 @@ const LoginModalInner = (
   tokenInfo,
   setLoading
 ) => {
+  const { t } = useTranslation();
+
   console.log(amount);
   console.log(currency);
   const sendOnClick = async () => {
@@ -251,6 +254,9 @@ const LoginModalInner = (
           const expiredDate = setExpiredDate();
           console.log(expiredDate);
           console.log(amount);
+          console.log(sender);
+          console.log(tokenInfo.address);
+          console.log(networkId);
           const sendTrxsResult = await sendTrxs(
             userIdx,
             address,
@@ -261,7 +267,10 @@ const LoginModalInner = (
             amount,
             escrowHash,
             escrowId,
-            expiredDate
+            expiredDate,
+            sender,
+            tokenInfo.address,
+            networkId
           ).then((data) => {
             setLoading(false);
             setFinalLink(data.link_key);
@@ -309,7 +318,9 @@ const LoginModalInner = (
       console.log(gasPrice);
       console.log(gasAmount);
       // const fee = Number(gasPrice) + gasAmount;
+      // const fee = Number(gasPrice) / 100;
       const fee = gasAmount;
+      // const fee = 20000000;
 
       await metamaskProvider
         .request({
@@ -336,6 +347,9 @@ const LoginModalInner = (
           const escrowId = "1234";
           const expiredDate = setExpiredDate();
           console.log(expiredDate);
+          console.log(sender);
+          console.log(tokenInfo.address);
+          console.log(networkId);
           const sendTrxsResult = await sendTrxs(
             userIdx,
             address,
@@ -346,7 +360,10 @@ const LoginModalInner = (
             amount,
             escrowHash,
             escrowId,
-            expiredDate
+            expiredDate,
+            sender,
+            tokenInfo.address,
+            networkId
           ).then((data) => {
             setFinalLink(data.link_key);
             setExpired(data.expired_at);
@@ -362,28 +379,31 @@ const LoginModalInner = (
   return (
     <FullContainer>
       <IntroTextBox>
-        <FirstIntro>송금 확인</FirstIntro>
+        <FirstIntro>{t("sendConfirmModal1")}</FirstIntro>
       </IntroTextBox>
       <MainInfoBox>
         <SendAmountInfo>
           <SendAmountBox>
+            <font size={4} color={palette.grey_1}>
+              {t("sendConfirmModal2")}
+            </font>
             {amount} {currency}{" "}
             <font size={4} color={palette.grey_1}>
-              를 보냅니다
+              {t("sendConfirmModal3")}
             </font>
           </SendAmountBox>
           {/* <SendAmountText>를 보냅니다.</SendAmountText> */}
         </SendAmountInfo>
         <PersonInfoBox>
           <PersonInfoLine>
-            <PersonCategory>받는 분</PersonCategory>
+            <PersonCategory>{t("sendConfirmModal4")}</PersonCategory>
             <PersonInfo>
               <PersonId>{receiver}</PersonId>
               <PersonIcon src={platform} />
             </PersonInfo>
           </PersonInfoLine>
           <PersonInfoLine>
-            <PersonCategory>보내는 분</PersonCategory>
+            <PersonCategory>{t("sendConfirmModal5")}</PersonCategory>
             <PersonInfo>
               <PersonId>@{sender}</PersonId>
               <PersonIcon src={Sender3TreeIcon} />
@@ -395,7 +415,7 @@ const LoginModalInner = (
           styles="filled"
           states="default"
           size="large"
-          label="확인"
+          label={t("sendConfirmModal8")}
           onClick={sendOnClick}
         />
       </MainInfoBox>

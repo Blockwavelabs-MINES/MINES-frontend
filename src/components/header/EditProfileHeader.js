@@ -5,6 +5,7 @@ import Typograpy from "../../utils/style/Typography";
 import { IconButton, TextButton } from "../button";
 import { ProfileSmall, ChevronLeft, ExternalLink } from "../../assets/icons";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
+import { useTranslation } from "react-i18next";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -43,6 +44,7 @@ const EditProfileHeader = ({
 }) => {
   const [userInfo, setUserInfo] = useState();
   const [dropBoxOn, setDropBoxOn] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     var globalUserInfo = getLocalUserInfo();
@@ -66,10 +68,6 @@ const EditProfileHeader = ({
 
   const backOnClick = () => {
     window.history.back();
-  };
-
-  const externalOnClick = () => {
-    alert("준비중입니다.");
   };
 
   const leftIconOnClick = () => {
@@ -99,7 +97,7 @@ const EditProfileHeader = ({
           styles="active"
           states="default"
           size="large"
-          label="저장"
+          label={t("editProfilePage1")}
           onClick={rightIconOnClick}
         />
       </InnerContainer>

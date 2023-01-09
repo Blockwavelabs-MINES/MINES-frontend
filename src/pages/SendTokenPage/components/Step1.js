@@ -6,6 +6,7 @@ import DropBox from "./Dropbox";
 import MetamaskChainList from "./MetamaskChainlist";
 import PlatformList from "./PlatformList";
 import { InputBox } from "../../../components/input";
+import { useTranslation } from "react-i18next";
 
 const Container = styled.div`
   width: 100%;
@@ -52,6 +53,7 @@ const Step1 = ({
   const [isSet, setIsSet] = useState(true);
   const [isInit, setIsInit] = useState(true);
   const [platformIdx, setPlatformIdx] = useState(0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setIsSet(false);
@@ -69,7 +71,7 @@ const Step1 = ({
   return (
     <Container>
       <PlatformBox>
-        <BoxHeader>Platform</BoxHeader>
+        <BoxHeader>{t("sendPage01_3")}</BoxHeader>
         <DropBox
           setIdx={setPlatformIdx}
           itemList={PlatformList}
@@ -78,10 +80,10 @@ const Step1 = ({
       </PlatformBox>
       <EmailBox>
         <InputBox
-          label="Social Account"
+          label={t("sendPage01_4")}
           state="filled"
           isRequired={false}
-          placeholder="3tree@gmail.com"
+          placeholder={t("sendPage01_5")}
           value={email}
           height={51}
           onChange={(e) => emailOnChange(e)}

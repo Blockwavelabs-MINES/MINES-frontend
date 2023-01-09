@@ -10,7 +10,10 @@ export const sendTrxs = async (
   tokenAmount,
   transactionEscrowHash,
   transactionEscrowId,
-  expiredAt
+  expiredAt,
+  senderUserId,
+  tokenContractAddress,
+  networkId
 ) => {
   let returnValue = 0;
   const result = await axios
@@ -22,7 +25,7 @@ export const sendTrxs = async (
         senderUserIndex
       )},"senderWalletAddress":"${senderWalletAddress}","senderTokenWalletType":"${senderTokenWalletType}","receiverSocialPlatform":"${receiverSocialPlatform}","receiverSocialId":"${receiverSocialId}","tokenUdenom":"${tokenUdenom}","tokenAmount":${Number(
         tokenAmount
-      )},"transactionEscrowHash":"${transactionEscrowHash}","transactionEscrowId":"${transactionEscrowId}","expiredAt":"${expiredAt}"}`,
+      )},"transactionEscrowHash":"${transactionEscrowHash}","transactionEscrowId":"${transactionEscrowId}","expiredAt":"${expiredAt}","senderUserId":"${senderUserId}","tokenContractAddress":"${tokenContractAddress}","networkId":"${networkId}"}`,
       {
         headers: {
           "Content-Type": "application/json",

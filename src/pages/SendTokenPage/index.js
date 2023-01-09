@@ -16,6 +16,7 @@ import {
 import { DeleteModal } from "../../components/modal";
 import { ContainedButton } from "../../components/button";
 import { LoadingComponent } from "../../components/card";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -155,6 +156,8 @@ const StepComponentBox = styled.div`
   min-height: 40vh;
 `;
 
+const LoadingBox = styled.div``;
+
 const SendTokenPage = () => {
   const [userInfo, setUserInfo] = useState();
   const [stepStatus, setStepStatus] = useState(1);
@@ -175,13 +178,14 @@ const SendTokenPage = () => {
   const [expired, setExpired] = useState("");
   const [finalLink, setFinalLink] = useState("");
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     var globalUserInfo = getLocalUserInfo();
     if (globalUserInfo) {
       setUserInfo(globalUserInfo);
     } else {
-      alert("로그인이 필요한 서비스입니다.");
+      alert(t("introPageAlert1"));
       window.location.href = "/";
     }
   }, []);
@@ -191,9 +195,9 @@ const SendTokenPage = () => {
       id: 1,
       text: (
         <>
-          토큰을 보낼 소셜 계정을
+          {t("sendPage01_1")}
           <br />
-          입력해주세요.
+          {t("sendPage01_2")}
         </>
       ),
       component: Step1({
@@ -291,12 +295,11 @@ const SendTokenPage = () => {
               onClose={closeCancelModal}
               text={
                 <>
-                  지금까지 입력한 정보가
-                  <br /> 모두 초기화됩니다. 초기화 하시겠어요?
+                  {t("sendPage01Alert1")}
                 </>
               }
               setRealDelete={setRealDelete}
-              buttonText={"초기화 하기"}
+              buttonText={t("sendPage01Alert2")}
             />
           ) : (
             <></>
@@ -322,7 +325,7 @@ const SendTokenPage = () => {
               ) : (
                 <FullContainer>
                   <SendTokenHeader
-                    title="송금하기"
+                    title={t("sendpage02Header1")}
                     leftOnClick={leftOnClick}
                     rightOnClick={headerRightOnClick}
                   />
@@ -378,7 +381,7 @@ const SendTokenPage = () => {
                               styles="filled"
                               states="default"
                               size="large"
-                              label="다음"
+                              label={t("sendPage01_6")}
                               onClick={rightOnClick}
                             />
                           ) : (
@@ -387,7 +390,7 @@ const SendTokenPage = () => {
                               styles="filled"
                               states="disabled"
                               size="large"
-                              label="다음"
+                              label={t("sendPage01_6")}
                             />
                           )}
                         </>

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { MetamaskIcon, GoogleIcon } from "../../../assets/icons";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -255,6 +256,8 @@ const FinalConfirmation = ({
   setVisible,
   setSendDone,
 }) => {
+  const { t } = useTranslation();
+
   const platformIconList = {
     google: GoogleIcon,
     twitter:
@@ -287,7 +290,7 @@ const FinalConfirmation = ({
   };
 
   const leftOnClick = () => {
-    alert("준비중입니다.");
+    alert("Coming soon.");
   };
 
   const rightOnClick = () => {};
@@ -298,7 +301,7 @@ const FinalConfirmation = ({
   return (
     <FullContainer>
       <Header>
-        <HeaderButton onClick={previousOnClick}>이전</HeaderButton>
+        <HeaderButton onClick={previousOnClick}>{t("")}</HeaderButton>
       </Header>
       <MainTitleBox>Final Confirmation</MainTitleBox>
       <InfoSingleContainer>

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import { IconButton, TextButton } from "../button";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
+import { useTranslation } from "react-i18next";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -26,6 +27,7 @@ const InnerContainer = styled.div`
 const ProfileHeader = () =>
   //   { rightOnClick }
   {
+    const { t } = useTranslation();
     const rightIconOnClick = () => {
       // rightOnClick();
       // alert("준비중입니다.");
@@ -37,7 +39,7 @@ const ProfileHeader = () =>
         textarea.setSelectionRange(0, 9999); // For IOS
         document.execCommand("copy");
         document.body.removeChild(textarea);
-        alert("링크 복사 완료!");
+        alert(t("sendPage03_10"));
       };
 
       handleCopyClipBoard(window.location.href);
@@ -50,7 +52,7 @@ const ProfileHeader = () =>
             styles="active"
             states="default"
             size="large"
-            label="링크 복사"
+            label={t("profilePage3")}
             onClick={rightIconOnClick}
           />
         </InnerContainer>

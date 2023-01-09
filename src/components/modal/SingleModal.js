@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Typography from "../../utils/style/Typography";
 import { ContainedButton } from "../button";
 import { COLORS as palette } from "../../utils/style/Color/colors";
+import { useTranslation } from "react-i18next";
 
 const InnerContainer = styled.div`
   width: 100%;
@@ -31,6 +32,8 @@ function SingleModal({
   setStatus,
   buttonText,
 }) {
+  const { t } = useTranslation();
+
   const onMaskClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose(e);
@@ -64,7 +67,11 @@ function SingleModal({
                 styles="filled"
                 states="default"
                 size="large"
-                label={buttonText ? buttonText : "삭제"}
+                label={
+                  buttonText
+                    ? buttonText
+                    : t("manageProfilePageAlertDeleteLink3")
+                }
                 onClick={buttonOnClick}
               />
             </ButtonContainer>

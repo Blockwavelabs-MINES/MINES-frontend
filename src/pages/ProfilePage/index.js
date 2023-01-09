@@ -15,6 +15,7 @@ import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { useLocation } from "react-router-dom";
 import { MetamaskIcon } from "../../assets/icons";
 import { getUserInfo } from "../../utils/api/auth";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -35,6 +36,7 @@ const Divider = styled.div`
 const ProfilePage = () => {
   const [userInfo, setUserInfo] = useState();
   const [isUserPage, setIsUserPage] = useState(false); // false : my page
+  const { t } = useTranslation();
 
   const location = useLocation();
 
@@ -82,7 +84,7 @@ const ProfilePage = () => {
           role: null,
         },
       };
-      if (currentPageUserId != globalUserInfo.user.user_id) {
+      if (currentPageUserId != globalUserInfo?.user.user_id) {
         setIsUserPage(true);
         // setUserInfo(MetaUserInfo);
         const getUserInfoResult = await getUserInfo(currentPageUserId).then(
@@ -92,12 +94,14 @@ const ProfilePage = () => {
           }
         );
       } else {
-        const getUserInfoResult = await getUserInfo(
-          globalUserInfo.user.user_id
-        ).then((data) => {
-          console.log(data);
-          setUserInfo(data);
-        });
+        const getUserInfoResult = await getUserInfo(globalUserInfo.user.user_id)
+          .then((data) => {
+            console.log(data);
+            setUserInfo(data);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
       }
     })();
   }, []);
@@ -107,9 +111,9 @@ const ProfilePage = () => {
       <FullContainer>
         <ProfileHeader />
         <ProfileCard
-          profileImg={userInfo?.user.profile_img}
-          userName={userInfo?.user.profile_name}
-          introduction={userInfo?.user.profile_bio}
+          profileImg={userInfo?.user?.profile_img}
+          userName={userInfo?.user?.profile_name}
+          introduction={userInfo?.user?.profile_bio}
           style={{
             paddingTop: "135px",
             backgroundColor: "transparent",
@@ -132,7 +136,7 @@ const ProfilePage = () => {
             )}
           </>
         ) : (
-          <>존재하지 않는 사용자입니다.</>
+            <>{t("profilePage4")}</>
         )}
       </FullContainer>
     </>

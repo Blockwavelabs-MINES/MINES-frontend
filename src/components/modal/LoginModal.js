@@ -15,6 +15,7 @@ import {
   getInfoFromAccessToken,
   editProfile,
 } from "../../utils/api/auth";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -52,16 +53,29 @@ const TermsBox = styled.div`
 `;
 
 const LoginModalInner = (type, setStatus, onClose) => {
+  const { t } = useTranslation();
+
   const responseGoogle = async (accessToken) => {
     const getInfoFromAccessTokenResult = await getInfoFromAccessToken(
       accessToken
     ).then(async (res) => {
       const createUserResult = await createUser(res.email, "GOOGLE")
         .then(async (userInfo) => {
+          const formData = new FormData();
+
+          formData.append("profileImage", "");
+
+          const formJson = {
+            frontKey: process.env.REACT_APP_3TREE_API_KEY,
+            profileName: res.name,
+            profileBio: `${res.name}'s 3TREE page :)`,
+          };
+
+          formData.append("json", JSON.stringify(formJson));
+
           const editProfileResult = await editProfile(
             userInfo.user_id,
-            res.name,
-            `${res.name}님의 3TREE 페이지입니다 :)`
+            formData
           );
           const loginUserResult = await loginUser(res.email)
             .then((data) => console.log(data))
@@ -71,7 +85,7 @@ const LoginModalInner = (type, setStatus, onClose) => {
               } else {
                 window.location.href = "/createLink";
               }
-              onClose()
+              onClose();
             });
         })
         .catch(async (error) => {
@@ -83,7 +97,7 @@ const LoginModalInner = (type, setStatus, onClose) => {
               } else {
                 window.location.href = "/";
               }
-              onClose()
+              onClose();
             });
         });
     });
@@ -103,10 +117,11 @@ const LoginModalInner = (type, setStatus, onClose) => {
   return (
     <FullContainer>
       <IntroTextBox>
-        <FirstIntro>3Tree 시작하기</FirstIntro>
+        <FirstIntro>{t("loginModal1")}</FirstIntro>
         <SecondIntro>
-          나만의 링크를 생성하고
-          <br /> 디지털 아이덴티티를 확장해보세요
+          {t("loginModal2")}
+          <br />
+          {t("loginModal2_2")}
         </SecondIntro>
       </IntroTextBox>
       {/* <GoogleLogin
@@ -155,15 +170,18 @@ const LoginModalInner = (type, setStatus, onClose) => {
         styles="outlined"
         states="default"
         size="large"
-        label="구글로 시작하기"
+        label={t("loginModal3")}
         icon={SocialGoogle}
         className={"googleButton"}
         onClick={login}
       />
       {/* </GoogleOAuthProvider> */}
       <TermsBox>
-        로그인은 <a>개인정보 보호 정책</a> 및 <a>서비스 약관</a>에 동의하는 것을
-        의미하며, 이용을 위해 이메일과 이름, 프로필 이미지를 수집합니다.
+        {t("loginModal4")}
+        <a>{t("loginModal5")}</a>
+        {t("loginModal6")}
+        <a>{t("loginModal7")}</a>
+        {t("loginModal8")}
       </TermsBox>
     </FullContainer>
   );
@@ -183,7 +201,7 @@ const LoginModal = ({
       closable={closable}
       maskClosable={maskClosable}
       onClose={onClose}
-      renderInput={()=>LoginModalInner(type, setStatus, onClose)}
+      renderInput={() => LoginModalInner(type, setStatus, onClose)}
     />
   );
 };

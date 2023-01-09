@@ -8,6 +8,7 @@ import {
   DropboxFeedback
 } from "../../../assets/icons";
 import Typography from "../../../utils/style/Typography";
+import { useTranslation } from "react-i18next";
 
 const DropBoxContainer = styled.div`
   width: 92px;
@@ -75,6 +76,8 @@ const Divider = styled.div`
 `;
 
 const ProfileDropbox = ({ className, onClose, maskClosable, visible }) => {
+  const { t } = useTranslation();
+
   const onMaskClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose(e);
@@ -87,7 +90,7 @@ const ProfileDropbox = ({ className, onClose, maskClosable, visible }) => {
   };
 
   const settingOnClick = () => {
-    window.location.href = "editProfile";
+    window.location.href = "/settings";
   };
 
   const feedbackOnClick = () => {
@@ -112,17 +115,17 @@ const ProfileDropbox = ({ className, onClose, maskClosable, visible }) => {
           <DropBoxContainer>
             <BubbleTailBox />
             <TapButton onClick={settingOnClick}>
-              <TapText>계정설정</TapText>
+              <TapText>{t("introPageHeader2")}</TapText>
               <TapIcon src={DropboxSettings} />
             </TapButton>
             <Divider />
             <TapButton onClick={feedbackOnClick}>
-              <TapText>피드백</TapText>
+              <TapText>{t("introPageHeader3")}</TapText>
               <TapIcon src={DropboxFeedback} />
             </TapButton>
             <Divider />
             <TapButton onClick={logoutOnClick}>
-              <TapText style={{ color: palette.red_2 }}>로그아웃</TapText>
+              <TapText style={{ color: palette.red_2 }}>{t("introPageHeader4")}</TapText>
               <TapIcon src={DropboxLogout} />
             </TapButton>
           </DropBoxContainer>

@@ -5,7 +5,7 @@ export const createUser = async (socialID, socialPlatform) => {
   let returnValue = 0;
   const result = await axios
     .post(
-      process.env.REACT_APP_DB_HOST + `/users/new`,
+      process.env.REACT_APP_DB_HOST + `/users/signup`,
       `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "socialID":"${socialID}", "socialPlatform":"${socialPlatform}"}`,
       {
         headers: {
@@ -65,7 +65,7 @@ export const checkUserId = async (userID) => {
   return returnValue;
 };
 
-export const editProfile = async (userID, profileName, profileBio) => {
+export const editProfile = async (userID, formData) => {
   //   const formData = new FormData();
   //   formData.append(
   //     "json",
@@ -75,11 +75,11 @@ export const editProfile = async (userID, profileName, profileBio) => {
   var requestOptions = {
     method: "PATCH",
     headers: {
-      //   "Access-Control-Allow-Private-Network": true,
-      //   "Access-Control-Request-Private-Network": true,
-      "Content-Type": "application/json",
+      "Access-Control-Allow-Private-Network": true,
+      "Access-Control-Request-Private-Network": true,
+      // "Content-Type": "application/json",
     },
-    body: `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "profileName":"${profileName}", "profileBio":"${profileBio}"}`,
+    body: formData,
     redirect: "follow",
   };
 

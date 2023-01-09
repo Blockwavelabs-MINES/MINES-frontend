@@ -1,6 +1,7 @@
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import Typograpy from "../../utils/style/Typography";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   height: 212px;
@@ -24,12 +25,17 @@ const TextContainer = styled.div`
 `;
 
 const EmptyCard = ({ icon, text }) => {
+  const { t } = useTranslation();
+
   return (
     <FullContainer>
       <ImageContainer src={icon} />
       <TextContainer>
-        아직 연결된 {text} 없어요. <br />
-        새로운 링크를 추가해보세요!
+        {t("selectWalletPage3")}
+        {text}
+        {t("selectWalletPage3_2")}
+        <br />
+        {t("selectWalletPage4")}
       </TextContainer>
     </FullContainer>
   );

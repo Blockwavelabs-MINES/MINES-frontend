@@ -5,6 +5,7 @@ import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { BottomModal } from "../../../components/modal";
 import { InputBox } from "../../../components/input";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -40,6 +41,7 @@ function AddLinkModalInner(saveAction, onClose, original) {
   const [title, setTitle] = useState(original ? original.link_title : "");
   const [url, setUrl] = useState(original ? original.link_url : "");
   const [canSave, setCanSave] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (title && url) {
@@ -72,21 +74,21 @@ function AddLinkModalInner(saveAction, onClose, original) {
   return (
     <FullContainer>
       <IntroTextBox>
-        <TItleText>링크</TItleText>
+        <TItleText>{t("editLinkModal1")}</TItleText>
         <InputContainer>
           <InputBox
-            label="Link Title"
+            label={t("editLinkModal2")}
             state="filled"
             isRequired={true}
-            placeholder="3Tree"
+            placeholder={t("editLinkModal3")}
             value={title}
             onChange={(e) => titleOnChange(e)}
           />
           <InputBox
-            label="Link URL"
+            label={t("editLinkModal4")}
             state="filled"
             isRequired={true}
-            placeholder="https://3tree.io"
+            placeholder={t("editLinkModal5")}
             value={url}
             onChange={(e) => urlOnChange(e)}
           />
@@ -97,7 +99,7 @@ function AddLinkModalInner(saveAction, onClose, original) {
             styles="filled"
             states="default"
             size="large"
-            label="저장하기"
+            label={t("editLinkModal6")}
             onClick={saveOnClick}
           />
         ) : (
@@ -106,7 +108,7 @@ function AddLinkModalInner(saveAction, onClose, original) {
             styles="filled"
             states="disabled"
             size="large"
-            label="저장하기"
+            label={t("editLinkModal6")}
           />
         )}
       </IntroTextBox>

@@ -7,6 +7,7 @@ import { COLORS as palette } from "../../utils/style/Color/colors";
 import { LoginModal, SingleModal } from "../../components/modal";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { MainImage } from "../../assets/images";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -54,6 +55,7 @@ const IntroPage = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [loginAlertModalVisible, setLoginAlertModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState();
+  const { t } = useTranslation();
 
   useEffect(() => {
     var globalUserInfo = getLocalUserInfo();
@@ -103,9 +105,9 @@ const IntroPage = () => {
               closable={true}
               maskClosable={true}
               onClose={closeLoginAlertModal}
-              text={<>해당 기능을 이용하려면 로그인을 먼저 해야해요.</>}
+                text={<>{t("introPageAlert1")}</>}
               setStatus={setLoginModalVisible}
-              buttonText={"로그인하기"}
+              buttonText={t("introPageAlert2")}
             />
           ) : (
             <></>
@@ -114,11 +116,11 @@ const IntroPage = () => {
       )}
       <IntroTextBox>
         <FirstIntro>
-          소셜계정만 알면 송금할 수 있는
-          <br /> Web3 특화 나만의 링크
+        {t("introPage1")}
+          <br />{t("introPage1_2")}
         </FirstIntro>
         <SecondIntro>
-          나만의 링크를 생성하고 <br /> 디지털 아이덴티티를 확장해보세요
+        {t("introPage2")} <br /> {t("introPage2_2")}
         </SecondIntro>
       </IntroTextBox>
       <MainImageBanner src={MainImage} />
@@ -128,7 +130,7 @@ const IntroPage = () => {
           styles="filled"
           states="default"
           size="large"
-          label="송금하기"
+          label={t("introPage3")}
           onClick={sendOnClick}
         />
         <ContainedButton
@@ -136,7 +138,7 @@ const IntroPage = () => {
           styles="outlined"
           states="default"
           size="large"
-          label="프로필 관리하기"
+          label={t("introPage4")}
           onClick={profileSettingOnClick}
         />
       </ButtonContainer>

@@ -8,6 +8,7 @@ import {
   ProfileEdit,
 } from "../../assets/icons";
 import { ContainedButton } from "../button";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -26,7 +27,7 @@ const ProfileImageBox = styled.div`
   border: 1px solid ${palette.grey_7};
   background-image: url(${({ profileImg }) =>
     profileImg ? profileImg : ProfileLarge});
-  background-size: 120px 120px;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   background-color: transparent;
@@ -59,9 +60,8 @@ const ProfileCard = ({
   isEditable,
   style,
 }) => {
-  const editOnClick = () => {
-    alert("준비중입니다.");
-  };
+  const { t } = useTranslation();
+
   return (
     <FullContainer style={style}>
       <InnerContainer>
@@ -74,7 +74,7 @@ const ProfileCard = ({
             styles="outlined"
             states="default"
             size="large"
-            label="수정하기"
+            label={t("manageProfilePage9")}
             icon={ProfileEdit}
             onClick={onClick}
           />

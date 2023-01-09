@@ -16,6 +16,7 @@ export { default as DropboxFeedback } from "./dropbox-feedback.svg";
 export { default as ExternalLink } from "./external-link.svg";
 export { default as ChevronLeft } from "./chevron-left.svg";
 export { default as ChevronRight } from "./chevron-right.svg";
+export { default as ChevronRightGray } from "./chevron-right-gray.svg";
 export { default as ProfileEdit } from "./profile-edit.svg";
 export { default as EmptyLink } from "./empty-link.svg";
 export { default as EmptyWallet } from "./empty-wallet.svg";

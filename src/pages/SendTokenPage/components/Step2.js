@@ -12,6 +12,10 @@ import { Tooltip } from "../../../components/card";
 import TokenBottomModal from "./TokenBottomModal";
 import CheckSendModal from "./CheckSendModal";
 import Chainlist from "../data/SimpleTokenList";
+// import BigNumber from "big-number";
+// import math from "math.js";
+import { add, bignumber, format, subtract } from "mathjs";
+import { useTranslation } from "react-i18next";
 
 const Container = styled.div`
   width: 100%;
@@ -158,6 +162,7 @@ const TokenInfo = styled.div`
 const TokenIcon = styled.img`
   width: 24px;
   height: 24px;
+  border-radius: 12px;
 `;
 
 const TokenName = styled.div`
@@ -269,6 +274,15 @@ const NoticeIcon = styled.button`
   margin-left: 4px;
 `;
 
+const CurrentBalanceText = styled.div`
+  height: 30px;
+  width: 100%;
+  ${Typography.Headline3}
+  color: ${palette.grey_5};
+  text-align: center;
+  margin-top: 28px;
+`;
+
 const walletConvert = (walletAddress) => {
   var returnAddress = walletAddress;
   if (walletAddress?.length > 15) {
@@ -286,6 +300,24 @@ function isInt(n) {
 
 function isFloat(n) {
   return Number(n) === n && n % 1 !== 0;
+}
+
+function toFixed(x) {
+  if (Math.abs(x) < 1.0) {
+    var e = parseInt(x.toString().split("e-")[1]);
+    if (e) {
+      x *= Math.pow(10, e - 1);
+      x = "0." + new Array(e).join("0") + x.toString().substring(2);
+    }
+  } else {
+    var e = parseInt(x.toString().split("+")[1]);
+    if (e > 20) {
+      e -= 20;
+      x /= Math.pow(10, e);
+      x += new Array(e + 1).join("0");
+    }
+  }
+  return x;
 }
 
 const Step2 = ({
@@ -319,13 +351,14 @@ const Step2 = ({
   const [undefinedChain, setUndefinedChain] = useState(true);
   const [isFinalCheck, setIsFinalCheck] = useState(false);
   const [realBalance, setRealBalance] = useState();
+  const { t } = useTranslation();
   const TooltipText = (
     <TooltipStyle>
       {/* 이더리움 메인넷 (ETH)
-      <br />
-      폴리곤 메인넷 (MATIC)
       <br /> */}
-      이더리움 goerli 테스트넷(ETH)
+      {t("sendpage02_17")}
+      <br />
+      {t("sendpage02_15")}
     </TooltipStyle>
   );
 
@@ -352,17 +385,18 @@ const Step2 = ({
     console.log(isInt(Number(amount)));
     console.log(isFloat(Number(amount)));
     if (!(isInt(Number(amount)) || isFloat(Number(amount)))) {
-      setErrorMessage("숫자만 입력하세요.");
-    } else if (Number(amount) > Number(balance)) {
-      setErrorMessage("보유량 만큼만 입력할 수 있어요.");
+      setErrorMessage(t("sendpage02_3"));
+    } else if (Number(amount) > Number(realBalance)) {
+      setErrorMessage(t("sendpage02_7"));
     } else if (amount == "" || Number(amount) == 0) {
       console.log(Number(amount));
-      setErrorMessage("0보다 큰 수치를 입력하세요.");
+      setErrorMessage(t("sendpage02_5"));
     } else if (Number(amount) < 0) {
-      setErrorMessage("양수만 입력할 수 있어요.");
-    } else if (isFloat(Number(amount)) && amount.split(".")[1]) {
-      if (amount.split(".")[1].length > 18) {
-        setErrorMessage("소숫점 아래 18 자리까지만 입력할 수 있어요.");
+      setBalance(0);
+      setErrorMessage(t("sendpage02_4"));
+    } else if (isFloat(Number(amount)) && String(amount).split(".")[1]) {
+      if (String(amount).split(".")[1].length > 18) {
+        setErrorMessage(t("sendpage02_6"));
       } else {
         setErrorMessage("");
       }
@@ -376,7 +410,10 @@ const Step2 = ({
       const account = address;
       // get balance of custom token (start)
       const Web3 = require("web3");
-      const rpcURL = process.env.REACT_APP_GO_URL;
+      let rpcURL = process.env.REACT_APP_GO_URL;
+      if (networkId == 135) {
+        rpcURL = process.env.REACT_APP_POLYGON_URL;
+      }
       const web3 = new Web3(rpcURL);
 
       let tokenAddress = tokenInfo.address;
@@ -453,8 +490,8 @@ const Step2 = ({
               decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
             );
           } else {
-            setBalance(decimal);
-            setRealBalance(decimal);
+            setBalance(toFixed(decimal));
+            setRealBalance(toFixed(decimal));
           }
         });
       // get balance of custom token (end)
@@ -505,8 +542,8 @@ const Step2 = ({
           decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
         );
       } else {
-        setBalance(decimal);
-        setRealBalance(decimal);
+        setBalance(toFixed(decimal));
+        setRealBalance(toFixed(decimal));
       }
 
       metamaskProvider.on("chainChanged", async function (chainId) {
@@ -527,8 +564,8 @@ const Step2 = ({
             decimal2 * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
           );
         } else {
-          setBalance(decimal2);
-          setRealBalance(decimal2);
+          setBalance(toFixed(decimal));
+          setRealBalance(toFixed(decimal));
         }
       });
 
@@ -536,7 +573,7 @@ const Step2 = ({
       console.log(currentNetwork);
       setNetworkId(currentNetwork);
       console.log(MetamaskChainList);
-      if (currentNetwork == 5) {
+      if (currentNetwork == 5 || currentNetwork == 137) {
         // 현재 지원하는 네트워크 유효성 검사
         setNetwork(
           MetamaskChainList[
@@ -559,7 +596,7 @@ const Step2 = ({
       metamaskProvider.on("chainChanged", function (chainId) {
         // Time to reload your interface with accounts[0]!
         console.log(chainId);
-        if (chainId == 5) {
+        if (chainId == 5 || currentNetwork == 137) {
           // 현재 지원하는 네트워크 유효성 검사
           setNetwork(
             MetamaskChainList[
@@ -569,7 +606,7 @@ const Step2 = ({
             ].pageProps.chain.name
           );
         } else {
-          setNetwork("지원하지 않는 네트워크");
+          setNetwork(t("sendpage02_13"));
         }
 
         setNetworkId(chainId);
@@ -590,6 +627,7 @@ const Step2 = ({
 
   const maxOnClick = () => {
     setAmount(balance);
+    setBalance(0);
   };
 
   const notiOnClose = () => {
@@ -641,7 +679,7 @@ const Step2 = ({
           <EmailIcon src={platformIcon} />
           <EmailBox>{email}</EmailBox>
         </EmailInfo>
-        <EmailBoxText>계정으로</EmailBoxText>
+        <EmailBoxText>{t("sendpage02_1")}</EmailBoxText>
       </EmailCheckBox>
       <SendContainer>
         <SelectTokenBox onClick={() => setTokenOpen(true)}>
@@ -658,7 +696,7 @@ const Step2 = ({
           <DropIconBox src={DropIcon} />
         </SelectTokenBox>
         <AmountInputBox
-          placeholder="얼마나 보낼까요?"
+          placeholder={t("sendpage02_2")}
           value={amount}
           onChange={(e) => {
             setAmount(e.target.value);
@@ -667,13 +705,24 @@ const Step2 = ({
                 isFloat(Number(e.target.value))) &&
               !(Number(e.target.value) > Number(realBalance))
             ) {
-              setBalance(Number(realBalance) - Number(e.target.value));
+              const result = subtract(
+                // bignumber(0.00006326),
+                // bignumber(0.0000632)
+                // bignumber(Number(realBalance)),
+                bignumber(Number(realBalance)),
+                bignumber(Number(e.target.value))
+                // bignumber(Number(e.target.value))
+              );
+              // console.log(toFixed(tmpBalance));
+              const tmpBalance = toFixed(format(result));
+              setBalance(tmpBalance);
               console.log(
                 "전송 후 잔액 , ",
-                Number(realBalance) - Number(e.target.value)
+                // Number(realBalance) - Number(e.target.value)
+                tmpBalance
               );
             } else {
-              setBalance(realBalance);
+              setBalance(toFixed(realBalance));
             }
           }}
         />
@@ -685,19 +734,27 @@ const Step2 = ({
         ) : (
           <></>
         )}
-        <ContainedButton
-          type="secondary"
-          styles="outlined"
-          states="default"
-          size="small"
-          label={balance ? `잔액 ${balance} ${currency} 입력` : "잔액이 없어요"}
-          style={{ margin: "0px auto", marginTop: "32px" }}
-          onClick={maxOnClick}
-        />
+        {realBalance == balance ? (
+          <ContainedButton
+            type="secondary"
+            styles="outlined"
+            states="default"
+            size="small"
+            label={
+              balance ? `${t("sendpage02_8")}${balance} ${currency}${t("sendpage02_9")}` : t("sendpage02_10")
+            }
+            style={{ margin: "0px auto", marginTop: "32px" }}
+            onClick={maxOnClick}
+          />
+        ) : (
+          <CurrentBalanceText>
+            {t("sendpage02_11")}{balance} {currency}
+          </CurrentBalanceText>
+        )}
       </SendContainer>
       <NetworkWalletInfoBox>
         <NetworkNameBox>
-          {network.startsWith("지") ? (
+          {network == t("sendpage02_13") ? (
             <>
               {/* <NetworkStatusCircle style={{backgroundColor:palette.red_2}}/> */}
               <NetworkName style={{ color: palette.red_2 }}>
@@ -712,14 +769,14 @@ const Step2 = ({
             </>
           )}
         </NetworkNameBox>
-        <WalletTitle>연결된 내 지갑</WalletTitle>
+        <WalletTitle>{t("sendpage02_12")}</WalletTitle>
         <WalletContainer>
           <IconBox src={MetamaskIcon} />
           <AddressBox>{walletConvert(address)}</AddressBox>
         </WalletContainer>
       </NetworkWalletInfoBox>
       <HelpTextContainer>
-        <HelpText>지원하는 네트워크</HelpText>
+        <HelpText>{t("sendpage02_14") }</HelpText>
         <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
           {notiClick ? (
             <Tooltip
@@ -741,7 +798,7 @@ const Step2 = ({
             styles="filled"
             states="default"
             size="large"
-            label="보내기"
+            label={t("sendpage02_16")}
             onClick={sendOnClick}
           />
         ) : (
@@ -750,7 +807,7 @@ const Step2 = ({
             styles="filled"
             states="disabled"
             size="large"
-            label="보내기"
+            label={t("sendpage02_16")}
           />
         )}
       </StepButtonContainer>

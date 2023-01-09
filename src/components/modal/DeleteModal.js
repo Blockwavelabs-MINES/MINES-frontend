@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Typography from "../../utils/style/Typography";
 import { ContainedButton } from "../../components/button";
 import { COLORS as palette } from "../../utils/style/Color/colors";
+import { useTranslation } from "react-i18next";
 
 const InnerContainer = styled.div`
   width: 100%;
@@ -30,8 +31,10 @@ function DeleteModal({
   text,
   setRealDelete,
   buttonText,
-  subDeleteOnClick
+  subDeleteOnClick,
 }) {
+  const { t } = useTranslation();
+
   const onMaskClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose(e);
@@ -40,8 +43,10 @@ function DeleteModal({
 
   const realDeleteOnClick = () => {
     setRealDelete(true);
-    subDeleteOnClick();
-    console.log("hi")
+    try {
+      subDeleteOnClick();
+    } catch {}
+    console.log("hi");
     onClose();
   };
 
@@ -67,7 +72,11 @@ function DeleteModal({
                 styles="filled"
                 states="default"
                 size="large"
-                label={buttonText ? buttonText : "삭제"}
+                label={
+                  buttonText
+                    ? buttonText
+                    : t("manageProfilePageAlertDeleteLink3")
+                }
                 style={{ backgroundColor: palette.red_2 }}
                 onClick={realDeleteOnClick}
               />
@@ -76,7 +85,7 @@ function DeleteModal({
                 styles="outlined"
                 states="default"
                 size="large"
-                label="취소"
+                label={t("manageProfilePageAlertDeleteLink4")}
                 onClick={cancelOnClick}
               />
             </ButtonContainer>

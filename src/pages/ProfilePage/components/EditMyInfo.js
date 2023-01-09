@@ -8,6 +8,7 @@ import { ProfileCard } from "../../../components/card";
 import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 import { CameraIcon, ProfileLarge } from "../../../assets/icons";
 import { InputBox, TextAreaBox } from "../../../components/input";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -60,12 +61,13 @@ const ProfileFilter = styled.div`
 const EditMyInfo = ({ userInfo, setEditMyInfo }) => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [profileImage, setProfileImage] = useState({
-    file: userInfo.profileImg,
-    imagePreviewUrl: userInfo.profileImg,
+    file: userInfo.profile_img,
+    imagePreviewUrl: userInfo.profile_img,
   });
   const [profileImageChange, setProfileImageChange] = useState(false);
   const [name, setName] = useState(userInfo.userId);
   const [introduction, setIntroduction] = useState(userInfo.introduction);
+  const { t } = useTranslation();
 
   const handleClick = (event) => {
     hiddenFileInput.current.click();
@@ -122,7 +124,7 @@ const EditMyInfo = ({ userInfo, setEditMyInfo }) => {
     <>
       <FullContainer>
         <EditProfileHeader
-          title="내 정보 수정"
+          title={t("editProfilePageHeader")}
           leftOnClick={setEditMyInfo}
           rightOnClick={saveEditUserInfo}
         />
@@ -140,9 +142,9 @@ const EditMyInfo = ({ userInfo, setEditMyInfo }) => {
             }}
           >
             <ProfileFilter>
-              프로필 사진
+              {t("editProfilePage2")}
               <br />
-              (최대 5MB)
+              {t("editProfilePage3")}
             </ProfileFilter>
             <IconButton
               type="primary"
@@ -169,16 +171,16 @@ const EditMyInfo = ({ userInfo, setEditMyInfo }) => {
         </ProfileImageButtonContainer>
         <InnerContainer>
           <InputBox
-            label="이름"
+            label={t("editProfilePage4")}
             state="inactive"
             isRequired={true}
-            placeholder="이름"
+            placeholder={t("editProfilePage4")}
             value={name}
             onChange={(e) => nameOnChange(e)}
           />
           <TextAreaBox
-            label="소개"
-            placeholder="자신을 소개하는 말을 적어주세요."
+            label={t("editProfilePage5")}
+            placeholder={t("editProfilePage6")}
             value={introduction}
             onChange={(e) => introductionOnChange(e)}
             maxSize={100}

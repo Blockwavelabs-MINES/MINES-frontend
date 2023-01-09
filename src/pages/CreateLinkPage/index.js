@@ -10,6 +10,7 @@ import {
   getLocalUserInfo,
 } from "../../utils/functions/setLocalVariable";
 import { createUserId, checkUserId } from "../../utils/api/auth";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -66,6 +67,7 @@ const CreateLinkPage = () => {
   const [createSuccess, setCreateSuccess] = useState(false);
   const [errorComment, setErrorComment] = useState("");
   const [userInfo, setUserInfo] = useState();
+  const { t } = useTranslation();
 
   useEffect(() => {
     var globalUserInfo = getLocalUserInfo();
@@ -87,14 +89,10 @@ const CreateLinkPage = () => {
 
     if ((linkId.length <= 4 || linkId.length >= 20) && linkId) {
       setState("error");
-      setErrorComment(
-        "Your user ID must be longer than 4, less than 20 characters."
-      );
+      setErrorComment(t("createLink6"));
     } else if (!testResult && linkId) {
       setState("error");
-      setErrorComment(
-        "Your username can only contain letters, numbers and '_'"
-      );
+      setErrorComment(t("createLink5"));
     } else {
       setErrorComment("");
     }
@@ -109,46 +107,48 @@ const CreateLinkPage = () => {
   };
 
   const createOnClick = async () => {
-    const checkUserIdResult = await checkUserId(linkId).then(
-      async (data) => {
-        console.log(data);
-        if (data == false) {
-          const createUserIdResult = await createUserId(
-            linkId,
-            userInfo.user.index
-          ).then((data) => {
-            setLocalUserInfo({
-              type: "edit",
-              editKey: ["user", "user_id"],
-              editValue: linkId,
-            });
-            setCreateSuccess(true);
+    const checkUserIdResult = await checkUserId(linkId).then(async (data) => {
+      console.log(data);
+      if (data == false) {
+        const createUserIdResult = await createUserId(
+          linkId,
+          userInfo.user.index
+        ).then((data) => {
+          setLocalUserInfo({
+            type: "edit",
+            editKey: ["user", "user_id"],
+            editValue: linkId,
           });
-        } else {
-          setState("error");
-          setErrorComment(`The link "${linkId}" is already taken.`);
-        }
+          setCreateSuccess(true);
+        });
+      } else {
+        setState("error");
+        setErrorComment(
+          `${t("createLink7")} "${linkId}" ${t("createLink7_2")}`
+        );
       }
-    );
+    });
   };
   return (
     <FullContainer>
       {createSuccess ? (
-        <CreateSuccess />
+        <CreateSuccess linkId={linkId}/>
       ) : (
         <>
           <IntroTextBox>
-            <FirstIntro>나만의 링크 만들기</FirstIntro>
+            <FirstIntro>{t("createLink1")}</FirstIntro>
             <SecondIntro>
-              나만의 링크를 생성하고 <br /> 디지털 아이덴티티를 확장해보세요
+              {t("createLink2")}
+              <br />
+              {t("createLink2_2")}
             </SecondIntro>
           </IntroTextBox>
           <InputContainer>
             <InputBox
-              label="링크 생성"
+              label={t("createLink3")}
               isRequired={false}
               state={state}
-              placeholder={"your_link"}
+              placeholder={"UserID"}
               message={errorComment}
               fixedMent={"3tree.io/@"}
               fixedMentSize={"85px"}
@@ -166,7 +166,7 @@ const CreateLinkPage = () => {
                 styles="filled"
                 states="disabled"
                 size="large"
-                label="생성하기"
+                label={t("createLink8")}
               />
             ) : (
               <ContainedButton
@@ -174,7 +174,7 @@ const CreateLinkPage = () => {
                 styles="filled"
                 states="default"
                 size="large"
-                label="생성하기"
+                label={t("createLink8")}
                 onClick={createOnClick}
               />
             )}

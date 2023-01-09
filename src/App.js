@@ -6,7 +6,8 @@ import {
   EditProfilePage,
   ProfilePage,
   SendTokenPage,
-  ReceiveTokenPage
+  ReceiveTokenPage,
+  SettingPage
 } from "./pages";
 import React from "react";
 import styled from "styled-components";
@@ -47,6 +48,7 @@ function App() {
             <ScrollToTop />
             <Routes>
               <Route exact path="/" element={<IntroPage />} />
+              <Route path="/settings" element={<SettingPage />} />
               <Route path="/components" element={<ComponentTestPage />} />
               <Route path="/createLink" element={<CreateLinkPage />} />
               <Route path="/editProfile" element={<EditProfilePage />} />

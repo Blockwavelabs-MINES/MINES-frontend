@@ -8,6 +8,7 @@ import Lottie from "react-lottie-player";
 import animation from "../../../assets/lottie/check-lottie.json";
 import { MetamaskIcon, GreenCheck, ChevronRight } from "../../../assets/icons";
 import { CompasImage } from "../../../assets/images";
+import { useTranslation } from "react-i18next";
 
 const ContentContainer = styled.div`
   padding-left: 20px;
@@ -113,21 +114,30 @@ const walletConvert = (walletAddress) => {
 };
 
 const ReceiveComplete = ({ receiveInfo }) => {
+  const { t } = useTranslation();
+
   const txHashExplorerOnClick = () => {
-    window.open(
-      `https://goerli.etherscan.io/tx/${receiveInfo.transaction_escrow_hash}`
-    );
+    if (Number(receiveInfo.network_id) == 5) {
+      window.open(
+        `https://goerli.etherscan.io/tx/${receiveInfo.transaction_escrow_hash}`
+      );
+    } else if (Number(receiveInfo.network_id) == 137) {
+      window.open(
+        `https://polygonscan.com/tx/${receiveInfo.transaction_escrow_hash}`
+      );
+    }
+    
   };
   return (
     <>
       <ContentContainer>
         <LottieContainer>
-          <Lottie animationData={animation} loop={false} play/>
+          <Lottie animationData={animation} loop={false} play />
         </LottieContainer>
         <TextLine>
           {receiveInfo?.token_amount} {receiveInfo?.token_udenom}
           <br />
-          받기완료!
+          {t("receiveTokenComplete2")}
         </TextLine>
         <WalletBox>
           <CheckBox src={GreenCheck} />
@@ -139,14 +149,12 @@ const ReceiveComplete = ({ receiveInfo }) => {
             icon={MetamaskIcon}
           />
         </WalletBox>
-        <CheckTxTitle>받은 내역 확인하고 싶다면?</CheckTxTitle>
+        <CheckTxTitle>{t("receiveTokenComplete3")}</CheckTxTitle>
         <TxHashCard onClick={txHashExplorerOnClick}>
           <RightArrow src={ChevronRight} />
           <TimerBox src={CompasImage} />
           <TxHashInfobox>
-            <TxHashInfoTitle>
-              트랜잭션 해시로 받은 내역 확인해요!
-            </TxHashInfoTitle>
+            <TxHashInfoTitle>{t("receiveTokenComplete4")}</TxHashInfoTitle>
             <TxHashAddressBox>
               <TxHashAddress>
                 {walletConvert(receiveInfo?.transaction_escrow_hash)}
@@ -158,7 +166,7 @@ const ReceiveComplete = ({ receiveInfo }) => {
           href="https://forms.gle/4CGoKQAWzJVG2dd69"
           target="_blank"
         >
-          문제가 생겼나요?
+          {t("receiveTokenComplete5")}
         </ComplainLink>
       </ContentContainer>
     </>

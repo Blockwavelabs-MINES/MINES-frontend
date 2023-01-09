@@ -4,6 +4,7 @@ import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { EmptyCard, EditableCard } from "../../../components/card";
 import { EmptyWallet, MetamaskIcon } from "../../../assets/icons";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -31,6 +32,7 @@ const ListContainer = styled.div`
 `;
 
 const walletConvert = (walletAddress) => {
+  
   var returnAddress = walletAddress;
   if (walletAddress?.length > 15) {
     returnAddress =
@@ -51,6 +53,7 @@ function isMobileDevice() {
 const WalletComponent = ({ userWalletList }) => {
   const [walletList, setWalletList] = useState(userWalletList);
   const [copyPivotVisible, setCopyPivotVisible] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setWalletList(userWalletList);
@@ -65,7 +68,7 @@ const WalletComponent = ({ userWalletList }) => {
       textarea.setSelectionRange(0, 9999); // For IOS
       document.execCommand("copy");
       document.body.removeChild(textarea);
-      alert("링크 복사 완료!");
+      alert(t("createLinkDone5"));
     };
 
     handleCopyClipBoard(walletAddress);
@@ -74,10 +77,10 @@ const WalletComponent = ({ userWalletList }) => {
   return (
     <FullContainer>
       <TitleContainer>
-        <TItleText>지갑</TItleText>
+        <TItleText>{t("profilePage2")}</TItleText>
       </TitleContainer>
       {walletList?.length == 0 ? (
-        <EmptyCard icon={EmptyWallet} text="지갑이" />
+        <EmptyCard icon={EmptyWallet} text={t("selectWalletPage3_3")} />
       ) : (
         <ListContainer>
           {walletList?.map((wallet, idx) => (
@@ -85,7 +88,7 @@ const WalletComponent = ({ userWalletList }) => {
               label={walletConvert(wallet.wallet_address)}
               // icon={wallet.icon}
               icon={MetamaskIcon}
-              onClick={()=>walletOnClick(wallet.wallet_address)}
+              onClick={() => walletOnClick(wallet.wallet_address)}
             />
           ))}
         </ListContainer>

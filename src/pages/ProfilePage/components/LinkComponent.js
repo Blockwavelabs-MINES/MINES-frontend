@@ -7,6 +7,7 @@ import { EmptyCard, EditableCard } from "../../../components/card";
 import { EmptyLink, LinkIcon } from "../../../assets/icons";
 import { DeleteModal } from "../../../components/modal";
 import AddLinkModal from "./AddLinkModal";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -35,6 +36,7 @@ const ListContainer = styled.div`
 
 const LinkComponent = ({ userLinkList }) => {
   const [linkList, setLinkList] = useState(userLinkList);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setLinkList(userLinkList);
@@ -47,11 +49,11 @@ const LinkComponent = ({ userLinkList }) => {
   return (
     <FullContainer>
       <TitleContainer>
-        <TItleText>링크</TItleText>
+        <TItleText>{t("manageProfilePage1")}</TItleText>
       </TitleContainer>
       {linkList?.length == 0 ? (
         <>
-          <EmptyCard icon={EmptyLink} text="링크가" />
+          <EmptyCard icon={EmptyLink} text={t("selectWalletPage3_4")} />
         </>
       ) : (
         <ListContainer>

@@ -9,6 +9,7 @@ import { getUserInfo } from "../../../utils/api/auth";
 import ReceiveComplete from "./ReceiveComplete";
 import { LoadingComponent } from "../../../components/card";
 import FailComponent from "./FailComponent";
+import { useTranslation } from "react-i18next";
 
 const ContentContainer = styled.div`
   padding-left: 20px;
@@ -39,6 +40,9 @@ const SelectWallet = ({ linkInfo }) => {
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
   const [sendOnClick, setSendOnClick] = useState(null);
+  const [resend, setResend] = useState(false);
+  const [select, setSelect] = useState(0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     var globalUserInfo = getLocalUserInfo();
@@ -71,18 +75,31 @@ const SelectWallet = ({ linkInfo }) => {
           ) : (
             <>
               {failed ? (
-                <FailComponent buttonOnClick={sendOnClick} />
+                <FailComponent
+                  buttonOnClick={sendOnClick}
+                  setFailed={setFailed}
+                  setResend={setResend}
+                />
               ) : (
                 <>
-                  <SendTokenHeader title="송금받기" leftOnClick={leftOnClick} />
-                  <ContentContainer>
-                    <TextBox>
-                      <HeaderBox>송금 받을 지갑을 선택해주세요</HeaderBox>
-                      <SubtextBox>
-                        선택한 지갑으로 토큰을 받을 수 있어요!
-                      </SubtextBox>
-                    </TextBox>
-                  </ContentContainer>
+                  {!resend ? (
+                    <>
+                      <SendTokenHeader
+                        title={t("receiveTokenPage1")}
+                        leftOnClick={leftOnClick}
+                      />
+                      <ContentContainer>
+                        <TextBox>
+                          <HeaderBox>{t("selectWalletPage1")}</HeaderBox>
+                          <SubtextBox>
+                          {t("selectWalletPage2")}
+                          </SubtextBox>
+                        </TextBox>
+                      </ContentContainer>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                   <WalletComponent
                     userInfoProps={userInfo}
                     setInfoChange={setInfoChange}
@@ -93,6 +110,9 @@ const SelectWallet = ({ linkInfo }) => {
                     setLoading={setLoading}
                     setFailed={setFailed}
                     setSendOnClick={setSendOnClick}
+                    resend={resend}
+                    select={select}
+                    setSelect={setSelect}
                   />
                 </>
               )}

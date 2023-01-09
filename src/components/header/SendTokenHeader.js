@@ -5,6 +5,7 @@ import Typograpy from "../../utils/style/Typography";
 import { IconButton, TextButton } from "../button";
 import { ProfileSmall, ChevronLeft, ExternalLink } from "../../assets/icons";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
+import { useTranslation } from "react-i18next";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -40,6 +41,8 @@ const SendTokenHeader = ({
   leftOnClick,
   rightOnClick,
 }) => {
+  const { t } = useTranslation();
+
   const leftIconOnClick = () => {
     leftOnClick(false);
   };
@@ -64,7 +67,7 @@ const SendTokenHeader = ({
               styles="active"
               states="default"
               size="large"
-              label="닫기"
+              label={t("sendPage01Header2")}
               onClick={rightOnClick}
             />
           ) : (

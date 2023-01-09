@@ -18,6 +18,7 @@ import { LoginModal } from "../../components/modal";
 import { getUserInfo, getUserInfoByIndex } from "../../utils/api/auth";
 import { SelectWallet } from "./components";
 import { getTrxsLinkInfo } from "../../utils/api/trxs";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -157,19 +158,51 @@ function pad(n) {
   return n < 10 ? "0" + n : n;
 }
 
-const convertDateFormat = (dateString) => {
+const convertDateFormat = (dateString, a, b, c, d) => {
   const toTimestamp = Date.parse(dateString);
   console.log(toTimestamp);
-  const convertedDate =
-    pad(new Date(toTimestamp).getFullYear().toString()) +
-    "년 " +
-    pad(new Date(toTimestamp).getUTCMonth() + 1) +
-    "월 " +
-    pad(new Date(toTimestamp).getUTCDate()) +
-    "일 " +
-    pad(new Date(toTimestamp).getUTCHours()) +
-    ":" +
-    pad(new Date(toTimestamp).getUTCMinutes());
+  let convertedDate = "";
+  if (JSON.parse(localStorage.getItem("language"))?.lang == "en") {
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    convertedDate =
+      a +
+      pad(new Date(toTimestamp).getUTCHours()) +
+      ":" +
+      pad(new Date(toTimestamp).getUTCMinutes()) +
+      b +
+      monthNames[Number(new Date(toTimestamp).getUTCMonth())] +
+      " " +
+      pad(new Date(toTimestamp).getUTCDate()) +
+      d+ " " +
+      pad(new Date(toTimestamp).getFullYear().toString());
+  } else {
+    convertedDate =
+      a +
+      pad(new Date(toTimestamp).getFullYear().toString()) +
+      b +
+      pad(new Date(toTimestamp).getUTCMonth() + 1) +
+      c +
+      pad(new Date(toTimestamp).getUTCDate()) +
+      d +
+      pad(new Date(toTimestamp).getUTCHours()) +
+      ":" +
+      pad(new Date(toTimestamp).getUTCMinutes());
+  }
+
   // ":" +
   // pad(new Date(toTimestamp).getUTCSeconds());
   return convertedDate;
@@ -212,13 +245,14 @@ const ReceiveTokenPage = () => {
   const [loginDone, setLoginDone] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [isExpired, setIsExpired] = useState(false);
+  const { t } = useTranslation();
+
   const TooltipText = (
     <TooltipStyle>
-      수령은 전송일로부터 3일 내에 해당 소셜계정으로 인증하면 수령할 수 있으며,
-      기한 내 미수령시 반환됩니다.
+      {t("previewPage10")}
       <br />
       <br />
-      미수령으로 인한 반환시에는 보낸 토큰의 0.5%를 제한 토큰이 자동반환됩니다.
+      {t("previewPage11")}
     </TooltipStyle>
   );
 
@@ -331,28 +365,38 @@ const ReceiveTokenPage = () => {
                   <ImageContainer src={PigImage} />
                   <InfoLine>
                     <InfoText>@{senderUser}</InfoText>
-                    <BodyText>님이</BodyText>
+                    <BodyText>{t("receiveTokenPage2")}</BodyText>
                   </InfoLine>
                   <InfoLine>
                     <InfoText>
                       {linkInfo?.token_amount} {linkInfo?.token_udenom}
                     </InfoText>
-                    <BodyText>를 보냈어요!</BodyText>
+                    <BodyText>{t("receiveTokenPage3")}</BodyText>
                   </InfoLine>
                   <ExpiredCard>
                     <TimerBox src={TimerImage} />
                     <ExpiredInfobox>
-                      <ExpiredInfoTitle>송금 받기 유효 기간</ExpiredInfoTitle>
+                      <ExpiredInfoTitle>
+                        {t("receiveTokenPage4")}
+                      </ExpiredInfoTitle>
                       <ExpiredDateBox>
                         <ExpiredDate>
-                          {convertDateFormat(linkInfo?.expired_at)}
+                          {convertDateFormat(
+                            linkInfo?.expired_at,
+                            t("receiveTokenPage5"),
+                            t("receiveTokenPage6"),
+                            t("receiveTokenPage7"),
+                            t("receiveTokenPage8")
+                          )}
                         </ExpiredDate>
-                        <ExpiredDateText>까지</ExpiredDateText>
+                        <ExpiredDateText>
+                          {t("receiveTokenPage9")}
+                        </ExpiredDateText>
                       </ExpiredDateBox>
                     </ExpiredInfobox>
                   </ExpiredCard>
                   <NoticeBox>
-                    <NoticeText>유의사항</NoticeText>
+                    <NoticeText>{t("receiveTokenPage10")}</NoticeText>
                     <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
                       {notiClick ? (
                         <Tooltip
@@ -372,7 +416,7 @@ const ReceiveTokenPage = () => {
                     styles="filled"
                     states="default"
                     size="large"
-                    label="로그인해서 받기"
+                    label={t("receiveTokenPage13")}
                     onClick={() => {
                       setLoginModalVisible(true);
                     }}
@@ -385,17 +429,20 @@ const ReceiveTokenPage = () => {
                       {isExpired ? (
                         <>
                           <ImageContainer src={CloudImage} />
-                          <TextLine>수령 가능일이 지난 링크입니다</TextLine>
+                          <TextLine>{t("receiveTokenTimeOver1")}</TextLine>
                           <CheckTxTitle>
-                            @{senderUser}님에게 토큰이 다시 반환 되었어요
+                            @{senderUser}
+                            {t("receiveTokenTimeOver2")}
                           </CheckTxTitle>
                         </>
                       ) : (
                         <>
                           <ImageContainer src={CheckImage} />
-                          <TextLine>이미 송금 받은 링크입니다.</TextLine>
+                          <TextLine>
+                            {t("receiveTokenAlreadyReceived1")}
+                          </TextLine>
                           <CheckTxTitle>
-                            지갑에서 송금 받은 내역을 확인 해주세요!
+                            {t("receiveTokenAlreadyReceived2")}
                           </CheckTxTitle>
                         </>
                       )}
@@ -403,15 +450,17 @@ const ReceiveTokenPage = () => {
                   ) : (
                     <>
                       <ImageContainer src={CloudImage} />
-                      <TextLine>유효하지 않은 링크입니다</TextLine>
-                      <CheckTxTitle>링크를 다시 확인해주세요!</CheckTxTitle>
+                      <TextLine>{t("receiveTokenUnknownLink1")}</TextLine>
+                      <CheckTxTitle>
+                        {t("receiveTokenUnknownLink2")}
+                      </CheckTxTitle>
                     </>
                   )}
                   <ComplainLink
                     href="https://forms.gle/4CGoKQAWzJVG2dd69"
                     target="_blank"
                   >
-                    문제가 생겼나요?
+                    {t("receiveTokenUnknownLink3")}
                   </ComplainLink>
                 </>
               )}

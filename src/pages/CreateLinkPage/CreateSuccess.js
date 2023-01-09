@@ -4,6 +4,7 @@ import { ContainedButton } from "../../components/button";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import { CreateSuccess as SuccessImg } from "../../assets/icons";
+import { useTranslation } from "react-i18next";
 
 const IntroTextBox = styled.div`
   width: 90%;
@@ -48,20 +49,33 @@ const SuccessImage = styled.img`
   margin-top: 63px;
 `;
 
-const CreateSuccess = () => {
+const CreateSuccess = ({linkId}) => {
+  const { t } = useTranslation();
+
   const settingOnClick = () => {
     window.location.href = "/editProfile";
   };
 
   const copyOnClick = () => {
-    alert("준비중입니다.");
+    const handleCopyClipBoard = async (text) => {
+      var textarea = document.createElement("textarea");
+      textarea.value = text; // 복사할 메시지
+      document.body.appendChild(textarea);
+      textarea.select();
+      textarea.setSelectionRange(0, 9999); // For IOS
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      alert(t("createLinkDone5"));
+    };
+
+    handleCopyClipBoard(`https://3tree.io/@${linkId}`);
   };
   return (
     <>
       <IntroTextBox>
-        <FirstIntro>링크 생성완료!</FirstIntro>
+        <FirstIntro>{t("createLinkDone1")}</FirstIntro>
         <SecondIntro>
-          프로필을 다듬고 <br /> 디지털 아이덴티티를 확장해보세요!
+        {t("createLinkDone2")}<br />{t("createLinkDone2_2")}
         </SecondIntro>
       </IntroTextBox>
       <SuccessImage src={SuccessImg} />
@@ -71,7 +85,7 @@ const CreateSuccess = () => {
           styles="filled"
           states="default"
           size="large"
-          label="프로필 관리하기"
+          label={t("createLinkDone3")}
           onClick={settingOnClick}
         />
         <ContainedButton
@@ -79,7 +93,7 @@ const CreateSuccess = () => {
           styles="outlined"
           states="default"
           size="large"
-          label="프로필 복사하기"
+          label={t("createLinkDone4")}
           onClick={copyOnClick}
         />
       </ButtonContainer>

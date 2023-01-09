@@ -4,6 +4,7 @@ import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { CrossImage } from "../../../assets/images";
 import { ContainedButton } from "../../../components/button";
+import { useTranslation } from "react-i18next";
 
 const ContentContainer = styled.div`
   padding-left: 20px;
@@ -45,7 +46,9 @@ const ComplainLink = styled.a`
   color: ${palette.grey_4};
 `;
 
-const FailComponent = ({ buttonOnClick }) => {
+const FailComponent = ({ buttonOnClick, setFailed, setResend }) => {
+  const { t } = useTranslation();
+
   console.log(buttonOnClick);
   return (
     <>
@@ -53,16 +56,17 @@ const FailComponent = ({ buttonOnClick }) => {
         <LottieContainer>
           <CrossImageBox src={CrossImage} />
         </LottieContainer>
-        <TextLine>토큰 보내기에 실패했어요</TextLine>
-        <CheckTxTitle>다시 한 번 시도해주세요!</CheckTxTitle>
+        <TextLine>{t("sendPage03Fail1")}</TextLine>
+        <CheckTxTitle>{t("sendPage03Fail2")}</CheckTxTitle>
         <ContainedButton
           type="primary"
           styles="filled"
           states="default"
           size="large"
-          label="다시보내기"
-          onClick={async () => {
-            const promise = await buttonOnClick();
+          label={t("sendPage03Fail3")}
+          onClick={() => {
+            setFailed(false);
+            setResend(true);
           }}
           style={{ marginBottom: "22px" }}
         />
@@ -70,7 +74,7 @@ const FailComponent = ({ buttonOnClick }) => {
           href="https://forms.gle/4CGoKQAWzJVG2dd69"
           target="_blank"
         >
-          문제가 생겼나요?
+          {t("sendPage03Fail4")}
         </ComplainLink>
       </ContentContainer>
     </>

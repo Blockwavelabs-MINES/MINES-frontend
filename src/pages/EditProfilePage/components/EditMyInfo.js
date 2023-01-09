@@ -10,6 +10,8 @@ import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 import { CameraIcon, ProfileLarge } from "../../../assets/icons";
 import { InputBox, TextAreaBox } from "../../../components/input";
 import { editProfile } from "../../../utils/api/auth";
+import imageCompression from "browser-image-compression";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -70,6 +72,7 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   const [introduction, setIntroduction] = useState(userInfo?.user.profile_bio);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [realDelete, setRealDelete] = useState(false);
+  const { t } = useTranslation();
   // useEffect(() => {
   //   if (introduction.length > 100) {
   //     setIntroduction(introduction.substr(0, 100));
@@ -77,23 +80,60 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   // }, [introduction]);
 
   const handleClick = (event) => {
-    // hiddenFileInput.current.click();
+    hiddenFileInput.current.click();
     // console.log("??");
 
-    alert("준비중인 기능입니다.");
+    // alert("준비중인 기능입니다.");
   };
 
-  const handleChange = (event) => {
+  const handleChange = async (event) => {
     console.log("hello");
     let reader = new FileReader();
     const fileUploaded = event.target.files[0];
     console.log(fileUploaded);
-    setProfileImage({ file: fileUploaded, imagePreviewUrl: fileUploaded });
-    reader.onloadend = () => {
-      setProfileImage({ file: fileUploaded, imagePreviewUrl: reader.result });
-    };
-    reader.readAsDataURL(fileUploaded);
-    setProfileImageChange(true);
+    let imageSize = fileUploaded.size / 1024 / 1024;
+    console.log(imageSize, "MB");
+
+    if (imageSize > 5) {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
+
+      try {
+        const compressedFile = await imageCompression(fileUploaded, options);
+        console.log(
+          "compressedFile instanceof Blob",
+          compressedFile instanceof Blob
+        ); // true
+        console.log(
+          `compressedFile size ${compressedFile.size / 1024 / 1024} MB`
+        ); // smaller than maxSizeMB
+
+        setProfileImage({
+          file: compressedFile,
+          imagePreviewUrl: compressedFile,
+        });
+        reader.onloadend = () => {
+          setProfileImage({
+            file: compressedFile,
+            imagePreviewUrl: reader.result,
+          });
+        };
+        reader.readAsDataURL(compressedFile);
+        setProfileImageChange(true);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      setProfileImage({ file: fileUploaded, imagePreviewUrl: fileUploaded });
+      reader.onloadend = () => {
+        setProfileImage({ file: fileUploaded, imagePreviewUrl: reader.result });
+      };
+      reader.readAsDataURL(fileUploaded);
+      setProfileImageChange(true);
+    }
   };
 
   const nameOnChange = (e) => {
@@ -118,27 +158,38 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
     // setLocalUserInfo({ type: "init", data: saveData });
     console.log(userInfo?.user.profile_name);
 
+    const formData = new FormData();
+
+    formData.append("profileImage", profileImage?.file);
+
+    const formJson = {
+      frontKey: process.env.REACT_APP_3TREE_API_KEY,
+      profileName: name,
+      profileBio: introduction,
+    };
+
+    formData.append("json", JSON.stringify(formJson));
+
     const editProfileResult = await editProfile(
       userInfo?.user.user_id,
-      name,
-      introduction
+      formData
     ).then((data) => {
       console.log(data);
-      // setLocalUserInfo({
-      //   type: "edit",
-      //   editKey: ["user", "profile_name"],
-      //   editValue: name,
-      // });
-      // setLocalUserInfo({
-      //   type: "edit",
-      //   editKey: ["user", "profile_img"],
-      //   editValue: profileImage.imagePreviewUrl,
-      // });
-      // setLocalUserInfo({
-      //   type: "edit",
-      //   editKey: ["user", "profile_bio"],
-      //   editValue: introduction,
-      // });
+      setLocalUserInfo({
+        type: "edit",
+        editKey: ["user", "profile_name"],
+        editValue: name,
+      });
+      setLocalUserInfo({
+        type: "edit",
+        editKey: ["user", "profile_img"],
+        editValue: profileImage.imagePreviewUrl,
+      });
+      setLocalUserInfo({
+        type: "edit",
+        editKey: ["user", "profile_bio"],
+        editValue: introduction,
+      });
 
       setEditMyInfo();
       setInfoChange(!infoChange);
@@ -152,19 +203,19 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   };
 
   const leftOnClick = () => {
-    setCancelModalOpen(true)
-  }
+    setCancelModalOpen(true);
+  };
 
   const subDeleteOnClick = () => {
-    setEditMyInfo(false)
-    console.log("hi")
-  }
+    setEditMyInfo(false);
+    console.log("hi");
+  };
 
   return (
     <>
       <FullContainer>
         <EditProfileHeader
-          title="내 정보 수정"
+          title={t("editProfilePageHeader")}
           leftOnClick={leftOnClick}
           rightOnClick={saveEditUserInfo}
         />
@@ -175,14 +226,9 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
               closable={true}
               maskClosable={true}
               onClose={closeCancelModal}
-              text={
-                <>
-                  지금까지 입력한 정보가
-                  <br /> 모두 초기화됩니다. 초기화 하시겠어요?
-                </>
-              }
+              text={<>{t("manageProfilePageAlert1")}</>}
               setRealDelete={setRealDelete}
-              buttonText={"초기화 하기"}
+              buttonText={t("manageProfilePageAlert2")}
               subDeleteOnClick={subDeleteOnClick}
             />
           ) : (
@@ -203,9 +249,9 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
             }}
           >
             <ProfileFilter>
-              프로필 사진
+              {t("editProfilePage2")}
               <br />
-              (최대 5MB)
+              {t("editProfilePage3")}
             </ProfileFilter>
             <IconButton
               type="primary"
@@ -232,16 +278,16 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
         </ProfileImageButtonContainer>
         <InnerContainer>
           <InputBox
-            label="이름"
+            label={t("editProfilePage4")}
             state="inactive"
             isRequired={true}
-            placeholder="이름"
+            placeholder={t("editProfilePage4")}
             value={name}
             onChange={(e) => nameOnChange(e)}
           />
           <TextAreaBox
-            label="소개"
-            placeholder="자신을 소개하는 말을 적어주세요."
+            label={t("editProfilePage5")}
+            placeholder={t("editProfilePage6")}
             value={introduction}
             onChange={(e) => introductionOnChange(e)}
             maxSize={100}

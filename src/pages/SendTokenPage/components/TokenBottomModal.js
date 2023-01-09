@@ -4,6 +4,7 @@ import { ContainedButton } from "../../../components/button";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { BottomModal } from "../../../components/modal";
+import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -86,6 +87,8 @@ const LoginModalInner = (
   setTokenInfo,
   networkId
 ) => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     if (tokenList.length > 0) {
       setTokenInfo(tokenList[0]);
@@ -103,7 +106,7 @@ const LoginModalInner = (
   return (
     <FullContainer>
       <IntroTextBox>
-        <FirstIntro>토큰 선택</FirstIntro>
+        <FirstIntro>{t("selectTokenModalTitle")}</FirstIntro>
       </IntroTextBox>
       <TokenListBox>
         {tokenList.map((token, idx) => (
