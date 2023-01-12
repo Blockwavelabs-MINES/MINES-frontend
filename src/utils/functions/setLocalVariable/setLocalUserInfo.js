@@ -9,7 +9,7 @@ const setLocalUserInfo = ({ type, data, editKey, editValue }) => {
   } else if (type == "edit") {
     var tmpData = JSON.parse(localStorage.getItem(localUserInfoName));
     if (Array.isArray(editKey)) {
-      tmpData[editKey[0]][editKey[1]] = editValue
+      tmpData[editKey[0]][editKey[1]] = editValue;
     } else {
       tmpData[editKey] = editValue;
     }

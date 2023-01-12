@@ -7,7 +7,7 @@ import {
   ProfilePage,
   SendTokenPage,
   ReceiveTokenPage,
-  SettingPage
+  SettingPage,
 } from "./pages";
 import React from "react";
 import styled from "styled-components";

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { EmptyCard, EditableCard } from "../../../components/card";
 import { EmptyWallet, MetamaskIcon } from "../../../assets/icons";
 import { useTranslation } from "react-i18next";
+import { CopyPivot } from "../../../components/modal";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -32,7 +33,6 @@ const ListContainer = styled.div`
 `;
 
 const walletConvert = (walletAddress) => {
-  
   var returnAddress = walletAddress;
   if (walletAddress?.length > 15) {
     returnAddress =
@@ -53,13 +53,43 @@ function isMobileDevice() {
 const WalletComponent = ({ userWalletList }) => {
   const [walletList, setWalletList] = useState(userWalletList);
   const [copyPivotVisible, setCopyPivotVisible] = useState(false);
+  const [copyOn, setCopyOn] = useState(false);
+  const [copyIdx, setCopyIdx] = useState(-1);
+  const [clickX, setClickX] = useState(0);
+  const [clickY, setClickY] = useState(0);
+
+  const myRef = useRef(null);
+
   const { t } = useTranslation();
+
+  useEffect(() => {
+    console.log("i");
+    if (myRef.current[copyIdx] && copyIdx > -1) {
+      let tmpX = myRef.current[copyIdx].getBoundingClientRect().top;
+      let tmpY = myRef.current[copyIdx].getBoundingClientRect().left;
+      console.log(tmpX);
+      console.log(tmpY);
+      setClickX(tmpX);
+      setClickY(tmpY);
+    }
+  }, [copyIdx]);
 
   useEffect(() => {
     setWalletList(userWalletList);
   }, [userWalletList]);
 
-  const walletOnClick = (walletAddress) => {
+  const walletOnClick = (walletAddress, idx) => {
+    setCopyOn(true);
+    setCopyIdx(idx);
+    // let elem = document.querySelector("div");
+    // console.log(myRef.current);
+    // let rect = myRef.current.getBoundingClientRect();
+
+    // console.log(rect["left"]);
+    // console.log(rect["top"]);
+    // setClickX(rect["left"]);
+    // setClickY(rect["top"]);
+
     const handleCopyClipBoard = async (text) => {
       var textarea = document.createElement("textarea");
       textarea.value = text; // 복사할 메시지
@@ -68,15 +98,20 @@ const WalletComponent = ({ userWalletList }) => {
       textarea.setSelectionRange(0, 9999); // For IOS
       document.execCommand("copy");
       document.body.removeChild(textarea);
-      alert(t("createLinkDone5"));
+      // alert(t("createLinkDone5"));
     };
 
     handleCopyClipBoard(walletAddress);
   };
 
+  const copyOnClose = () => {
+    setCopyOn(false);
+    setCopyIdx(-1);
+  };
+
   return (
     <FullContainer>
-      <TitleContainer>
+      <TitleContainer ref={myRef}>
         <TItleText>{t("profilePage2")}</TItleText>
       </TitleContainer>
       {walletList?.length == 0 ? (
@@ -84,12 +119,31 @@ const WalletComponent = ({ userWalletList }) => {
       ) : (
         <ListContainer>
           {walletList?.map((wallet, idx) => (
-            <EditableCard
-              label={walletConvert(wallet.wallet_address)}
-              // icon={wallet.icon}
-              icon={MetamaskIcon}
-              onClick={() => walletOnClick(wallet.wallet_address)}
-            />
+            <>
+              {idx == copyIdx && copyOn ? (
+                <CopyPivot
+                  visible={copyOn}
+                  closable={true}
+                  maskClosable={true}
+                  onClose={copyOnClose}
+                  label={t("profilePage5")}
+                  type={"up"}
+                  x={`calc(${clickX}px - 70px)`}
+                  y={"calc(50% - 90px)"}
+                />
+              ) : (
+                <></>
+              )}
+              <div ref={(element) => (myRef.current[idx] = element)}>
+                <EditableCard
+                  // ref={myRef}
+                  label={walletConvert(wallet.wallet_address)}
+                  // icon={wallet.icon}
+                  icon={MetamaskIcon}
+                  onClick={() => walletOnClick(wallet.wallet_address, idx)}
+                />
+              </div>
+            </>
           ))}
         </ListContainer>
       )}

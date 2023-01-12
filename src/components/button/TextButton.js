@@ -16,6 +16,7 @@ const PrimaryButton = styled.button`
   justify-content: center;
   padding-left: 16px;
   padding-right: 16px;
+  position: relative;
 `;
 
 const PrimaryTextBox = styled.div`
@@ -39,7 +40,7 @@ const PrimaryTextBox = styled.div`
 // Show icon=false;
 // Show txt=true;
 
-const TextButton = ({ styles, states, size, label, onClick, style }) => {
+const TextButton = ({ ref, styles, states, size, label, onClick, style }) => {
   return (
     <PrimaryButton
       size={size}
@@ -47,6 +48,7 @@ const TextButton = ({ styles, states, size, label, onClick, style }) => {
       styles={styles}
       onClick={onClick}
       style={style}
+      ref={ref}
     >
       <PrimaryTextBox styles={styles} states={states} size={size}>
         {label}

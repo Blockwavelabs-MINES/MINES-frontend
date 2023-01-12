@@ -74,6 +74,7 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
       if (realDelete) {
         // 지우는 action
         const deleteWalletResult = await deleteWallet(
+          userInfo.user.user_id,
           walletList[deleteIdx].index
         ).then((data) => {
           console.log(data);

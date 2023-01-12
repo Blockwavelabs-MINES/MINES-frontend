@@ -1,6 +1,22 @@
 import axios from "axios";
 import { setLocalUserInfo } from "../functions/setLocalVariable";
 
+import langEn from "../lang/lang.en.json";
+import langKo from "../lang/lang.ko.json";
+
+const languageList = [
+  {
+    lang: "ko",
+    id: 0,
+    text: langKo,
+  },
+  {
+    lang: "en",
+    id: 1,
+    text: langEn,
+  },
+];
+
 export const createUser = async (socialID, socialPlatform) => {
   let returnValue = 0;
   const result = await axios
@@ -16,7 +32,7 @@ export const createUser = async (socialID, socialPlatform) => {
     .then((data) => {
       console.log(data.data);
       returnValue = data.data.result;
-    });
+    })
 
   return returnValue;
 };
@@ -26,7 +42,7 @@ export const loginUser = async (socialID) => {
   const result = await axios
     .post(
       process.env.REACT_APP_DB_HOST + `/users/login`,
-      `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "socialId":"${socialID}"}`,
+      `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "socialID":"${socialID}"}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -37,7 +53,7 @@ export const loginUser = async (socialID) => {
       console.log(data.data);
       returnValue = data.data.result;
       setLocalUserInfo({ type: "init", data: returnValue });
-    });
+    })
 
   return returnValue;
 };
@@ -71,6 +87,11 @@ export const editProfile = async (userID, formData) => {
   //     "json",
   //     `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "profileName":"${profileName}", "profileBio":"${profileBio}"}`
   //   );
+  const currentLang = JSON.parse(localStorage.getItem("language"));
+  let langFile = {};
+  if (currentLang) {
+    langFile = languageList[currentLang.id].text;
+  }
 
   var requestOptions = {
     method: "PATCH",
@@ -93,9 +114,16 @@ export const editProfile = async (userID, formData) => {
     .then((result) => {
       returnValue = JSON.parse(result);
       console.log(returnValue);
+      if (returnValue?.code == 404) {
+        alert(langFile?.sessionError);
+        localStorage.clear();
+        window.location.href = "/";
+      }
       return returnValue;
     })
-    .catch((error) => console.log("error", error));
+    .catch((error) => {
+      console.log("error", error);
+    });
 };
 
 export const getUserInfo = async (userId) => {

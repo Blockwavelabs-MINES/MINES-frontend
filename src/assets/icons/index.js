@@ -10,6 +10,8 @@ export { default as ProfileSmall } from "./profile-small.svg";
 export { default as ProfileLarge } from "./profile-large.svg";
 export { default as DropboxBubbleTail } from "./dropbox-bubbleTail.svg";
 export { default as TooltipBubbleTail } from "./tooltip-bubbleTail.svg";
+export { default as TooltipBubbleTailGray } from "./tooltip-bubbleTail-gray.svg";
+export { default as TooltipBubbleTailGrayDown } from "./tooltip-bubbleTail-grayDown.svg";
 export { default as DropboxSettings } from "./dropbox-settings.svg";
 export { default as DropboxLogout } from "./dropbox-logout.svg";
 export { default as DropboxFeedback } from "./dropbox-feedback.svg";

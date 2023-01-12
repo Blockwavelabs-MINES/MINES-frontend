@@ -58,6 +58,7 @@ const LinkComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
       if (realDelete) {
         // 지우는 action
         const deleteLinkResult = await deleteLink(
+          userInfo.user.user_id,
           linkList[deleteIdx].index
         ).then((data) => {
           console.log(data);
@@ -109,6 +110,7 @@ const LinkComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
 
   const editAction = async ({ title, url }) => {
     const editLinkResult = await editLink(
+      userInfo.user.user_id,
       linkList[editIdx].index,
       title,
       url

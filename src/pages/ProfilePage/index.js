@@ -128,7 +128,7 @@ const ProfilePage = () => {
             )}
             {userInfo.wallets.length ? (
               <>
-                <Divider />
+                {/* <Divider /> */}
                 <WalletComponent userWalletList={userInfo?.wallets} />
               </>
             ) : (

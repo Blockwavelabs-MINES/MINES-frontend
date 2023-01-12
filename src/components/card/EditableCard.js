@@ -24,7 +24,7 @@ const CardContainerButton = styled.button`
   background-color: ${palette.white};
   display: flex;
   justify-content: space-between;
-  box-shadow: 0px 0px 6px 0px #f0f1f2;
+  // box-shadow: 0px 0px  6px 0px #f0f1f2;
   //   box-shadow: 0px 4px 20px 0px #E9EAEC33;
   //   border: 1px solid;
   border: hidden;
@@ -136,9 +136,10 @@ const EditableCard = ({
   checkOnClick,
   select,
   idx,
+  ref,
 }) => {
   return (
-    <>
+    <div ref={ref}>
       {onClick ? (
         <CardContainerButton onClick={onClick}>
           <CardInfoBox>
@@ -189,7 +190,7 @@ const EditableCard = ({
           </CardToolBox>
         </CardContainer>
       )}
-    </>
+    </div>
   );
 };
 

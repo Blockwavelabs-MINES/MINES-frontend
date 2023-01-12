@@ -13,22 +13,29 @@ const resource = {
   },
 };
 
-i18n.use(initReactI18next).init({
-  resources: resource,
-  lng: JSON.parse(localStorage.getItem("language"))?.lang
-    ? JSON.parse(localStorage.getItem("language"))?.lang
-    : "en",
-  //초기값
-  fallbackLng: JSON.parse(localStorage.getItem("language"))?.lang
-    ? JSON.parse(localStorage.getItem("language"))?.lang
-    : "en",
-  debug: true,
-  defaultNS: "translations",
-  ns: "translations",
-  keySeparator: false,
-  interpolation: {
-    escapeValue: false,
-  },
-});
+i18n
+  .use(initReactI18next)
+  .init({
+    resources: resource,
+    lng: JSON.parse(localStorage.getItem("language"))?.lang
+      ? JSON.parse(localStorage.getItem("language"))?.lang
+      : "en",
+    //초기값
+    fallbackLng: JSON.parse(localStorage.getItem("language"))?.lang
+      ? JSON.parse(localStorage.getItem("language"))?.lang
+      : "en",
+    debug: true,
+    defaultNS: "translations",
+    ns: "translations",
+    keySeparator: false,
+    interpolation: {
+      escapeValue: false,
+    },
+  })
+  .then(() => {
+    if (!JSON.parse(localStorage.getItem("language"))?.lang) {
+      localStorage.setItem("language", JSON.stringify({ lang: "en", id: 1 }));
+    }
+  });
 
 export default i18n;

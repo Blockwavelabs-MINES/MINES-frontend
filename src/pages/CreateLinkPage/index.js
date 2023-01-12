@@ -132,7 +132,7 @@ const CreateLinkPage = () => {
   return (
     <FullContainer>
       {createSuccess ? (
-        <CreateSuccess linkId={linkId}/>
+        <CreateSuccess linkId={linkId} />
       ) : (
         <>
           <IntroTextBox>

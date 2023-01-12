@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import { IconButton, TextButton } from "../button";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { useTranslation } from "react-i18next";
+import { CopyPivot } from "../../components/modal";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -27,7 +28,26 @@ const InnerContainer = styled.div`
 const ProfileHeader = () =>
   //   { rightOnClick }
   {
+    const [copyPivotVisible, setCopyPivotVisible] = useState(false);
+    const [clickX, setClickX] = useState(0);
+    const [clickY, setClickY] = useState(0);
+
+    const myRef = useRef(null);
+
     const { t } = useTranslation();
+
+    useEffect(() => {
+      console.log("i");
+      if (myRef.current) {
+        let tmpX = myRef.current.getBoundingClientRect().top;
+        let tmpY = myRef.current.getBoundingClientRect().left;
+        console.log(tmpX);
+        console.log(tmpY);
+        setClickX(tmpX);
+        setClickY(tmpY);
+      }
+    }, []);
+
     const rightIconOnClick = () => {
       // rightOnClick();
       // alert("준비중입니다.");
@@ -39,22 +59,52 @@ const ProfileHeader = () =>
         textarea.setSelectionRange(0, 9999); // For IOS
         document.execCommand("copy");
         document.body.removeChild(textarea);
-        alert(t("sendPage03_10"));
+        // alert(t("sendPage03_10"));
+        console.log("hi");
+        if (myRef.current) {
+          let tmpX = myRef.current.getBoundingClientRect().top;
+          let tmpY = myRef.current.getBoundingClientRect().right;
+          console.log(tmpX);
+          console.log(tmpY);
+          setClickX(tmpX);
+          setClickY(tmpY);
+        }
+        setCopyPivotVisible(true);
       };
 
       handleCopyClipBoard(window.location.href);
     };
 
+    const copyOnClose = () => {
+      setCopyPivotVisible(false);
+    };
+
     return (
       <HeaderContainer>
         <InnerContainer>
-          <TextButton
-            styles="active"
-            states="default"
-            size="large"
-            label={t("profilePage3")}
-            onClick={rightIconOnClick}
-          />
+          <div ref={myRef}>
+            <TextButton
+              styles="active"
+              states="default"
+              size="large"
+              label={t("profilePage3")}
+              onClick={rightIconOnClick}
+            />
+          </div>
+          {copyPivotVisible ? (
+            <CopyPivot
+              visible={copyPivotVisible}
+              closable={true}
+              maskClosable={true}
+              onClose={copyOnClose}
+              label={t("sendPage03_10")}
+              type={"down"}
+              x={clickX+45}
+              y={clickY-10}
+            />
+          ) : (
+            <></>
+          )}
         </InnerContainer>
       </HeaderContainer>
     );

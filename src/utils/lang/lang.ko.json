@@ -112,6 +112,7 @@
   "profilePage2": "지갑",
   "profilePage3": "링크복사",
   "profilePage4": "존재하지 않는 사용자입니다.",
+  "profilePage5": "지갑 주소를 복사했어요!",
 
   "sendPage01Header1": "송금하기",
   "sendPage01Header2": "닫기",
@@ -238,5 +239,7 @@
   "receiveTokenComplete2": " 받기완료!",
   "receiveTokenComplete3": "받은 내역 확인하고 싶다면?",
   "receiveTokenComplete4": "트랜잭션 해시로 받은 내역 확인해요!",
-  "receiveTokenComplete5": "문제가 생겼나요?"
+  "receiveTokenComplete5": "문제가 생겼나요?",
+
+  "sessionError": "세션이 만료되었습니다. 다시 로그인해주세요."
 }

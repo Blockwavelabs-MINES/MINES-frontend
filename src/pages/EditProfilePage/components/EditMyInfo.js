@@ -164,6 +164,7 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
 
     const formJson = {
       frontKey: process.env.REACT_APP_3TREE_API_KEY,
+      jwtToken: JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME))?.jwtToken,
       profileName: name,
       profileBio: introduction,
     };

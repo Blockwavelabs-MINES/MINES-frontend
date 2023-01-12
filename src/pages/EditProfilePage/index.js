@@ -97,7 +97,7 @@ const EditProfilePage = () => {
             setInfoChange={setInfoChange}
             infoChange={infoChange}
           />
-          <Divider />
+          {/* <Divider /> */}
           <WalletComponent
             userInfoProps={userInfo}
             setInfoChange={setInfoChange}

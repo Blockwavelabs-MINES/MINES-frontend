@@ -73,11 +73,20 @@ export const receiveTrxs = async (
 export const getTrxsLinkInfo = async (linkKey) => {
   let returnValue = 0;
   const result = await axios
-    .get(process.env.REACT_APP_DB_HOST + `/trxs?linkKey=${linkKey}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    .post(
+      process.env.REACT_APP_DB_HOST + `/trxs?linkKey=${linkKey}`,
+      `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}"}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    // .get(process.env.REACT_APP_DB_HOST + `/trxs?linkKey=${linkKey}`, {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // })
     .then((data) => {
       console.log(data.data);
       returnValue = data.data.result;

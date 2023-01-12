@@ -1,98 +1,80 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
+import { COLORS as palette } from "../../utils/style/Color/colors";
 import {
-  DropboxBubbleTail,
-  DropboxLogout,
-  DropboxSettings,
-  DropboxFeedback
-} from "../../../assets/icons";
-import Typography from "../../../utils/style/Typography";
+  TooltipBubbleTailGray,
+  TooltipBubbleTailGrayDown,
+} from "../../assets/icons";
+import Typography from "../../utils/style/Typography";
 
 const DropBoxContainer = styled.div`
-  width: 92px;
-  height: 128px;
-  border-radius: 8px;
-  background-color: ${palette.white};
+  // width: 181px;
+  width: 181px;
+  height: 54px;
+  border-radius: 18px;
+  background-color: ${palette.grey_1};
   position: absolute;
   right: 19px;
-  top: 70px;
-  box-shadow: 0px 4px 30px 0px #a9adb533;
+  top: -100px;
   z-index: 1010;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // padding-left: 16px;
+  // padding-right: 16px;
+  box-shadow: 0px 4px 18px 0px #525a6b4b;
   //   box-shadow: 0px 4px 12px 0px #a9adb533;
 `;
 
 const DropBoxOuterBox = styled.div`
   width: 100%;
-  max-width: 600px;
+  // max-width: 600px;
   height: 100%;
   margin: 0px auto;
   position: relative;
   z-index: 900;
   display: ${(props) => (props.visible ? "block" : "none")};
+  position: absolute;
+  top: 0px;
+  left: 0px;
 `;
 
 const BubbleTailBox = styled.div`
-  width: 10px;
-  height: 6px;
+  width: 14px;
+  height: 8px;
   position: absolute;
-  top: -6px;
-  right: 16px;
+  top: -100px;
   background-color: transparent;
-  background-image: url(${DropboxBubbleTail});
   //   box-shadow: 0px 2px 10px #c4c4c440;
   filter: drop-shadow(0px 2px 10px #c4c4c444);
 `;
 
-const TapButton = styled.button`
-  width: 100%;
-  height: 42px;
-  background-color: transparent;
-  border: hidden;
-  display: flex;
-  justify-content: space-between;
-  padding-left: 12px;
-  padding-right: 12px;
-  gap: 4px;
-`;
-
 const TapText = styled.div`
-  ${Typography.Headline4}
-  color: ${palette.grey_1};
+  ${Typography.Footer}
+  color: ${palette.white};
   margin: auto 0px;
+  text-align: center;
 `;
 
-const TapIcon = styled.img`
-  width: 16px;
-  height: 16px;
-  margin: auto 0px;
-`;
-
-const Divider = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: ${palette.grey_7};
-`;
-
-const ProfileDropbox = ({ className, onClose, maskClosable, visible }) => {
+const CopyPivot = ({
+  className,
+  onClose,
+  maskClosable,
+  visible,
+  label,
+  type,
+  x,
+  y,
+}) => {
   const onMaskClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose(e);
     }
   };
 
-  const logoutOnClick = () => {
-    localStorage.clear();
-    window.location.reload();
-  };
-
   const settingOnClick = () => {
     window.location.href = "editProfile";
   };
-
-  const feedbackOnClick = () => {
-    window.open("https://forms.gle/PvgL1PV8tKcNkzmy5")
-  }
 
   return (
     <>
@@ -109,22 +91,34 @@ const ProfileDropbox = ({ className, onClose, maskClosable, visible }) => {
           tabIndex="-1"
           visible={visible}
         >
-          <DropBoxContainer>
-            <BubbleTailBox />
-            <TapButton onClick={settingOnClick}>
-              <TapText>계정설정</TapText>
-              <TapIcon src={DropboxSettings} />
-            </TapButton>
-            <Divider />
-            <TapButton onClick={feedbackOnClick}>
-              <TapText>피드백</TapText>
-              <TapIcon src={DropboxFeedback} />
-            </TapButton>
-            <Divider />
-            <TapButton onClick={logoutOnClick}>
-              <TapText style={{ color: palette.red_2 }}>로그아웃</TapText>
-              <TapIcon src={DropboxLogout} />
-            </TapButton>
+          {type == "down" ? (
+            <BubbleTailBox
+              style={{
+                backgroundImage: `url(${TooltipBubbleTailGrayDown})`,
+                top: x - 7,
+                left: y - 30,
+              }}
+            />
+          ) : (
+            <></>
+          )}
+          <DropBoxContainer
+            style={
+              type == "up" ? { top: x, left: y } : { top: x, left: y - 180 }
+            }
+          >
+            <TapText>{label}</TapText>
+            {type == "up" ? (
+              <BubbleTailBox
+                style={{
+                  backgroundImage: `url(${TooltipBubbleTailGray})`,
+                  top: "53px",
+                  right: "83px",
+                }}
+              />
+            ) : (
+              <></>
+            )}
           </DropBoxContainer>
         </DropBoxOuterBox>
       </ModalWrapper>
@@ -159,4 +153,4 @@ const ModalOverlay = styled.div`
   z-index: 999;
 `;
 
-export default ProfileDropbox;
+export default CopyPivot;

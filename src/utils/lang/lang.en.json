@@ -34,7 +34,8 @@
   "createLink8": "Create",
 
   "createLinkDone1": "Page created!",
-  "createLinkDone2": "Customize your profile \n and expand your digital identity!",
+  "createLinkDone2": "Customize your profile",
+  "createLinkDone2_2": "and expand your digital identity!",
   "createLinkDone3": "Manage Profile",
   "createLinkDone4": "Copy Profile Link",
   "createLinkDone5": "Link copied!",
@@ -111,6 +112,7 @@
   "profilePage2": "Wallet",
   "profilePage3": "Copy Link",
   "profilePage4": "User does not exist.",
+  "profilePage5": "Copy the wallet address!",
 
   "sendPage01Header1": "Send",
   "sendPage01Header2": "Cancel",
@@ -237,5 +239,7 @@
   "receiveTokenComplete2": " completed!",
   "receiveTokenComplete3": "Want to check the details?",
   "receiveTokenComplete4": "Check the transaction hash!",
-  "receiveTokenComplete5": "Do you have a problem?"
+  "receiveTokenComplete5": "Do you have a problem?",
+
+  "sessionError": "Your session has expired. Please sign in again."
 }

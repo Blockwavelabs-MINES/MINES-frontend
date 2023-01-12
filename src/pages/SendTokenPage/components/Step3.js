@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
@@ -8,7 +8,7 @@ import PlatformList from "./PlatformList";
 import { MetamaskIcon, InputHelp, CopyIconGray } from "../../../assets/icons";
 import { Tooltip } from "../../../components/card";
 import { ContainedButton } from "../../../components/button";
-import { ConfirmModal } from "../../../components/modal";
+import { ConfirmModal, CopyPivot } from "../../../components/modal";
 import { TimerImage } from "../../../assets/images";
 import { useTranslation } from "react-i18next";
 
@@ -102,7 +102,7 @@ const ExpiredDateText = styled.div`
   color: ${palette.Black};
 `;
 
-const CopyBox = styled.div`
+const CopyBox = styled.button`
   width: 100%;
   height: 56px;
   display: flex;
@@ -166,7 +166,8 @@ const convertDateFormat = (dateString, a, b, c, d) => {
       monthNames[Number(new Date(toTimestamp).getUTCMonth())] +
       " " +
       pad(new Date(toTimestamp).getUTCDate()) +
-      d+" " +
+      d +
+      " " +
       pad(new Date(toTimestamp).getFullYear().toString());
   } else {
     convertedDate =
@@ -211,6 +212,11 @@ const Step3 = ({
 }) => {
   const [notiClick, setNotiClick] = useState(false);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
+  const [copyPivotVisible, setCopyPivotVisible] = useState(false);
+  const [clickX, setClickX] = useState(0);
+  const [clickY, setClickY] = useState(0);
+
+  const myRef = useRef(null);
   const { t } = useTranslation();
 
   const TooltipText = (
@@ -235,6 +241,16 @@ const Step3 = ({
       textarea.setSelectionRange(0, 9999); // For IOS
       document.execCommand("copy");
       document.body.removeChild(textarea);
+
+      if (myRef.current) {
+        let tmpX = myRef.current.getBoundingClientRect().top;
+        let tmpY = myRef.current.getBoundingClientRect().left;
+        console.log(tmpX);
+        console.log(tmpY);
+        setClickX(tmpX);
+        setClickY(tmpY);
+      }
+      setCopyPivotVisible(true);
     };
 
     handleCopyClipBoard(`3tree.io/receiveToken/${finalLink}`);
@@ -247,6 +263,10 @@ const Step3 = ({
   const subActionOnClick = () => {
     copyOnClick();
     window.location.href = "/";
+  };
+
+  const copyOnClose = () => {
+    setCopyPivotVisible(false);
   };
 
   return (
@@ -288,10 +308,26 @@ const Step3 = ({
           </ExpiredDateBox>
         </ExpiredInfobox>
       </ExpiredCard>
-      <CopyBox>
-        <LinkText>3tree.io/receiveToken/{finalLink}</LinkText>
-        <CopyButton onClick={copyOnClick} />
-      </CopyBox>
+      <div ref={myRef}>
+        <CopyBox onClick={copyOnClick}>
+          <LinkText>3tree.io/receiveToken/{finalLink}</LinkText>
+          <CopyButton />
+        </CopyBox>
+      </div>
+      {copyPivotVisible ? (
+        <CopyPivot
+          visible={copyPivotVisible}
+          closable={true}
+          maskClosable={true}
+          onClose={copyOnClose}
+          label={t("createLinkDone5")}
+          type={"up"}
+          x={`calc(${clickX}px - 70px)`}
+          y={"calc(50% - 90px)"}
+        />
+      ) : (
+        <></>
+      )}
       <ContainedButton
         type="primary"
         styles="filled"

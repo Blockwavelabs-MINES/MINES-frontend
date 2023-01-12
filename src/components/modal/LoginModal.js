@@ -67,6 +67,9 @@ const LoginModalInner = (type, setStatus, onClose) => {
 
           const formJson = {
             frontKey: process.env.REACT_APP_3TREE_API_KEY,
+            jwtToken: JSON.parse(
+              localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME)
+            )?.jwtToken,
             profileName: res.name,
             profileBio: `${res.name}'s 3TREE page :)`,
           };
@@ -90,7 +93,13 @@ const LoginModalInner = (type, setStatus, onClose) => {
         })
         .catch(async (error) => {
           const loginUserResult = await loginUser(res.email)
-            .then((data) => console.log(data))
+            .then((data) => {
+              console.log(data);
+              if (!data) {
+                alert("존재하지 않는 유저입니다.")
+                window.location.href = "/"
+              }
+            })
             .then(() => {
               if (type == "receive") {
                 setStatus(true);
