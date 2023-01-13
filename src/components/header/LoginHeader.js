@@ -40,7 +40,8 @@ const ProfileButton = styled.button`
   border-radius: 18px;
   border: 1px solid ${palette.grey_7};
   background-image: url(${({ img }) => (img ? img : ProfileSmall)});
-  background-size: 36px 36px;
+  // background-size: 36px 36px;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   background-color: transparent;

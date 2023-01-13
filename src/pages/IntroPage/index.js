@@ -6,8 +6,15 @@ import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import { LoginModal, SingleModal } from "../../components/modal";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
-import { MainImage } from "../../assets/images";
+import { MainImage1, MainImage2, MainImage3 } from "../../assets/images";
 import { useTranslation } from "react-i18next";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+SwiperCore.use([Navigation, Pagination]);
 
 const FullContainer = styled.div`
   width: 100%;
@@ -37,18 +44,27 @@ const SecondIntro = styled.div`
 
 const ButtonContainer = styled.div`
   width: 100%;
-  padding: 30px 20px;
-  position: absolute;
-  bottom: 60px;
+  height: 148px;
+  padding: 16px 20px;
+  position: fixed;
+  bottom: 0px;
   //   top: 542px;
-  display: grid;
+  // display: grid;
+  display: flex;
   gap: 20px;
-  grid-template-columns: repeat(1, 1fr);
+  // grid-template-columns: repeat(2, 1fr);
+  z-index: 100;
+  backdrop-filter: blur(15px);
 `;
 
 const MainImageBanner = styled.img`
   width: 90%;
   margin-top: 30px;
+  margin-bottom: 40px;
+`;
+
+const BannerBottom = styled.div`
+  height: 160px;
 `;
 
 const IntroPage = () => {
@@ -105,7 +121,7 @@ const IntroPage = () => {
               closable={true}
               maskClosable={true}
               onClose={closeLoginAlertModal}
-                text={<>{t("introPageAlert1")}</>}
+              text={<>{t("introPageAlert1")}</>}
               setStatus={setLoginModalVisible}
               buttonText={t("introPageAlert2")}
             />
@@ -114,28 +130,65 @@ const IntroPage = () => {
           )}
         </>
       )}
-      <IntroTextBox>
-        <FirstIntro>
-        {t("introPage1")}
-          <br />{t("introPage1_2")}
-        </FirstIntro>
-        <SecondIntro>
-        {t("introPage2")} <br /> {t("introPage2_2")}
-        </SecondIntro>
-      </IntroTextBox>
-      <MainImageBanner src={MainImage} />
+      <Swiper
+        className="banner"
+        modules={[Navigation, Pagination, Autoplay]}
+        spaceBetween={50}
+        slidesPerView={1}
+        pagination={{ clickable: true }}
+        autoplay={{ delay: 5000 }}
+      >
+        <SwiperSlide>
+          <IntroTextBox>
+            <FirstIntro>
+              {t("introPageMent1")}
+              <br />
+              {t("introPageMent2")}
+            </FirstIntro>
+            <SecondIntro>{t("introPageMent3")}</SecondIntro>
+          </IntroTextBox>
+          <MainImageBanner src={MainImage1} />
+        </SwiperSlide>
+        <SwiperSlide>
+          <IntroTextBox>
+            <FirstIntro>
+              {t("introPageMent4")}
+              <br />
+              {t("introPageMent5")}
+            </FirstIntro>
+            <SecondIntro>{t("introPageMent6")}</SecondIntro>
+          </IntroTextBox>
+          <MainImageBanner src={MainImage2} />
+        </SwiperSlide>
+        <SwiperSlide>
+          <IntroTextBox>
+            <FirstIntro>
+              {t("introPageMent7")}
+              <br />
+              {t("introPageMent8")}
+            </FirstIntro>
+            <SecondIntro>{t("introPageMent9")}</SecondIntro>
+          </IntroTextBox>
+          <MainImageBanner src={MainImage3} />
+        </SwiperSlide>
+      </Swiper>
+      <BannerBottom />
       <ButtonContainer>
         <ContainedButton
-          type="primary"
+          type="secondary"
           styles="filled"
           states="default"
           size="large"
           label={t("introPage3")}
           onClick={sendOnClick}
+          style={{
+            width: "auto",
+            // , paddingLeft: "23px", paddingRight: "23px"
+          }}
         />
         <ContainedButton
           type="primary"
-          styles="outlined"
+          styles="filled"
           states="default"
           size="large"
           label={t("introPage4")}

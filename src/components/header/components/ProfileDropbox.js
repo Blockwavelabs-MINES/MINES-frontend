@@ -11,7 +11,7 @@ import Typography from "../../../utils/style/Typography";
 import { useTranslation } from "react-i18next";
 
 const DropBoxContainer = styled.div`
-  width: 92px;
+  min-width: 92px;
   height: 128px;
   border-radius: 8px;
   background-color: ${palette.white};

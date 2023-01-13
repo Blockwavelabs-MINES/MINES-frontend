@@ -15,6 +15,16 @@ a {
   text-decoration: underline;
 }
 
+.swiper-pagination {
+  position: absolute;
+  /* top: 185px; */
+}
+
+/* .swiper-pagination-bullet {
+  position: absolute;
+  bottom: 100px;
+} */
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

@@ -8,6 +8,7 @@ import {
   SendTokenPage,
   ReceiveTokenPage,
   SettingPage,
+  NotFoundPage,
 } from "./pages";
 import React from "react";
 import styled from "styled-components";
@@ -55,6 +56,7 @@ function App() {
               <Route path="/sendToken" element={<SendTokenPage />} />
               <Route path="/receiveToken/:key" element={<ReceiveTokenPage />} />
               <Route path="/@:id" element={<ProfilePage />} />
+              <Route path="/*" element={<NotFoundPage />} />
             </Routes>
           </WebAppContainer>
         </BodyInner>

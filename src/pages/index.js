@@ -6,3 +6,4 @@ export { default as ProfilePage } from "./ProfilePage";
 export { default as SendTokenPage } from "./SendTokenPage";
 export { default as ReceiveTokenPage } from "./ReceiveTokenPage";
 export { default as SettingPage } from "./SettingPage";
+export { default as NotFoundPage } from "./NotFoundPage";
