@@ -12,6 +12,7 @@ import {
   Step3,
   FinalConfirmation,
   SendSuccess,
+  FailedComponent,
 } from "./components";
 import { DeleteModal } from "../../components/modal";
 import { ContainedButton } from "../../components/button";
@@ -178,6 +179,9 @@ const SendTokenPage = () => {
   const [expired, setExpired] = useState("");
   const [finalLink, setFinalLink] = useState("");
   const [loading, setLoading] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [resend, setResend] = useState(false);
+
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -233,6 +237,8 @@ const SendTokenPage = () => {
         setExpired: setExpired,
         setFinalLink: setFinalLink,
         setLoading: setLoading,
+        setFailed: setFailed,
+        resend: resend
       }),
     },
     {
@@ -287,119 +293,126 @@ const SendTokenPage = () => {
         <LoadingComponent />
       ) : (
         <>
-          {cancelModalOpen ? (
-            <DeleteModal
-              visible={cancelModalOpen}
-              closable={true}
-              maskClosable={true}
-              onClose={closeCancelModal}
-              text={
-                <>
-                  {t("sendPage01Alert1")}
-                </>
-              }
-              setRealDelete={setRealDelete}
-              buttonText={t("sendPage01Alert2")}
-            />
-          ) : (
-            <></>
-          )}
-          {finalModalVisible ? (
-            <FinalConfirmation
-              platform={platform}
-              email={email}
-              amount={amount}
-              currency={currency}
-              networkId={networkId}
-              walletType={walletType}
-              address={senderAddress}
-              network={network}
-              userId={userInfo.userId}
-              setVisible={setFinalModalVisible}
-              setSendDone={setSendDone}
+          {failed ? (
+            <FailedComponent
+              setFailed={setFailed}
+              setResend={setResend}
             />
           ) : (
             <>
-              {sendDone ? (
-                <SendSuccess />
+              {cancelModalOpen ? (
+                <DeleteModal
+                  visible={cancelModalOpen}
+                  closable={true}
+                  maskClosable={true}
+                  onClose={closeCancelModal}
+                  text={<>{t("sendPage01Alert1")}</>}
+                  setRealDelete={setRealDelete}
+                  buttonText={t("sendPage01Alert2")}
+                />
               ) : (
-                <FullContainer>
-                  <SendTokenHeader
-                    title={t("sendpage02Header1")}
-                    leftOnClick={leftOnClick}
-                    rightOnClick={headerRightOnClick}
-                  />
-                  <ContentContainer>
-                    <StepStatusBox>
-                      {StepList.map((step, idx) => (
-                        <>
-                          {idx == 0 ? (
+                <></>
+              )}
+              {finalModalVisible ? (
+                <FinalConfirmation
+                  platform={platform}
+                  email={email}
+                  amount={amount}
+                  currency={currency}
+                  networkId={networkId}
+                  walletType={walletType}
+                  address={senderAddress}
+                  network={network}
+                  userId={userInfo.userId}
+                  setVisible={setFinalModalVisible}
+                  setSendDone={setSendDone}
+                />
+              ) : (
+                <>
+                  {sendDone ? (
+                    <SendSuccess />
+                  ) : (
+                    <FullContainer>
+                      <SendTokenHeader
+                        title={t("sendpage02Header1")}
+                        leftOnClick={leftOnClick}
+                        rightOnClick={headerRightOnClick}
+                      />
+                      <ContentContainer>
+                        <StepStatusBox>
+                          {StepList.map((step, idx) => (
                             <>
-                              {idx == stepStatus - 1 ? (
-                                <StepingCircle>{step.id}</StepingCircle>
-                              ) : (
-                                <StepCircle>{step.id}</StepCircle>
-                              )}
-                            </>
-                          ) : (
-                            <>
-                              {idx < stepStatus - 1 ? (
+                              {idx == 0 ? (
                                 <>
-                                  <StepLine />
-                                  <StepCircle>{step.id}</StepCircle>
+                                  {idx == stepStatus - 1 ? (
+                                    <StepingCircle>{step.id}</StepingCircle>
+                                  ) : (
+                                    <StepCircle>{step.id}</StepCircle>
+                                  )}
                                 </>
                               ) : (
                                 <>
-                                  {idx == stepStatus - 1 ? (
+                                  {idx < stepStatus - 1 ? (
                                     <>
-                                      <StepUnLine />
-                                      <StepingCircle>{step.id}</StepingCircle>
+                                      <StepLine />
+                                      <StepCircle>{step.id}</StepCircle>
                                     </>
                                   ) : (
                                     <>
-                                      <StepUnLine />
-                                      <StepUnCircle>{step.id}</StepUnCircle>
+                                      {idx == stepStatus - 1 ? (
+                                        <>
+                                          <StepUnLine />
+                                          <StepingCircle>
+                                            {step.id}
+                                          </StepingCircle>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <StepUnLine />
+                                          <StepUnCircle>{step.id}</StepUnCircle>
+                                        </>
+                                      )}
                                     </>
                                   )}
                                 </>
                               )}
                             </>
-                          )}
-                        </>
-                      ))}
-                    </StepStatusBox>
-                    <StepHeader>{StepList[stepStatus - 1].text}</StepHeader>
-                    <StepComponentBox>
-                      {StepList[stepStatus - 1].component}
-                    </StepComponentBox>
-                    <StepButtonContainer>
-                      {stepStatus == 1 ? (
-                        <>
-                          {email ? (
-                            <ContainedButton
-                              type="primary"
-                              styles="filled"
-                              states="default"
-                              size="large"
-                              label={t("sendPage01_6")}
-                              onClick={rightOnClick}
-                            />
+                          ))}
+                        </StepStatusBox>
+                        <StepHeader>{StepList[stepStatus - 1].text}</StepHeader>
+                        <StepComponentBox>
+                          {StepList[stepStatus - 1].component}
+                        </StepComponentBox>
+                        <StepButtonContainer>
+                          {stepStatus == 1 ? (
+                            <>
+                              {email ? (
+                                <ContainedButton
+                                  type="primary"
+                                  styles="filled"
+                                  states="default"
+                                  size="large"
+                                  label={t("sendPage01_6")}
+                                  onClick={rightOnClick}
+                                />
+                              ) : (
+                                <ContainedButton
+                                  type="primary"
+                                  styles="filled"
+                                  states="disabled"
+                                  size="large"
+                                  label={t("sendPage01_6")}
+                                />
+                              )}
+                            </>
                           ) : (
-                            <ContainedButton
-                              type="primary"
-                              styles="filled"
-                              states="disabled"
-                              size="large"
-                              label={t("sendPage01_6")}
-                            />
+                            <></>
                           )}
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </StepButtonContainer>
-                  </ContentContainer>
-                </FullContainer>
+                        </StepButtonContainer>
+                      </ContentContainer>
+                    </FullContainer>
+                  )}
+                </>
               )}
             </>
           )}

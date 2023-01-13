@@ -340,6 +340,8 @@ const Step2 = ({
   setExpired,
   setFinalLink,
   setLoading,
+  setFailed,
+  resend,
 }) => {
   const [balance, setBalance] = useState("0");
   const [amount, setAmount] = useState();
@@ -668,6 +670,8 @@ const Step2 = ({
               setFinalLink={setFinalLink}
               tokenInfo={tokenInfo}
               setLoading={setLoading}
+              setFailed={setFailed}
+              resend={resend}
             />
           ) : (
             <></>
@@ -741,14 +745,19 @@ const Step2 = ({
             states="default"
             size="small"
             label={
-              balance ? `${t("sendpage02_8")}${balance} ${currency}${t("sendpage02_9")}` : t("sendpage02_10")
+              balance
+                ? `${t("sendpage02_8")}${balance} ${currency}${t(
+                    "sendpage02_9"
+                  )}`
+                : t("sendpage02_10")
             }
             style={{ margin: "0px auto", marginTop: "32px" }}
             onClick={maxOnClick}
           />
         ) : (
           <CurrentBalanceText>
-            {t("sendpage02_11")}{balance} {currency}
+            {t("sendpage02_11")}
+            {balance} {currency}
           </CurrentBalanceText>
         )}
       </SendContainer>
@@ -776,7 +785,7 @@ const Step2 = ({
         </WalletContainer>
       </NetworkWalletInfoBox>
       <HelpTextContainer>
-        <HelpText>{t("sendpage02_14") }</HelpText>
+        <HelpText>{t("sendpage02_14")}</HelpText>
         <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
           {notiClick ? (
             <Tooltip

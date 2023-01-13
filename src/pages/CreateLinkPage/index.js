@@ -151,7 +151,7 @@ const CreateLinkPage = () => {
               placeholder={"UserID"}
               message={errorComment}
               fixedMent={"3tree.io/@"}
-              fixedMentSize={"85px"}
+              fixedMentSize={"93px"}
               value={linkId}
               onChange={(e) => {
                 linkIdOnChange(e);

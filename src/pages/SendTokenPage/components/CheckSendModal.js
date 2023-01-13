@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { ContainedButton } from "../../../components/button";
 import Typography from "../../../utils/style/Typography/index";
@@ -158,9 +159,93 @@ const LoginModalInner = (
   setExpired,
   setFinalLink,
   tokenInfo,
-  setLoading
+  setLoading,
+  setFailed,
+  resend
 ) => {
   const { t } = useTranslation();
+  const [transactionHash, setTransactionHash] = useState();
+  const [transactionStatus, setTransactionStatus] = useState(null);
+  const [escrowId, setEscrowId] = useState();
+  const [expiredDateResult, setExpiredDateResult] = useState();
+
+  const Web3 = require("web3");
+  const rpcURL = process.env.REACT_APP_GO_URL;
+  // const web3 = new Web3(rpcURL);
+  let metamaskProvider = "";
+  if (window.ethereum.providers) {
+    metamaskProvider = window.ethereum.providers.find(
+      (provider) => provider.isMetaMask
+    );
+  } else {
+    metamaskProvider = window.ethereum;
+  }
+  const web3 = new Web3(metamaskProvider);
+
+  useEffect(() => {
+    console.log(resend);
+    if (resend) {
+      sendOnClick();
+      // setLoading(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(transactionHash);
+    if (transactionHash) {
+      console.log(transactionHash);
+      // setLoading(false); // failed창 테스트
+      // setFailed(true); // failed창 테스트
+      // Check the status of the transaction every 1 second
+      const interval = setInterval(() => {
+        web3.eth
+          .getTransactionReceipt(
+            transactionHash
+            // "dfsdfdfd"
+          )
+          .then(async (receipt) => {
+            if (receipt == null) {
+              console.log("pending");
+              setTransactionStatus("pending");
+              setLoading(true);
+            } else {
+              setTransactionStatus("mined");
+              setLoading(false);
+              const sendTrxsResult = await sendTrxs(
+                userIdx,
+                address,
+                "metamask",
+                "google",
+                receiver,
+                currency,
+                amount,
+                transactionHash,
+                escrowId,
+                expiredDateResult,
+                sender,
+                tokenInfo.address,
+                networkId
+              ).then((data) => {
+                setFinalLink(data.link_key);
+                setExpired(data.expired_at);
+              });
+
+              setStepStatus(stepStatus + 1);
+              onClose();
+
+              clearInterval(interval);
+            }
+          })
+          .catch((err) => {
+            // 존재하지 않는 hash 값일 경우 (+ pending이 길게 되어 tx가 사라진 경우)
+            console.log(err);
+            setLoading(false);
+            setFailed(true);
+            clearInterval(interval);
+          });
+      }, 1000);
+    }
+  }, [transactionHash]);
 
   console.log(amount);
   console.log(currency);
@@ -202,18 +287,6 @@ const LoginModalInner = (
         },
       ];
 
-      const Web3 = require("web3");
-      const rpcURL = process.env.REACT_APP_GO_URL;
-      // const web3 = new Web3(rpcURL);
-      let metamaskProvider = "";
-      if (window.ethereum.providers) {
-        metamaskProvider = window.ethereum.providers.find(
-          (provider) => provider.isMetaMask
-        );
-      } else {
-        metamaskProvider = window.ethereum;
-      }
-      const web3 = new Web3(metamaskProvider);
       // const tempProvider = new ethers.providers.Web3Provider(window.ethereum);
       // const tempSigner = web3.getSigner();
       const tempContract = new web3.eth.Contract(
@@ -330,7 +403,7 @@ const LoginModalInner = (
               nonce: "0x00", // ignored by MetaMask
               gasPrice: (Math.pow(10, 8) * 0.1).toString(16), // customizable by user during MetaMask confirmation.
               // gas: (Math.pow(10, 6) * 0.1).toString(16), // customizable by user during MetaMask confirmation.
-              gas: String(fee),
+              // gas: String(fee), //이거임
               to: process.env.REACT_APP_3TREE_ADDRESS, // Required except during contract publications.
               from: address, // must match user's active address.
               value: (Math.pow(10, 18) * amount).toString(16), // Only required to send ether to the recipient from the initiating external account.
@@ -344,33 +417,12 @@ const LoginModalInner = (
           // escrow hash와 id 생성 (with escrow Contract)
 
           const escrowHash = txHash;
-          const escrowId = "1234";
-          const expiredDate = setExpiredDate();
-          console.log(expiredDate);
+          setEscrowId("1234"); // 현재는 escrow로 관리하지 않으므로 일단 임의의 값
+          setExpiredDateResult(setExpiredDate());
           console.log(sender);
           console.log(tokenInfo.address);
           console.log(networkId);
-          const sendTrxsResult = await sendTrxs(
-            userIdx,
-            address,
-            "metamask",
-            "google",
-            receiver,
-            currency,
-            amount,
-            escrowHash,
-            escrowId,
-            expiredDate,
-            sender,
-            tokenInfo.address,
-            networkId
-          ).then((data) => {
-            setFinalLink(data.link_key);
-            setExpired(data.expired_at);
-          });
-
-          setStepStatus(stepStatus + 1);
-          onClose();
+          setTransactionHash(escrowHash);
         })
         .catch((error) => console.error);
     }
@@ -442,6 +494,8 @@ const CheckSendModal = ({
   setFinalLink,
   tokenInfo,
   setLoading,
+  setFailed,
+  resend
 }) => {
   return (
     <BottomModal
@@ -465,7 +519,9 @@ const CheckSendModal = ({
           setExpired,
           setFinalLink,
           tokenInfo,
-          setLoading
+          setLoading,
+          setFailed,
+          resend
         )
       }
     />

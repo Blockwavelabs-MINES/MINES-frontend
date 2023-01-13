@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { SettingProfileHeader } from "../../components/header";
+import { SettingHeader } from "../../components/header";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
@@ -8,6 +8,7 @@ import { getUserInfo } from "../../utils/api/auth";
 import { ListButton } from "../../components/button";
 import { useTranslation } from "react-i18next";
 import i18next from "../../utils/lang/i18n";
+import { ChangeID, EnrolledAccount } from "./components";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -30,6 +31,7 @@ const SettingPage = () => {
   const { t } = useTranslation();
 
   const LanguageList = ["languageSettingInfo1", "languageSettingInfo2"];
+  const StatusList = ["changeID", "checkID", "setLanguage"];
 
   useEffect(() => {
     if (!language) {
@@ -38,8 +40,12 @@ const SettingPage = () => {
     } else {
       console.log(JSON.parse(localStorage.getItem("language"))?.id);
       console.log(LanguageList.length);
-      console.log(JSON.parse(localStorage.getItem("language"))?.id % LanguageList.length);
-      setLangKo(JSON.parse(localStorage.getItem("language"))?.id % LanguageList.length);
+      console.log(
+        JSON.parse(localStorage.getItem("language"))?.id % LanguageList.length
+      );
+      setLangKo(
+        JSON.parse(localStorage.getItem("language"))?.id % LanguageList.length
+      );
     }
   }, []);
 
@@ -60,36 +66,42 @@ const SettingPage = () => {
   const SettingList = [
     {
       title: t("settingsPage1"),
+      header: t("changeUserIdHeader"),
       icon: "",
       onClick: () => {
         setStatus("changeID");
       },
       select: "",
+      component: <ChangeID />,
     },
     {
       title: t("settingsPage2"),
+      header: t("socialAccountInfoHeader"),
       icon: "",
       onClick: () => {
         setStatus("checkID");
       },
       select: "",
+      component: <EnrolledAccount />,
     },
     {
       title: t("settingsPage3"),
+      header: t("languageSettingInfoHeader"),
       icon: "",
-      //   onClick: () => {
-      //     setStatus("setLanguage");
-      //   },
+      // onClick: () => {
+      //   setStatus("setLanguage");
+      // },
       onClick: () => {
         langChange();
       },
       select: t(LanguageList[langKo]),
+      component: ChangeID,
     },
     {
       title: t("settingsPage4"),
       icon: "",
       onClick: () => {
-        window.location.href = "/";
+        window.open("https://www.notion.so/propwave/notice-10006b18d72f4d25a592223dcfb5c525")
       },
       select: "",
     },
@@ -131,14 +143,33 @@ const SettingPage = () => {
 
   return (
     <FullContainer>
-      <SettingProfileHeader info={userInfo} title={t("settingsPageHeader")} />
-      {SettingList.map((item, idx) => (
-        <ListButton
-          label={item.title}
-          select={item.select}
-          onClick={item.onClick}
-        />
-      ))}
+      <SettingHeader
+        title={t("settingsPageHeader")}
+        leftOnClick={() => {
+          window.location.href = "/";
+        }}
+      />
+      {status == "" ? (
+        <>
+          {SettingList.map((item, idx) => (
+            <ListButton
+              label={item.title}
+              select={item.select}
+              onClick={item.onClick}
+            />
+          ))}
+        </>
+      ) : (
+        <>
+          <SettingHeader
+            title={SettingList[StatusList.findIndex((v) => v == status)].header}
+            leftOnClick={() => {
+              setStatus("");
+            }}
+          />
+          {SettingList[StatusList.findIndex((v) => v == status)].component}
+        </>
+      )}
     </FullContainer>
   );
 };
