@@ -101,7 +101,9 @@ const SettingPage = () => {
       title: t("settingsPage4"),
       icon: "",
       onClick: () => {
-        window.open("https://www.notion.so/propwave/notice-10006b18d72f4d25a592223dcfb5c525")
+        window.open(
+          "https://www.notion.so/propwave/notice-10006b18d72f4d25a592223dcfb5c525"
+        );
       },
       select: "",
     },
@@ -109,7 +111,8 @@ const SettingPage = () => {
       title: t("settingsPage5"),
       icon: "",
       onClick: () => {
-        window.location.href = "/";
+        window.location.href =
+          "https://propwave.notion.site/Terms-of-Service-2d8c34caef5d448d9523844e1790bc35";
       },
       select: "",
     },
@@ -117,7 +120,8 @@ const SettingPage = () => {
       title: t("settingsPage6"),
       icon: "",
       onClick: () => {
-        window.location.href = "/";
+        window.location.href =
+          "https://propwave.notion.site/Privacy-Policy-534c654c440f43b8884c35aa29097dc9";
       },
       select: "",
     },

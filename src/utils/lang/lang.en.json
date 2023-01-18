@@ -94,6 +94,7 @@
   "manageProfilePage7": "Add Link",
   "manageProfilePage8": "Add Wallet",
   "manageProfilePage9": "Edit Profile",
+  "manageProfilePage10": "There are duplicate addresses.",
   "manageProfilePageAlertDeleteLink1": "Delete this link?",
   "manageProfilePageAlertDeleteLink2": "This action cannot be undone.",
   "manageProfilePageAlertDeleteLink3": "Delete",

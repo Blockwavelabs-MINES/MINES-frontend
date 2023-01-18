@@ -10,6 +10,7 @@ import { MainImage1, MainImage2, MainImage3 } from "../../assets/images";
 import { useTranslation } from "react-i18next";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";
+import CreateLinkPage from "../CreateLinkPage";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -44,14 +45,15 @@ const SecondIntro = styled.div`
 
 const ButtonContainer = styled.div`
   width: 100%;
-  height: 148px;
+  max-width: 600px;
+  height: 88px;
   padding: 16px 20px;
   position: fixed;
   bottom: 0px;
   //   top: 542px;
   // display: grid;
   display: flex;
-  gap: 20px;
+  gap: 10px;
   // grid-template-columns: repeat(2, 1fr);
   z-index: 100;
   backdrop-filter: blur(15px);
@@ -71,6 +73,7 @@ const IntroPage = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [loginAlertModalVisible, setLoginAlertModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState();
+  const [notSignUp, setNotSignUp] = useState(true);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -104,98 +107,115 @@ const IntroPage = () => {
     }
   };
   return (
-    <FullContainer>
-      <LoginHeader onVisible={setLoginModalVisible} />
-      {loginModalVisible ? (
-        <LoginModal
-          visible={loginModalVisible}
-          closable={true}
-          maskClosable={true}
-          onClose={closeLoginModal}
-        />
-      ) : (
-        <>
-          {loginAlertModalVisible ? (
-            <SingleModal
-              visible={setLoginAlertModalVisible}
+    <>
+      {notSignUp ? (
+        <FullContainer>
+          <LoginHeader onVisible={setLoginModalVisible} />
+          {loginModalVisible ? (
+            <LoginModal
+              visible={loginModalVisible}
               closable={true}
               maskClosable={true}
-              onClose={closeLoginAlertModal}
-              text={<>{t("introPageAlert1")}</>}
-              setStatus={setLoginModalVisible}
-              buttonText={t("introPageAlert2")}
+              onClose={closeLoginModal}
+              setStatus={setNotSignUp}
             />
           ) : (
-            <></>
+            <>
+              {loginAlertModalVisible ? (
+                <SingleModal
+                  visible={setLoginAlertModalVisible}
+                  closable={true}
+                  maskClosable={true}
+                  onClose={closeLoginAlertModal}
+                  text={<>{t("introPageAlert1")}</>}
+                  setStatus={setLoginModalVisible}
+                  buttonText={t("introPageAlert2")}
+                />
+              ) : (
+                <></>
+              )}
+            </>
           )}
-        </>
+          <Swiper
+            className="banner"
+            modules={[Navigation, Pagination, Autoplay]}
+            spaceBetween={50}
+            slidesPerView={1}
+            pagination={{ clickable: true }}
+            autoplay={{ delay: 5000 }}
+          >
+            <SwiperSlide>
+              <IntroTextBox>
+                <FirstIntro>
+                  {t("introPageMent1")}
+                  <br />
+                  {t("introPageMent2")}
+                </FirstIntro>
+                <SecondIntro>{t("introPageMent3")}</SecondIntro>
+              </IntroTextBox>
+              <MainImageBanner src={MainImage1} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <IntroTextBox>
+                <FirstIntro>
+                  {t("introPageMent4")}
+                  <br />
+                  {t("introPageMent5")}
+                </FirstIntro>
+                <SecondIntro>{t("introPageMent6")}</SecondIntro>
+              </IntroTextBox>
+              <MainImageBanner src={MainImage2} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <IntroTextBox>
+                <FirstIntro>
+                  {t("introPageMent7")}
+                  <br />
+                  {t("introPageMent8")}
+                </FirstIntro>
+                <SecondIntro>{t("introPageMent9")}</SecondIntro>
+              </IntroTextBox>
+              <MainImageBanner src={MainImage3} />
+            </SwiperSlide>
+          </Swiper>
+          <BannerBottom />
+          <ButtonContainer>
+            <ContainedButton
+              type="secondary"
+              styles="filled"
+              states="default"
+              size="large"
+              label={
+                <div
+                  style={{
+                    whiteSpace: "nowrap",
+                    paddingLeft: "60px",
+                    paddingRight: "60px",
+                  }}
+                >
+                  {t("introPage3")}
+                </div>
+              }
+              onClick={sendOnClick}
+              style={{
+                width: "auto",
+                whiteSpace: "nowrap",
+              }}
+            />
+            <ContainedButton
+              type="primary"
+              styles="filled"
+              states="default"
+              size="large"
+              label={t("introPage4")}
+              onClick={profileSettingOnClick}
+            />
+          </ButtonContainer>
+        </FullContainer>
+      ) : (
+        <CreateLinkPage />
       )}
-      <Swiper
-        className="banner"
-        modules={[Navigation, Pagination, Autoplay]}
-        spaceBetween={50}
-        slidesPerView={1}
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 5000 }}
-      >
-        <SwiperSlide>
-          <IntroTextBox>
-            <FirstIntro>
-              {t("introPageMent1")}
-              <br />
-              {t("introPageMent2")}
-            </FirstIntro>
-            <SecondIntro>{t("introPageMent3")}</SecondIntro>
-          </IntroTextBox>
-          <MainImageBanner src={MainImage1} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <IntroTextBox>
-            <FirstIntro>
-              {t("introPageMent4")}
-              <br />
-              {t("introPageMent5")}
-            </FirstIntro>
-            <SecondIntro>{t("introPageMent6")}</SecondIntro>
-          </IntroTextBox>
-          <MainImageBanner src={MainImage2} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <IntroTextBox>
-            <FirstIntro>
-              {t("introPageMent7")}
-              <br />
-              {t("introPageMent8")}
-            </FirstIntro>
-            <SecondIntro>{t("introPageMent9")}</SecondIntro>
-          </IntroTextBox>
-          <MainImageBanner src={MainImage3} />
-        </SwiperSlide>
-      </Swiper>
-      <BannerBottom />
-      <ButtonContainer>
-        <ContainedButton
-          type="secondary"
-          styles="filled"
-          states="default"
-          size="large"
-          label={t("introPage3")}
-          onClick={sendOnClick}
-          style={{
-            width: "auto",
-            // , paddingLeft: "23px", paddingRight: "23px"
-          }}
-        />
-        <ContainedButton
-          type="primary"
-          styles="filled"
-          states="default"
-          size="large"
-          label={t("introPage4")}
-          onClick={profileSettingOnClick}
-        />
-      </ButtonContainer>
-    </FullContainer>
+    </>
   );
 };
 

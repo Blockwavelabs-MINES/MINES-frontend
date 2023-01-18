@@ -10,6 +10,7 @@ import { MetamaskOnClick } from "../../../actions/WalletConnectActions";
 import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 import { addWallet, deleteWallet } from "../../../utils/api/wallets";
 import { useTranslation } from "react-i18next";
+import AddWalletAddress from "../../../components/modal/AddWalletAddress";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -60,6 +61,7 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
   const [realDelete, setRealDelete] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState(-1);
   const [addedWallet, setAddedWallet] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState(userInfoProps);
   const { t } = useTranslation();
 
@@ -99,32 +101,47 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
   useEffect(() => {
     (async () => {
       if (addedWallet) {
-        // 추가하는 action
-        const addWalletResult = await addWallet(
-          userInfo.user.user_id,
-          "METAMASK",
-          addedWallet
-        ).then((data) => {
-          console.log(data);
-          var tmpWalletList = walletList;
-          tmpWalletList.push({
-            // type: "Metamask",
-            wallet_address: addedWallet,
-            // icon: MetamaskIcon,
-          });
-          // setLocalUserInfo({
-          //   type: "edit",
-          //   editKey: "wallets",
-          //   editValue: tmpWalletList,
-          // });
-          // setWalletList(tmpWalletList);
-
-          setAddedWallet();
-          setInfoChange(!infoChange);
+        //중복 검사
+        let notDuplicated = true;
+        walletList.map((wallet, idx) => {
+          if (wallet.wallet_address == addedWallet) {
+            notDuplicated = false;
+          }
         });
+        if (notDuplicated) {
+          // 추가하는 action
+          const addWalletResult = await addWallet(
+            userInfo.user.user_id,
+            "METAMASK",
+            addedWallet
+          ).then((data) => {
+            console.log(data);
+            var tmpWalletList = walletList;
+            tmpWalletList.push({
+              // type: "Metamask",
+              wallet_address: addedWallet,
+              // icon: MetamaskIcon,
+            });
+            // setLocalUserInfo({
+            //   type: "edit",
+            //   editKey: "wallets",
+            //   editValue: tmpWalletList,
+            // });
+            // setWalletList(tmpWalletList);
+
+            setAddedWallet();
+            setInfoChange(!infoChange);
+          });
+        } else {
+          alert(t("manageProfilePage10"));
+        }
       }
     })();
   }, [addedWallet]);
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
 
   const deleteOnClick = (idx) => {
     setDeleteIdx(idx);
@@ -136,11 +153,23 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
   };
 
   const walletConnectOnClick = () => {
-    MetamaskOnClick(walletList, setAddedWallet);
+    // MetamaskOnClick(walletList, setAddedWallet);
+    setModalVisible(true);
   };
 
   return (
     <FullContainer>
+      {modalVisible ? (
+        <AddWalletAddress
+          visible={modalVisible}
+          closable={true}
+          maskClosable={true}
+          onClose={closeModal}
+          setAddedWallet={setAddedWallet}
+        />
+      ) : (
+        <></>
+      )}
       {deleteModalOn ? (
         <DeleteModal
           visible={deleteModalOn}
@@ -157,27 +186,14 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
         <TItleText>{t("selectWalletPage6")}</TItleText>
         {walletList?.length > 0 ? (
           <>
-            {isMobileDevice() ? (
-              <a href="https://metamask.app.link/dapp/3tree.io">
-                <ContainedButton
-                  type="secondary"
-                  styles="filled"
-                  states="default"
-                  size="small"
-                  label={t("selectWalletPage7")}
-                  onClick={walletConnectOnClick}
-                />
-              </a>
-            ) : (
-              <ContainedButton
-                type="secondary"
-                styles="filled"
-                states="default"
-                size="small"
-                label={t("selectWalletPage7")}
-                onClick={walletConnectOnClick}
-              />
-            )}
+            <ContainedButton
+              type="secondary"
+              styles="filled"
+              states="default"
+              size="small"
+              label={t("selectWalletPage7")}
+              onClick={walletConnectOnClick}
+            />
           </>
         ) : (
           <></>
@@ -187,27 +203,14 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
         <>
           <EmptyCard icon={EmptyWallet} text={t("selectWalletPage3_3")} />
           <>
-            {isMobileDevice() ? (
-              <a href="https://metamask.app.link/dapp/3tree.io">
-                <ContainedButton
-                  type="primary"
-                  styles="filled"
-                  states="default"
-                  size="large"
-                  label={t("selectWalletPage5")}
-                  onClick={walletConnectOnClick}
-                />
-              </a>
-            ) : (
-              <ContainedButton
-                type="primary"
-                styles="filled"
-                states="default"
-                size="large"
-                label={t("selectWalletPage5")}
-                onClick={walletConnectOnClick}
-              />
-            )}
+            <ContainedButton
+              type="primary"
+              styles="filled"
+              states="default"
+              size="large"
+              label={t("selectWalletPage5")}
+              onClick={walletConnectOnClick}
+            />
           </>
         </>
       ) : (

@@ -390,9 +390,9 @@ const LoginModalInner = (
       );
       console.log(gasPrice);
       console.log(gasAmount);
-      // const fee = Number(gasPrice) + gasAmount;
+      const fee = Number(gasPrice) * gasAmount;
       // const fee = Number(gasPrice) / 100;
-      const fee = gasAmount;
+      // const fee = gasAmount;
       // const fee = 20000000;
 
       await metamaskProvider
@@ -401,11 +401,15 @@ const LoginModalInner = (
           params: [
             {
               nonce: "0x00", // ignored by MetaMask
-              gasPrice: (Math.pow(10, 8) * 0.1).toString(16), // customizable by user during MetaMask confirmation.
+              // gasPrice: (Math.pow(10, 8) * 0.1).toString(16), // customizable by user during MetaMask confirmation.
               // gas: (Math.pow(10, 6) * 0.1).toString(16), // customizable by user during MetaMask confirmation.
               // gas: String(fee), //이거임
               to: process.env.REACT_APP_3TREE_ADDRESS, // Required except during contract publications.
               from: address, // must match user's active address.
+              // maxPriorityFeePerGas: (Math.pow(10, 8) * 0.1).toString(16),
+              // maxPriorityFee: (Math.pow(10, 8) * 0.1).toString(16),
+              maxPriorityFee: String(fee),
+              // maxFeePerGas: (Math.pow(10, 8) * 0.1).toString(16),
               value: (Math.pow(10, 18) * amount).toString(16), // Only required to send ether to the recipient from the initiating external account.
               data: "0x7f7465737432000000000000000000000000000000000000000000000000000000600057", // Optional, but used for defining smart contract creation and interaction.
               chainId: networkId.toString(16), // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
@@ -495,7 +499,7 @@ const CheckSendModal = ({
   tokenInfo,
   setLoading,
   setFailed,
-  resend
+  resend,
 }) => {
   return (
     <BottomModal
