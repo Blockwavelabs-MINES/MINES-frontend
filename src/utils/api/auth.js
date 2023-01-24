@@ -32,7 +32,7 @@ export const createUser = async (socialID, socialPlatform) => {
     .then((data) => {
       console.log(data.data);
       returnValue = data.data.result;
-    })
+    });
 
   return returnValue;
 };
@@ -46,6 +46,7 @@ export const loginUser = async (socialID) => {
       {
         headers: {
           "Content-Type": "application/json",
+          "X-AUTH-TOKEN": "hellohowareyou",
         },
       }
     )
@@ -53,7 +54,7 @@ export const loginUser = async (socialID) => {
       console.log(data.data);
       returnValue = data.data.result;
       setLocalUserInfo({ type: "init", data: returnValue });
-    })
+    });
 
   return returnValue;
 };

@@ -169,7 +169,7 @@ const SendTokenPage = () => {
   const [trash, setTrash] = useState("");
   const [senderAddress, setSenderAddress] = useState("");
   const [currency, setCurrency] = useState("");
-  const [network, setNetwork] = useState("Ethereum Mainnet");
+  const [network, setNetwork] = useState("");
   const [networkId, setNetworkId] = useState("");
   const [token, setToken] = useState("");
   const [amount, setAmount] = useState("");

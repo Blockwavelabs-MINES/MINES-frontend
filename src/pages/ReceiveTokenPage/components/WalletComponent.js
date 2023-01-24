@@ -12,6 +12,7 @@ import { addWallet, deleteWallet } from "../../../utils/api/wallets";
 import { receiveTrxs, getTrxsLinkInfo } from "../../../utils/api/trxs";
 import Chainlist from "../../SendTokenPage/data/SimpleTokenList";
 import { useTranslation } from "react-i18next";
+import AddWalletAddress from "../../../components/modal/AddWalletAddress";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -67,11 +68,11 @@ function toFixed(x) {
       // console.log(e)
       // console.log(x*1000000)
       // x *= Math.pow(10, e - 1);
-      x = Math.imul(x, Math.pow(10, e - 1))
+      x = Math.imul(x, Math.pow(10, e - 1));
       // console.log(Math.pow(10, e - 1))
-      console.log(x)
+      console.log(x);
       x = "0." + new Array(e).join("0") + x.toString().substring(2);
-      console.log(x)
+      console.log(x);
     }
   } else {
     var e = parseInt(x.toString().split("+")[1]);
@@ -107,6 +108,7 @@ const WalletComponent = ({
   const [transactionHash, setTransactionHash] = useState(null);
   const [transactionStatus, setTransactionStatus] = useState(null);
   const [checkStatus, setCheckStatus] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const { t } = useTranslation();
 
   const Web3 = require("web3");
@@ -117,7 +119,8 @@ const WalletComponent = ({
     web3 = new Web3(
       new Web3.providers.HttpProvider(process.env.REACT_APP_POLYGON_URL)
     );
-  } else { // linkInfo.network_id == 5
+  } else {
+    // linkInfo.network_id == 5
     web3 = new Web3(
       new Web3.providers.HttpProvider(process.env.REACT_APP_GO_URL)
     );
@@ -204,26 +207,39 @@ const WalletComponent = ({
   useEffect(() => {
     (async () => {
       if (addedWallet) {
-        // 추가하는 action
-        const addWalletResult = await addWallet(
-          userInfo.user.user_id,
-          "METAMASK",
-          addedWallet
-        ).then((data) => {
-          console.log(data);
-          var tmpWalletList = walletList;
-          tmpWalletList.push({
-            // type: "Metamask",
-            wallet_address: addedWallet,
-            // icon: MetamaskIcon,
-          });
-
-          setAddedWallet();
-          setInfoChange(!infoChange);
+        //중복 검사
+        let notDuplicated = true;
+        walletList.map((wallet, idx) => {
+          if (wallet.wallet_address == addedWallet) {
+            notDuplicated = false;
+          }
         });
+        if (notDuplicated) {
+          // 추가하는 action
+          const addWalletResult = await addWallet(
+            userInfo.user.user_id,
+            "METAMASK",
+            addedWallet
+          ).then((data) => {
+            console.log(data);
+            var tmpWalletList = walletList;
+            tmpWalletList.push({
+              // type: "Metamask",
+              wallet_address: addedWallet,
+              // icon: MetamaskIcon,
+            });
+
+            setAddedWallet();
+            setInfoChange(!infoChange);
+          });
+        }
       }
     })();
   }, [addedWallet]);
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
 
   const deleteOnClick = (idx) => {
     setDeleteIdx(idx);
@@ -235,7 +251,8 @@ const WalletComponent = ({
   };
 
   const walletConnectOnClick = () => {
-    MetamaskOnClick(walletList, setAddedWallet);
+    // MetamaskOnClick(walletList, setAddedWallet);
+    setModalVisible(true);
   };
 
   const handleSelectChange = (event) => {
@@ -460,7 +477,7 @@ const WalletComponent = ({
 
             const gasPrice = await web3.eth.getGasPrice();
             console.log(Number(linkInfo.token_amount));
-            console.log(toFixed(Number(linkInfo.token_amount)))
+            console.log(toFixed(Number(linkInfo.token_amount)));
             const gasAmount = await getGasAmount(
               account.address,
               walletList[select].wallet_address,
@@ -560,6 +577,17 @@ const WalletComponent = ({
 
   return (
     <>
+      {modalVisible ? (
+        <AddWalletAddress
+          visible={modalVisible}
+          closable={true}
+          maskClosable={true}
+          onClose={closeModal}
+          setAddedWallet={setAddedWallet}
+        />
+      ) : (
+        <></>
+      )}
       {!resend ? (
         <FullContainer>
           {deleteModalOn ? (
@@ -577,29 +605,14 @@ const WalletComponent = ({
           <TitleContainer>
             <TItleText>{t("manageProfilePage3")}</TItleText>
             {walletList?.length > 0 ? (
-              <>
-                {isMobileDevice() ? (
-                  <a href="https://metamask.app.link/dapp/3tree.io">
-                    <ContainedButton
-                      type="secondary"
-                      styles="filled"
-                      states="default"
-                      size="small"
-                      label={t("manageProfilePage4")}
-                      onClick={walletConnectOnClick}
-                    />
-                  </a>
-                ) : (
-                  <ContainedButton
-                    type="secondary"
-                    styles="filled"
-                    states="default"
-                    size="small"
-                    label={t("manageProfilePage4")}
-                    onClick={walletConnectOnClick}
-                  />
-                )}
-              </>
+              <ContainedButton
+                type="secondary"
+                styles="filled"
+                states="default"
+                size="small"
+                label={t("manageProfilePage4")}
+                onClick={walletConnectOnClick}
+              />
             ) : (
               <></>
             )}
@@ -607,29 +620,14 @@ const WalletComponent = ({
           {walletList?.length == 0 ? (
             <>
               <EmptyCard icon={EmptyWallet} text={t("selectWalletPage3_3")} />
-              <>
-                {isMobileDevice() ? (
-                  <a href="https://metamask.app.link/dapp/3tree.io">
-                    <ContainedButton
-                      type="primary"
-                      styles="filled"
-                      states="default"
-                      size="large"
-                      label={t("selectWalletPage5")}
-                      onClick={walletConnectOnClick}
-                    />
-                  </a>
-                ) : (
-                  <ContainedButton
-                    type="primary"
-                    styles="filled"
-                    states="default"
-                    size="large"
-                    label={t("selectWalletPage5")}
-                    onClick={walletConnectOnClick}
-                  />
-                )}
-              </>
+              <ContainedButton
+                type="primary"
+                styles="filled"
+                states="default"
+                size="large"
+                label={t("selectWalletPage5")}
+                onClick={walletConnectOnClick}
+              />
             </>
           ) : (
             <>

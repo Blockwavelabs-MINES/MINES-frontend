@@ -571,7 +571,8 @@ const Step2 = ({
         }
       });
 
-      const currentNetwork = metamaskProvider.networkVersion;
+      // const currentNetwork = parseInt(metamaskProvider.networkVersion, 16);
+      const currentNetwork = metamaskProvider.networkVersion
       console.log(currentNetwork);
       setNetworkId(currentNetwork);
       console.log(MetamaskChainList);
@@ -585,7 +586,7 @@ const Step2 = ({
           ].pageProps.chain.name
         );
       } else {
-        setNetwork("지원하지 않는 네트워크");
+        setNetwork(t("sendpage02_13"));
       }
 
       setCurrency(
@@ -597,13 +598,14 @@ const Step2 = ({
       );
       metamaskProvider.on("chainChanged", function (chainId) {
         // Time to reload your interface with accounts[0]!
-        console.log(chainId);
-        if (chainId == 5 || currentNetwork == 137) {
+        const decChainId = parseInt(chainId, 16)
+        console.log(decChainId);
+        if (decChainId == 5 || decChainId == 137) {
           // 현재 지원하는 네트워크 유효성 검사
           setNetwork(
             MetamaskChainList[
               MetamaskChainList.findIndex(
-                (v) => v.pageProps.chain.chainId == chainId
+                (v) => v.pageProps.chain.chainId == decChainId
               )
             ].pageProps.chain.name
           );
@@ -611,11 +613,11 @@ const Step2 = ({
           setNetwork(t("sendpage02_13"));
         }
 
-        setNetworkId(chainId);
+        setNetworkId(decChainId);
         setCurrency(
           MetamaskChainList[
             MetamaskChainList.findIndex(
-              (v) => v.pageProps.chain.chainId == chainId
+              (v) => v.pageProps.chain.chainId == decChainId
             )
           ].pageProps.chain.nativeCurrency.symbol
         );
@@ -763,12 +765,12 @@ const Step2 = ({
       </SendContainer>
       <NetworkWalletInfoBox>
         <NetworkNameBox>
-          {network == t("sendpage02_13") ? (
+          {network == t("sendpage02_13") || !network ? (
             <>
               {/* <NetworkStatusCircle style={{backgroundColor:palette.red_2}}/> */}
               <NetworkName style={{ color: palette.red_2 }}>
                 {" "}
-                {network}
+                {t("sendpage02_13")}
               </NetworkName>
             </>
           ) : (
