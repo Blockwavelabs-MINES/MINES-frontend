@@ -32,3 +32,5 @@ export { default as CopyIconGray } from "./copy-icon-gray.svg";
 export { default as InfoIcon } from "./info-icon.svg";
 export { default as GreenCheck } from "./green-check.svg";
 export { default as Sender3TreeIcon } from "./3tree-icon.svg";
+export { default as BlingIcon } from "./bling-icon.svg";
+export { default as CustomIcon } from "./custom-icon.svg";

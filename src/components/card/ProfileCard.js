@@ -6,6 +6,7 @@ import {
   CardTrash,
   ProfileLarge,
   ProfileEdit,
+  BlingIcon,
 } from "../../assets/icons";
 import { ContainedButton } from "../button";
 import { useTranslation } from "react-i18next";
@@ -13,7 +14,10 @@ import { useTranslation } from "react-i18next";
 const FullContainer = styled.div`
   width: 100%;
   padding: 60px 20px;
-  background: linear-gradient(180deg, #edf2fd 0%, rgba(255, 255, 255, 0) 100%);
+  background: ${(props) =>
+    props.color
+      ? "transparent"
+      : "linear-gradient(180deg, #edf2fd 0%, rgba(255, 255, 255, 0) 100%)"};
 `;
 
 const InnerContainer = styled.div`
@@ -37,7 +41,7 @@ const ProfileImageBox = styled.div`
 
 const UserNameBox = styled.div`
   ${Typograpy.Headline1}
-  color: ${palette.Black};
+  color: ${(props) => (props.color ? props.color : palette.Black)};
   margin: 0px auto;
   text-align: center;
 `;
@@ -45,11 +49,16 @@ const UserNameBox = styled.div`
 const IntroductionBox = styled.div`
   max-width: 400px;
   ${Typograpy.Subhead}
-  color: ${palette.grey_1};
+  color: ${(props) => (props.color ? props.color : palette.grey_1)};
   margin: 0px auto;
   margin-top: 14px;
   margin-bottom: 40px;
   text-align: center;
+`;
+
+const EditButtonBox = styled.div`
+  display: flex;
+  gap: 16px;
 `;
 
 const ProfileCard = ({
@@ -57,27 +66,40 @@ const ProfileCard = ({
   userName,
   introduction,
   onClick,
+  onClickRight,
   isEditable,
   style,
+  color,
 }) => {
   const { t } = useTranslation();
 
   return (
-    <FullContainer style={style}>
+    <FullContainer color={color} style={style}>
       <InnerContainer>
         <ProfileImageBox profileImg={profileImg} />
-        <UserNameBox>{userName}</UserNameBox>
-        <IntroductionBox>{introduction}</IntroductionBox>
+        <UserNameBox color={color}>{userName}</UserNameBox>
+        <IntroductionBox color={color}>{introduction}</IntroductionBox>
         {isEditable ? (
-          <ContainedButton
-            type="primary"
-            styles="outlined"
-            states="default"
-            size="large"
-            label={t("manageProfilePage9")}
-            icon={ProfileEdit}
-            onClick={onClick}
-          />
+          <EditButtonBox>
+            <ContainedButton
+              type="primary"
+              styles="outlined"
+              states="default"
+              size="large"
+              label={t("manageProfilePage9")}
+              icon={ProfileEdit}
+              onClick={onClick}
+            />
+            <ContainedButton
+              type="primary"
+              styles="filled"
+              states="default"
+              size="large"
+              label={t("manageProfilePage11")}
+              icon={BlingIcon}
+              onClick={onClickRight}
+            />
+          </EditButtonBox>
         ) : (
           <></>
         )}

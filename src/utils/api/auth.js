@@ -37,16 +37,15 @@ export const createUser = async (socialID, socialPlatform) => {
   return returnValue;
 };
 
-export const loginUser = async (socialID) => {
+export const loginUser = async (socialID, accessToken) => {
   let returnValue = 0;
   const result = await axios
     .post(
       process.env.REACT_APP_DB_HOST + `/users/login`,
-      `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "socialID":"${socialID}"}`,
+      `{"socialID":"${socialID}", "accessToken":"${accessToken}"}`,
       {
         headers: {
           "Content-Type": "application/json",
-          "X-AUTH-TOKEN": "hellohowareyou",
         },
       }
     )

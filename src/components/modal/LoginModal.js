@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import styled from "styled-components";
 import { ContainedButton } from "../button";
 import Typography from "../../utils/style/Typography/index";
@@ -15,6 +16,7 @@ import {
   getInfoFromAccessToken,
   editProfile,
 } from "../../utils/api/auth";
+import { getProfileDeco, editDecoFont } from "../../utils/api/profile";
 import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
@@ -53,6 +55,8 @@ const TermsBox = styled.div`
 `;
 
 const LoginModalInner = (type, setStatus, onClose) => {
+  const [googleAccessToken, setGoogleAccessToken] = useState("");
+
   const { t } = useTranslation();
 
   const responseGoogle = async (accessToken) => {
@@ -61,7 +65,7 @@ const LoginModalInner = (type, setStatus, onClose) => {
     ).then(async (res) => {
       const createUserResult = await createUser(res.email, "GOOGLE")
         .then(async (userInfo) => {
-          const loginUserResult = await loginUser(res.email)
+          const loginUserResult = await loginUser(res.email, accessToken)
             .then(async (data) => {
               const formData = new FormData();
 
@@ -97,9 +101,15 @@ const LoginModalInner = (type, setStatus, onClose) => {
             });
         })
         .catch(async (error) => {
-          const loginUserResult = await loginUser(res.email)
-            .then((data) => {
+          const loginUserResult = await loginUser(res.email, accessToken)
+            .then(async (data) => {
               console.log(data);
+              
+              // const getProfileDecoResult = await getProfileDeco(
+              //   data.user.index
+              // ).then((res) => {
+              //   alert(res);
+              // });
               if (!data) {
                 alert("존재하지 않는 유저입니다.");
                 window.location.href = "/";
@@ -120,6 +130,7 @@ const LoginModalInner = (type, setStatus, onClose) => {
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => {
       console.log(codeResponse);
+      setGoogleAccessToken(codeResponse.access_token);
       responseGoogle(codeResponse.access_token);
     },
   });
