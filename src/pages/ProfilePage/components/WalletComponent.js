@@ -50,7 +50,7 @@ function isMobileDevice() {
   );
 }
 
-const WalletComponent = ({ userWalletList }) => {
+const WalletComponent = ({ userWalletList, profileDecorate }) => {
   const [walletList, setWalletList] = useState(userWalletList);
   const [copyPivotVisible, setCopyPivotVisible] = useState(false);
   const [copyOn, setCopyOn] = useState(false);
@@ -112,7 +112,7 @@ const WalletComponent = ({ userWalletList }) => {
   return (
     <FullContainer>
       <TitleContainer ref={myRef}>
-        <TItleText>{t("profilePage2")}</TItleText>
+        <TItleText style={{color: profileDecorate?.font_color}}>{t("profilePage2")}</TItleText>
       </TitleContainer>
       {walletList?.length == 0 ? (
         <EmptyCard icon={EmptyWallet} text={t("selectWalletPage3_3")} />
@@ -141,6 +141,7 @@ const WalletComponent = ({ userWalletList }) => {
                   // icon={wallet.icon}
                   icon={MetamaskIcon}
                   onClick={() => walletOnClick(wallet.wallet_address, idx)}
+                  style={{backgroundColor: profileDecorate?.button_color, color: profileDecorate?.button_font_color}}
                 />
               </div>
             </>

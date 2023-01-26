@@ -23,7 +23,12 @@ const FullContainer = styled.div`
   min-height: 100vh;
   position: relative;
   // padding-top: 75px;
-  background: linear-gradient(180deg, #d1e0ff 0%, #ece0ed 57.29%, #fff1f1 100%);
+  // background: linear-gradient(180deg, #d1e0ff 0%, #ece0ed 57.29%, #fff1f1 100%);
+  background-color: ${(props) => (props.color ? props.color : "transparent")};
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: ${(props) => (props.value ? `url(${props.value})` : "")};
 `;
 
 const Divider = styled.div`
@@ -108,7 +113,18 @@ const ProfilePage = () => {
 
   return (
     <>
-      <FullContainer>
+      <FullContainer
+        color={
+          userInfo?.profileDecorate?.background_type == "COLOR"
+            ? userInfo?.profileDecorate?.background_color
+            : ""
+        }
+        value={
+          userInfo?.profileDecorate?.background_type == "IMAGE"
+            ? userInfo?.profileDecorate?.background_img
+            : ""
+        }
+      >
         <ProfileHeader />
         <ProfileCard
           profileImg={userInfo?.user?.profile_img}
@@ -118,25 +134,26 @@ const ProfilePage = () => {
             paddingTop: "135px",
             backgroundColor: "transparent",
           }}
+          color={userInfo?.profileDecorate?.font_color}
         />
         {userInfo ? (
           <>
             {userInfo.links.length ? (
-              <LinkComponent userLinkList={userInfo?.links} />
+              <LinkComponent userLinkList={userInfo?.links} profileDecorate={userInfo?.profileDecorate}/>
             ) : (
               <></>
             )}
             {userInfo.wallets.length ? (
               <>
                 {/* <Divider /> */}
-                <WalletComponent userWalletList={userInfo?.wallets} />
+                <WalletComponent userWalletList={userInfo?.wallets} profileDecorate={userInfo?.profileDecorate}/>
               </>
             ) : (
               <></>
             )}
           </>
         ) : (
-            <>{t("profilePage4")}</>
+          <>{t("profilePage4")}</>
         )}
       </FullContainer>
     </>

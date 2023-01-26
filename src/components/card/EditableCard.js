@@ -14,6 +14,7 @@ const CardContainer = styled.div`
   box-shadow: 0px 0px 6px 0px #f0f1f2;
   //   box-shadow: 0px 4px 20px 0px #E9EAEC33;
   //   border: 1px solid;
+  border: ${(props) => (props.value ? `1px solid ${palette.sky_1}` : "")};
 `;
 
 const CardContainerButton = styled.button`
@@ -137,11 +138,12 @@ const EditableCard = ({
   select,
   idx,
   ref,
+  style,
 }) => {
   return (
     <div ref={ref}>
       {onClick ? (
-        <CardContainerButton onClick={onClick}>
+        <CardContainerButton style={style} onClick={onClick}>
           <CardInfoBox>
             <CardIcon src={icon} />
             <CardLabel>{label}</CardLabel>
@@ -149,15 +151,7 @@ const EditableCard = ({
           <CardToolBox></CardToolBox>
         </CardContainerButton>
       ) : (
-        <CardContainer
-          style={
-            isCheck
-              ? select == idx
-                ? { border: `1px solid ${palette.sky_1}` }
-                : {}
-              : {}
-          }
-        >
+        <CardContainer value={isCheck && select == idx} style={style}>
           <CardInfoBox>
             <CardIcon src={icon} />
             <CardLabel>{label}</CardLabel>

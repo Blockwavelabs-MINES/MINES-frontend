@@ -87,7 +87,7 @@ export const editDecoButton = async (userId, btnColor, btnFontColor) => {
       JSON.parse(
         localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME)
       )?.jwtToken
-    }", "btnColor":"${btnColor}", "btnFontColor":"${btnFontColor}}"`,
+    }", "btnColor":"${btnColor}", "btnFontColor":"${btnFontColor}"}`,
     redirect: "follow",
   };
 

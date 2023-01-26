@@ -34,7 +34,7 @@ const ListContainer = styled.div`
   gap: 20px;
 `;
 
-const LinkComponent = ({ userLinkList }) => {
+const LinkComponent = ({ userLinkList, profileDecorate }) => {
   const [linkList, setLinkList] = useState(userLinkList);
   const { t } = useTranslation();
 
@@ -49,7 +49,7 @@ const LinkComponent = ({ userLinkList }) => {
   return (
     <FullContainer>
       <TitleContainer>
-        <TItleText>{t("manageProfilePage1")}</TItleText>
+        <TItleText style={{color: profileDecorate?.font_color}}>{t("manageProfilePage1")}</TItleText>
       </TitleContainer>
       {linkList?.length == 0 ? (
         <>
@@ -62,6 +62,7 @@ const LinkComponent = ({ userLinkList }) => {
               label={link.link_title}
               icon={LinkIcon}
               onClick={() => linkOnClick(idx)}
+              style={{backgroundColor: profileDecorate?.button_color, color: profileDecorate?.button_font_color}}
             />
           ))}
         </ListContainer>

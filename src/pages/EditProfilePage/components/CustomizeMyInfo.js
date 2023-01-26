@@ -147,8 +147,8 @@ const CustomizeMyInfo = ({
 }) => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [backImage, setProfileImage] = useState({
-    file: "",
-    imagePreviewUrl: "",
+    file: userInfo?.profileDecorate?.background_img,
+    imagePreviewUrl: userInfo?.profileDecorate?.background_img,
   });
   const [backImageChange, setProfileImageChange] = useState(false);
   const [name, setName] = useState(userInfo?.user.profile_name);
