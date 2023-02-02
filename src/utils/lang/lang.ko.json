@@ -165,6 +165,7 @@
   "sendpage02Alert3": "취소",
 
   "selectTokenModalTitle": "토큰 선택",
+  "selectNetworkModalTitle": "네트워크 변경",
 
   "sendConfirmModal1": "송금 확인",
   "sendConfirmModal2": "",

@@ -7,6 +7,7 @@ import { BottomModal } from "../../../components/modal";
 import { Sender3TreeIcon } from "../../../assets/icons";
 import { sendTrxs } from "../../../utils/api/trxs";
 import { useTranslation } from "react-i18next";
+import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -137,6 +138,10 @@ const PersonIcon = styled.img`
   height: 20px;
 `;
 
+function isMobileDevice() {
+  return "ontouchstart" in window || "onmsgesturechange" in window;
+}
+
 function setExpiredDate() {
   var today = new Date();
   today.setDate(today.getDate() + 3);
@@ -168,17 +173,26 @@ const LoginModalInner = (
   const [transactionStatus, setTransactionStatus] = useState(null);
   const [escrowId, setEscrowId] = useState();
   const [expiredDateResult, setExpiredDateResult] = useState();
+  const { connector, active, provider, account, chainId, library } =
+    useWeb3React();
 
   const Web3 = require("web3");
-  const rpcURL = process.env.REACT_APP_GO_URL;
+  let rpcURL = process.env.REACT_APP_GO_URL;
+  if (networkId == 137) {
+    rpcURL = process.env.REACT_APP_POLYGON_URL;
+  }
   // const web3 = new Web3(rpcURL);
   let metamaskProvider = "";
-  if (window.ethereum.providers) {
-    metamaskProvider = window.ethereum.providers.find(
+  if (window?.ethereum?.providers) {
+    metamaskProvider = window?.ethereum?.providers.find(
       (provider) => provider.isMetaMask
     );
   } else {
-    metamaskProvider = window.ethereum;
+    if (isMobileDevice()) {
+      metamaskProvider = library.provider;
+    } else {
+      metamaskProvider = window?.ethereum;
+    }
   }
   const web3 = new Web3(metamaskProvider);
 
@@ -194,15 +208,29 @@ const LoginModalInner = (
     console.log(transactionHash);
     if (transactionHash) {
       console.log(transactionHash);
+      // alert("in useEffect" + transactionHash);
       // setLoading(false); // failed창 테스트
       // setFailed(true); // failed창 테스트
       // Check the status of the transaction every 1 second
-      const interval = setInterval(() => {
-        web3.eth
-          .getTransactionReceipt(
-            transactionHash
-            // "dfsdfdfd"
-          )
+      const interval = setInterval(async () => {
+        // web3.eth
+        //   .getTransactionReceipt(
+        //     transactionHash
+        //     // "dfsdfdfd"
+        //   )
+
+        await fetch(rpcURL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            id: 1,
+            method: "eth_getTransactionByHash",
+            params: [transactionHash],
+          }),
+        })
           .then(async (receipt) => {
             if (receipt == null) {
               console.log("pending");
@@ -239,6 +267,7 @@ const LoginModalInner = (
           .catch((err) => {
             // 존재하지 않는 hash 값일 경우 (+ pending이 길게 되어 tx가 사라진 경우)
             console.log(err);
+            // alert(JSON.stringify(err));
             setLoading(false);
             setFailed(true);
             clearInterval(interval);
@@ -356,79 +385,119 @@ const LoginModalInner = (
     } else {
       // 보내고 tx값 받은 다음 백호출
       let metamaskProvider = "";
-      if (window.ethereum.providers) {
-        metamaskProvider = window.ethereum.providers.find(
+      if (window?.ethereum?.providers) {
+        metamaskProvider = window?.ethereum?.providers.find(
           (provider) => provider.isMetaMask
         );
       } else {
-        metamaskProvider = window.ethereum;
+        if (isMobileDevice()) {
+          metamaskProvider = library.provider;
+          await metamaskProvider
+            .request({
+              method: "eth_sendTransaction",
+              params: [
+                {
+                  nonce: "0x00", // ignored by MetaMask
+                  to: process.env.REACT_APP_3TREE_ADDRESS, // Required except during contract publications.
+                  from: address, // must match user's active address.
+                  gas: 60000,
+                  // maxPriorityFee: (Math.pow(10, 8) * 0.1).toString(16),
+                  value: (Math.pow(10, 18) * amount).toString(16), // Only required to send ether to the recipient from the initiating external account.
+                  data: "0x7f7465737432000000000000000000000000000000000000000000000000000000600057", // Optional, but used for defining smart contract creation and interaction.
+                  chainId: networkId.toString(16), // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
+                },
+              ],
+            })
+            .then(async (txHash) => {
+              console.log(txHash);
+              // escrow hash와 id 생성 (with escrow Contract)
+
+              const escrowHash = txHash;
+              setEscrowId("1234"); // 현재는 escrow로 관리하지 않으므로 일단 임의의 값
+              setExpiredDateResult(setExpiredDate());
+              console.log(sender);
+              console.log(tokenInfo.address);
+              console.log(networkId);
+              setTransactionHash(escrowHash);
+              // alert(escrowHash);
+            })
+            .catch((error) => {
+              // console.error;
+              // alert(error);
+            });
+        } else {
+          metamaskProvider = window?.ethereum;
+        }
       }
 
-      const Web3 = require("web3");
-      const TokenABI = require("../../../utils/abis/IERC20_ABI");
-      const web3 = new Web3(
-        window.ethereum
-        // new Web3.providers.Web3Provider(window.ethereum)
-      );
+      if (!isMobileDevice()) {
+        const Web3 = require("web3");
+        const TokenABI = require("../../../utils/abis/IERC20_ABI");
+        const web3 = new Web3(
+          // window?.ethereum
+          metamaskProvider
+          // new Web3.providers.Web3Provider(window.ethereum)
+        );
 
-      const getGasAmount = async (fromAddress, toAddress, amount) => {
-        const gasAmount = await web3.eth.estimateGas({
-          to: toAddress,
-          from: fromAddress,
-          value: web3.utils.toWei(`${amount}`, "ether"),
-        });
+        const getGasAmount = async (fromAddress, toAddress, amount) => {
+          const gasAmount = await web3.eth.estimateGas({
+            to: toAddress,
+            from: fromAddress,
+            value: web3.utils.toWei(`${amount}`, "ether"),
+          });
+          console.log(gasAmount);
+          return gasAmount;
+        };
+
+        const gasPrice = await web3.eth.getGasPrice();
+        const gasAmount = await getGasAmount(
+          address,
+          process.env.REACT_APP_3TREE_ADDRESS,
+          amount
+          // web3.utils.toHex((Math.pow(10, 18) * amount).toString(16))
+        );
+        console.log(gasPrice);
         console.log(gasAmount);
-        return gasAmount;
-      };
+        const fee = Number(gasPrice) * gasAmount;
+        // const fee = Number(gasPrice) / 100;
+        // const fee = gasAmount;
+        // const fee = 20000000;
 
-      const gasPrice = await web3.eth.getGasPrice();
-      const gasAmount = await getGasAmount(
-        address,
-        process.env.REACT_APP_3TREE_ADDRESS,
-        amount
-        // web3.utils.toHex((Math.pow(10, 18) * amount).toString(16))
-      );
-      console.log(gasPrice);
-      console.log(gasAmount);
-      const fee = Number(gasPrice) * gasAmount;
-      // const fee = Number(gasPrice) / 100;
-      // const fee = gasAmount;
-      // const fee = 20000000;
+        await metamaskProvider
+          .request({
+            method: "eth_sendTransaction",
+            params: [
+              {
+                nonce: "0x00", // ignored by MetaMask
+                // gasPrice: (Math.pow(10, 8) * 0.1).toString(16), // customizable by user during MetaMask confirmation.
+                // gas: (Math.pow(10, 6) * 0.1).toString(16), // customizable by user during MetaMask confirmation.
+                // gas: String(fee), //이거임
+                to: process.env.REACT_APP_3TREE_ADDRESS, // Required except during contract publications.
+                from: address, // must match user's active address.
+                // maxPriorityFeePerGas: (Math.pow(10, 8) * 0.1).toString(16),
+                // maxPriorityFee: (Math.pow(10, 8) * 0.1).toString(16),
+                maxPriorityFee: String(fee),
+                // maxFeePerGas: (Math.pow(10, 8) * 0.1).toString(16),
+                value: (Math.pow(10, 18) * amount).toString(16), // Only required to send ether to the recipient from the initiating external account.
+                data: "0x7f7465737432000000000000000000000000000000000000000000000000000000600057", // Optional, but used for defining smart contract creation and interaction.
+                chainId: networkId.toString(16), // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
+              },
+            ],
+          })
+          .then(async (txHash) => {
+            console.log(txHash);
+            // escrow hash와 id 생성 (with escrow Contract)
 
-      await metamaskProvider
-        .request({
-          method: "eth_sendTransaction",
-          params: [
-            {
-              nonce: "0x00", // ignored by MetaMask
-              // gasPrice: (Math.pow(10, 8) * 0.1).toString(16), // customizable by user during MetaMask confirmation.
-              // gas: (Math.pow(10, 6) * 0.1).toString(16), // customizable by user during MetaMask confirmation.
-              // gas: String(fee), //이거임
-              to: process.env.REACT_APP_3TREE_ADDRESS, // Required except during contract publications.
-              from: address, // must match user's active address.
-              // maxPriorityFeePerGas: (Math.pow(10, 8) * 0.1).toString(16),
-              // maxPriorityFee: (Math.pow(10, 8) * 0.1).toString(16),
-              maxPriorityFee: String(fee),
-              // maxFeePerGas: (Math.pow(10, 8) * 0.1).toString(16),
-              value: (Math.pow(10, 18) * amount).toString(16), // Only required to send ether to the recipient from the initiating external account.
-              data: "0x7f7465737432000000000000000000000000000000000000000000000000000000600057", // Optional, but used for defining smart contract creation and interaction.
-              chainId: networkId.toString(16), // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
-            },
-          ],
-        })
-        .then(async (txHash) => {
-          console.log(txHash);
-          // escrow hash와 id 생성 (with escrow Contract)
-
-          const escrowHash = txHash;
-          setEscrowId("1234"); // 현재는 escrow로 관리하지 않으므로 일단 임의의 값
-          setExpiredDateResult(setExpiredDate());
-          console.log(sender);
-          console.log(tokenInfo.address);
-          console.log(networkId);
-          setTransactionHash(escrowHash);
-        })
-        .catch((error) => console.error);
+            const escrowHash = txHash;
+            setEscrowId("1234"); // 현재는 escrow로 관리하지 않으므로 일단 임의의 값
+            setExpiredDateResult(setExpiredDate());
+            console.log(sender);
+            console.log(tokenInfo.address);
+            console.log(networkId);
+            setTransactionHash(escrowHash);
+          })
+          .catch((error) => console.error);
+      }
     }
   };
 

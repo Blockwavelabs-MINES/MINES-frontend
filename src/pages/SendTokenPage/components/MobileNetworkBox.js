@@ -5,6 +5,11 @@ import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { useTranslation } from "react-i18next";
 import NetworkList from "./NetworkList";
+import { NetworkSwitchModal } from ".";
+import { DropIcon, InputHelp, InputError } from "../../../assets/icons";
+import { Tooltip } from "../../../components/card";
+import { MetamaskIcon, GoogleIcon } from "../../../assets/icons";
+
 import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
 import { WalletConnectOnClick } from "../../../components/WalletGroup/WalletConnectActions";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
@@ -33,6 +38,10 @@ const NetworkBox = styled.div`
   justify-content: space-between;
   align-itens: center;
   padding: 16px;
+  background-color: ${palette.sky_4};
+  border: 1px solid ${palette.sky_3};
+  border-radius: 16px;
+  margin: 10px 0px;
 `;
 
 const NetworkContent = styled.div`
@@ -53,60 +62,105 @@ const NetworkText = styled.div`
   font-weight: 600;
 `;
 
+const ConnectStatus = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ConnectStatusText = styled.div`
+  font-family: Montserrat;
+  font-size: 11px;
+  font-weight: 400;
+  color: ${palette.green_1};
+`;
+
+const ConnectStatusCircle = styled.div`
+  margin: 5px;
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: ${palette.green_1};
+`;
+
+const HelpTextContainer = styled.div`
+  width: 100%;
+  display: flex;
+  color: ${palette.gray};
+  margin-bottom: 32px;
+  align-items: center;
+`;
+
+const HelpText = styled.div`
+  ${Typography.Headline4}
+  color: ${palette.grey_4};
+`;
+
+const NoticeIcon = styled.button`
+  width: 16px;
+  height: 16px;
+  background-image: url(${InputHelp});
+  background-size: 13px 13px;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: hidden;
+  background-color: transparent;
+  position: relative;
+  margin-left: 4px;
+`;
+
+const TooltipStyle = styled.div`
+  ${Typography.Footer}
+  color: ${palette.white};
+  text-align: left;
+  font-family: Montserrat;
+`;
+
+const walletConvert = (walletAddress) => {
+  var returnAddress = walletAddress;
+  if (walletAddress?.length > 15) {
+    returnAddress =
+      walletAddress.substr(0, 6) +
+      "..." +
+      walletAddress.substr(walletAddress.length - 6, walletAddress.length);
+  }
+  return returnAddress;
+};
+
 export const switchChain = async (
   connector,
-  chainId,
   account,
-  setMessage,
   provider,
-  library
+  library,
+  newChainId
 ) => {
   const chainInfo =
-    NetworkList[NetworkList.findIndex((v) => v.chainId == chainId)];
+    NetworkList[NetworkList.findIndex((v) => v.chainId == newChainId)];
 
-  //   connector.activate(chainId);
   if (
     !connector
     // connector === walletConnectConnection.connector ||
     // connector === networkConnection.connector
   ) {
-    await connector.activate(chainId);
   } else {
-    // connector.activate({ chainId: 1 }).then(async () => {
-    //   // Now the connector is connected to the specified network with chainId = 1
-    //   console.log("Connected to network with chainId", connector.chainId);
-    //   alert(connector.chainId);
-    // });
-    // alert(provider);
     console.log("provider: ", provider);
     console.log("connector: ", connector);
-    // const change = await connector.handleChainChanged(1);
-    // console.log("change: ", change);
 
-    // library.provider
-    //   .send("wallet_switchEthereumChain", [{ chainId: "0x1" }])
-    //   .then(() => {
-    //     try {
-    //       connector.activate({ chainId: 1 });
-    //     } catch (error) {
-    //       console.error(error);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     alert(error);
-    //   });
+    await library.provider.on("chainChanged", (chainId) => {
+      console.log(chainId);
+    });
+    await library.provider.on("accountsChanged", (accounts) => {
+      console.log(accounts);
+    });
 
     try {
       console.log("provider: ", library.provider);
       await library.provider.request({
         method: "wallet_switchEthereumChain",
-        params: [{ chainId: "0x1" }],
-      });
-      await library.provider.on("chainChanged", (chainId) => {
-        console.log(chainId);
-      });
-      await library.provider.on("accountsChanged", (accounts) => {
-        console.log(accounts);
+        params: [
+          {
+            chainId: "0x" + newChainId?.toString(16),
+          },
+        ],
       });
       console.log("success");
     } catch (switchError) {
@@ -118,14 +172,12 @@ export const switchChain = async (
             method: "wallet_addEthereumChain",
             params: [
               {
-                chainId: "0x63564c40",
-                rpcUrls: ["https://api.harmony.one"],
-                chainName: "Harmony Mainnet",
-                nativeCurrency: { name: "ONE", decimals: 18, symbol: "ONE" },
-                blockExplorerUrls: ["https://explorer.harmony.one"],
-                iconUrls: [
-                  "https://harmonynews.one/wp-content/uploads/2019/11/slfdjs.png",
-                ],
+                chainId: "0x" + chainInfo?.chainId?.toString(16),
+                rpcUrls: chainInfo?.rpc,
+                chainName: chainInfo?.name,
+                nativeCurrency: chainInfo?.nativeCurrency,
+                blockExplorerUrls: chainInfo?.explorers,
+                iconUrls: [chainInfo?.icon],
               },
             ],
           });
@@ -134,35 +186,6 @@ export const switchChain = async (
         }
       }
     }
-
-    // alert(connector);
-    // const ConnectorTest = await connector.send("eth_requestAccounts");
-
-    // alert(ConnectorTest);
-    // setMessage(connector.activate().toString());
-    // alert(library.provider);
-
-    // const Web3 = require("web3");
-    // const web3 = new Web3(library.provider);
-    // const currentNetwork = await web3.eth.net.getId();
-    // alert(currentNetwork);
-    // alert(web3.utils.toHex(25000000));
-
-    // const addChainParameter = {
-    //   chainId,
-    //   chainName: chainInfo.name,
-    //   rpcUrls: chainInfo.rpc,
-    //   nativeCurrency: chainInfo.nativeCurrency.symbol,
-    //   blockExplorerUrls: [chainInfo.explorers],
-    // };
-    // await connector
-    //   .activate(addChainParameter)
-    //   .then((result) => {
-    //     alert(JSON.stringify(result));
-    //   })
-    //   .catch((err) => {
-    //     alert(JSON.stringify(err));
-    //   });
   }
 };
 
@@ -172,10 +195,30 @@ const MobileNetworkBox = ({ networkId, setNetworkId, network }) => {
   const { connector, active, provider, account, chainId, library } =
     useWeb3React();
   const [message, setMessage] = useState("");
+  const [notiClick, setNotiClick] = useState(false);
+  const [networkOpen, setNetworkOpen] = useState(false);
+  const [newNetworkId, setNewNetworkId] = useState(chainId);
+
   const { t } = useTranslation();
+  const TooltipText = (
+    <TooltipStyle>
+      {/* 이더리움 메인넷 (ETH)
+      <br /> */}
+      {t("sendpage02_17")}
+      <br />
+      {t("sendpage02_15")}
+    </TooltipStyle>
+  );
+
+  useEffect(() => {
+    if (chainId && chainId != newNetworkId) {
+      switchChain(connector, account, provider, library, newNetworkId);
+    }
+  }, [newNetworkId]);
 
   useEffect(() => {
     if (chainId != undefined) {
+      setNetworkId(chainId);
       console.log(chainId);
       setNetworkName(
         NetworkList[NetworkList.findIndex((v) => v.networkId == chainId)]?.name
@@ -197,31 +240,34 @@ const MobileNetworkBox = ({ networkId, setNetworkId, network }) => {
     };
     console.log(checkParams);
 
-    // alert(JSON.stringify(checkParams));
     if (connector) {
-      switchChain(connector, 1, account, setMessage, provider, library);
+      setNetworkOpen(true);
+      //   switchChain(connector, account, provider, library, newChainId);
     }
+  };
 
-    // const Web3 = require("web3");
-    // // let rpcURL = process.env.REACT_APP_GO_URL;
-    // // if (chainId == 137) {
-    // //   rpcURL = process.env.REACT_APP_POLYGON_URL;
-    // // }
-
-    // const web3 = new Web3(library);
-    // try {
-    //   //   await web3.currentProvider.request({
-    //   //     method: "wallet_switchEthereumChain",
-    //   //     params: [{ chainId: Web3.utils.toHex(1) }],
-    //   //   });
-    //   WalletConnectOnClick(() => {}, 1);
-    // } catch (err) {
-    //   alert(err);
-    // }
+  const notiOnClose = () => {
+    setNotiClick(false);
   };
 
   return (
     <>
+      <>
+        {networkOpen && NetworkList ? (
+          <NetworkSwitchModal
+            visible={networkOpen}
+            closable={true}
+            maskClosable={true}
+            onClose={() => setNetworkOpen(false)}
+            networkList={NetworkList}
+            networkId={chainId}
+            switchChain={switchChain}
+            setNewNetworkId={setNewNetworkId}
+          />
+        ) : (
+          <></>
+        )}
+      </>
       <FullContainer>
         <NetworkHeader>
           <NetworkHeaderTitle>{t("sendPage02_18")}</NetworkHeaderTitle>
@@ -237,6 +283,41 @@ const MobileNetworkBox = ({ networkId, setNetworkId, network }) => {
           <NetworkContent>
             <NetworkIcon src={networkImg} />
             <NetworkText>{networkName}</NetworkText>
+          </NetworkContent>
+          <ConnectStatus>
+            <ConnectStatusText>{t("sendPage02_20")}</ConnectStatusText>
+            <ConnectStatusCircle />
+          </ConnectStatus>
+        </NetworkBox>
+        <HelpTextContainer>
+          <HelpText>{t("sendpage02_14")}</HelpText>
+          <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
+            {notiClick ? (
+              <Tooltip
+                text={TooltipText}
+                visible={notiClick}
+                closable={true}
+                maskClosable={true}
+                onClose={notiOnClose}
+              />
+            ) : (
+              <></>
+            )}
+          </NoticeIcon>
+        </HelpTextContainer>
+        <NetworkHeader>
+          <NetworkHeaderTitle>{t("sendPage02_21")}</NetworkHeaderTitle>
+        </NetworkHeader>
+        <NetworkBox
+          style={{
+            backgroundColor: palette.white,
+            border: `1px solid ${palette.grey_7}`,
+            marginBottom: "32px",
+          }}
+        >
+          <NetworkContent>
+            <NetworkIcon src={MetamaskIcon} />
+            <NetworkText>{walletConvert(account)}</NetworkText>
           </NetworkContent>
         </NetworkBox>
       </FullContainer>

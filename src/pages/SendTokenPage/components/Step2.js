@@ -792,58 +792,55 @@ const Step2 = ({
         )}
       </SendContainer>
       <>
-        {
-          // isMobileDevice()
-          true ? (
-            <MobileNetworkBox
-              networkId={networkId}
-              setNetworkId={setNetworkId}
-              network={network}
-            />
-          ) : (
-            <>
-              <NetworkWalletInfoBox>
-                <NetworkNameBox>
-                  {network == t("sendpage02_13") || !network ? (
-                    <>
-                      {/* <NetworkStatusCircle style={{backgroundColor:palette.red_2}}/> */}
-                      <NetworkName style={{ color: palette.red_2 }}>
-                        {" "}
-                        {t("sendpage02_13")}
-                      </NetworkName>
-                    </>
-                  ) : (
-                    <>
-                      <NetworkStatusCircle />
-                      <NetworkName> {network}</NetworkName>
-                    </>
-                  )}
-                </NetworkNameBox>
-                <WalletTitle>{t("sendpage02_12")}</WalletTitle>
-                <WalletContainer>
-                  <IconBox src={MetamaskIcon} />
-                  <AddressBox>{walletConvert(address)}</AddressBox>
-                </WalletContainer>
-              </NetworkWalletInfoBox>
-              <HelpTextContainer>
-                <HelpText>{t("sendpage02_14")}</HelpText>
-                <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
-                  {notiClick ? (
-                    <Tooltip
-                      text={TooltipText}
-                      visible={notiClick}
-                      closable={true}
-                      maskClosable={true}
-                      onClose={notiOnClose}
-                    />
-                  ) : (
-                    <></>
-                  )}
-                </NoticeIcon>
-              </HelpTextContainer>
-            </>
-          )
-        }
+        {isMobileDevice() ? (
+          <MobileNetworkBox
+            networkId={networkId}
+            setNetworkId={setNetworkId}
+            network={network}
+          />
+        ) : (
+          <>
+            <NetworkWalletInfoBox>
+              <NetworkNameBox>
+                {network == t("sendpage02_13") || !network ? (
+                  <>
+                    {/* <NetworkStatusCircle style={{backgroundColor:palette.red_2}}/> */}
+                    <NetworkName style={{ color: palette.red_2 }}>
+                      {" "}
+                      {t("sendpage02_13")}
+                    </NetworkName>
+                  </>
+                ) : (
+                  <>
+                    <NetworkStatusCircle />
+                    <NetworkName> {network}</NetworkName>
+                  </>
+                )}
+              </NetworkNameBox>
+              <WalletTitle>{t("sendpage02_12")}</WalletTitle>
+              <WalletContainer>
+                <IconBox src={MetamaskIcon} />
+                <AddressBox>{walletConvert(address)}</AddressBox>
+              </WalletContainer>
+            </NetworkWalletInfoBox>
+            <HelpTextContainer>
+              <HelpText>{t("sendpage02_14")}</HelpText>
+              <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
+                {notiClick ? (
+                  <Tooltip
+                    text={TooltipText}
+                    visible={notiClick}
+                    closable={true}
+                    maskClosable={true}
+                    onClose={notiOnClose}
+                  />
+                ) : (
+                  <></>
+                )}
+              </NoticeIcon>
+            </HelpTextContainer>
+          </>
+        )}
       </>
       <StepButtonContainer>
         {!errorMessage && tokenInfo?.symbol ? (

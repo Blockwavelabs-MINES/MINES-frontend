@@ -164,7 +164,8 @@
   "sendpage02Alert2": "Confirm",
   "sendpage02Alert3": "Cancel",
 
-  "selectTokenModalTitle": "",
+  "selectTokenModalTitle": "Select Token",
+  "selectNetworkModalTitle": "Switch Network",
 
   "sendConfirmModal1": "Send Confirmation",
   "sendConfirmModal2": "Send ",
