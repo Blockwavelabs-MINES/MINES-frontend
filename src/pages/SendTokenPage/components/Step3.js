@@ -120,6 +120,11 @@ const LinkText = styled.div`
   font-size: 17px;
   font-weight: 600;
   color: ${palette.Black};
+  max-width: calc(100vw - 100px);
+  overflow-x: scroll;
+  // overflow: hidden;
+  overflow: auto;
+  white-space: nowrap;
 `;
 
 const CopyButton = styled.button`

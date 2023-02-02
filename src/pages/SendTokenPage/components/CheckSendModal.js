@@ -8,6 +8,7 @@ import { Sender3TreeIcon } from "../../../assets/icons";
 import { sendTrxs } from "../../../utils/api/trxs";
 import { useTranslation } from "react-i18next";
 import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
+import { ethers } from "ethers";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -316,72 +317,104 @@ const LoginModalInner = (
         },
       ];
 
-      // const tempProvider = new ethers.providers.Web3Provider(window.ethereum);
+      const tempProvider = new ethers.providers.Web3Provider(metamaskProvider);
       // const tempSigner = web3.getSigner();
-      const tempContract = new web3.eth.Contract(
-        minABI,
-        tokenInfo.address
-        // tempSigner
-      );
+      // let tmpWeb3 = new Web3(rpcURL);
 
+      // const tempContract = new web3.eth.Contract(
+      //   minABI,
+      //   tokenInfo.address
+      //   // tempSigner
+      // );
+      const tempSigner = tempProvider.getSigner();
+      const tempContract = new ethers.Contract(
+        tokenInfo.address,
+        minABI,
+        tempSigner
+      );
+      console.log(tempSigner);
       async function sendToken() {
+        let returnValue = "";
         setLoading(true);
-        let data = tempContract.methods
+        console.log("ho");
+        const data = await tempContract.functions
           .transfer(
             process.env.REACT_APP_3TREE_ADDRESS,
             web3.utils.toHex(Number(amount) * Math.pow(10, tokenInfo.decimals))
-            // { from: address }
+            // { from: address },
           )
-          .send({ from: address });
+          // .send({
+          //   gasPrice: ethers.utils.parseUnits("20", "gwei"),
+          //   gasLimit: 1000000,
+          //   nonce: await metamaskProvider.getTransactionCount(address),
+          //   from: address,
+          // })
+          .then((transaction) => {
+            console.log("Transaction hash:", transaction.hash);
+            transaction.wait().then(async (receipt) => {
+              console.log("Transaction receipt:", receipt);
+              if (receipt.status === 1) {
+                console.log("success");
+                const txHash = transaction.hash;
+                const escrowHash = txHash;
+                const escrowId = "1234";
+                const expiredDate = setExpiredDate();
+                console.log(expiredDate);
+                console.log(amount);
+                console.log(sender);
+                console.log(tokenInfo.address);
+                console.log(networkId);
+                const sendTrxsResult = await sendTrxs(
+                  userIdx,
+                  address,
+                  "metamask",
+                  "google",
+                  receiver,
+                  currency,
+                  amount,
+                  escrowHash,
+                  escrowId,
+                  expiredDate,
+                  sender,
+                  tokenInfo.address,
+                  networkId
+                ).then((data) => {
+                  setLoading(false);
+                  setFinalLink(data.link_key);
+                  setExpired(data.expired_at);
+                });
+                setStepStatus(stepStatus + 1);
+                onClose();
+              } else if (receipt.status !== undefined) {
+                setLoading(false);
+                setFailed(true);
+              }
+            });
+          });
         // .encodeABI();
-        console.log(data);
-        return data;
+        console.log("hello");
+
+        // console.log(data);
+        // return data;
+        // return returnValue;
       }
 
       sendToken()
-        .then(async (data) => {
-          console.log(data);
-          const txHash = data.transactionHash;
-          // const txHash = await web3.eth.sendTransaction({
-          //   data: data,
-          //   value: web3.utils.toHex(Number(amount) * Math.pow(10, 18)),
-          //   gas: web3.utils.toHex(200000),
-          //   to: process.env.REACT_APP_3TREE_ADDRES,
-          //   from: address,
-          // });
-          // escrow hash와 id 생성 (with escrow Contract)
-          console.log(txHash);
-          const escrowHash = txHash;
-          const escrowId = "1234";
-          const expiredDate = setExpiredDate();
-          console.log(expiredDate);
-          console.log(amount);
-          console.log(sender);
-          console.log(tokenInfo.address);
-          console.log(networkId);
-          const sendTrxsResult = await sendTrxs(
-            userIdx,
-            address,
-            "metamask",
-            "google",
-            receiver,
-            currency,
-            amount,
-            escrowHash,
-            escrowId,
-            expiredDate,
-            sender,
-            tokenInfo.address,
-            networkId
-          ).then((data) => {
-            setLoading(false);
-            setFinalLink(data.link_key);
-            setExpired(data.expired_at);
-          });
-          setStepStatus(stepStatus + 1);
-          onClose();
-        })
-        .catch((error) => console.error);
+      //   .then(async (data) => {
+      //     console.log(data);
+      //     // const txHash = data.transactionHash;
+      //     const txHash = data;
+      //     // const txHash = await web3.eth.sendTransaction({
+      //     //   data: data,
+      //     //   value: web3.utils.toHex(Number(amount) * Math.pow(10, 18)),
+      //     //   gas: web3.utils.toHex(200000),
+      //     //   to: process.env.REACT_APP_3TREE_ADDRES,
+      //     //   from: address,
+      //     // });
+      //     // escrow hash와 id 생성 (with escrow Contract)
+      //     console.log(txHash);
+      //   })
+      //   .catch((error) => console.error);
     } else {
       // 보내고 tx값 받은 다음 백호출
       let metamaskProvider = "";
