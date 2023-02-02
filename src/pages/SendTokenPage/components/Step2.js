@@ -2,20 +2,17 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
-import DropBox from "./Dropbox";
 import MetamaskChainList from "./MetamaskChainlist";
-import PlatformList from "./PlatformList";
 import { MetamaskIcon, GoogleIcon } from "../../../assets/icons";
 import { DropIcon, InputHelp, InputError } from "../../../assets/icons";
 import { ContainedButton } from "../../../components/button";
 import { Tooltip } from "../../../components/card";
-import TokenBottomModal from "./TokenBottomModal";
-import CheckSendModal from "./CheckSendModal";
 import Chainlist from "../data/SimpleTokenList";
 // import BigNumber from "big-number";
 // import math from "math.js";
 import { add, bignumber, format, subtract } from "mathjs";
 import { useTranslation } from "react-i18next";
+import { MobileNetworkBox, TokenBottomModal, CheckSendModal, DropBox } from ".";
 
 const Container = styled.div`
   width: 100%;
@@ -283,6 +280,10 @@ const CurrentBalanceText = styled.div`
   margin-top: 28px;
 `;
 
+function isMobileDevice() {
+  return "ontouchstart" in window || "onmsgesturechange" in window;
+}
+
 const walletConvert = (walletAddress) => {
   var returnAddress = walletAddress;
   if (walletAddress?.length > 15) {
@@ -342,8 +343,11 @@ const Step2 = ({
   setLoading,
   setFailed,
   resend,
+  setBalance,
+  balance,
+  setRealBalance,
+  realBalance,
 }) => {
-  const [balance, setBalance] = useState("0");
   const [amount, setAmount] = useState();
   const [errorMessage, setErrorMessage] = useState("");
   const [notiClick, setNotiClick] = useState(false);
@@ -352,7 +356,6 @@ const Step2 = ({
   const [tokenInfo, setTokenInfo] = useState({});
   const [undefinedChain, setUndefinedChain] = useState(true);
   const [isFinalCheck, setIsFinalCheck] = useState(false);
-  const [realBalance, setRealBalance] = useState();
   const { t } = useTranslation();
   const TooltipText = (
     <TooltipStyle>
@@ -413,7 +416,7 @@ const Step2 = ({
       // get balance of custom token (start)
       const Web3 = require("web3");
       let rpcURL = process.env.REACT_APP_GO_URL;
-      if (networkId == 135) {
+      if (networkId == 137) {
         rpcURL = process.env.REACT_APP_POLYGON_URL;
       }
       const web3 = new Web3(rpcURL);
@@ -453,6 +456,7 @@ const Step2 = ({
         .then(function (result) {
           console.log(result);
           if (String(result).includes("e")) {
+            // alert(result)
             setBalance(
               result * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
             );
@@ -460,40 +464,64 @@ const Step2 = ({
               result * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
             );
           } else {
+            // alert(result)
             setBalance(result);
             setRealBalance(result);
           }
         })
-        .catch(async () => {
-          let metamaskProvider = "";
-          if (window.ethereum.providers) {
-            metamaskProvider = window.ethereum.providers.find(
-              (provider) => provider.isMetaMask
-            );
+        .catch(async (err) => {
+          if (
+            !err
+              .toString()
+              .startsWith(
+                "Error: Returned values aren't valid, did it run Out of Gas? "
+              )
+          ) {
+            if (isMobileDevice()) {
+              const tmpBalance = await web3.eth
+                .getBalance(address)
+                .then((result) => {
+                  setBalance(result / Math.pow(10, 18));
+                  setRealBalance(result / Math.pow(10, 18));
+                });
+            } else {
+              let metamaskProvider = "";
+              if (window.ethereum.providers) {
+                metamaskProvider = window.ethereum.providers.find(
+                  (provider) => provider.isMetaMask
+                );
+              } else {
+                metamaskProvider = window.ethereum;
+              }
+
+              const isMetamask = metamaskProvider.isMetaMask;
+
+              console.log("isMetamask? ", isMetamask);
+              let balance = "0";
+
+              balance = await metamaskProvider.request({
+                method: "eth_getBalance",
+                params: [address, "latest"],
+              });
+
+              const decimal = parseInt(balance, 16) / Math.pow(10, 18);
+              console.log(decimal);
+              if (String(decimal).includes("e")) {
+                setBalance(
+                  decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+                );
+                setRealBalance(
+                  decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+                );
+              } else {
+                setBalance(toFixed(decimal));
+                setRealBalance(toFixed(decimal));
+              }
+            }
           } else {
-            metamaskProvider = window.ethereum;
-          }
-
-          const isMetamask = metamaskProvider.isMetaMask;
-
-          console.log("isMetamask? ", isMetamask);
-          const balance = await metamaskProvider.request({
-            method: "eth_getBalance",
-            params: [address, "latest"],
-          });
-
-          const decimal = parseInt(balance, 16) / Math.pow(10, 18);
-          console.log(decimal);
-          if (String(decimal).includes("e")) {
-            setBalance(
-              decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
-            );
-            setRealBalance(
-              decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
-            );
-          } else {
-            setBalance(toFixed(decimal));
-            setRealBalance(toFixed(decimal));
+            // 해당 token(asset)이 아예 존재하지 않으면
+            setBalance("0");
+            setRealBalance("0");
           }
         });
       // get balance of custom token (end)
@@ -566,13 +594,13 @@ const Step2 = ({
             decimal2 * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
           );
         } else {
-          setBalance(toFixed(decimal));
-          setRealBalance(toFixed(decimal));
+          setBalance(toFixed(decimal2));
+          setRealBalance(toFixed(decimal2));
         }
       });
 
       // const currentNetwork = parseInt(metamaskProvider.networkVersion, 16);
-      const currentNetwork = metamaskProvider.networkVersion
+      const currentNetwork = metamaskProvider.networkVersion;
       console.log(currentNetwork);
       setNetworkId(currentNetwork);
       console.log(MetamaskChainList);
@@ -598,7 +626,7 @@ const Step2 = ({
       );
       metamaskProvider.on("chainChanged", function (chainId) {
         // Time to reload your interface with accounts[0]!
-        const decChainId = parseInt(chainId, 16)
+        const decChainId = parseInt(chainId, 16);
         console.log(decChainId);
         if (decChainId == 5 || decChainId == 137) {
           // 현재 지원하는 네트워크 유효성 검사
@@ -763,45 +791,60 @@ const Step2 = ({
           </CurrentBalanceText>
         )}
       </SendContainer>
-      <NetworkWalletInfoBox>
-        <NetworkNameBox>
-          {network == t("sendpage02_13") || !network ? (
-            <>
-              {/* <NetworkStatusCircle style={{backgroundColor:palette.red_2}}/> */}
-              <NetworkName style={{ color: palette.red_2 }}>
-                {" "}
-                {t("sendpage02_13")}
-              </NetworkName>
-            </>
-          ) : (
-            <>
-              <NetworkStatusCircle />
-              <NetworkName> {network}</NetworkName>
-            </>
-          )}
-        </NetworkNameBox>
-        <WalletTitle>{t("sendpage02_12")}</WalletTitle>
-        <WalletContainer>
-          <IconBox src={MetamaskIcon} />
-          <AddressBox>{walletConvert(address)}</AddressBox>
-        </WalletContainer>
-      </NetworkWalletInfoBox>
-      <HelpTextContainer>
-        <HelpText>{t("sendpage02_14")}</HelpText>
-        <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
-          {notiClick ? (
-            <Tooltip
-              text={TooltipText}
-              visible={notiClick}
-              closable={true}
-              maskClosable={true}
-              onClose={notiOnClose}
+      <>
+        {
+          // isMobileDevice()
+          true ? (
+            <MobileNetworkBox
+              networkId={networkId}
+              setNetworkId={setNetworkId}
+              network={network}
             />
           ) : (
-            <></>
-          )}
-        </NoticeIcon>
-      </HelpTextContainer>
+            <>
+              <NetworkWalletInfoBox>
+                <NetworkNameBox>
+                  {network == t("sendpage02_13") || !network ? (
+                    <>
+                      {/* <NetworkStatusCircle style={{backgroundColor:palette.red_2}}/> */}
+                      <NetworkName style={{ color: palette.red_2 }}>
+                        {" "}
+                        {t("sendpage02_13")}
+                      </NetworkName>
+                    </>
+                  ) : (
+                    <>
+                      <NetworkStatusCircle />
+                      <NetworkName> {network}</NetworkName>
+                    </>
+                  )}
+                </NetworkNameBox>
+                <WalletTitle>{t("sendpage02_12")}</WalletTitle>
+                <WalletContainer>
+                  <IconBox src={MetamaskIcon} />
+                  <AddressBox>{walletConvert(address)}</AddressBox>
+                </WalletContainer>
+              </NetworkWalletInfoBox>
+              <HelpTextContainer>
+                <HelpText>{t("sendpage02_14")}</HelpText>
+                <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
+                  {notiClick ? (
+                    <Tooltip
+                      text={TooltipText}
+                      visible={notiClick}
+                      closable={true}
+                      maskClosable={true}
+                      onClose={notiOnClose}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </NoticeIcon>
+              </HelpTextContainer>
+            </>
+          )
+        }
+      </>
       <StepButtonContainer>
         {!errorMessage && tokenInfo?.symbol ? (
           <ContainedButton

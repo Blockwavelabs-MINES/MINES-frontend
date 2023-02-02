@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 //  Create Web3 instance
 
-function SelectWalletModal() {
+function SelectWalletModal(networkId) {
   const { activate } = useWeb3React();
 
   const setProvider = (type) => {
@@ -20,12 +20,23 @@ function SelectWalletModal() {
   useEffect(() => {
     activate(walletconnect);
     setProvider("walletConnect");
-  }, []);
+
+    if (networkId > 0) {
+      const handleSwitchNetwork = async (networkId) => {
+        alert("hi")
+        if (window.ethereum) {
+          alert("hi2")
+          await window.ethereum.send("eth_chainId", [networkId]);
+        }
+        handleSwitchNetwork(1);
+      };
+    }
+  }, [networkId]);
 
   return <></>;
 }
 
-function WalletConnectOnClick(setFunction) {
+function WalletConnectOnClick(setFunction, networkId) {
   return new Promise(async (resolve, reject) => {
     function callWalletConnect() {
       // const WalletConnectChain = window.ethereum;
@@ -41,7 +52,7 @@ function WalletConnectOnClick(setFunction) {
       //   alert(error.message);
       //   console.error(error.message);
       // }
-      SelectWalletModal();
+      SelectWalletModal(networkId);
 
       return <SelectWalletModal />;
     }

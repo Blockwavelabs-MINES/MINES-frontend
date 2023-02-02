@@ -25,7 +25,15 @@ function AddWalletAddress({
   visible,
   children,
   mode,
-  setAddedWallet,
+  setAddedWallet = () => {},
+  setBalance = () => {},
+  setRealBalance = () => {},
+  setNetworkId = () => {},
+  setNetwork = () => {},
+  setCurrency = () => {},
+  setWalletType = () => {},
+  setStepStatus = () => {},
+  stepStatus = 1,
 }) {
   const [newWalletAddress, setNewWalletAddress] = useState("");
   const [newWalletId, setNewWalletId] = useState(-1);
@@ -34,10 +42,17 @@ function AddWalletAddress({
     let constWalletList = WalletList;
     if (isMobileDevice()) {
       constWalletList = WalletListMobile;
-    }
-    if (newWalletAddress) {
-      setAddedWallet(newWalletAddress);
-      onClose();
+      if (newWalletAddress) {
+        setAddedWallet(newWalletAddress);
+        setWalletType("Metamask");
+        setStepStatus(stepStatus + 1);
+        onClose();
+      }
+    } else {
+      if (newWalletAddress) {
+        setAddedWallet(newWalletAddress);
+        onClose();
+      }
     }
   }, [newWalletId]);
 
@@ -68,6 +83,11 @@ function AddWalletAddress({
               columnNum={1}
               setPageStack={setNewWalletAddress}
               setWalletId={setNewWalletId}
+              setBalance={setBalance}
+              setRealBalance={setRealBalance}
+              setNetworkId={setNetworkId}
+              setNetwork={setNetwork}
+              setCurrency={setCurrency}
             />
           </ContentContainer>
         </ModalInner>

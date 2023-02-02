@@ -6,13 +6,25 @@ import reportWebVitals from "./reportWebVitals";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
+import { InjectedConnector } from "@web3-react/injected-connector";
+import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
+
+const injected = new InjectedConnector({
+  supportedChainIds: [1, 3, 4, 5, 42, 137],
+});
+
 // import { InjectedConnector } from '@web3-react/injected-connector'
 
 // const MetaMask = new InjectedConnector({ supportedNetworks: [1, 4] });
 // const connectors = { MetaMask };
+const walletconnect = new WalletConnectConnector({
+  rpcUrl: `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`,
+  bridge: "https://bridge.walletconnect.org",
+  qrcode: true,
+});
 
 function getLibrary(provider) {
-  const library = new Web3Provider(provider);
+  const library = new Web3Provider(provider, "any");
   library.pollingInterval = 12000;
   return library;
 }
@@ -30,7 +42,8 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
   <Web3ReactProvider
-    // connectors={connectors}
+    // connectors={{ some: () => {} }}
+    // connectors={{ walletConnect: walletconnect }}
     getLibrary={getLibrary}
   >
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID}>

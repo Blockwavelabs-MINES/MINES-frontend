@@ -159,6 +159,10 @@ const StepComponentBox = styled.div`
 
 const LoadingBox = styled.div``;
 
+function isMobileDevice() {
+  return "ontouchstart" in window || "onmsgesturechange" in window;
+}
+
 const SendTokenPage = () => {
   const [userInfo, setUserInfo] = useState();
   const [stepStatus, setStepStatus] = useState(1);
@@ -181,6 +185,9 @@ const SendTokenPage = () => {
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
   const [resend, setResend] = useState(false);
+  const [balance, setBalance] = useState("0");
+  const [realBalance, setRealBalance] = useState("0");
+  const [modalVisible, setModalVisible] = useState(false);
 
   const { t } = useTranslation();
 
@@ -212,6 +219,19 @@ const SendTokenPage = () => {
         email: email,
         urlInfo: "",
         platform: platform,
+        setBalance: setBalance,
+        setRealBalance: setRealBalance,
+        realBalance: realBalance,
+        balance: balance,
+        setAddress: setSenderAddress,
+        setNetworkId: setNetworkId,
+        setNetwork: setNetwork,
+        setCurrency: setCurrency,
+        setWalletType: setWalletType,
+        modalVisible: modalVisible,
+        setModalVisible: setModalVisible,
+        setStepStatus: setStepStatus,
+        stepStatus: stepStatus,
       }),
     },
     {
@@ -238,7 +258,11 @@ const SendTokenPage = () => {
         setFinalLink: setFinalLink,
         setLoading: setLoading,
         setFailed: setFailed,
-        resend: resend
+        resend: resend,
+        setBalance: setBalance,
+        balance: balance,
+        setRealBalance: setRealBalance,
+        realBalance: realBalance,
       }),
     },
     {
@@ -267,10 +291,22 @@ const SendTokenPage = () => {
   };
 
   const rightOnClick = () => {
-    if (stepStatus < StepList.length) {
-      setStepStatus(stepStatus + 1);
+    if (isMobileDevice()) {
+      if (stepStatus < StepList.length) {
+        if (stepStatus == 1) {
+          setModalVisible(true);
+        } else {
+          setStepStatus(stepStatus + 1);
+        }
+      } else {
+        setFinalModalVisible(true);
+      }
     } else {
-      setFinalModalVisible(true);
+      if (stepStatus < StepList.length) {
+        setStepStatus(stepStatus + 1);
+      } else {
+        setFinalModalVisible(true);
+      }
     }
   };
 
@@ -294,10 +330,7 @@ const SendTokenPage = () => {
       ) : (
         <>
           {failed ? (
-            <FailedComponent
-              setFailed={setFailed}
-              setResend={setResend}
-            />
+            <FailedComponent setFailed={setFailed} setResend={setResend} />
           ) : (
             <>
               {cancelModalOpen ? (

@@ -8,6 +8,10 @@ import WalletList from "../../data/WalletListData";
 import WalletListMobile from "../../data/WalletListDataMobile";
 import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
+import { chain } from "mathjs";
+import { formatEther } from "@ethersproject/units";
+import useSWR from "swr";
+import NetworkList from "../../pages/SendTokenPage/components/NetworkList";
 
 const BoxContainer = styled.div`
   width: 90%;
@@ -53,6 +57,14 @@ function isMobileDevice() {
     !window.ethereum
   );
 }
+
+const fetcher =
+  (library) =>
+  (...args) => {
+    const [method, ...params] = args;
+    console.log(method, params);
+    return library[method](...params);
+  };
 
 const metamaskOnClick = (onConnected) => {
   // if (!window.ethereum) {
@@ -115,8 +127,12 @@ const WalletButtonGroup = (props) => {
   const [alreadySignup, setAlreadySignup] = useState(0);
   const [walletIdNum, setWalletIdNum] = useState(-1);
   const [buttonWidth, setButtonWidth] = useState();
-  const { chainId, account, active, activate, deactivate } = useWeb3React();
-
+  const { chainId, account, library, connector, active, activate, deactivate } =
+    useWeb3React();
+  const { data: balance } = useSWR(["getBalance", account, "latest"], {
+    fetcher: fetcher(library),
+  });
+  const provider = library;
   const setProvider = (type) => {
     window.localStorage.setItem("provider", type);
   };
@@ -124,6 +140,7 @@ const WalletButtonGroup = (props) => {
     rpcUrl: `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`,
     bridge: "https://bridge.walletconnect.org",
     qrcode: true,
+    chainId: 137,
   });
 
   // useEffect(() => {}, [ref.current]);
@@ -133,10 +150,68 @@ const WalletButtonGroup = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log(account);
-    if (account) {
-      setWalletAddress(account);
-    }
+    (async () => {
+      console.log(account);
+      if (account) {
+        setWalletAddress(account);
+        // alert(account.toString());
+        // alert(balance);
+        const Web3 = require("web3");
+        props.setNetworkId(chainId);
+        props.setNetwork(
+          NetworkList[NetworkList.findIndex((v) => v.chainId == chainId)]?.name
+        );
+        props.setCurrency(
+          NetworkList[NetworkList.findIndex((v) => v.chainId == chainId)]
+            ?.nativeCurrency?.symbol
+        );
+        let rpcURL = process.env.REACT_APP_GO_URL;
+        if (chainId == 137) {
+          rpcURL = process.env.REACT_APP_POLYGON_URL;
+        }
+
+        const web3 = new Web3(rpcURL);
+        const tmpBalance = await web3.eth.getBalance(account).then((result) => {
+          props.setBalance(result / Math.pow(10, 18));
+          props.setRealBalance(result / Math.pow(10, 18));
+        });
+
+        // const tmpBalance = provider
+        //   .request({
+        //     method: "eth_getBalance",
+        //     params: [account, "latest"],
+        //   })
+        //   .then((result) => {
+        //     alert(result);
+        //   });
+
+        // const tmpBalance = provider
+        //   .getBalance(account.toString())
+        //   .then((balance) => {
+        //     alert(parseInt(balance, 16));
+        //   })
+        //   .catch((error) => alert(JSON.stringify(error)));
+
+        // alert(tmpBalance)
+
+        // provider
+        //   ?.getBalance(account)
+        //   .then((balance) => {
+        //     alert(Number(formatEther(balance)))
+        //     // if (props.setBalance) {
+        //     //   alert("setbalance oo");
+        //     //   alert(Number(formatEther(balance)));
+        //     //   props.setBalance(Number(formatEther(balance)));
+        //     // }
+        //     // alert("hi");
+        //     // alert(balance._hex);
+        //   })
+        //   .catch((error) => {
+        //     alert("no");
+        //     alert(JSON.stringify(error));
+        //   });
+      }
+    })();
   }, [account]);
 
   // useEffect(() => {
@@ -149,7 +224,7 @@ const WalletButtonGroup = (props) => {
     if (props.setPageStack) {
       if (walletAddress) {
         props.setPageStack(walletAddress);
-        deactivate();
+        // deactivate();
         setWalletAddress();
       }
       props.setWalletId(walletIdNum);

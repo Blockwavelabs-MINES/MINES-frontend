@@ -17,12 +17,12 @@ const languageList = [
   },
 ];
 
-export const createUser = async (socialID, socialPlatform) => {
+export const createUser = async (socialID, socialPlatform, accessToken) => {
   let returnValue = 0;
   const result = await axios
     .post(
       process.env.REACT_APP_DB_HOST + `/users/signup`,
-      `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "socialID":"${socialID}", "socialPlatform":"${socialPlatform}"}`,
+      `{"accessToken":"${accessToken}", "socialID":"${socialID}", "socialPlatform":"${socialPlatform}"}`,
       {
         headers: {
           "Content-Type": "application/json",

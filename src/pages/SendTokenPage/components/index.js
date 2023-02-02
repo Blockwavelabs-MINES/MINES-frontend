@@ -5,3 +5,7 @@ export { default as FinalConfirmation } from "./FinalConfirmation";
 export { default as SendSuccess } from "./SendSuccess";
 export { default as LoadingComponent } from "../../../components/card/LoadingComponent";
 export { default as FailedComponent } from "./FailComponent";
+export { default as MobileNetworkBox } from "./MobileNetworkBox";
+export { default as CheckSendModal } from "./CheckSendModal";
+export { default as TokenBottomModal } from "./TokenBottomModal";
+

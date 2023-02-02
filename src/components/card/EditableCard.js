@@ -146,7 +146,7 @@ const EditableCard = ({
         <CardContainerButton style={style} onClick={onClick}>
           <CardInfoBox>
             <CardIcon src={icon} />
-            <CardLabel>{label}</CardLabel>
+            <CardLabel style={style}>{label}</CardLabel>
           </CardInfoBox>
           <CardToolBox></CardToolBox>
         </CardContainerButton>

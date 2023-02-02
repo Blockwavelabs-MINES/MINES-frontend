@@ -63,7 +63,7 @@ const LoginModalInner = (type, setStatus, onClose) => {
     const getInfoFromAccessTokenResult = await getInfoFromAccessToken(
       accessToken
     ).then(async (res) => {
-      const createUserResult = await createUser(res.email, "GOOGLE")
+      const createUserResult = await createUser(res.email, "GOOGLE", accessToken)
         .then(async (userInfo) => {
           const loginUserResult = await loginUser(res.email, accessToken)
             .then(async (data) => {
@@ -111,7 +111,8 @@ const LoginModalInner = (type, setStatus, onClose) => {
               //   alert(res);
               // });
               if (!data) {
-                alert("존재하지 않는 유저입니다.");
+                alert(t("profilePage4"));
+                localStorage.clear();
                 window.location.href = "/";
               }
             })

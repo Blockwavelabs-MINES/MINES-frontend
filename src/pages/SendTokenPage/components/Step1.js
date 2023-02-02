@@ -7,6 +7,7 @@ import MetamaskChainList from "./MetamaskChainlist";
 import PlatformList from "./PlatformList";
 import { InputBox } from "../../../components/input";
 import { useTranslation } from "react-i18next";
+import AddWalletAddress from "../../../components/modal/AddWalletAddress";
 
 const Container = styled.div`
   width: 100%;
@@ -40,6 +41,10 @@ const EmailInputBox = styled.input`
   letter-spacing: 0em;
 `;
 
+function isMobileDevice() {
+  return "ontouchstart" in window || "onmsgesturechange" in window;
+}
+
 const Step1 = ({
   setPlatform,
   setPlatformIcon,
@@ -48,11 +53,25 @@ const Step1 = ({
   setTrash,
   urlInfo,
   platform,
+  setBalance,
+  balance,
+  setRealBalance,
+  realBalance,
+  setAddress,
+  setNetworkId,
+  setNetwork,
+  setCurrency,
+  setWalletType,
+  modalVisible,
+  setModalVisible,
+  setStepStatus,
+  stepStatus
 }) => {
   const [Chainlist, setChainlist] = useState(MetamaskChainList);
   const [isSet, setIsSet] = useState(true);
   const [isInit, setIsInit] = useState(true);
   const [platformIdx, setPlatformIdx] = useState(0);
+
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -68,8 +87,36 @@ const Step1 = ({
     setEmail(e.target.value);
   };
 
+  const walletConnectOnClick = () => {
+    // MetamaskOnClick(walletList, setAddedWallet);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   return (
     <Container>
+      {modalVisible ? (
+        <AddWalletAddress
+          visible={modalVisible}
+          closable={true}
+          maskClosable={true}
+          onClose={closeModal}
+          setAddedWallet={setAddress}
+          setBalance={setBalance}
+          setRealBalance={setRealBalance}
+          setNetworkId={setNetworkId}
+          setNetwork={setNetwork}
+          setCurrency={setCurrency}
+          setWalletType={setWalletType}
+          setStepStatus={setStepStatus}
+          stepStatus={stepStatus}
+        />
+      ) : (
+        <></>
+      )}
       <PlatformBox>
         <BoxHeader>{t("sendPage01_3")}</BoxHeader>
         <DropBox

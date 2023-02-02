@@ -65,7 +65,7 @@ const Chainlist = [
       {
         chainId: 1,
         name: "Goerli",
-        address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+        // address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
         decimals: 6,
         symbol: "GoerliETH",
         logoURI: "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png",
