@@ -8,6 +8,7 @@ import { Sender3TreeIcon } from "../../../assets/icons";
 import { sendTrxs } from "../../../utils/api/trxs";
 import { useTranslation } from "react-i18next";
 import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
 import { ethers } from "ethers";
 
 const FullContainer = styled.div`
@@ -316,8 +317,14 @@ const LoginModalInner = (
           type: "function",
         },
       ];
+      let tempProvider = metamaskProvider;
 
-      const tempProvider = new ethers.providers.Web3Provider(metamaskProvider);
+      if (isMobileDevice()) {
+        // tempProvider = new Web3Provider(metamaskProvider, "any");
+        tempProvider = new Web3(new Web3.providers.HttpProvider(rpcURL));
+      } else {
+        tempProvider = new ethers.providers.Web3Provider(metamaskProvider);
+      }
       // const tempSigner = web3.getSigner();
       // let tmpWeb3 = new Web3(rpcURL);
 
@@ -326,80 +333,136 @@ const LoginModalInner = (
       //   tokenInfo.address
       //   // tempSigner
       // );
-      const tempSigner = tempProvider.getSigner();
-      const tempContract = new ethers.Contract(
-        tokenInfo.address,
-        minABI,
-        tempSigner
-      );
-      console.log(tempSigner);
       async function sendToken() {
-        let returnValue = "";
         setLoading(true);
         console.log("ho");
-        const data = await tempContract.functions
-          .transfer(
+        if (isMobileDevice()) {
+          const contract = new web3.eth.Contract(minABI, tokenInfo.address);
+          const transferMethod = await contract.methods.transfer(
             process.env.REACT_APP_3TREE_ADDRESS,
             web3.utils.toHex(Number(amount) * Math.pow(10, tokenInfo.decimals))
-            // { from: address },
-          )
-          // .send({
-          //   gasPrice: ethers.utils.parseUnits("20", "gwei"),
-          //   gasLimit: 1000000,
-          //   nonce: await metamaskProvider.getTransactionCount(address),
-          //   from: address,
-          // })
-          .then((transaction) => {
-            console.log("Transaction hash:", transaction.hash);
-            transaction.wait().then(async (receipt) => {
-              console.log("Transaction receipt:", receipt);
-              if (receipt.status === 1) {
-                console.log("success");
-                const txHash = transaction.hash;
-                const escrowHash = txHash;
-                const escrowId = "1234";
-                const expiredDate = setExpiredDate();
-                console.log(expiredDate);
-                console.log(amount);
-                console.log(sender);
-                console.log(tokenInfo.address);
-                console.log(networkId);
-                const sendTrxsResult = await sendTrxs(
-                  userIdx,
-                  address,
-                  "metamask",
-                  "google",
-                  receiver,
-                  currency,
-                  amount,
-                  escrowHash,
-                  escrowId,
-                  expiredDate,
-                  sender,
-                  tokenInfo.address,
-                  networkId
-                ).then((data) => {
-                  setLoading(false);
-                  setFinalLink(data.link_key);
-                  setExpired(data.expired_at);
-                });
-                setStepStatus(stepStatus + 1);
-                onClose();
-              } else if (receipt.status !== undefined) {
-                setLoading(false);
-                setFailed(true);
-              }
+          );
+          const encodedData = await transferMethod.encodeABI();
+          alert(encodedData);
+          const tx = {
+            // value: web3.utils.toHex(Number(amount) * Math.pow(10, 18)),
+            data: encodedData,
+            // gas: web3.utils.toHex(200000),
+            // to: process.env.REACT_APP_3TREE_ADDRES,
+            from: "0xed6631bD706BC910A37cdc41ACd48a5d94F7bCC0",
+            address: "0xed6631bD706BC910A37cdc41ACd48a5d94F7bCC0",
+          };
+          metamaskProvider = library.provider;
+          await metamaskProvider
+            .request({
+              method: "personal_sign",
+              params: [encodedData, address],
+            })
+            .then(async (txHash) => {
+              alert("hihi");
+              alert(txHash);
+              // alert(txHash.rawTransaction);
+              // const transactionHash = await metamaskProvider.request({
+              //   method: "eth_sendTransaction",
+              //   params: [txHash.rawTransaction],
+              // });
+              // escrow hash와 id 생성 (with escrow Contract)
+              // alert(transactionHash);
+              const escrowHash = txHash;
+              // const escrowHash = transactionHash;
+              setEscrowId("1234"); // 현재는 escrow로 관리하지 않으므로 일단 임의의 값
+              setExpiredDateResult(setExpiredDate());
+              console.log(sender);
+              console.log(tokenInfo.address);
+              console.log(networkId);
+              setTransactionHash(escrowHash);
+              // alert(escrowHash);
+            })
+            .catch((error) => {
+              // console.error;
+              alert(JSON.stringify(error));
             });
-          });
-        // .encodeABI();
-        console.log("hello");
+        } else {
+          const tempSigner = tempProvider.getSigner();
+          let tempContract = new ethers.Contract(
+            tokenInfo.address,
+            minABI,
+            tempSigner
+          );
+
+          const data = await tempContract.functions
+            .transfer(
+              process.env.REACT_APP_3TREE_ADDRESS,
+              web3.utils.toHex(
+                Number(amount) * Math.pow(10, tokenInfo.decimals)
+              )
+              // { from: address },
+            )
+            // .send({
+            //   gasPrice: ethers.utils.parseUnits("20", "gwei"),
+            //   gasLimit: 1000000,
+            //   nonce: await metamaskProvider.getTransactionCount(address),
+            //   from: address,
+            // })
+            .then((transaction) => {
+              console.log("Transaction hash:", transaction.hash);
+              transaction.wait().then(async (receipt) => {
+                console.log("Transaction receipt:", receipt);
+                if (receipt.status === 1) {
+                  console.log("success");
+                  const txHash = transaction.hash;
+                  const escrowHash = txHash;
+                  const escrowId = "1234";
+                  const expiredDate = setExpiredDate();
+                  console.log(expiredDate);
+                  console.log(amount);
+                  console.log(sender);
+                  console.log(tokenInfo.address);
+                  console.log(networkId);
+                  // const sendTrxsResult = await sendTrxs(
+                  //   userIdx,
+                  //   address,
+                  //   "metamask",
+                  //   "google",
+                  //   receiver,
+                  //   currency,
+                  //   amount,
+                  //   escrowHash,
+                  //   escrowId,
+                  //   expiredDate,
+                  //   sender,
+                  //   tokenInfo.address,
+                  //   networkId
+                  // ).then((data) => {
+                  //   setLoading(false);
+                  //   setFinalLink(data.link_key);
+                  //   setExpired(data.expired_at);
+                  // });
+
+                  //test
+                  setLoading(false);
+                  setFinalLink("sdsd");
+                  setExpired("sdsdad");
+
+                  //test
+                  setStepStatus(stepStatus + 1);
+                  onClose();
+                } else if (receipt.status !== undefined) {
+                  setLoading(false);
+                  setFailed(true);
+                }
+              });
+            });
+
+          console.log("this is encodeABI()");
+        }
 
         // console.log(data);
         // return data;
         // return returnValue;
       }
 
-      sendToken()
+      sendToken();
       //   .then(async (data) => {
       //     console.log(data);
       //     // const txHash = data.transactionHash;

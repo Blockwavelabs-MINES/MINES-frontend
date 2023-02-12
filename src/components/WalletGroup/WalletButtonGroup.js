@@ -52,6 +52,10 @@ const WalletName = styled.div`
 `;
 
 function isMobileDevice() {
+  console.log(
+    ("ontouchstart" in window || "onmsgesturechange" in window) &&
+      !window.ethereum
+  );
   return (
     ("ontouchstart" in window || "onmsgesturechange" in window) &&
     !window.ethereum
@@ -129,10 +133,6 @@ const WalletButtonGroup = (props) => {
   const [buttonWidth, setButtonWidth] = useState();
   const { chainId, account, library, connector, active, activate, deactivate } =
     useWeb3React();
-  const { data: balance } = useSWR(["getBalance", account, "latest"], {
-    fetcher: fetcher(library),
-  });
-  const provider = library;
   const setProvider = (type) => {
     window.localStorage.setItem("provider", type);
   };

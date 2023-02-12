@@ -419,7 +419,6 @@ const WalletComponent = ({
               };
 
               console.log(txObj);
-              console.log(process.env.REACT_APP_WALLET_PRIVATE_KEY);
 
               await web3.eth.accounts.signTransaction(
                 txObj,
@@ -506,7 +505,6 @@ const WalletComponent = ({
             };
 
             console.log(txObj);
-            console.log(process.env.REACT_APP_WALLET_PRIVATE_KEY);
             await web3.eth.accounts.signTransaction(
               txObj,
               process.env.REACT_APP_WALLET_PRIVATE_KEY,
