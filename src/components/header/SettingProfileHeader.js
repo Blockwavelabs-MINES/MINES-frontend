@@ -36,20 +36,11 @@ const TitleContainer = styled.div`
 const SettingProfileHeader = ({
   onVisible,
   title,
-  info,
+  userId,
   iconLeft = ChevronLeft,
   iconRight = ExternalLink,
 }) => {
-  const [userInfo, setUserInfo] = useState();
   const [dropBoxOn, setDropBoxOn] = useState(false);
-
-  useEffect(() => {
-    // var globalUserInfo = getLocalUserInfo();
-    // if (globalUserInfo) {
-    //   setUserInfo(globalUserInfo);
-    // }
-    setUserInfo(info);
-  }, [info]);
 
   const loginOnClick = () => {
     console.log("jell");
@@ -70,7 +61,7 @@ const SettingProfileHeader = ({
 
   const externalOnClick = () => {
     // alert("준비중입니다.");
-    window.open("/@" + userInfo?.user.user_id);
+    window.open("/@" + userId);
     // window.location.href = "/@" + userInfo?.user.user_id;
   };
 

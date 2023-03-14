@@ -8,7 +8,12 @@ import { EmptyLink, LinkIcon } from "../../../assets/icons";
 import { DeleteModal } from "../../../components/modal";
 import AddLinkModal from "./AddLinkModal";
 import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
-import { addLink, deleteLink, editLink } from "../../../utils/api/link";
+import {
+  getLink,
+  addLink,
+  deleteLink,
+  editLink,
+} from "../../../utils/api/link";
 import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
@@ -36,29 +41,28 @@ const ListContainer = styled.div`
   gap: 20px;
 `;
 
-const LinkComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
-  const [linkList, setLinkList] = useState(userInfoProps?.links);
+const LinkComponent = ({ userId, setInfoChange, infoChange }) => {
+  const [linkList, setLinkList] = useState(userId?.links);
   const [deleteModalOn, setDeleteModalOn] = useState(false);
   const [realDelete, setRealDelete] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState(-1);
   const [editIdx, setEditIdx] = useState(-1);
   const [linkModalOn, setLinkModalOn] = useState(false);
   const [editLinkModalOn, setEditLinkModalOn] = useState(false);
-  const [userInfo, setUserInfo] = useState(userInfoProps);
   const { t } = useTranslation();
 
   useEffect(() => {
-    setLinkList(userInfoProps?.links);
-    setUserInfo(userInfoProps);
-    console.log(userInfoProps);
-  }, [userInfoProps]);
+    getLink(userId).then((data) => {
+      setLinkList(data);
+    });
+  }, []);
 
   useEffect(() => {
     (async () => {
       if (realDelete) {
         // 지우는 action
         const deleteLinkResult = await deleteLink(
-          userInfo.user.user_id,
+          userId,
           linkList[deleteIdx].index
         ).then((data) => {
           console.log(data);
@@ -110,7 +114,7 @@ const LinkComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
 
   const editAction = async ({ title, url }) => {
     const editLinkResult = await editLink(
-      userInfo.user.user_id,
+      userId,
       linkList[editIdx].index,
       title,
       url
@@ -122,12 +126,10 @@ const LinkComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
   };
 
   const saveAction = async ({ title, url }) => {
-    const addLinkResult = await addLink(userInfo.user.user_id, title, url).then(
-      (data) => {
-        console.log(data);
-        setInfoChange(!infoChange);
-      }
-    );
+    const addLinkResult = await addLink(userId, title, url).then((data) => {
+      console.log(data);
+      setInfoChange(!infoChange);
+    });
 
     // setLinkList(tmpLinkList);
   };
