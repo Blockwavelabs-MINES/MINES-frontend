@@ -40,14 +40,9 @@ const EditProfilePage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
-      console.log(globalUserInfo);
+    if (localStorage.getItem("accessToken")) {
       (async () => {
-        const getUserInfoResult = await getUserInfo(
-          globalUserInfo.user.user_id
-        ).then((data) => {
-          console.log(data);
+        await getUserInfo().then((data) => {
           setUserInfo(data);
         });
       })();
@@ -104,9 +99,9 @@ const EditProfilePage = () => {
                 <></>
               )}
               <ProfileCard
-                profileImg={userInfo?.user.profile_img}
-                userName={userInfo?.user.profile_name}
-                introduction={userInfo?.user.profile_bio}
+                profileImg={userInfo?.profileImg}
+                userName={userInfo?.profileName}
+                introduction={userInfo?.profileBio}
                 onClick={editOnClick}
                 onClickRight={customizeOnClick}
                 isEditable={true}

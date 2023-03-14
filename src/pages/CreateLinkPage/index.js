@@ -108,11 +108,9 @@ const CreateLinkPage = () => {
   const createOnClick = async () => {
     await checkUserId(linkId)
       .then(async () => {
-        await createUserId(linkId, localStorage.getItem("accessToken")).then(
-          () => {
-            setCreateSuccess(true);
-          }
-        );
+        await createUserId(linkId).then(() => {
+          setCreateSuccess(true);
+        });
       })
       .catch(() => {
         setState("error");

@@ -91,7 +91,7 @@ export const checkUserId = async (userID) => {
   return returnValue;
 };
 
-export const createUserId = async (newId, accessToken) => {
+export const createUserId = async (newId) => {
   let returnValue;
   await axios
     .put(
@@ -100,7 +100,7 @@ export const createUserId = async (newId, accessToken) => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + accessToken,
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
         },
       }
     )
@@ -158,14 +158,14 @@ export const editProfile = async (userID, formData) => {
 export const getUserInfo = async (userId) => {
   let returnValue = 0;
   await axios
-    .get(process.env.REACT_APP_DB_HOST + `/users?userId=${userId}`, {
+    .get(process.env.REACT_APP_DB_HOST_NEW + `/users/my/info`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },
     })
     .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.result;
+      returnValue = data.data.resultData;
     })
     .catch((error) => {
       console.log(error);
