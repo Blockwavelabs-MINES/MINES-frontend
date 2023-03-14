@@ -107,7 +107,7 @@ const CreateLinkPage = () => {
 
   const createOnClick = async () => {
     await checkUserId(linkId)
-      .then(async (data) => {
+      .then(async () => {
         await createUserId(linkId, localStorage.getItem("accessToken")).then(
           () => {
             setCreateSuccess(true);
@@ -121,6 +121,7 @@ const CreateLinkPage = () => {
         );
       });
   };
+
   return (
     <FullContainer>
       {createSuccess ? (

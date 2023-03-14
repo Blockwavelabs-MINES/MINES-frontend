@@ -87,11 +87,7 @@ export const checkUserId = async (userID) => {
     )
     .then((data) => {
       returnValue = data.data;
-    })
-    .catch((e) => {
-      console.error(e);
     });
-
   return returnValue;
 };
 
@@ -110,8 +106,7 @@ export const createUserId = async (newId, accessToken) => {
     )
     .then((response) => {
       returnValue = response.data;
-    })
-    .catch((error) => console.log("error", error));
+    });
   return returnValue;
 };
 
