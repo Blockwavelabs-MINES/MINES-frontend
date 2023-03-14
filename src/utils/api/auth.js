@@ -86,11 +86,10 @@ export const checkUserId = async (userID) => {
       }
     )
     .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.result; //true : 이미 존재 | false : 존재하지 않음(굿)
+      returnValue = data.data;
     })
-    .catch((error) => {
-      console.log(error);
+    .catch((e) => {
+      console.error(e);
     });
 
   return returnValue;
@@ -101,8 +100,10 @@ export const createUserId = async (newId, accessToken) => {
   await axios
     .put(
       process.env.REACT_APP_DB_HOST_NEW + `/users/edit/userid?new_id=${newId}`,
+      {},
       {
         headers: {
+          "Content-Type": "application/json",
           Authorization: "Bearer " + accessToken,
         },
       }

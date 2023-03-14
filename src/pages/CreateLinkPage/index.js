@@ -106,20 +106,20 @@ const CreateLinkPage = () => {
   };
 
   const createOnClick = async () => {
-    await checkUserId(linkId).then(async (data) => {
-      console.log(data);
-      if (data == false) {
-        await createUserId(linkId).then((data) => {
-          console.log(data);
-          setCreateSuccess(true);
-        });
-      } else {
+    await checkUserId(linkId)
+      .then(async (data) => {
+        await createUserId(linkId, localStorage.getItem("accessToken")).then(
+          () => {
+            setCreateSuccess(true);
+          }
+        );
+      })
+      .catch(() => {
         setState("error");
         setErrorComment(
           `${t("createLink7")} "${linkId}" ${t("createLink7_2")}`
         );
-      }
-    });
+      });
   };
   return (
     <FullContainer>
