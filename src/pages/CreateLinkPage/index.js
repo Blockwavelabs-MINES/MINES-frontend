@@ -70,10 +70,9 @@ const CreateLinkPage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
+    let globalUserInfo = getLocalUserInfo();
     if (globalUserInfo) {
       setUserInfo(globalUserInfo);
-      console.log(globalUserInfo);
     }
   }, []);
 
@@ -84,8 +83,8 @@ const CreateLinkPage = () => {
       setState("inactive");
     }
 
-    var regExp = /^[a-zA-Z0-9_]+[a-zA-Z0-9_]{4,18}$/g;
-    var testResult = regExp.test(linkId);
+    let regExp = /^[a-zA-Z0-9_]+[a-zA-Z0-9_]{4,18}$/g;
+    let testResult = regExp.test(linkId);
 
     if ((linkId.length <= 4 || linkId.length >= 20) && linkId) {
       setState("error");
@@ -107,18 +106,11 @@ const CreateLinkPage = () => {
   };
 
   const createOnClick = async () => {
-    const checkUserIdResult = await checkUserId(linkId).then(async (data) => {
+    await checkUserId(linkId).then(async (data) => {
       console.log(data);
       if (data == false) {
-        const createUserIdResult = await createUserId(
-          linkId,
-          userInfo.user.index
-        ).then((data) => {
-          setLocalUserInfo({
-            type: "edit",
-            editKey: ["user", "user_id"],
-            editValue: linkId,
-          });
+        await createUserId(linkId).then((data) => {
+          console.log(data);
           setCreateSuccess(true);
         });
       } else {

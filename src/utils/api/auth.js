@@ -17,12 +17,48 @@ const languageList = [
   },
 ];
 
-export const createUser = async (socialID, socialPlatform, accessToken) => {
-  let returnValue = 0;
-  const result = await axios
-    .post(
-      process.env.REACT_APP_DB_HOST + `/users/signup`,
-      `{"accessToken":"${accessToken}", "socialID":"${socialID}", "socialPlatform":"${socialPlatform}"}`,
+// export const createUser = async (socialID, socialPlatform, accessToken) => {
+//   let returnValue = 0;
+//   await axios
+//     .post(
+//       process.env.REACT_APP_DB_HOST + `/users/signup`,
+//       `{"accessToken":"${accessToken}", "socialID":"${socialID}", "socialPlatform":"${socialPlatform}"}`,
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       }
+//     )
+//     .then((data) => {
+//       console.log(data.data);
+//       returnValue = data.data.result;
+//     });
+
+//   return returnValue;
+// };
+
+// export const loginUser = async () => {
+//   let returnValue = 0;
+//   await axios
+//     .post(process.env.REACT_APP_DB_HOST_NEW + `/public/users/google`, {
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     })
+//     .then((data) => {
+//       console.log(data.data);
+//       returnValue = data.data.result;
+//       setLocalUserInfo({ type: "init", data: returnValue });
+//     });
+
+//   return returnValue;
+// };
+
+export const requestLogin = async (code) => {
+  await axios
+    .get(
+      process.env.REACT_APP_DB_HOST_NEW +
+        `/public/users/login/google?code=${code}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -30,40 +66,19 @@ export const createUser = async (socialID, socialPlatform, accessToken) => {
       }
     )
     .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.result;
+      localStorage.setItem(
+        "accessToken",
+        data.data.resultData.tokenDto.access_token
+      );
     });
-
-  return returnValue;
-};
-
-export const loginUser = async (socialID, accessToken) => {
-  let returnValue = 0;
-  const result = await axios
-    .post(
-      process.env.REACT_APP_DB_HOST + `/users/login`,
-      `{"socialID":"${socialID}", "accessToken":"${accessToken}"}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-    .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.result;
-      setLocalUserInfo({ type: "init", data: returnValue });
-    });
-
-  return returnValue;
 };
 
 export const checkUserId = async (userID) => {
-  let returnValue = 0;
-  const result = await axios
+  let returnValue;
+  await axios
     .get(
-      process.env.REACT_APP_DB_HOST +
-        `/users/userId/validation?userId=${userID}`,
+      process.env.REACT_APP_DB_HOST_NEW +
+        `/public/users/id/check?user_id=${userID}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -78,6 +93,24 @@ export const checkUserId = async (userID) => {
       console.log(error);
     });
 
+  return returnValue;
+};
+
+export const createUserId = async (newId, accessToken) => {
+  let returnValue;
+  await axios
+    .put(
+      process.env.REACT_APP_DB_HOST_NEW + `/users/edit/userid?new_id=${newId}`,
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    )
+    .then((response) => {
+      returnValue = response.data;
+    })
+    .catch((error) => console.log("error", error));
   return returnValue;
 };
 
@@ -106,7 +139,7 @@ export const editProfile = async (userID, formData) => {
 
   let returnValue = {};
 
-  const result = await fetch(
+  await fetch(
     process.env.REACT_APP_DB_HOST + `/users/userInfo?userId=${userID}`,
     requestOptions
   )
@@ -128,7 +161,7 @@ export const editProfile = async (userID, formData) => {
 
 export const getUserInfo = async (userId) => {
   let returnValue = 0;
-  const result = await axios
+  await axios
     .get(process.env.REACT_APP_DB_HOST + `/users?userId=${userId}`, {
       headers: {
         "Content-Type": "application/json",
@@ -147,7 +180,7 @@ export const getUserInfo = async (userId) => {
 
 export const getUserInfoByIndex = async (userIndex) => {
   let returnValue = 0;
-  const result = await axios
+  await axios
     .get(
       process.env.REACT_APP_DB_HOST + `/users/userInfo?userIndex=${userIndex}`,
       {
@@ -167,37 +200,11 @@ export const getUserInfoByIndex = async (userIndex) => {
   return returnValue;
 };
 
-export const createUserId = async (newId, userIndex) => {
-  var requestOptions = {
-    method: "PATCH",
-    headers: {
-      //   "Access-Control-Allow-Private-Network": true,
-      //   "Access-Control-Request-Private-Network": true,
-      "Content-Type": "application/json",
-    },
-    body: `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "userId":"${newId}"}`,
-    redirect: "follow",
-  };
-
-  let returnValue = {};
-
-  const result = await fetch(
-    process.env.REACT_APP_DB_HOST + `/users/userId?userIndex=${userIndex}`,
-    requestOptions
-  )
-    .then((response) => response.text())
-    .then((result) => {
-      returnValue = JSON.parse(result);
-      console.log(returnValue);
-    })
-    .catch((error) => console.log("error", error));
-
-  return returnValue;
-};
+//이게 꼭 필요한가?
 
 export const getInfoFromAccessToken = async (accessToken) => {
   let returnValue = 0;
-  const result = await axios
+  await axios
     .get(
       `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`,
       {
