@@ -6,7 +6,7 @@ import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { ProfileCard } from "../../../components/card";
 import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
-import { CameraIcon, ProfileLarge } from "../../../assets/icons";
+import { CameraIcon, ProfileDefault } from "../../../assets/icons";
 import { InputBox, TextAreaBox } from "../../../components/input";
 import { useTranslation } from "react-i18next";
 
@@ -103,7 +103,11 @@ const EditMyInfo = ({ userInfo, setEditMyInfo }) => {
     //   introduction: introduction,
     // };
     // setLocalUserInfo({ type: "init", data: saveData });
-    setLocalUserInfo({ type: "edit", editKey: ["user", "profile_name"], editValue: name });
+    setLocalUserInfo({
+      type: "edit",
+      editKey: ["user", "profile_name"],
+      editValue: name,
+    });
     setLocalUserInfo({
       type: "edit",
       editKey: ["user", "profile_img"],
@@ -135,7 +139,7 @@ const EditMyInfo = ({ userInfo, setEditMyInfo }) => {
               backgroundImage: `url(${
                 profileImage.imagePreviewUrl
                   ? profileImage.imagePreviewUrl
-                  : ProfileLarge
+                  : ProfileDefault
               })`,
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",

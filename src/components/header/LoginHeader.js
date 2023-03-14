@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import Typograpy from "../../utils/style/Typography";
 import { ContainedButton } from "../button";
-import { ProfileSmall } from "../../assets/icons";
+import { ProfileDefault } from "../../assets/icons";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { ProfileDropbox } from "./components";
 import { useTranslation } from "react-i18next";
@@ -39,7 +39,7 @@ const ProfileButton = styled.button`
   height: 36px;
   border-radius: 18px;
   border: 1px solid ${palette.grey_7};
-  background-image: url(${({ img }) => (img ? img : ProfileSmall)});
+  background-image: url(${({ img }) => (img ? img : ProfileDefault)});
   // background-size: 36px 36px;
   background-size: cover;
   background-repeat: no-repeat;

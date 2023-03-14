@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {
   CardEdit,
   CardTrash,
-  ProfileLarge,
+  ProfileDefault,
   ProfileEdit,
   BlingIcon,
 } from "../../assets/icons";
@@ -30,7 +30,7 @@ const ProfileImageBox = styled.div`
   border-radius: 60px;
   border: 1px solid ${palette.grey_7};
   background-image: url(${({ profileImg }) =>
-    profileImg ? profileImg : ProfileLarge});
+    profileImg ? profileImg : ProfileDefault});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import Typograpy from "../../utils/style/Typography";
 import { IconButton, TextButton } from "../button";
-import { ProfileSmall, ChevronLeft, ExternalLink } from "../../assets/icons";
+import { ChevronLeft, ExternalLink } from "../../assets/icons";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { useTranslation } from "react-i18next";
 
