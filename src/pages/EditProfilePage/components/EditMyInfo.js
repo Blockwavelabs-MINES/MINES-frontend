@@ -7,7 +7,7 @@ import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { ProfileCard } from "../../../components/card";
 import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
-import { CameraIcon, ProfileLarge } from "../../../assets/icons";
+import { CameraIcon, ProfileDefault } from "../../../assets/icons";
 import { InputBox, TextAreaBox } from "../../../components/input";
 import { editProfile } from "../../../utils/api/auth";
 import imageCompression from "browser-image-compression";
@@ -164,7 +164,9 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
 
     const formJson = {
       frontKey: process.env.REACT_APP_3TREE_API_KEY,
-      jwtToken: JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME))?.jwtToken,
+      jwtToken: JSON.parse(
+        localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME)
+      )?.jwtToken,
       profileName: name,
       profileBio: introduction,
     };
@@ -243,7 +245,7 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
               backgroundImage: `url(${
                 profileImage.imagePreviewUrl
                   ? profileImage.imagePreviewUrl
-                  : ProfileLarge
+                  : ProfileDefault
               })`,
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",

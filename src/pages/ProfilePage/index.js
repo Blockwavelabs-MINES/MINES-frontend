@@ -139,14 +139,20 @@ const ProfilePage = () => {
         {userInfo ? (
           <>
             {userInfo.links.length ? (
-              <LinkComponent userLinkList={userInfo?.links} profileDecorate={userInfo?.profileDecorate}/>
+              <LinkComponent
+                userLinkList={userInfo?.links}
+                profileDecorate={userInfo?.profileDecorate}
+              />
             ) : (
               <></>
             )}
             {userInfo.wallets.length ? (
               <>
                 {/* <Divider /> */}
-                <WalletComponent userWalletList={userInfo?.wallets} profileDecorate={userInfo?.profileDecorate}/>
+                <WalletComponent
+                  userWalletList={userInfo?.wallets}
+                  profileDecorate={userInfo?.profileDecorate}
+                />
               </>
             ) : (
               <></>
