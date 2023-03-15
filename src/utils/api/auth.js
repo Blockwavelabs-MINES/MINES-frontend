@@ -155,7 +155,7 @@ export const editProfile = async (userID, formData) => {
     });
 };
 
-export const getUserInfo = async (userId) => {
+export const getUserInfo = async () => {
   let returnValue = 0;
   await axios
     .get(process.env.REACT_APP_DB_HOST_NEW + `/users/my/info`, {

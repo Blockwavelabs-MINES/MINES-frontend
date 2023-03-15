@@ -8,7 +8,7 @@ import { EmptyWallet, MetamaskIcon } from "../../../assets/icons";
 import { DeleteModal } from "../../../components/modal";
 import { MetamaskOnClick } from "../../../actions/WalletConnectActions";
 import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
-import { addWallet, deleteWallet } from "../../../utils/api/wallets";
+import { getWallet, addWallet, deleteWallet } from "../../../utils/api/wallets";
 import { useTranslation } from "react-i18next";
 import AddWalletAddress from "../../../components/modal/AddWalletAddress";
 
@@ -55,28 +55,30 @@ function isMobileDevice() {
   );
 }
 
-const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
-  const [walletList, setWalletList] = useState(userInfoProps?.wallets);
+const WalletComponent = ({ userId, setInfoChange, infoChange }) => {
+  const [walletList, setWalletList] = useState([]);
   const [deleteModalOn, setDeleteModalOn] = useState(false);
   const [realDelete, setRealDelete] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState(-1);
   const [addedWallet, setAddedWallet] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-  const [userInfo, setUserInfo] = useState(userInfoProps);
   const { t } = useTranslation();
 
   useEffect(() => {
-    setWalletList(userInfoProps?.wallets);
-    setUserInfo(userInfoProps);
-    console.log(userInfoProps);
-  }, [userInfoProps]);
+    getWallet(userId).then((data) => {
+      setWalletList(data);
+      // console.log(data);
+      console.log(walletList);
+      console.log(walletList.length === 0);
+    });
+  }, []);
 
   useEffect(() => {
     (async () => {
       if (realDelete) {
         // 지우는 action
         const deleteWalletResult = await deleteWallet(
-          userInfo.user.user_id,
+          userId,
           walletList[deleteIdx].index
         ).then((data) => {
           console.log(data);
@@ -111,7 +113,7 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
         if (notDuplicated) {
           // 추가하는 action
           const addWalletResult = await addWallet(
-            userInfo.user.user_id,
+            userId,
             "METAMASK",
             addedWallet
           ).then((data) => {
@@ -199,23 +201,9 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
           <></>
         )}
       </TitleContainer>
-      {walletList?.length == 0 ? (
-        <>
-          <EmptyCard icon={EmptyWallet} text={t("selectWalletPage3_3")} />
-          <>
-            <ContainedButton
-              type="primary"
-              styles="filled"
-              states="default"
-              size="large"
-              label={t("selectWalletPage5")}
-              onClick={walletConnectOnClick}
-            />
-          </>
-        </>
-      ) : (
+      {walletList.length !== 0 ? (
         <ListContainer>
-          {walletList?.map((wallet, idx) => (
+          {walletList.map((wallet, idx) => (
             <EditableCard
               label={walletConvert(wallet.wallet_address)}
               isEdit={false}
@@ -226,6 +214,18 @@ const WalletComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
             />
           ))}
         </ListContainer>
+      ) : (
+        <>
+          <EmptyCard icon={EmptyWallet} text={t("selectWalletPage3_3")} />
+          <ContainedButton
+            type="primary"
+            styles="filled"
+            states="default"
+            size="large"
+            label={t("selectWalletPage5")}
+            onClick={walletConnectOnClick}
+          />
+        </>
       )}
     </FullContainer>
   );

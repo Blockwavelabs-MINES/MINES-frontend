@@ -39,14 +39,15 @@ const EditProfilePage = () => {
   const [infoChange, setInfoChange] = useState(false);
   const { t } = useTranslation();
 
+  const getUserInfoData = async () => {
+    await getUserInfo().then((data) => {
+      setUserInfo(data);
+    });
+  };
+
   useEffect(() => {
     if (localStorage.getItem("accessToken")) {
-      (async () => {
-        await getUserInfo().then((data) => {
-          setUserInfo(data);
-        });
-      })();
-      console.log(userInfo?.userId);
+      getUserInfoData();
     } else {
       alert(t("introPageAlert1"));
       window.location.href = "/";
@@ -67,39 +68,41 @@ const EditProfilePage = () => {
 
   return (
     <>
-      <FullContainer>
-        <SettingProfileHeader
-          userId={userInfo?.userId}
-          title={t("manageProfilePageHeader")}
-        />
-        {loginModalVisible && (
-          <AddLinkModal
-            visible={loginModalVisible}
-            closable={true}
-            maskClosable={true}
-            onClose={closeLoginModal}
+      {userInfo && (
+        <FullContainer>
+          <SettingProfileHeader
+            userId={userInfo.userId}
+            title={t("manageProfilePageHeader")}
           />
-        )}
-        <ProfileCard
-          profileImg={userInfo?.profileImg}
-          userName={userInfo?.profileName}
-          introduction={userInfo?.profileBio}
-          onClick={editOnClick}
-          onClickRight={customizeOnClick}
-          isEditable={true}
-        />
-        <LinkComponent
-          userId={userInfo?.userId}
-          setInfoChange={setInfoChange}
-          infoChange={infoChange}
-        />
-        {/* <Divider /> */}
-        <WalletComponent
-          userInfoProps={userInfo}
-          setInfoChange={setInfoChange}
-          infoChange={infoChange}
-        />
-      </FullContainer>
+          {loginModalVisible && (
+            <AddLinkModal
+              visible={loginModalVisible}
+              closable={true}
+              maskClosable={true}
+              onClose={closeLoginModal}
+            />
+          )}
+          <ProfileCard
+            profileImg={userInfo.profileImg}
+            userName={userInfo.profileName}
+            introduction={userInfo.profileBio}
+            onClick={editOnClick}
+            onClickRight={customizeOnClick}
+            isEditable={true}
+          />
+          <LinkComponent
+            userId={userInfo.userId}
+            setInfoChange={setInfoChange}
+            infoChange={infoChange}
+          />
+          {/* <Divider /> */}
+          <WalletComponent
+            userId={userInfo.userId}
+            setInfoChange={setInfoChange}
+            infoChange={infoChange}
+          />
+        </FullContainer>
+      )}
       {editMyInfo && (
         <EditMyInfo
           userInfo={userInfo}
