@@ -68,7 +68,7 @@ export const addLink = async (userId, linkTitle, linkUrl) => {
   return returnValue;
 };
 
-export const deleteLink = async (userId, linkIndex) => {
+export const deleteLink = async (linkId) => {
   const currentLang = JSON.parse(localStorage.getItem("language"));
   let langFile = {};
   if (currentLang) {
@@ -76,34 +76,18 @@ export const deleteLink = async (userId, linkIndex) => {
   }
 
   let returnValue = 0;
-  const result = await axios
-    .post(
-      process.env.REACT_APP_DB_HOST +
-        `/links/delete?userId=${userId}&linkIndex=${linkIndex}`,
-      `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "jwtToken":"${
-        JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME)
-        )?.jwtToken
-      }"}`,
+  await axios
+    .delete(
+      process.env.REACT_APP_DB_HOST_NEW + `/link/remove?link_id=${linkId}`,
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
         },
       }
     )
-    // .delete(process.env.REACT_APP_DB_HOST + `/links?linkIndex=${linkIndex}`, {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // })
     .then((data) => {
-      console.log(data.data);
-      if (data.data?.code == 404) {
-        alert(langFile?.sessionError);
-        localStorage.clear();
-        window.location.href = "/";
-      }
-      returnValue = data.data.result;
+      returnValue = data.data;
     });
 
   return returnValue;

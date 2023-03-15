@@ -61,11 +61,7 @@ const LinkComponent = ({ userId, setInfoChange, infoChange }) => {
     (async () => {
       if (realDelete) {
         // 지우는 action
-        const deleteLinkResult = await deleteLink(
-          userId,
-          linkList[deleteIdx].index
-        ).then((data) => {
-          console.log(data);
+        await deleteLink(linkList[deleteIdx].id).then(() => {
           setInfoChange(!infoChange);
         });
         // var tmpLinkList = linkList;
