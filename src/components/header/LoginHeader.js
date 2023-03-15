@@ -4,9 +4,9 @@ import { COLORS as palette } from "../../utils/style/Color/colors";
 import Typograpy from "../../utils/style/Typography";
 import { ContainedButton } from "../button";
 import { ProfileDefault } from "../../assets/icons";
-import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { ProfileDropbox } from "./components";
 import { useTranslation } from "react-i18next";
+import { getUserInfo } from "../../utils/api/auth";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -48,20 +48,11 @@ const ProfileButton = styled.button`
 `;
 
 const LoginHeader = ({ onVisible }) => {
-  const [userInfo, setUserInfo] = useState();
   const [dropBoxOn, setDropBoxOn] = useState(false);
+  const [userInfo, setUserInfo] = useState("");
   const { t } = useTranslation();
 
-  useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
-      setUserInfo(globalUserInfo);
-      console.log(globalUserInfo);
-    }
-  }, []);
-
   const loginOnClick = () => {
-    console.log("jell");
     onVisible(true);
   };
 
@@ -72,6 +63,16 @@ const LoginHeader = ({ onVisible }) => {
   const profileImgOnClose = () => {
     setDropBoxOn(false);
   };
+
+  const getUserData = async () => {
+    await getUserInfo().then((data) => {
+      setUserInfo(data);
+    });
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, [localStorage.getItem("accessToken")]);
 
   return (
     <HeaderContainer>
@@ -89,7 +90,7 @@ const LoginHeader = ({ onVisible }) => {
         <LogoContainer>3TREE</LogoContainer>
         {userInfo ? (
           <ProfileButton
-            img={userInfo.user.profile_img}
+            img={userInfo.profileImg}
             onClick={profileImgOnClick}
           />
         ) : (

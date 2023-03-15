@@ -67,7 +67,6 @@ export const requestLogin = async (code) => {
       }
     )
     .then((data) => {
-      console.log(data);
       localStorage.setItem(
         "accessToken",
         data.data.resultData.tokenDto.access_token
