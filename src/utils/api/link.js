@@ -33,7 +33,7 @@ export const getLink = async (userId) => {
   return resultValue;
 };
 
-export const addLink = async (userId, linkTitle, linkUrl) => {
+export const addLink = async (title, url) => {
   const currentLang = JSON.parse(localStorage.getItem("language"));
   let langFile = {};
   if (currentLang) {
@@ -41,28 +41,22 @@ export const addLink = async (userId, linkTitle, linkUrl) => {
   }
 
   let returnValue = 0;
-  const result = await axios
+  await axios
     .post(
-      process.env.REACT_APP_DB_HOST + `/links/new?userId=${userId}`,
-      `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "jwtToken":"${
-        JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME)
-        )?.jwtToken
-      }", "linkTitle":"${linkTitle}", "linkUrl":"${linkUrl}"}`,
+      process.env.REACT_APP_DB_HOST_NEW + "/link/add",
+      {
+        link_title: title,
+        link_url: url,
+      },
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
         },
       }
     )
     .then((data) => {
-      console.log(data.data);
-      if (data.data?.code == 404) {
-        alert(langFile?.sessionError);
-        localStorage.clear();
-        window.location.href = "/";
-      }
-      returnValue = data.data.result;
+      returnValue = data.data;
     });
 
   return returnValue;

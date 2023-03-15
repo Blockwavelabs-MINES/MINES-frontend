@@ -60,19 +60,9 @@ const LinkComponent = ({ userId, setInfoChange, infoChange }) => {
   useEffect(() => {
     (async () => {
       if (realDelete) {
-        // 지우는 action
         await deleteLink(linkList[deleteIdx].id).then(() => {
           setInfoChange(!infoChange);
         });
-        // var tmpLinkList = linkList;
-        // tmpLinkList.splice(deleteIdx, 1);
-        // setLocalUserInfo({
-        //   type: "edit",
-        //   editKey: "links",
-        //   editValue: tmpLinkList,
-        // });
-        // setLinkList(tmpLinkList);
-
         setDeleteIdx(-1);
         setRealDelete(false);
       }
@@ -114,7 +104,7 @@ const LinkComponent = ({ userId, setInfoChange, infoChange }) => {
   };
 
   const saveAction = async ({ title, url }) => {
-    const addLinkResult = await addLink(userId, title, url).then((data) => {
+    await addLink(title, url).then((data) => {
       console.log(data);
       setInfoChange(!infoChange);
     });
