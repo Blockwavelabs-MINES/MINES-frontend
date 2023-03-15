@@ -55,7 +55,7 @@ const LinkComponent = ({ userId, setInfoChange, infoChange }) => {
     getLink(userId).then((data) => {
       setLinkList(data);
     });
-  }, []);
+  }, [infoChange]);
 
   useEffect(() => {
     (async () => {
@@ -103,8 +103,6 @@ const LinkComponent = ({ userId, setInfoChange, infoChange }) => {
   const editOnClick = (idx) => {
     // alert("준비중입니다.");
     setEditIdx(idx);
-    console.log(idx);
-    console.log(linkList[idx]);
     setEditLinkModalOn(true);
   };
 
@@ -112,14 +110,8 @@ const LinkComponent = ({ userId, setInfoChange, infoChange }) => {
     setEditLinkModalOn(false);
   };
 
-  const editAction = async ({ title, url }) => {
-    const editLinkResult = await editLink(
-      userId,
-      linkList[editIdx].index,
-      title,
-      url
-    ).then((data) => {
-      console.log(data);
+  const editAction = async ({ linkId, title, url }) => {
+    await editLink(linkId, title, url).then(() => {
       setInfoChange(!infoChange);
       setEditIdx(-1);
     });

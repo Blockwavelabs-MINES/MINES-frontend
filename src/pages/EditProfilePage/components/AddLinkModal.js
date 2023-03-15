@@ -38,6 +38,7 @@ const InputContainer = styled.div`
 `;
 
 function AddLinkModalInner(saveAction, onClose, original) {
+  const [linkId, setLinkId] = useState(original ? original.link_id : "");
   const [title, setTitle] = useState(original ? original.link_title : "");
   const [url, setUrl] = useState(original ? original.link_url : "");
   const [canSave, setCanSave] = useState(false);
@@ -53,6 +54,7 @@ function AddLinkModalInner(saveAction, onClose, original) {
 
   useEffect(() => {
     console.log(original);
+    setLinkId(original?.id);
     setTitle(original?.link_title);
     setUrl(original?.link_url);
   }, [original]);
@@ -66,8 +68,7 @@ function AddLinkModalInner(saveAction, onClose, original) {
   };
 
   const saveOnClick = () => {
-    console.log(title, url);
-    saveAction({ title: title, url: url });
+    saveAction({ linkId: linkId, title: title, url: url });
     document.body.style.overflow = "auto";
     onClose();
   };

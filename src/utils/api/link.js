@@ -109,46 +109,32 @@ export const deleteLink = async (userId, linkIndex) => {
   return returnValue;
 };
 
-export const editLink = async (userId, linkIndex, linkTitle, linkUrl) => {
+export const editLink = async (linkId, title, url) => {
   const currentLang = JSON.parse(localStorage.getItem("language"));
   let langFile = {};
   if (currentLang) {
     langFile = languageList[currentLang.id].text;
   }
 
-  var requestOptions = {
-    method: "PATCH",
-    headers: {
-      // "Access-Control-Allow-Private-Network": true,
-      // "Access-Control-Request-Private-Network": true,
-      "Content-Type": "application/json",
-    },
-    body: `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "jwtToken":"${
-      JSON.parse(
-        localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME)
-      )?.jwtToken
-    }", "linkTitle":"${linkTitle}", "linkUrl":"${linkUrl}"}`,
-    redirect: "follow",
-  };
-
-  let returnValue = {};
-
-  const result = await fetch(
-    process.env.REACT_APP_DB_HOST +
-      `/links?userId=${userId}&linkIndex=${linkIndex}`,
-    requestOptions
-  )
-    .then((response) => response.text())
-    .then((result) => {
-      returnValue = JSON.parse(result);
-      console.log(returnValue);
-      if (returnValue?.code == 404) {
-        alert(langFile?.sessionError);
-        localStorage.clear();
-        window.location.href = "/";
+  let returnValue;
+  await axios
+    .put(
+      process.env.REACT_APP_DB_HOST_NEW + "/link/edit",
+      {
+        id: linkId,
+        title: title,
+        url: url,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        },
       }
-    })
-    .catch((error) => console.log("error", error));
+    )
+    .then((response) => {
+      returnValue = response.data;
+    });
 
   return returnValue;
 };

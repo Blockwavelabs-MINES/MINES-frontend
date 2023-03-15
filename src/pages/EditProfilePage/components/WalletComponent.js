@@ -67,9 +67,6 @@ const WalletComponent = ({ userId, setInfoChange, infoChange }) => {
   useEffect(() => {
     getWallet(userId).then((data) => {
       setWalletList(data);
-      // console.log(data);
-      console.log(walletList);
-      console.log(walletList.length === 0);
     });
   }, []);
 
