@@ -51,11 +51,11 @@ const LoginModalInner = (type, setStatus, onClose) => {
   const { t } = useTranslation();
 
   const responseGoogle = async (code) => {
-    await requestLogin(code).then(() => {
-      if (type == "receive") {
-        setStatus(true);
-      } else {
+    await requestLogin(code).then((data) => {
+      if (type == "receive" && data === "SIGNUP") {
         setStatus(false);
+      } else if (data === "LOGIN") {
+        setStatus(true);
       }
       onClose();
     });

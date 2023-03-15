@@ -55,6 +55,7 @@ const languageList = [
 // };
 
 export const requestLogin = async (code) => {
+  let returnValue;
   await axios
     .get(
       process.env.REACT_APP_DB_HOST_NEW +
@@ -66,11 +67,15 @@ export const requestLogin = async (code) => {
       }
     )
     .then((data) => {
+      console.log(data);
       localStorage.setItem(
         "accessToken",
         data.data.resultData.tokenDto.access_token
       );
+      //회원가입과 로그인 여부.
+      returnValue = data.data.resultData.socialLoginResponse.status;
     });
+  return returnValue;
 };
 
 export const checkUserId = async (userID) => {
