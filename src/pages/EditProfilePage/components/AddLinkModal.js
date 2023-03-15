@@ -82,7 +82,7 @@ function AddLinkModalInner(saveAction, onClose, original) {
             state="filled"
             isRequired={true}
             placeholder={t("editLinkModal3")}
-            value={title}
+            value={title || ""}
             onChange={(e) => titleOnChange(e)}
           />
           <InputBox
@@ -90,7 +90,7 @@ function AddLinkModalInner(saveAction, onClose, original) {
             state="filled"
             isRequired={true}
             placeholder={t("editLinkModal5")}
-            value={url}
+            value={url || ""}
             onChange={(e) => urlOnChange(e)}
           />
         </InputContainer>

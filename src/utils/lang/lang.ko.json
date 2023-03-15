@@ -111,6 +111,8 @@
   "editLinkModal5": "https://3tree.io",
   "editLinkModal6": "저장하기",
 
+  "addWalletModalTitle": "지갑 주소 추가하기",
+
   "editProfilePageHeader": "내 정보 수정",
   "editProfilePage1": "저장",
   "editProfilePage2": "프로필 사진",
@@ -183,7 +185,7 @@
   "previewPage4": "",
   "previewPage5": "년 ",
   "previewPage6": "월 ",
-  "previewPage7": "일 ", 
+  "previewPage7": "일 ",
   "previewPage8": "까지",
   "previewPage9": "유의사항",
   "previewPage10": "수령은 전송일로부터 3일 내에 해당 소셜계정으로 인증하면 수령할 수 있으며, 기한 내 미수령시 반환됩니다.",

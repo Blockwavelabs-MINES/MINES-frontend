@@ -37,6 +37,7 @@ function AddWalletAddress({
 }) {
   const [newWalletAddress, setNewWalletAddress] = useState("");
   const [newWalletId, setNewWalletId] = useState(-1);
+  const { t } = useTranslation();
 
   useEffect(() => {
     let constWalletList = WalletList;
@@ -78,7 +79,7 @@ function AddWalletAddress({
         <ModalInner tabIndex="0" className="modal-inner">
           <CloseButton onClick={closeOnClick} />
           <ContentContainer>
-            <PopupTitle>Add Wallet Address</PopupTitle>
+            <PopupTitle>{t("addWalletModalTitle")}</PopupTitle>
             <WalletButtonGroup
               columnNum={1}
               setPageStack={setNewWalletAddress}

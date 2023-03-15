@@ -99,7 +99,7 @@ const WalletComponent = ({
   select,
   setSelect,
 }) => {
-  const [walletList, setWalletList] = useState(userInfoProps?.wallets);
+  const [walletList, setWalletList] = useState([]);
   const [deleteModalOn, setDeleteModalOn] = useState(false);
   const [realDelete, setRealDelete] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState(-1);
@@ -186,22 +186,20 @@ const WalletComponent = ({
     console.log(userInfoProps);
   }, [userInfoProps]);
 
-  useEffect(() => {
-    (async () => {
-      if (realDelete) {
-        // 지우는 action
-        const deleteWalletResult = await deleteWallet(
-          userInfo.user.user_id,
-          walletList[deleteIdx].index
-        ).then((data) => {
-          console.log(data);
+  console.log(realDelete + "realDelete");
 
-          setDeleteIdx(-1);
-          setRealDelete(false);
-          setInfoChange(!infoChange);
-        });
-      }
-    })();
+  useEffect(() => {
+    console.log("realDelete is false");
+    if (realDelete) {
+      // 지우는 action
+      console.log(walletList);
+      console.log(walletList[deleteIdx]);
+      deleteWallet(walletList[deleteIdx].index).then(() => {
+        setDeleteIdx(-1);
+        setRealDelete(false);
+        setInfoChange(!infoChange);
+      });
+    }
   }, [realDelete]);
 
   useEffect(() => {
@@ -209,8 +207,8 @@ const WalletComponent = ({
       if (addedWallet) {
         //중복 검사
         let notDuplicated = true;
-        walletList.map((wallet, idx) => {
-          if (wallet.wallet_address == addedWallet) {
+        walletList.forEach((wallet) => {
+          if (wallet.walletAddress == addedWallet) {
             notDuplicated = false;
           }
         });
@@ -633,6 +631,7 @@ const WalletComponent = ({
                 <ListContainer>
                   {walletList?.map((wallet, idx) => (
                     <EditableCard
+                      key={wallet.index}
                       label={walletConvert(wallet.wallet_address)}
                       isEdit={false}
                       isTrash={false}

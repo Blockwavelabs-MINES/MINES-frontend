@@ -68,18 +68,13 @@ const WalletComponent = ({ userId, setInfoChange, infoChange }) => {
     getWallet(userId).then((data) => {
       setWalletList(data);
     });
-  }, []);
+  }, [infoChange]);
 
   useEffect(() => {
     (async () => {
       if (realDelete) {
         // 지우는 action
-        const deleteWalletResult = await deleteWallet(
-          userId,
-          walletList[deleteIdx].index
-        ).then((data) => {
-          console.log(data);
-
+        await deleteWallet(walletList[deleteIdx].index).then((data) => {
           setDeleteIdx(-1);
           setRealDelete(false);
           setInfoChange(!infoChange);
@@ -103,22 +98,18 @@ const WalletComponent = ({ userId, setInfoChange, infoChange }) => {
         //중복 검사
         let notDuplicated = true;
         walletList.map((wallet, idx) => {
-          if (wallet.wallet_address == addedWallet) {
+          if (wallet.walletAddress == addedWallet) {
             notDuplicated = false;
           }
         });
         if (notDuplicated) {
           // 추가하는 action
-          const addWalletResult = await addWallet(
-            userId,
-            "METAMASK",
-            addedWallet
-          ).then((data) => {
+          await addWallet("METAMASK", addedWallet).then((data) => {
             console.log(data);
             var tmpWalletList = walletList;
             tmpWalletList.push({
               // type: "Metamask",
-              wallet_address: addedWallet,
+              walletAddress: addedWallet,
               // icon: MetamaskIcon,
             });
             // setLocalUserInfo({
@@ -202,7 +193,7 @@ const WalletComponent = ({ userId, setInfoChange, infoChange }) => {
         <ListContainer>
           {walletList.map((wallet, idx) => (
             <EditableCard
-              label={walletConvert(wallet.wallet_address)}
+              label={walletConvert(wallet.walletAddress)}
               isEdit={false}
               isTrash={true}
               // icon={wallet.icon}

@@ -34,7 +34,7 @@ export const getWallet = async (userId) => {
   return resultValue;
 };
 
-export const addWallet = async (userId, walletType, walletAddress) => {
+export const addWallet = async (walletType, walletAddress) => {
   const currentLang = JSON.parse(localStorage.getItem("language"));
   let langFile = {};
   if (currentLang) {
@@ -42,34 +42,28 @@ export const addWallet = async (userId, walletType, walletAddress) => {
   }
 
   let returnValue = 0;
-  const result = await axios
+  await axios
     .post(
-      process.env.REACT_APP_DB_HOST + `/wallets/new?userId=${userId}`,
-      `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "jwtToken":"${
-        JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME)
-        )?.jwtToken
-      }", "walletType":"${walletType}", "walletAddress":"${walletAddress}"}`,
+      process.env.REACT_APP_DB_HOST_NEW + "/wallets/new",
+      {
+        wallet_type: walletType,
+        wallet_address: walletAddress,
+      },
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
         },
       }
     )
     .then((data) => {
-      console.log(data.data);
-      if (data.data?.code == 404) {
-        alert(langFile?.sessionError);
-        localStorage.clear();
-        window.location.href = "/";
-      }
-      returnValue = data.data.result;
+      returnValue = data.data;
     });
 
   return returnValue;
 };
 
-export const deleteWallet = async (userId, userWalletIndex) => {
+export const deleteWallet = async (userWalletIndex) => {
   const currentLang = JSON.parse(localStorage.getItem("language"));
   let langFile = {};
   if (currentLang) {
@@ -77,38 +71,19 @@ export const deleteWallet = async (userId, userWalletIndex) => {
   }
 
   let returnValue = 0;
-  const result = await axios
-    .post(
-      process.env.REACT_APP_DB_HOST +
-        `/wallets/delete?userId=${userId}&userWalletIndex=${userWalletIndex}`,
-      `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "jwtToken":"${
-        JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME)
-        )?.jwtToken
-      }"}`,
+  await axios
+    .delete(
+      process.env.REACT_APP_DB_HOST_NEW +
+        `/wallets?userWalletIndex=${userWalletIndex}`,
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
         },
       }
     )
-    // .delete(
-    //   process.env.REACT_APP_DB_HOST +
-    //     `/wallets?userWalletIndex=${userWalletIndex}`,
-    //   {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // )
     .then((data) => {
-      console.log(data.data);
-      if (data.data?.code == 404) {
-        alert(langFile?.sessionError);
-        localStorage.clear();
-        window.location.href = "/";
-      }
-      returnValue = data.data.result;
+      returnValue = data.data;
     });
 
   return returnValue;

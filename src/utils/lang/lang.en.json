@@ -104,6 +104,8 @@
   "manageProfilePageAlertDeleteWallet2": "Delete",
   "manageProfilePageAlertDeleteWallet3": "Cancel",
 
+  "addWalletModalTitle": "Add Wallet Address",
+
   "editLinkModal1": "Link",
   "editLinkModal2": "Link Title",
   "editLinkModal3": "3Tree",
