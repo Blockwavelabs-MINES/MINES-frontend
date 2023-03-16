@@ -4,6 +4,10 @@ import { ContainedButton } from "../../../components/button";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { ProfileCard } from "../../../components/card";
+import { getUserInfo } from "../../../utils/api/auth";
+import { getWallet } from "../../../utils/api/wallets";
+import { getLink } from "../../../utils/api/link";
+import { MetamaskIcon } from "../../../assets/icons";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -45,6 +49,13 @@ const LinkContainer = styled.div`
   margin-bottom: 22px;
 `;
 
+const MetamaskIconImg = styled.img`
+  position: absolute;
+  left: 16px;
+  width: 32px;
+  height: 32px;
+`;
+
 const WalletIconBox = styled.img`
   position: absolute;
   top: 22px;
@@ -63,7 +74,7 @@ const walletConvert = (walletAddress) => {
 };
 
 const Preview = ({
-  userInfo,
+  userId,
   setPreviewOn,
   backgroundColor,
   backImage,
@@ -71,24 +82,53 @@ const Preview = ({
   buttonFontColor,
   fontColor,
 }) => {
+  const [userInfo, setUserInfo] = useState([]);
+  const [linkList, setLinkList] = useState([]);
+  const [walletList, setWalletList] = useState([]);
+
+  const getUserInfoData = async () => {
+    await getUserInfo().then((data) => {
+      setUserInfo(data);
+    });
+  };
+
+  const getLinkList = async () => {
+    await getLink(userId).then((data) => {
+      setLinkList(data);
+    });
+  };
+
+  const getWalletList = async () => {
+    await getWallet(userId).then((data) => {
+      setWalletList(data);
+    });
+  };
+
+  useEffect(() => {
+    getUserInfoData();
+    getLinkList();
+    getWalletList();
+  }, []);
+
   return (
     <>
       <FullContainer color={backgroundColor} value={backImage.imagePreviewUrl}>
         <ProfileCard
-          profileImg={userInfo?.user.profile_img}
-          userName={userInfo?.user.profile_name}
-          introduction={userInfo?.user.profile_bio}
+          profileImg={userInfo.profileImg}
+          userName={userInfo.profileName}
+          introduction={userInfo.profileBio}
           isEditable={false}
           color={fontColor}
         />
-        {userInfo?.links.map((link, idx) => (
+        {linkList.map((link, idx) => (
           <LinkContainer color={buttonColor} value={buttonFontColor}>
             {link.link_title}
           </LinkContainer>
         ))}
-        {userInfo?.wallets.map((wallet, idx) => (
+        {walletList.map((wallet, idx) => (
           <LinkContainer color={buttonColor} value={buttonFontColor}>
-            {walletConvert(wallet.wallet_address)}
+            <MetamaskIconImg src={MetamaskIcon} />
+            {walletConvert(wallet.walletAddress)}
           </LinkContainer>
         ))}
       </FullContainer>

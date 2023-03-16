@@ -16,12 +16,11 @@ const languageList = [
   },
 ];
 
-export const getProfileDeco = async (userIndex) => {
+export const getProfileDeco = async (userId) => {
   let returnValue = 0;
-  const result = await axios
+  await axios
     .get(
-      process.env.REACT_APP_DB_HOST +
-        `/users/userInfo?userIndex=${userIndex}`,
+      process.env.REACT_APP_DB_HOST_NEW + `/public/profile?user_id=${userId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -29,13 +28,30 @@ export const getProfileDeco = async (userIndex) => {
       }
     )
     .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.result;
+      returnValue = data.data.resultData;
     });
 
   return returnValue;
 };
 
+export const editProfileDeco = async () => {
+  let returnValue;
+  await axios
+    .put(
+      process.env.REACT_APP_DB_HOST_NEW + `/profile/edit`,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        },
+      }
+    )
+    .then((data) => {
+      returnValue = data.data.resultData;
+    });
+  return returnValue;
+};
 
 export const editDecoBackground = async (userID, formData) => {
   const currentLang = JSON.parse(localStorage.getItem("language"));
@@ -60,21 +76,20 @@ export const editDecoBackground = async (userID, formData) => {
     process.env.REACT_APP_DB_HOST +
       `/users/profile/decorate/background?userId=${userID}`,
     requestOptions
-  )
-    .then((response) => response.text())
-    .then((result) => {
-      returnValue = JSON.parse(result);
-      console.log(returnValue);
-      if (returnValue?.code == 404) {
-        alert(langFile?.sessionError);
-        localStorage.clear();
-        window.location.href = "/";
-      }
-      return returnValue;
-    })
-    .catch((error) => {
-      console.log("error", error);
-    });
+  ).then((response) => response.text());
+  // .then((result) => {
+  //   returnValue = JSON.parse(result);
+  //   console.log(returnValue);
+  //   if (returnValue?.code == 404) {
+  //     alert(langFile?.sessionError);
+  //     localStorage.clear();
+  //     window.location.href = "/";
+  //   }
+  //   return returnValue;
+  // })
+  // .catch((error) => {
+  //   console.log("error", error);
+  // });
 };
 
 export const editDecoButton = async (userId, btnColor, btnFontColor) => {

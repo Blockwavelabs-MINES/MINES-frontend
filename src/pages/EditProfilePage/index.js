@@ -113,7 +113,7 @@ const EditProfilePage = () => {
       )}
       {customizeMyInfo && (
         <CustomizeMyInfo
-          userInfo={userInfo}
+          userId={userInfo.userId}
           setCustomizeMyInfo={setCustomizeMyInfo}
           setInfoChange={setInfoChange}
           infoChange={infoChange}
