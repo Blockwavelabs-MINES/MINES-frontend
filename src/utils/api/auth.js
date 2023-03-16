@@ -114,49 +114,31 @@ export const createUserId = async (newId) => {
   return returnValue;
 };
 
-export const editProfile = async (userID, formData) => {
-  //   const formData = new FormData();
-  //   formData.append(
-  //     "json",
-  //     `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "profileName":"${profileName}", "profileBio":"${profileBio}"}`
-  //   );
+export const editProfile = async (formData) => {
   const currentLang = JSON.parse(localStorage.getItem("language"));
   let langFile = {};
   if (currentLang) {
     langFile = languageList[currentLang.id].text;
   }
 
-  var requestOptions = {
-    method: "PATCH",
-    headers: {
-      "Access-Control-Allow-Private-Network": true,
-      "Access-Control-Request-Private-Network": true,
-      // "Content-Type": "application/json",
-    },
-    body: formData,
-    redirect: "follow",
-  };
-
   let returnValue = {};
 
-  await fetch(
-    process.env.REACT_APP_DB_HOST + `/users/userInfo?userId=${userID}`,
-    requestOptions
-  )
-    .then((response) => response.text())
+  await axios
+    .put(process.env.REACT_APP_DB_HOST_NEW + `/users/edit/profile`, formData, {
+      headers: {
+        Accept: `*/*`,
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
+      },
+    })
     .then((result) => {
-      returnValue = JSON.parse(result);
-      console.log(returnValue);
-      if (returnValue?.code == 404) {
-        alert(langFile?.sessionError);
-        localStorage.clear();
-        window.location.href = "/";
-      }
-      return returnValue;
+      returnValue = result.data.resultData;
     })
     .catch((error) => {
       console.log("error", error);
     });
+
+  return returnValue;
 };
 
 export const getUserInfo = async () => {

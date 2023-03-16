@@ -64,12 +64,13 @@ const ProfileFilter = styled.div`
 const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [profileImage, setProfileImage] = useState({
-    file: userInfo?.user.profile_img,
-    imagePreviewUrl: userInfo?.user.profile_img,
+    file: userInfo?.profileImg,
+    imagePreviewUrl: userInfo?.profileImg,
   });
   const [profileImageChange, setProfileImageChange] = useState(false);
-  const [name, setName] = useState(userInfo?.user.profile_name);
-  const [introduction, setIntroduction] = useState(userInfo?.user.profile_bio);
+  const [newProfileImage, setNewProfileImage] = useState(null);
+  const [name, setName] = useState(userInfo?.profileName);
+  const [introduction, setIntroduction] = useState(userInfo?.profileBio);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [realDelete, setRealDelete] = useState(false);
   const { t } = useTranslation();
@@ -87,9 +88,9 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   };
 
   const handleChange = async (event) => {
-    console.log("hello");
     let reader = new FileReader();
     const fileUploaded = event.target.files[0];
+    setNewProfileImage(fileUploaded);
     console.log(fileUploaded);
     let imageSize = fileUploaded.size / 1024 / 1024;
     console.log(imageSize, "MB");
@@ -149,51 +150,18 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   };
 
   const saveEditUserInfo = async () => {
-    // const saveData = {
-    //   userId: name,
-    //   userToken: "",
-    //   profileImg: profileImage.imagePreviewUrl,
-    //   introduction: introduction,
-    // };
-    // setLocalUserInfo({ type: "init", data: saveData });
-    console.log(userInfo?.user.profile_name);
-
     const formData = new FormData();
-
-    formData.append("profileImage", profileImage?.file);
-
     const formJson = {
-      frontKey: process.env.REACT_APP_3TREE_API_KEY,
-      jwtToken: JSON.parse(
-        localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME)
-      )?.jwtToken,
-      profileName: name,
-      profileBio: introduction,
+      profile_name: name,
+      profile_description: introduction,
     };
+    formData.append("image", profileImageChange ? newProfileImage : null);
+    formData.append("profile", JSON.stringify(formJson));
 
-    formData.append("json", JSON.stringify(formJson));
-
-    const editProfileResult = await editProfile(
-      userInfo?.user.user_id,
-      formData
-    ).then((data) => {
-      console.log(data);
-      setLocalUserInfo({
-        type: "edit",
-        editKey: ["user", "profile_name"],
-        editValue: name,
-      });
-      setLocalUserInfo({
-        type: "edit",
-        editKey: ["user", "profile_img"],
-        editValue: profileImage.imagePreviewUrl,
-      });
-      setLocalUserInfo({
-        type: "edit",
-        editKey: ["user", "profile_bio"],
-        editValue: introduction,
-      });
-
+    await editProfile(formData).then(() => {
+      for (let key of formData.keys()) {
+        console.log(key, ":", formData.get(key));
+      }
       setEditMyInfo();
       setInfoChange(!infoChange);
     });

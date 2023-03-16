@@ -92,7 +92,7 @@ const IntroPage = () => {
   };
 
   const profileSettingOnClick = () => {
-    if (userInfo) {
+    if (localStorage.getItem("accessToken")) {
       window.location.href = "/editProfile";
     } else {
       setLoginAlertModalVisible(true);

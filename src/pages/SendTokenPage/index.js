@@ -193,7 +193,7 @@ const SendTokenPage = () => {
 
   useEffect(() => {
     var globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
+    if (localStorage.getItem("accessToken")) {
       setUserInfo(globalUserInfo);
     } else {
       alert(t("introPageAlert1"));

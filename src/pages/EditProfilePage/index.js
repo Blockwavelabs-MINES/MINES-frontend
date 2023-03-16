@@ -68,7 +68,7 @@ const EditProfilePage = () => {
 
   return (
     <>
-      {userInfo && (
+      {userInfo && !editMyInfo && !customizeMyInfo && (
         <FullContainer>
           <SettingProfileHeader
             userId={userInfo.userId}
