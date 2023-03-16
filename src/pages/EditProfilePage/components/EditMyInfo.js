@@ -34,7 +34,7 @@ const ProfileImageButtonContainer = styled.div`
   padding: 50px;
 `;
 
-const ProfileImageButton = styled.button`
+const ProfileImageButton = styled.div`
   width: 120px;
   height: 120px;
   border-radius: 60px;
@@ -80,20 +80,15 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   //   }
   // }, [introduction]);
 
-  const handleClick = (event) => {
+  const handleClick = () => {
     hiddenFileInput.current.click();
-    // console.log("??");
-
-    // alert("준비중인 기능입니다.");
   };
 
   const handleChange = async (event) => {
     let reader = new FileReader();
     const fileUploaded = event.target.files[0];
     setNewProfileImage(fileUploaded);
-    console.log(fileUploaded);
-    let imageSize = fileUploaded.size / 1024 / 1024;
-    console.log(imageSize, "MB");
+    let imageSize = fileUploaded?.size / 1024 / 1024;
 
     if (imageSize > 5) {
       const options = {
@@ -124,6 +119,7 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
         };
         reader.readAsDataURL(compressedFile);
         setProfileImageChange(true);
+        setNewProfileImage(compressedFile);
       } catch (error) {
         console.log(error);
       }
@@ -159,9 +155,6 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
     formData.append("profile", JSON.stringify(formJson));
 
     await editProfile(formData).then(() => {
-      for (let key of formData.keys()) {
-        console.log(key, ":", formData.get(key));
-      }
       setEditMyInfo();
       setInfoChange(!infoChange);
     });

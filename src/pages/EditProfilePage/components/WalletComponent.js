@@ -194,6 +194,7 @@ const WalletComponent = ({ userId, setInfoChange, infoChange }) => {
           {walletList.map((wallet, idx) => (
             <EditableCard
               label={walletConvert(wallet.walletAddress)}
+              key={idx}
               isEdit={false}
               isTrash={true}
               // icon={wallet.icon}
