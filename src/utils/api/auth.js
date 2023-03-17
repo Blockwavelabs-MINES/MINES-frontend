@@ -17,43 +17,6 @@ const languageList = [
   },
 ];
 
-// export const createUser = async (socialID, socialPlatform, accessToken) => {
-//   let returnValue = 0;
-//   await axios
-//     .post(
-//       process.env.REACT_APP_DB_HOST + `/users/signup`,
-//       `{"accessToken":"${accessToken}", "socialID":"${socialID}", "socialPlatform":"${socialPlatform}"}`,
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     )
-//     .then((data) => {
-//       console.log(data.data);
-//       returnValue = data.data.result;
-//     });
-
-//   return returnValue;
-// };
-
-// export const loginUser = async () => {
-//   let returnValue = 0;
-//   await axios
-//     .post(process.env.REACT_APP_DB_HOST_NEW + `/public/users/google`, {
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     })
-//     .then((data) => {
-//       console.log(data.data);
-//       returnValue = data.data.result;
-//       setLocalUserInfo({ type: "init", data: returnValue });
-//     });
-
-//   return returnValue;
-// };
-
 export const requestLogin = async (code) => {
   let returnValue;
   await axios
@@ -159,11 +122,12 @@ export const getUserInfo = async () => {
   return returnValue;
 };
 
-export const getUserInfoByIndex = async (userIndex) => {
+export const getUserInfoAndProfileDeco = async (userId) => {
   let returnValue = 0;
   await axios
     .get(
-      process.env.REACT_APP_DB_HOST + `/users/userInfo?userIndex=${userIndex}`,
+      process.env.REACT_APP_DB_HOST_NEW +
+        `/public/users/info?user_id=${userId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -171,32 +135,7 @@ export const getUserInfoByIndex = async (userIndex) => {
       }
     )
     .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.result;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-  return returnValue;
-};
-
-//이게 꼭 필요한가?
-
-export const getInfoFromAccessToken = async (accessToken) => {
-  let returnValue = 0;
-  await axios
-    .get(
-      `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-    .then((data) => {
-      console.log(data.data);
-      returnValue = data.data;
+      returnValue = data.data.resultData;
     })
     .catch((error) => {
       console.log(error);

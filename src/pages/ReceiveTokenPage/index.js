@@ -15,7 +15,7 @@ import {
   CheckImage,
 } from "../../assets/images";
 import { LoginModal } from "../../components/modal";
-import { getUserInfo, getUserInfoByIndex } from "../../utils/api/auth";
+import { getUserInfoAndProfileDeco } from "../../utils/api/auth";
 import { SelectWallet } from "./components";
 import { getTrxsLinkInfo } from "../../utils/api/trxs";
 import { useTranslation } from "react-i18next";
@@ -187,7 +187,8 @@ const convertDateFormat = (dateString, a, b, c, d) => {
       monthNames[Number(new Date(toTimestamp).getUTCMonth())] +
       " " +
       pad(new Date(toTimestamp).getUTCDate()) +
-      d+ " " +
+      d +
+      " " +
       pad(new Date(toTimestamp).getFullYear().toString());
   } else {
     convertedDate =
@@ -276,7 +277,7 @@ const ReceiveTokenPage = () => {
               setIsExpired(true);
             }
           } else {
-            const getUserInfoByIndexResult = await getUserInfoByIndex(
+            const getUserInfoByIndexResult = await getUserInfoAndProfileDeco(
               data.sender_user_index
             ).then((res) => {
               setSenderUser(res.user.user_id);

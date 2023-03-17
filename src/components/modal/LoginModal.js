@@ -10,7 +10,6 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleLogin } from "@react-oauth/google";
 import { setLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { requestLogin } from "../../utils/api/auth";
-// import { getProfileDeco, editDecoFont } from "../../utils/api/profile";
 import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`

@@ -14,7 +14,7 @@ import imageCompression from "browser-image-compression";
 import { useTranslation } from "react-i18next";
 import { SketchPicker } from "react-color";
 import { Preview } from ".";
-import { getProfileDeco, editDecoBackground } from "../../../utils/api/profile";
+import { getProfileDeco } from "../../../utils/api/profile";
 import { editProfileDeco } from "../../../utils/api/profile";
 
 const FullContainer = styled.div`
