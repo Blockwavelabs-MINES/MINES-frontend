@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { SketchPicker } from "react-color";
 import { Preview } from ".";
 import { getProfileDeco, editDecoBackground } from "../../../utils/api/profile";
+import { editProfileDeco } from "../../../utils/api/profile";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -142,11 +143,11 @@ const CustomizeMyInfo = ({
   infoChange,
 }) => {
   const [profileDecoData, setProfileDecoData] = useState(false);
-  const [backImage, setProfileImage] = useState({
-    file: profileDecoData.backgroundImg,
-    imagePreviewUrl: profileDecoData.backgroundImg,
+  const [backImage, setBackImg] = useState({
+    file: "",
+    imagePreviewUrl: "",
   });
-  const [backImageChange, setProfileImageChange] = useState(false);
+  const [backImageChange, setBackImageChange] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState("");
   const [backgroundColorPicker, setBackgroundColorPicker] = useState(false);
@@ -185,6 +186,10 @@ const CustomizeMyInfo = ({
   useEffect(() => {
     getProfileDeco(userId).then((data) => {
       setProfileDecoData(data);
+      setBackImg({
+        file: data.backgroundImg,
+        imagePreviewUrl: data.backgroundImg,
+      });
       setBackgroundColor(data.backgroundColor);
       setButtonColor(data.buttonColor);
       setFontColor(data.fontColor);
@@ -199,44 +204,6 @@ const CustomizeMyInfo = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [pickerIndex]);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const formData = new FormData();
-
-  //     formData.append("backgroundImg", backImage?.file);
-
-  //     const formJson = {
-  //       jwtToken: JSON.parse(
-  //         localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME)
-  //       )?.jwtToken,
-  //       backgroundType: backTypeIsColor ? "COLOR" : "IMAGE",
-  //       backgroundColor: backgroundColor,
-  //     };
-
-  //     formData.append("json", JSON.stringify(formJson));
-  //     const editDecoBackgroundResult = await editDecoBackground(
-  //       userId,
-  //       formData
-  //     );
-  //   })();
-  // }, [backgroundColor, backImage, backTypeIsColor]);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const editDecoButtonResult = await editDecoButton(
-  //       userId,
-  //       buttonColor,
-  //       buttonFontColor
-  //     );
-  //   })();
-  // }, [buttonColor, buttonFontColor]);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     await editDecoFont(userId, fontColor);
-  //   })();
-  // }, [fontColor]);
 
   const handleClick = () => {
     hiddenFileInput.current.click();
@@ -267,28 +234,28 @@ const CustomizeMyInfo = ({
           `compressedFile size ${compressedFile.size / 1024 / 1024} MB`
         ); // smaller than maxSizeMB
 
-        setProfileImage({
+        setBackImg({
           file: compressedFile,
           imagePreviewUrl: compressedFile,
         });
         reader.onloadend = () => {
-          setProfileImage({
+          setBackImg({
             file: compressedFile,
             imagePreviewUrl: reader.result,
           });
         };
         reader.readAsDataURL(compressedFile);
-        setProfileImageChange(true);
+        setBackImageChange(true);
       } catch (error) {
         console.log(error);
       }
     } else {
-      setProfileImage({ file: fileUploaded, imagePreviewUrl: fileUploaded });
+      setBackImg({ file: fileUploaded, imagePreviewUrl: fileUploaded });
       reader.onloadend = () => {
-        setProfileImage({ file: fileUploaded, imagePreviewUrl: reader.result });
+        setBackImg({ file: fileUploaded, imagePreviewUrl: reader.result });
       };
       reader.readAsDataURL(fileUploaded);
-      setProfileImageChange(true);
+      setBackImageChange(true);
     }
   };
 
@@ -301,7 +268,23 @@ const CustomizeMyInfo = ({
   };
 
   const saveProfileDecoEdited = async () => {
-    console.log("save clicked");
+    const formData = new FormData();
+    const formJson = {
+      background_color: backgroundColor,
+      button_color: buttonColor,
+      button_font_color: buttonFontColor,
+      font_color: fontColor,
+    };
+    if (backTypeIsColor) {
+      formData.append("image", "");
+    } else {
+      formData.append("image", backImage.file);
+    }
+    formData.append("data", JSON.stringify(formJson));
+
+    editProfileDeco(formData);
+    setInfoChange(true);
+    setCustomizeMyInfo(false);
   };
 
   const hiddenFileInput = useRef(null);

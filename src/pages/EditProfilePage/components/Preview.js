@@ -56,12 +56,6 @@ const MetamaskIconImg = styled.img`
   height: 32px;
 `;
 
-const WalletIconBox = styled.img`
-  position: absolute;
-  top: 22px;
-  left: 20px;
-`;
-
 const walletConvert = (walletAddress) => {
   var returnAddress = walletAddress;
   if (walletAddress?.length > 15) {

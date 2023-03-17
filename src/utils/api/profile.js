@@ -34,122 +34,17 @@ export const getProfileDeco = async (userId) => {
   return returnValue;
 };
 
-export const editProfileDeco = async () => {
+export const editProfileDeco = async (formData) => {
   let returnValue;
   await axios
-    .put(
-      process.env.REACT_APP_DB_HOST_NEW + `/profile/edit`,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
-      }
-    )
+    .put(process.env.REACT_APP_DB_HOST_NEW + `/profile/edit`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
+      },
+    })
     .then((data) => {
       returnValue = data.data.resultData;
     });
-  return returnValue;
-};
-
-export const editDecoBackground = async (userID, formData) => {
-  const currentLang = JSON.parse(localStorage.getItem("language"));
-  let langFile = {};
-  if (currentLang) {
-    langFile = languageList[currentLang.id].text;
-  }
-
-  var requestOptions = {
-    method: "PATCH",
-    headers: {
-      "Access-Control-Allow-Private-Network": true,
-      "Access-Control-Request-Private-Network": true,
-    },
-    body: formData,
-    redirect: "follow",
-  };
-
-  let returnValue = {};
-
-  const result = await fetch(
-    process.env.REACT_APP_DB_HOST +
-      `/users/profile/decorate/background?userId=${userID}`,
-    requestOptions
-  ).then((response) => response.text());
-  // .then((result) => {
-  //   returnValue = JSON.parse(result);
-  //   console.log(returnValue);
-  //   if (returnValue?.code == 404) {
-  //     alert(langFile?.sessionError);
-  //     localStorage.clear();
-  //     window.location.href = "/";
-  //   }
-  //   return returnValue;
-  // })
-  // .catch((error) => {
-  //   console.log("error", error);
-  // });
-};
-
-export const editDecoButton = async (userId, btnColor, btnFontColor) => {
-  var requestOptions = {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: `{"jwtToken":"${
-      JSON.parse(
-        localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME)
-      )?.jwtToken
-    }", "btnColor":"${btnColor}", "btnFontColor":"${btnFontColor}"}`,
-    redirect: "follow",
-  };
-
-  let returnValue = {};
-
-  const result = await fetch(
-    process.env.REACT_APP_DB_HOST +
-      `/users/profile/decorate/button?userId=${userId}`,
-    requestOptions
-  )
-    .then((response) => response.text())
-    .then((result) => {
-      returnValue = JSON.parse(result);
-      console.log(returnValue);
-    })
-    .catch((error) => console.log("error", error));
-
-  return returnValue;
-};
-
-export const editDecoFont = async (userId, fontColor) => {
-  var requestOptions = {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: `{"jwtToken":"${
-      JSON.parse(
-        localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME)
-      )?.jwtToken
-    }", "fontColor":"${fontColor}"}`,
-    redirect: "follow",
-  };
-
-  let returnValue = {};
-
-  const result = await fetch(
-    process.env.REACT_APP_DB_HOST +
-      `/users/profile/decorate/font?userId=${userId}`,
-    requestOptions
-  )
-    .then((response) => response.text())
-    .then((result) => {
-      returnValue = JSON.parse(result);
-      console.log(returnValue);
-    })
-    .catch((error) => console.log("error", error));
-
   return returnValue;
 };

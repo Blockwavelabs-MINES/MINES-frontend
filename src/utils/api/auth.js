@@ -126,7 +126,6 @@ export const editProfile = async (formData) => {
   await axios
     .put(process.env.REACT_APP_DB_HOST_NEW + `/users/edit/profile`, formData, {
       headers: {
-        Accept: `*/*`,
         "Content-Type": "multipart/form-data",
         Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },

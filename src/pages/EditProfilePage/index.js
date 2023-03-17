@@ -52,7 +52,7 @@ const EditProfilePage = () => {
       alert(t("introPageAlert1"));
       window.location.href = "/";
     }
-  }, [infoChange, customizeMyInfo]);
+  }, [infoChange]);
 
   const closeLoginModal = () => {
     setLoginModalVisible(false);
