@@ -40,7 +40,6 @@ const ProfileButton = styled.button`
   border-radius: 18px;
   border: 1px solid ${palette.grey_7};
   background-image: url(${({ img }) => (img ? img : ProfileDefault)});
-  // background-size: 36px 36px;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -67,12 +66,15 @@ const LoginHeader = ({ onVisible }) => {
   const getUserData = async () => {
     await getUserInfo().then((data) => {
       setUserInfo(data);
+      console.log(data);
     });
   };
 
   useEffect(() => {
-    getUserData();
-  }, [localStorage.getItem("accessToken")]);
+    if (localStorage.getItem("accessToken")) {
+      getUserData();
+    }
+  }, []);
 
   return (
     <HeaderContainer>
@@ -88,7 +90,7 @@ const LoginHeader = ({ onVisible }) => {
       )}
       <InnerContainer>
         <LogoContainer>3TREE</LogoContainer>
-        {userInfo ? (
+        {localStorage.getItem("accessToken") ? (
           <ProfileButton
             img={userInfo.profileImg}
             onClick={profileImgOnClick}

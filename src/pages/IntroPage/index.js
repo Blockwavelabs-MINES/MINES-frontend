@@ -76,13 +76,6 @@ const IntroPage = () => {
   const [notSignUp, setNotSignUp] = useState(true);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
-      setUserInfo(globalUserInfo);
-    }
-  }, []);
-
   const closeLoginModal = () => {
     setLoginModalVisible(false);
   };
@@ -100,7 +93,7 @@ const IntroPage = () => {
   };
   const sendOnClick = () => {
     // alert("준비중입니다.");
-    if (userInfo) {
+    if (localStorage.getItem("accessToken")) {
       window.location.href = "/sendToken";
     } else {
       setLoginAlertModalVisible(true);

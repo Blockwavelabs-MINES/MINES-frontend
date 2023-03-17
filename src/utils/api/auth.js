@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setLocalUserInfo } from "../functions/setLocalVariable";
+import { handleTokenExpired } from "./base";
 
 import langEn from "../lang/lang.en.json";
 import langKo from "../lang/lang.ko.json";
@@ -34,10 +34,36 @@ export const requestLogin = async (code) => {
         "accessToken",
         data.data.resultData.tokenDto.access_token
       );
+      localStorage.setItem(
+        "refreshToken",
+        data.data.resultData.tokenDto.refresh_token
+      );
       //회원가입과 로그인 여부.
       returnValue = data.data.resultData.socialLoginResponse.status;
+    })
+    .catch((error) => {
+      console.log(error);
     });
   return returnValue;
+};
+
+export const requestRefreshToken = async () => {
+  let returnValue;
+  await axios
+    .post(process.env.REACT_APP_DB_HOST_NEW + `/public/users/reissue`, {
+      grant_type: "Bearer",
+      access_token: localStorage.getItem("accessToken"),
+      refresh_token: localStorage.getItem("refreshToken"),
+    })
+    .then((data) => {
+      //리프레쉬 토큰이 만료되었을 때
+      returnValue = data;
+      localStorage.setItem("accessToken", data.data.resultData.access_token);
+      localStorage.setItem("refreshToken", data.data.resultData.refresh_token);
+    })
+    .catch((error) => {
+      console.log("requestRefreshToken" + error);
+    });
 };
 
 export const checkUserId = async (userID) => {
@@ -104,7 +130,7 @@ export const editProfile = async (formData) => {
 };
 
 export const getUserInfo = async () => {
-  let returnValue = 0;
+  let returnValue;
   await axios
     .get(process.env.REACT_APP_DB_HOST_NEW + `/users/my/info`, {
       headers: {
@@ -117,6 +143,7 @@ export const getUserInfo = async () => {
     })
     .catch((error) => {
       console.log(error);
+      handleTokenExpired(error);
     });
 
   return returnValue;
