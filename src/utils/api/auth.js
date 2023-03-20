@@ -112,7 +112,7 @@ export const getUserInfo = async () => {
 };
 
 export const getUserInfoAndProfileDeco = async (userId) => {
-  let returnValue = 0;
+  let returnValue;
   await axios
     .get(`/public/users/info?user_id=${userId}`)
     .then((data) => {
@@ -126,7 +126,7 @@ export const getUserInfoAndProfileDeco = async (userId) => {
 };
 
 export const changeUserLanguage = async (newLanguage) => {
-  let returnValue = 0;
+  let returnValue;
   await axios
     .put(
       `users/edit/language?language=${newLanguage}`,

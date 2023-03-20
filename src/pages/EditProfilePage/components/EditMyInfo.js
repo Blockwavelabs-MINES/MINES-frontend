@@ -60,7 +60,6 @@ const ProfileFilter = styled.div`
 `;
 
 const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [profileImage, setProfileImage] = useState({
     file: userInfo?.profileImg,
     imagePreviewUrl: userInfo?.profileImg,

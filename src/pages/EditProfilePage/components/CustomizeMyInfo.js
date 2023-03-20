@@ -277,9 +277,10 @@ const CustomizeMyInfo = ({
     }
     formData.append("data", JSON.stringify(formJson));
 
-    editProfileDeco(formData);
-    setInfoChange(true);
-    setCustomizeMyInfo(false);
+    editProfileDeco(formData).then(() => {
+      setInfoChange(true);
+      setCustomizeMyInfo(false);
+    });
   };
 
   const hiddenFileInput = useRef(null);
