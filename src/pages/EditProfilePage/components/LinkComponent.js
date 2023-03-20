@@ -7,7 +7,6 @@ import { EmptyCard, EditableCard } from "../../../components/card";
 import { EmptyLink, LinkIcon } from "../../../assets/icons";
 import { DeleteModal } from "../../../components/modal";
 import AddLinkModal from "./AddLinkModal";
-import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 import {
   getLink,
   addLink,

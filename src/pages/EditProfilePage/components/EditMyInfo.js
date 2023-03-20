@@ -1,12 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { EditProfileHeader } from "../../../components/header";
 import { IconButton } from "../../../components/button";
 import { DeleteModal } from "../../../components/modal";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { ProfileCard } from "../../../components/card";
-import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 import { CameraIcon, ProfileDefault } from "../../../assets/icons";
 import { InputBox, TextAreaBox } from "../../../components/input";
 import { editProfile } from "../../../utils/api/auth";

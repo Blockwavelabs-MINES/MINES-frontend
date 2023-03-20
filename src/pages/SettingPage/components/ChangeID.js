@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { InputBox } from "../../../components/input";
 import { InfoCard } from "../../../components/card";
 import { ContainedButton } from "../../../components/button";

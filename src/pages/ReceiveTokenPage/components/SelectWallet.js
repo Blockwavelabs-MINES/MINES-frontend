@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { SendTokenHeader, LoginHeader } from "../../../components/header";
+import { SendTokenHeader } from "../../../components/header";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import WalletComponent from "./WalletComponent";
@@ -91,9 +91,7 @@ const SelectWallet = ({ linkInfo }) => {
                       <ContentContainer>
                         <TextBox>
                           <HeaderBox>{t("selectWalletPage1")}</HeaderBox>
-                          <SubtextBox>
-                          {t("selectWalletPage2")}
-                          </SubtextBox>
+                          <SubtextBox>{t("selectWalletPage2")}</SubtextBox>
                         </TextBox>
                       </ContentContainer>
                     </>

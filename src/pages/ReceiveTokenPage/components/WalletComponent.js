@@ -6,8 +6,6 @@ import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { EmptyCard, EditableCard } from "../../../components/card";
 import { EmptyWallet, MetamaskIcon } from "../../../assets/icons";
 import { DeleteModal } from "../../../components/modal";
-import { MetamaskOnClick } from "../../../actions/WalletConnectActions";
-import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 import { addWallet, deleteWallet } from "../../../utils/api/wallets";
 import { receiveTrxs, getTrxsLinkInfo } from "../../../utils/api/trxs";
 import Chainlist from "../../SendTokenPage/data/SimpleTokenList";

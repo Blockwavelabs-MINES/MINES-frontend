@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { LoginHeader } from "../../components/header";
 import { ContainedButton } from "../../components/button";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import { LoginModal, SingleModal } from "../../components/modal";
-import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { MainImage1, MainImage2, MainImage3 } from "../../assets/images";
 import { useTranslation } from "react-i18next";
 import { Swiper, SwiperSlide } from "swiper/react";

@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ProfileHeader } from "../../components/header";
-import { ContainedButton } from "../../components/button";
-import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
-import {
-  AddLinkModal,
-  LinkComponent,
-  WalletComponent,
-  EditMyInfo,
-} from "./components";
+import { LinkComponent, WalletComponent } from "./components";
 import { ProfileCard } from "../../components/card";
 import { useLocation } from "react-router-dom";
-import { MetamaskIcon } from "../../assets/icons";
 import { getUserInfoAndProfileDeco } from "../../utils/api/auth";
 import { useTranslation } from "react-i18next";
 

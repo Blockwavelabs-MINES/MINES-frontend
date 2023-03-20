@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { ContainedButton } from "../../components/button";
 import Typography from "../../utils/style/Typography/index";

@@ -66,7 +66,6 @@ const LoginHeader = ({ onVisible }) => {
   const getUserData = async () => {
     await getUserInfo().then((data) => {
       setUserInfo(data);
-      console.log(data);
     });
   };
 
@@ -74,7 +73,7 @@ const LoginHeader = ({ onVisible }) => {
     if (localStorage.getItem("accessToken")) {
       getUserData();
     }
-  }, []);
+  }, [localStorage.getItem("accessToken")]);
 
   return (
     <HeaderContainer>

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { SettingProfileHeader } from "../../components/header";
-import { ContainedButton } from "../../components/button";
-import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import {
   AddLinkModal,
@@ -12,7 +10,6 @@ import {
   CustomizeMyInfo,
 } from "./components";
 import { ProfileCard } from "../../components/card";
-import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { getUserInfo } from "../../utils/api/auth";
 import { useTranslation } from "react-i18next";
 

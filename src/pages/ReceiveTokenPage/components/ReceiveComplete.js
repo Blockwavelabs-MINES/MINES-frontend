@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { ContainedButton } from "../../../components/button";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { EditableCard } from "../../../components/card";
@@ -126,7 +125,6 @@ const ReceiveComplete = ({ receiveInfo }) => {
         `https://polygonscan.com/tx/${receiveInfo.transaction_escrow_hash}`
       );
     }
-    
   };
   return (
     <>

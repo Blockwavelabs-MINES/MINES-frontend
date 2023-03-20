@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { SendTokenHeader, LoginHeader } from "../../components/header";
-import { Tooltip, LoadingComponent } from "../../components/card";
+import { LoginHeader } from "../../components/header";
+import { Tooltip } from "../../components/card";
 import { ContainedButton } from "../../components/button";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
-import { useLocation } from "react-router-dom";
-import { MetamaskIcon, InfoIcon } from "../../assets/icons";
+import { InfoIcon } from "../../assets/icons";
 import {
   PigImage,
   TimerImage,

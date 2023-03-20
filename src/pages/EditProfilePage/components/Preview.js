@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { ContainedButton } from "../../../components/button";
 import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { ProfileCard } from "../../../components/card";
 import { getUserInfo } from "../../../utils/api/auth";
 import { getWallet } from "../../../utils/api/wallets";

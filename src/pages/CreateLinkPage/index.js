@@ -5,10 +5,6 @@ import { InputBox } from "../../components/input";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import CreateSuccess from "./CreateSuccess";
-import {
-  setLocalUserInfo,
-  getLocalUserInfo,
-} from "../../utils/functions/setLocalVariable";
 import { createUserId, checkUserId } from "../../utils/api/auth";
 import { useTranslation } from "react-i18next";
 
@@ -61,20 +57,11 @@ const ButtonContainer = styled.div`
 // state = ["inactive", "filled", "typing", "verified", "error", "help"]
 
 const CreateLinkPage = () => {
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [linkId, setLinkId] = useState("");
   const [state, setState] = useState("inactive");
   const [createSuccess, setCreateSuccess] = useState(false);
   const [errorComment, setErrorComment] = useState("");
-  const [userInfo, setUserInfo] = useState();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    let globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
-      setUserInfo(globalUserInfo);
-    }
-  }, []);
 
   useEffect(() => {
     if (linkId.length > 0) {
@@ -96,10 +83,6 @@ const CreateLinkPage = () => {
       setErrorComment("");
     }
   }, [linkId]);
-
-  const closeLoginModal = () => {
-    setLoginModalVisible(false);
-  };
 
   const linkIdOnChange = (e) => {
     setLinkId(e.target.value);
