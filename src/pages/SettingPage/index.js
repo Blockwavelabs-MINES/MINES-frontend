@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { SettingHeader } from "../../components/header";
-import Typography from "../../utils/style/Typography/index";
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
-import { getUserInfo } from "../../utils/api/auth";
 import { ListButton } from "../../components/button";
 import { useTranslation } from "react-i18next";
 import i18next from "../../utils/lang/i18n";
@@ -21,8 +17,6 @@ const FullContainer = styled.div`
 const LanguageNameList = ["한국어", "영어"];
 
 const SettingPage = () => {
-  const [userInfo, setUserInfo] = useState();
-  const [infoChange, setInfoChange] = useState(false);
   const [status, setStatus] = useState("");
   const [language, setLanguage] = useState(
     LanguageNameList[JSON.parse(localStorage.getItem("language"))?.id]
@@ -38,21 +32,11 @@ const SettingPage = () => {
       setLanguage(LanguageNameList[1]);
       localStorage.setItem("language", JSON.stringify({ lang: "en", id: 1 }));
     } else {
-      console.log(JSON.parse(localStorage.getItem("language"))?.id);
-      console.log(LanguageList.length);
-      console.log(
-        JSON.parse(localStorage.getItem("language"))?.id % LanguageList.length
-      );
       setLangKo(
         JSON.parse(localStorage.getItem("language"))?.id % LanguageList.length
       );
     }
   }, []);
-
-  const languageSwitchOnClick = () => {
-    var nextIdx = (language.id + 1) % LanguageList.length;
-    setLanguage({ lang: LanguageList[nextIdx], id: nextIdx });
-  };
 
   const langChange = () => {
     i18next.changeLanguage(langKo ? "ko" : "en");
@@ -128,22 +112,11 @@ const SettingPage = () => {
   ];
 
   useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
-      console.log(globalUserInfo);
-      (async () => {
-        const getUserInfoResult = await getUserInfo(
-          globalUserInfo.user.user_id
-        ).then((data) => {
-          console.log(data);
-          setUserInfo(data);
-        });
-      })();
-    } else {
+    if (!localStorage.getItem("accessToken")) {
       alert("로그인이 필요한 서비스입니다.");
       window.location.href = "/";
     }
-  }, [infoChange]);
+  }, []);
 
   return (
     <FullContainer>

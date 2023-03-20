@@ -5,10 +5,6 @@ import { InputBox } from "../../../components/input";
 import { InfoCard } from "../../../components/card";
 import { ContainedButton } from "../../../components/button";
 import { createUserId, checkUserId } from "../../../utils/api/auth";
-import {
-  setLocalUserInfo,
-  getLocalUserInfo,
-} from "../../../utils/functions/setLocalVariable";
 
 const Container = styled.div`
   width: 100%;
@@ -37,14 +33,6 @@ const ChangeID = () => {
   const infoDescription = t("changeUserId7");
 
   useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
-      setUserInfo(globalUserInfo);
-      console.log(globalUserInfo);
-    }
-  }, []);
-
-  useEffect(() => {
     if (linkId.length > 0) {
       setState("typing");
     } else {
@@ -70,27 +58,18 @@ const ChangeID = () => {
   };
 
   const createOnClick = async () => {
-    const checkUserIdResult = await checkUserId(linkId).then(async (data) => {
-      console.log(data);
-      if (data == false) {
-        const createUserIdResult = await createUserId(
-          linkId,
-          userInfo.user.index
-        ).then((data) => {
-          setLocalUserInfo({
-            type: "edit",
-            editKey: ["user", "user_id"],
-            editValue: linkId,
-          });
+    await checkUserId(linkId)
+      .then(async () => {
+        await createUserId(linkId).then(() => {
           window.location.href = "/";
         });
-      } else {
+      })
+      .catch(() => {
         setState("error");
         setErrorComment(
           `${t("createLink7")} "${linkId}" ${t("createLink7_2")}`
         );
-      }
-    });
+      });
   };
 
   return (
