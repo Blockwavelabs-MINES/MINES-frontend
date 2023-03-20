@@ -3,13 +3,10 @@ import { privateHeaders, handleTokenExpired } from "./base";
 
 export const getLink = async (userId) => {
   let resultValue = 0;
-  await axios
-    .get(
-      process.env.REACT_APP_DB_HOST_NEW + `/public/link/all?user_id=${userId}`
-    )
-    .then((data) => {
-      resultValue = data.data.resultData;
-    });
+  await axios.get(`/public/link/all?user_id=${userId}`).then((data) => {
+    resultValue = data.data.resultData;
+  });
+
   return resultValue;
 };
 
@@ -17,7 +14,7 @@ export const addLink = async (title, url) => {
   let returnValue = 0;
   await axios
     .post(
-      process.env.REACT_APP_DB_HOST_NEW + "/link/add",
+      "/link/add",
       {
         link_title: title,
         link_url: url,
@@ -39,12 +36,9 @@ export const addLink = async (title, url) => {
 export const deleteLink = async (linkId) => {
   let returnValue = 0;
   await axios
-    .delete(
-      process.env.REACT_APP_DB_HOST_NEW + `/link/remove?link_id=${linkId}`,
-      {
-        headers: privateHeaders,
-      }
-    )
+    .delete(`/link/remove?link_id=${linkId}`, {
+      headers: privateHeaders,
+    })
     .then((data) => {
       returnValue = data.data;
     })
@@ -59,7 +53,7 @@ export const editLink = async (linkId, title, url) => {
   let returnValue;
   await axios
     .put(
-      process.env.REACT_APP_DB_HOST_NEW + "/link/edit",
+      "/link/edit",
       {
         id: linkId,
         title: title,

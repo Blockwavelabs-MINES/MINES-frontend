@@ -3,13 +3,9 @@ import { privateHeadersMultipart, handleTokenExpired } from "./base";
 
 export const getProfileDeco = async (userId) => {
   let returnValue = 0;
-  await axios
-    .get(
-      process.env.REACT_APP_DB_HOST_NEW + `/public/profile?user_id=${userId}`
-    )
-    .then((data) => {
-      returnValue = data.data.resultData;
-    });
+  await axios.get(`/public/profile?user_id=${userId}`).then((data) => {
+    returnValue = data.data.resultData;
+  });
 
   return returnValue;
 };
@@ -17,7 +13,7 @@ export const getProfileDeco = async (userId) => {
 export const editProfileDeco = async (formData) => {
   let returnValue;
   await axios
-    .put(process.env.REACT_APP_DB_HOST_NEW + `/profile/edit`, formData, {
+    .put(`/profile/edit`, formData, {
       headers: privateHeadersMultipart,
     })
     .then((data) => {
