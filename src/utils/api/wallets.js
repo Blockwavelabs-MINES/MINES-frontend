@@ -1,46 +1,20 @@
 import axios from "axios";
-
-import langEn from "../lang/lang.en.json";
-import langKo from "../lang/lang.ko.json";
-
-const languageList = [
-  {
-    lang: "ko",
-    id: 0,
-    text: langKo,
-  },
-  {
-    lang: "en",
-    id: 1,
-    text: langEn,
-  },
-];
+import { privateHeaders, handleTokenExpired } from "./base";
 
 export const getWallet = async (userId) => {
   let resultValue = 0;
   await axios
     .get(
-      process.env.REACT_APP_DB_HOST_NEW +
-        `/public/wallets/all?userId=${userId}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      process.env.REACT_APP_DB_HOST_NEW + `/public/wallets/all?userId=${userId}`
     )
     .then((data) => {
       resultValue = data.data;
     });
+
   return resultValue;
 };
 
 export const addWallet = async (walletType, walletAddress) => {
-  const currentLang = JSON.parse(localStorage.getItem("language"));
-  let langFile = {};
-  if (currentLang) {
-    langFile = languageList[currentLang.id].text;
-  }
-
   let returnValue = 0;
   await axios
     .post(
@@ -50,40 +24,34 @@ export const addWallet = async (walletType, walletAddress) => {
         wallet_address: walletAddress,
       },
       {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
+        headers: privateHeaders,
       }
     )
     .then((data) => {
       returnValue = data.data;
+    })
+    .catch((error) => {
+      handleTokenExpired(error);
     });
 
   return returnValue;
 };
 
 export const deleteWallet = async (userWalletIndex) => {
-  const currentLang = JSON.parse(localStorage.getItem("language"));
-  let langFile = {};
-  if (currentLang) {
-    langFile = languageList[currentLang.id].text;
-  }
-
   let returnValue = 0;
   await axios
     .delete(
       process.env.REACT_APP_DB_HOST_NEW +
         `/wallets?userWalletIndex=${userWalletIndex}`,
       {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
+        headers: privateHeaders,
       }
     )
     .then((data) => {
       returnValue = data.data;
+    })
+    .catch((error) => {
+      handleTokenExpired(error);
     });
 
   return returnValue;
