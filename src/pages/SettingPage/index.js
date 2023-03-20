@@ -5,6 +5,7 @@ import { ListButton } from "../../components/button";
 import { useTranslation } from "react-i18next";
 import i18next from "../../utils/lang/i18n";
 import { ChangeID, EnrolledAccount } from "./components";
+import { changeUserLanguage } from "../../utils/api/auth";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -14,37 +15,28 @@ const FullContainer = styled.div`
   padding-top: 75px;
 `;
 
-const LanguageNameList = ["한국어", "영어"];
-
 const SettingPage = () => {
   const [status, setStatus] = useState("");
-  const [language, setLanguage] = useState(
-    LanguageNameList[JSON.parse(localStorage.getItem("language"))?.id]
+  const [currentLanguage, setCurrentLanguage] = useState(
+    localStorage.getItem("language")
   );
-  const [langKo, setLangKo] = useState(0);
   const { t } = useTranslation();
-
-  const LanguageList = ["languageSettingInfo1", "languageSettingInfo2"];
   const StatusList = ["changeID", "checkID", "setLanguage"];
 
   useEffect(() => {
-    if (!language) {
-      setLanguage(LanguageNameList[1]);
-      localStorage.setItem("language", JSON.stringify({ lang: "en", id: 1 }));
-    } else {
-      setLangKo(
-        JSON.parse(localStorage.getItem("language"))?.id % LanguageList.length
-      );
-    }
-  }, []);
+    setCurrentLanguage(localStorage.getItem("language"));
+  }, [localStorage.getItem("language")]);
 
   const langChange = () => {
-    i18next.changeLanguage(langKo ? "ko" : "en");
-    setLangKo((langKo + 1) % 2);
-    localStorage.setItem(
-      "language",
-      JSON.stringify({ lang: langKo ? "ko" : "en", id: (langKo + 1) % 2 })
-    );
+    if (currentLanguage === "en") {
+      i18next.changeLanguage("ko");
+      localStorage.setItem("language", "ko");
+      changeUserLanguage("KOR");
+    } else {
+      i18next.changeLanguage("en");
+      localStorage.setItem("language", "en");
+      changeUserLanguage("ENG");
+    }
   };
 
   const SettingList = [
@@ -78,7 +70,10 @@ const SettingPage = () => {
       onClick: () => {
         langChange();
       },
-      select: t(LanguageList[langKo]),
+      select:
+        currentLanguage === "en"
+          ? t("languageSettingInfo1")
+          : t("languageSettingInfo2"),
       component: ChangeID,
     },
     {

@@ -71,7 +71,6 @@ const BannerBottom = styled.div`
 const IntroPage = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [loginAlertModalVisible, setLoginAlertModalVisible] = useState(false);
-  const [userInfo, setUserInfo] = useState();
   const [notSignUp, setNotSignUp] = useState(true);
   const { t } = useTranslation();
 

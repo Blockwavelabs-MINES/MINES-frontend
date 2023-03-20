@@ -124,3 +124,19 @@ export const getUserInfoAndProfileDeco = async (userId) => {
 
   return returnValue;
 };
+
+export const changeUserLanguage = async (newLanguage) => {
+  let returnValue = 0;
+  await axios
+    .put(
+      `users/edit/language?language=${newLanguage}`,
+      {},
+      {
+        headers: privateHeaders,
+      }
+    )
+    .then((data) => {
+      returnValue = data.data;
+    });
+  return returnValue;
+};

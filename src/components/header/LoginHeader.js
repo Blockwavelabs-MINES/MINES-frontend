@@ -66,6 +66,8 @@ const LoginHeader = ({ onVisible }) => {
   const getUserData = async () => {
     await getUserInfo().then((data) => {
       setUserInfo(data);
+      const userLanguage = data.language.toLowerCase().slice(0, 2);
+      localStorage.setItem("language", userLanguage);
     });
   };
 
@@ -91,7 +93,7 @@ const LoginHeader = ({ onVisible }) => {
         <LogoContainer>3TREE</LogoContainer>
         {localStorage.getItem("accessToken") ? (
           <ProfileButton
-            img={userInfo.profileImg}
+            img={userInfo?.profileImg}
             onClick={profileImgOnClick}
           />
         ) : (
