@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 import i18next from "../../utils/lang/i18n";
 import { ChangeID, EnrolledAccount } from "./components";
 import { changeUserLanguage } from "../../utils/api/auth";
+import { useRecoilValue } from "recoil";
+import { loginState } from "../../utils/atoms/login";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -17,6 +19,7 @@ const FullContainer = styled.div`
 
 const SettingPage = () => {
   const [status, setStatus] = useState("");
+  const isLoggedIn = useRecoilValue(loginState);
   const [currentLanguage, setCurrentLanguage] = useState(
     localStorage.getItem("language")
   );
@@ -107,7 +110,7 @@ const SettingPage = () => {
   ];
 
   useEffect(() => {
-    if (!localStorage.getItem("accessToken")) {
+    if (!isLoggedIn) {
       alert("로그인이 필요한 서비스입니다.");
       window.location.href = "/";
     }

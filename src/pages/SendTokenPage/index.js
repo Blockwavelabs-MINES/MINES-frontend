@@ -16,6 +16,8 @@ import { ContainedButton } from "../../components/button";
 import { LoadingComponent } from "../../components/card";
 import { useTranslation } from "react-i18next";
 import { getUserInfo } from "../../utils/api/auth";
+import { useRecoilValue } from "recoil";
+import { loginState } from "../../utils/atoms/login";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -184,11 +186,12 @@ const SendTokenPage = () => {
   const [balance, setBalance] = useState("0");
   const [realBalance, setRealBalance] = useState("0");
   const [modalVisible, setModalVisible] = useState(false);
+  const isLoggedIn = useRecoilValue(loginState);
 
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
+    if (isLoggedIn) {
       getUserInfo().then((data) => {
         setUserInfo(data);
       });

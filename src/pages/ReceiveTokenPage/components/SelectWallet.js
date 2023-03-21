@@ -4,7 +4,6 @@ import { SendTokenHeader } from "../../../components/header";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import WalletComponent from "./WalletComponent";
-import { getLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 import { getUserInfo } from "../../../utils/api/auth";
 import ReceiveComplete from "./ReceiveComplete";
 import { LoadingComponent } from "../../../components/card";

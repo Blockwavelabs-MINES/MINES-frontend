@@ -12,6 +12,8 @@ import {
 import { ProfileCard } from "../../components/card";
 import { getUserInfo } from "../../utils/api/auth";
 import { useTranslation } from "react-i18next";
+import { useRecoilValue } from "recoil";
+import { loginState } from "../../utils/atoms/login";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -34,6 +36,7 @@ const EditProfilePage = () => {
   const [editMyInfo, setEditMyInfo] = useState();
   const [customizeMyInfo, setCustomizeMyInfo] = useState(false);
   const [infoChange, setInfoChange] = useState(false);
+  const isLoggedIn = useRecoilValue(loginState);
   const { t } = useTranslation();
 
   const getUserInfoData = async () => {
@@ -43,7 +46,7 @@ const EditProfilePage = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
+    if (isLoggedIn) {
       getUserInfoData();
     } else {
       alert(t("introPageAlert1"));

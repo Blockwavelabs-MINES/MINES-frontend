@@ -13,6 +13,8 @@ import CreateLinkPage from "../CreateLinkPage";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useRecoilValue } from "recoil";
+import { loginState } from "../../utils/atoms/login";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -72,6 +74,7 @@ const IntroPage = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [loginAlertModalVisible, setLoginAlertModalVisible] = useState(false);
   const [notSignUp, setNotSignUp] = useState(true);
+  const isLoggedIn = useRecoilValue(loginState);
   const { t } = useTranslation();
 
   const closeLoginModal = () => {
@@ -83,7 +86,7 @@ const IntroPage = () => {
   };
 
   const profileSettingOnClick = () => {
-    if (localStorage.getItem("accessToken")) {
+    if (isLoggedIn) {
       window.location.href = "/editProfile";
     } else {
       setLoginAlertModalVisible(true);
@@ -91,7 +94,7 @@ const IntroPage = () => {
   };
   const sendOnClick = () => {
     // alert("준비중입니다.");
-    if (localStorage.getItem("accessToken")) {
+    if (isLoggedIn) {
       window.location.href = "/sendToken";
     } else {
       setLoginAlertModalVisible(true);

@@ -11,6 +11,8 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { setLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { requestLogin } from "../../utils/api/auth";
 import { useTranslation } from "react-i18next";
+import { useSetRecoilState } from "recoil";
+import { loginState } from "../../utils/atoms/login";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -47,6 +49,7 @@ const TermsBox = styled.div`
 `;
 
 const LoginModalInner = (type, setStatus, onClose) => {
+  const setIsLoggedIn = useSetRecoilState(loginState);
   const { t } = useTranslation();
 
   const responseGoogle = async (code) => {
@@ -56,6 +59,7 @@ const LoginModalInner = (type, setStatus, onClose) => {
       } else if (data === "LOGIN") {
         setStatus(true);
       }
+      setIsLoggedIn(true);
       onClose();
     });
   };

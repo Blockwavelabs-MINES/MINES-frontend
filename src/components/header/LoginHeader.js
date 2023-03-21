@@ -7,6 +7,8 @@ import { ProfileDefault } from "../../assets/icons";
 import { ProfileDropbox } from "./components";
 import { useTranslation } from "react-i18next";
 import { getUserInfo } from "../../utils/api/auth";
+import { useRecoilValue } from "recoil";
+import { loginState } from "../../utils/atoms/login";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -49,6 +51,7 @@ const ProfileButton = styled.button`
 const LoginHeader = ({ onVisible }) => {
   const [dropBoxOn, setDropBoxOn] = useState(false);
   const [userInfo, setUserInfo] = useState("");
+  const isLoggedIn = useRecoilValue(loginState);
   const { t } = useTranslation();
 
   const loginOnClick = () => {
@@ -72,10 +75,10 @@ const LoginHeader = ({ onVisible }) => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
+    if (isLoggedIn) {
       getUserData();
     }
-  }, [localStorage.getItem("accessToken")]);
+  }, [isLoggedIn]);
 
   return (
     <HeaderContainer>
@@ -91,7 +94,7 @@ const LoginHeader = ({ onVisible }) => {
       )}
       <InnerContainer>
         <LogoContainer>3TREE</LogoContainer>
-        {localStorage.getItem("accessToken") ? (
+        {isLoggedIn ? (
           <ProfileButton
             img={userInfo?.profileImg}
             onClick={profileImgOnClick}
