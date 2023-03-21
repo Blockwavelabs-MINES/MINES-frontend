@@ -37,7 +37,7 @@ const Title = styled.div`
 
 const SemiTitle = styled.div`
   ${Typography.Body}
-  color: ${palette.grey_2}
+  color: ${palette.grey_2};
 `;
 
 const TooltipStyle = styled.div`
@@ -146,7 +146,7 @@ const convertDateFormat = (dateString, a, b, c, d) => {
   const toTimestamp = Date.parse(dateString);
   console.log(toTimestamp);
   let convertedDate = "";
-  if (JSON.parse(localStorage.getItem("language"))?.lang == "en") {
+  if (localStorage.getItem("language") === "en") {
     const monthNames = [
       "January",
       "February",
@@ -161,7 +161,6 @@ const convertDateFormat = (dateString, a, b, c, d) => {
       "November",
       "December",
     ];
-
     convertedDate =
       a +
       pad(new Date(toTimestamp).getUTCHours()) +

@@ -241,8 +241,7 @@ const LoginModalInner = (
             } else {
               setTransactionStatus("mined");
               setLoading(false);
-              const sendTrxsResult = await sendTrxs(
-                userIdx,
+              await sendTrxs(
                 address,
                 "metamask",
                 "google",
@@ -252,7 +251,6 @@ const LoginModalInner = (
                 transactionHash,
                 escrowId,
                 expiredDateResult,
-                sender,
                 tokenInfo.address,
                 networkId
               ).then((data) => {

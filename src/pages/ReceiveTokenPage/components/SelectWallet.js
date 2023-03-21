@@ -45,16 +45,8 @@ const SelectWallet = ({ linkInfo }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
-    // if (globalUserInfo) {
-    //   setUserInfo(globalUserInfo);
-    // }
-    console.log(globalUserInfo);
     (async () => {
-      const getUserInfoResult = await getUserInfo(
-        globalUserInfo.user.user_id
-      ).then((data) => {
-        console.log(data);
+      await getUserInfo().then((data) => {
         setUserInfo(data);
       });
     })();

@@ -6,14 +6,12 @@ import TypographyKo from "./typographyKo";
 const Typography = () => {
   let language = localStorage.getItem("language");
   if (!language) {
-    language = { lang: "en" };
+    language = "en";
   }
 
-  if (language.lang === "en") {
-    console.log(language.lang);
+  if (language === "en") {
     return TypographyEn;
   } else {
-    console.log(language.lang);
     return TypographyKo;
   }
 };

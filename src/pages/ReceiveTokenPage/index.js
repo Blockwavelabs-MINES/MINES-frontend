@@ -5,7 +5,6 @@ import { Tooltip } from "../../components/card";
 import { ContainedButton } from "../../components/button";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
-import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { InfoIcon } from "../../assets/icons";
 import {
   PigImage,
@@ -161,7 +160,7 @@ const convertDateFormat = (dateString, a, b, c, d) => {
   const toTimestamp = Date.parse(dateString);
   console.log(toTimestamp);
   let convertedDate = "";
-  if (JSON.parse(localStorage.getItem("language"))?.lang == "en") {
+  if (localStorage.getItem("language") === "en") {
     const monthNames = [
       "January",
       "February",
@@ -235,7 +234,6 @@ function convert(n) {
 }
 
 const ReceiveTokenPage = () => {
-  const [userInfo, setUserInfo] = useState();
   const [stepStatus, setStepStatus] = useState(1);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
@@ -260,51 +258,36 @@ const ReceiveTokenPage = () => {
     (async () => {
       const pathname = window.location.pathname.split("/");
       const trxsLink = pathname[pathname.length - 1];
-      const getTrxsLinkInfoResult = await getTrxsLinkInfo(trxsLink).then(
-        async (data) => {
+      await getTrxsLinkInfo(trxsLink).then(async (data) => {
+        if (data == 0) {
+          setIsValid(false);
+        } else if (!data.isValid) {
+          setIsValid(false);
+          let tmpData = data;
+          tmpData.tokenAmount = convert(data.tokenAmount);
+          setLinkInfo(tmpData);
+          if (Date.parse(new Date()) > Date.parse(data.expiredAt)) {
+            setIsExpired(true);
+          }
+        } else {
+          await getUserInfoAndProfileDeco(data.senderUserId).then((res) => {
+            setSenderUser(res.user.userId);
+          });
           console.log(data);
-          if (data == 0) {
+          let tmpData = data;
+          tmpData.tokenAmount = convert(data.tokenAmount);
+          setLinkInfo(tmpData);
+          //  + 32400000는 한국시간 때문!
+          if (Date.parse(new Date()) + 32400000 > Date.parse(data.expiredAt)) {
+            setIsExpired(true);
             setIsValid(false);
-          } else if (!data._valid) {
-            console.log(data._valid);
-            setIsValid(false);
-            let tmpData = data;
-            tmpData.token_amount = convert(data.token_amount);
-            console.log(tmpData);
-            setLinkInfo(tmpData);
-            if (Date.parse(new Date()) > Date.parse(data.expired_at)) {
-              setIsExpired(true);
-            }
-          } else {
-            const getUserInfoByIndexResult = await getUserInfoAndProfileDeco(
-              data.sender_user_index
-            ).then((res) => {
-              setSenderUser(res.user.user_id);
-            });
-            console.log(data);
-            let tmpData = data;
-            tmpData.token_amount = convert(data.token_amount);
-            console.log(tmpData);
-            setLinkInfo(tmpData);
-            //  + 32400000는 한국시간 때문!
-            if (
-              Date.parse(new Date()) + 32400000 >
-              Date.parse(data.expired_at)
-            ) {
-              setIsExpired(true);
-              setIsValid(false);
-            }
           }
         }
-      );
+      });
     })();
   }, []);
 
   useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
-      setUserInfo(globalUserInfo);
-    }
     document.body.style.overflow = "auto";
   }, []);
 
@@ -335,8 +318,6 @@ const ReceiveTokenPage = () => {
   const notiOnClose = () => {
     setNotiClick(false);
   };
-
-  console.log(linkInfo);
 
   return (
     <>
@@ -369,7 +350,7 @@ const ReceiveTokenPage = () => {
                   </InfoLine>
                   <InfoLine>
                     <InfoText>
-                      {linkInfo?.token_amount} {linkInfo?.token_udenom}
+                      {linkInfo?.tokenAmount} {linkInfo?.tokenUdenom}
                     </InfoText>
                     <BodyText>{t("receiveTokenPage3")}</BodyText>
                   </InfoLine>
@@ -382,7 +363,7 @@ const ReceiveTokenPage = () => {
                       <ExpiredDateBox>
                         <ExpiredDate>
                           {convertDateFormat(
-                            linkInfo?.expired_at,
+                            linkInfo?.expiredAt,
                             t("receiveTokenPage5"),
                             t("receiveTokenPage6"),
                             t("receiveTokenPage7"),
@@ -424,7 +405,8 @@ const ReceiveTokenPage = () => {
                 </>
               ) : (
                 <>
-                  {linkInfo._expired != undefined ? (
+                  {/* _expired > isExpired로 변경 */}
+                  {linkInfo.isExpired != undefined ? (
                     <>
                       {isExpired ? (
                         <>
