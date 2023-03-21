@@ -20,8 +20,8 @@ export const sendTrxs = async (
       `/trxs/send`,
       {
         senderWalletAddress: senderWalletAddress,
-        senderTokenWalletType: senderTokenWalletType,
-        receiverSocialPlatform: receiverSocialPlatform,
+        senderTokenWalletType: senderTokenWalletType.toUpperCase(),
+        receiverSocialPlatform: receiverSocialPlatform.toUpperCase(),
         receiverSocialId: receiverSocialId,
         tokenUdenom: tokenUdenom,
         tokenAmount: tokenAmount,
@@ -36,8 +36,7 @@ export const sendTrxs = async (
       }
     )
     .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.result;
+      returnValue = data.data;
     });
 
   return returnValue;
