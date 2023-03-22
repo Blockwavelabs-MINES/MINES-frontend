@@ -39,8 +39,8 @@ const InputContainer = styled.div`
 
 function AddLinkModalInner(saveAction, onClose, original) {
   const [linkId, setLinkId] = useState(original ? original.link_id : "");
-  const [title, setTitle] = useState(original ? original.link_title : "");
-  const [url, setUrl] = useState(original ? original.link_url : "");
+  const [title, setTitle] = useState(original ? original.linkTitle : "");
+  const [url, setUrl] = useState(original ? original.linkUrl : "");
   const [canSave, setCanSave] = useState(false);
   const { t } = useTranslation();
 
@@ -55,8 +55,8 @@ function AddLinkModalInner(saveAction, onClose, original) {
   useEffect(() => {
     console.log(original);
     setLinkId(original?.id);
-    setTitle(original?.link_title);
-    setUrl(original?.link_url);
+    setTitle(original?.linkTitle);
+    setUrl(original?.linkUrl);
   }, [original]);
 
   const titleOnChange = (e) => {

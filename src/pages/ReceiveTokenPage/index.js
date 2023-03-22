@@ -328,7 +328,7 @@ const ReceiveTokenPage = () => {
         ) : (
           <>
             <LoginHeader onVisible={setLoginModalVisible} />
-            {loginModalVisible ? (
+            {loginModalVisible && (
               <LoginModal
                 visible={loginModalVisible}
                 closable={true}
@@ -337,8 +337,6 @@ const ReceiveTokenPage = () => {
                 type="receive"
                 setStatus={setLoginDone}
               />
-            ) : (
-              <></>
             )}
             <ContentContainer>
               {isValid ? (
@@ -379,7 +377,7 @@ const ReceiveTokenPage = () => {
                   <NoticeBox>
                     <NoticeText>{t("receiveTokenPage10")}</NoticeText>
                     <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
-                      {notiClick ? (
+                      {notiClick && (
                         <Tooltip
                           text={TooltipText}
                           visible={notiClick}
@@ -387,8 +385,6 @@ const ReceiveTokenPage = () => {
                           maskClosable={true}
                           onClose={notiOnClose}
                         />
-                      ) : (
-                        <></>
                       )}
                     </NoticeIcon>
                   </NoticeBox>

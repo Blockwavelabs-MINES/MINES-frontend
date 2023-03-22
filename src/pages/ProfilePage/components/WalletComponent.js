@@ -136,10 +136,10 @@ const WalletComponent = ({ userWalletList, profileDecorate }) => {
               <div ref={(element) => (myRef.current[idx] = element)}>
                 <EditableCard
                   // ref={myRef}
-                  label={walletConvert(wallet.wallet_address)}
+                  label={walletConvert(wallet.walletAddress)}
                   // icon={wallet.icon}
                   icon={MetamaskIcon}
-                  onClick={() => walletOnClick(wallet.wallet_address, idx)}
+                  onClick={() => walletOnClick(wallet.walletAddress, idx)}
                   style={{
                     backgroundColor: profileDecorate.buttonColor,
                     color: profileDecorate.buttonFontColor,

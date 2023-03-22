@@ -140,7 +140,7 @@ const ReceiveComplete = ({ receiveInfo }) => {
         <WalletBox>
           <CheckBox src={GreenCheck} />
           <EditableCard
-            label={walletConvert(receiveInfo?.receiver_wallet_address)}
+            label={walletConvert(receiveInfo?.receiverWalletAddress)}
             isEdit={false}
             isTrash={false}
             // icon={wallet.icon}

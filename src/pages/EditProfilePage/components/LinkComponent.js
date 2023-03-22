@@ -187,7 +187,7 @@ const LinkComponent = ({ userId, setInfoChange, infoChange }) => {
           {linkList?.map((link, idx) => (
             <EditableCard
               key={link.id}
-              label={link.link_title}
+              label={link.linkTitle}
               isEdit={true}
               isTrash={true}
               icon={LinkIcon}

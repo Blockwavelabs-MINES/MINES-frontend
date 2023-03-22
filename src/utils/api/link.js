@@ -16,8 +16,8 @@ export const addLink = async (title, url) => {
     .post(
       "/link/add",
       {
-        link_title: title,
-        link_url: url,
+        linkTitle: title,
+        linkUrl: url,
       },
       {
         headers: privateHeaders,

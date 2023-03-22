@@ -73,7 +73,7 @@ const SelectWallet = ({ linkInfo }) => {
                 />
               ) : (
                 <>
-                  {!resend ? (
+                  {!resend && (
                     <>
                       <SendTokenHeader
                         title={t("receiveTokenPage1")}
@@ -86,8 +86,6 @@ const SelectWallet = ({ linkInfo }) => {
                         </TextBox>
                       </ContentContainer>
                     </>
-                  ) : (
-                    <></>
                   )}
                   <WalletComponent
                     userInfoProps={userInfo}

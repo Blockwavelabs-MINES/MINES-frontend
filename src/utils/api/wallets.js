@@ -16,8 +16,8 @@ export const addWallet = async (walletType, walletAddress) => {
     .post(
       "/wallets/new",
       {
-        wallet_type: walletType,
-        wallet_address: walletAddress,
+        walletType: walletType,
+        walletAddress: walletAddress,
       },
       {
         headers: privateHeaders,
@@ -36,7 +36,7 @@ export const addWallet = async (walletType, walletAddress) => {
 export const deleteWallet = async (userWalletIndex) => {
   let returnValue = 0;
   await axios
-    .delete(`/wallets?userWalletIndex=${userWalletIndex}`, {
+    .delete(`/wallets?user_wallet_index=${userWalletIndex}`, {
       headers: privateHeaders,
     })
     .then((data) => {

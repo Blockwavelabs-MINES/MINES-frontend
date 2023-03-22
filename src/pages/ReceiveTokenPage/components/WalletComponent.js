@@ -221,7 +221,7 @@ const WalletComponent = ({
             var tmpWalletList = walletList;
             tmpWalletList.push({
               // type: "Metamask",
-              wallet_address: addedWallet,
+              walletAddress: addedWallet,
               // icon: MetamaskIcon,
             });
 
@@ -360,7 +360,7 @@ const WalletComponent = ({
             console.log("set loading...");
             let data = tempContract.methods
               .transfer(
-                walletList[select].wallet_address,
+                walletList[select].walletAddress,
                 web3.utils.toHex(
                   toFixed(
                     Number(linkInfo.token_amount) *
@@ -437,11 +437,11 @@ const WalletComponent = ({
                         setTransactionHash(res);
 
                         let tmpReceiveInfo = linkInfo;
-                        tmpReceiveInfo.receiver_wallet_address =
-                          walletList[select].wallet_address;
+                        tmpReceiveInfo.receiver_walletAddress =
+                          walletList[select].walletAddress;
                         tmpReceiveInfo.transaction_escrow_hash = res;
                         await receiveTrxs(
-                          walletList[select].wallet_address,
+                          walletList[select].walletAddress,
                           "METAMASK",
                           0.000001,
                           linkInfo.index
@@ -474,7 +474,7 @@ const WalletComponent = ({
           console.log(toFixed(Number(linkInfo.token_amount)));
           const gasAmount = await getGasAmount(
             account.address,
-            walletList[select].wallet_address,
+            walletList[select].walletAddress,
             toFixed(Number(linkInfo.token_amount))
             // web3.utils.toHex(Number(linkInfo.token_amount) * Math.pow(10, 18))
           );
@@ -495,7 +495,7 @@ const WalletComponent = ({
             gas: fee,
             // gas: 21000,
             // gas: 32000,
-            to: walletList[select].wallet_address,
+            to: walletList[select].walletAddress,
             from: account.address,
           };
 
@@ -517,7 +517,7 @@ const WalletComponent = ({
                   signedTx.rawTransaction,
                   async (err, res) => {
                     if (err) {
-                      console.log(walletList[select].wallet_address);
+                      console.log(walletList[select].walletAddress);
                       console.log(String(err));
                       if (
                         String(err).startsWith(
@@ -535,11 +535,11 @@ const WalletComponent = ({
                       setTransactionHash(res);
 
                       let tmpReceiveInfo = linkInfo;
-                      tmpReceiveInfo.receiver_wallet_address =
-                        walletList[select].wallet_address;
+                      tmpReceiveInfo.receiver_walletAddress =
+                        walletList[select].walletAddress;
                       tmpReceiveInfo.transaction_escrow_hash = res;
                       await receiveTrxs(
-                        walletList[select].wallet_address,
+                        walletList[select].walletAddress,
                         "METAMASK",
                         0.000001,
                         linkInfo.index
@@ -628,7 +628,7 @@ const WalletComponent = ({
                   {walletList?.map((wallet, idx) => (
                     <EditableCard
                       key={wallet.index}
-                      label={walletConvert(wallet.wallet_address)}
+                      label={walletConvert(wallet.walletAddress)}
                       isEdit={false}
                       isTrash={false}
                       isCheck={true}

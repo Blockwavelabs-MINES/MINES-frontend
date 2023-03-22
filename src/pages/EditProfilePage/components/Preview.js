@@ -115,7 +115,7 @@ const Preview = ({
         />
         {linkList.map((link, idx) => (
           <LinkContainer color={buttonColor} value={buttonFontColor}>
-            {link.link_title}
+            {link.linkTitle}
           </LinkContainer>
         ))}
         {walletList.map((wallet, idx) => (
