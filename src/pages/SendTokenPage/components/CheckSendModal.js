@@ -236,13 +236,12 @@ const LoginModalInner = (
           }),
         })
           .then(async (receipt) => {
+            setLoading(true);
             if (receipt == null) {
               console.log("pending");
               setTransactionStatus("pending");
-              setLoading(true);
             } else {
               setTransactionStatus("mined");
-              setLoading(false);
               await sendTrxs(
                 address,
                 "metamask",
@@ -258,6 +257,7 @@ const LoginModalInner = (
               ).then((data) => {
                 setFinalLink(data.linkKey);
                 setExpired(data.expiredAt);
+                setLoading(false);
               });
 
               setStepStatus(stepStatus + 1);

@@ -312,7 +312,7 @@ const ReceiveTokenPage = () => {
     <>
       {" "}
       <FullContainer>
-        {loginDone || isLoggedIn ? (
+        {(loginDone || isLoggedIn) && linkInfo.isValid ? (
           <SelectWallet
             linkInfo={linkInfo}
             userInfo={userInfo}

@@ -116,14 +116,12 @@ const ReceiveComplete = ({ receiveInfo }) => {
   const { t } = useTranslation();
 
   const txHashExplorerOnClick = () => {
-    if (Number(receiveInfo.network_id) == 5) {
+    if (Number(receiveInfo.networkId) == 5) {
       window.open(
-        `https://goerli.etherscan.io/tx/${receiveInfo.transaction_escrow_hash}`
+        `https://goerli.etherscan.io/tx/${receiveInfo.transactionHash}`
       );
-    } else if (Number(receiveInfo.network_id) == 137) {
-      window.open(
-        `https://polygonscan.com/tx/${receiveInfo.transaction_escrow_hash}`
-      );
+    } else if (Number(receiveInfo.networkId) == 137) {
+      window.open(`https://polygonscan.com/tx/${receiveInfo.transactionHash}`);
     }
   };
   return (
@@ -133,7 +131,7 @@ const ReceiveComplete = ({ receiveInfo }) => {
           <Lottie animationData={animation} loop={false} play />
         </LottieContainer>
         <TextLine>
-          {receiveInfo?.token_amount} {receiveInfo?.token_udenom}
+          {receiveInfo?.tokenAmount} {receiveInfo?.tokenUdenom}
           <br />
           {t("receiveTokenComplete2")}
         </TextLine>
@@ -155,7 +153,7 @@ const ReceiveComplete = ({ receiveInfo }) => {
             <TxHashInfoTitle>{t("receiveTokenComplete4")}</TxHashInfoTitle>
             <TxHashAddressBox>
               <TxHashAddress>
-                {walletConvert(receiveInfo?.transaction_escrow_hash)}
+                {walletConvert(receiveInfo?.transactionHash)}
               </TxHashAddress>
             </TxHashAddressBox>
           </TxHashInfobox>

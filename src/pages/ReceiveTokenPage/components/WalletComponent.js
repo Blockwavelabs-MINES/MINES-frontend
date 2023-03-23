@@ -239,11 +239,6 @@ const WalletComponent = ({
     setSelect(value);
   };
 
-  const getTokenOnClick2 = async () => {
-    // setTransactionHash("hihihihi");
-    console.log(linkInfo.networkId);
-  };
-
   const getTokenOnClick = async () => {
     await getTrxsLinkInfo(linkInfo.linkKey).then(async (infoRes) => {
       if (infoRes.isValid) {
@@ -418,14 +413,13 @@ const WalletComponent = ({
                         let tmpReceiveInfo = linkInfo;
                         tmpReceiveInfo.receiverWalletAddress =
                           walletList[select].walletAddress;
-                        tmpReceiveInfo.transaction_escrow_hash = res;
+                        tmpReceiveInfo.transactionHash = res;
                         await receiveTrxs(
                           walletList[select].walletAddress,
                           "METAMASK",
                           0.000001,
-                          linkInfo.index
+                          linkInfo.id
                         );
-                        setReceiveInfo(tmpReceiveInfo);
                         setLoading(true);
                         setCheckStatus(!checkStatus);
                         console.log("here");
@@ -518,17 +512,19 @@ const WalletComponent = ({
                       setTransactionHash(res);
 
                       let tmpReceiveInfo = linkInfo;
-                      tmpReceiveInfo.receiver_walletAddress =
+                      tmpReceiveInfo.receiverWalletAddress =
                         walletList[select].walletAddress;
-                      tmpReceiveInfo.transaction_escrow_hash = res;
+                      tmpReceiveInfo.transactionHash = res;
                       await receiveTrxs(
                         walletList[select].walletAddress,
                         "METAMASK",
                         0.000001,
-                        linkInfo.index
-                      );
+                        linkInfo.id
+                      ).then((data) => {
+                        setReceiveInfo(data);
+                      });
 
-                      setReceiveInfo(tmpReceiveInfo);
+                      // setReceiveInfo(tmpReceiveInfo);
                       setLoading(true);
                       setCheckStatus(!checkStatus);
                       console.log("here");
@@ -540,8 +536,8 @@ const WalletComponent = ({
           );
         }
       } else {
-        // alert(t("receiveTokenAlreadyReceived1"));
-        // window.location.href = "/";
+        alert(t("receiveTokenAlreadyReceived1"));
+        window.location.href = "/";
       }
     });
 
@@ -578,16 +574,18 @@ const WalletComponent = ({
             <></>
           )}
           <TitleContainer>
-            <TItleText>{t("manageProfilePage3")}</TItleText>
             {walletList?.length > 0 ? (
-              <ContainedButton
-                type="secondary"
-                styles="filled"
-                states="default"
-                size="small"
-                label={t("manageProfilePage4")}
-                onClick={walletConnectOnClick}
-              />
+              <>
+                <TItleText>{t("manageProfilePage3")}</TItleText>
+                <ContainedButton
+                  type="secondary"
+                  styles="filled"
+                  states="default"
+                  size="small"
+                  label={t("manageProfilePage4")}
+                  onClick={walletConnectOnClick}
+                />
+              </>
             ) : (
               <></>
             )}

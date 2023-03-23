@@ -46,12 +46,12 @@ export const receiveTrxs = async (
   receiverWalletAddress,
   receiveTokenWalletType,
   transactionGasFee,
-  linkIndex
+  trxIndex
 ) => {
   let returnValue = 0;
   await axios
     .post(
-      `/trxs/send/receive?trxIndex=${linkIndex}`,
+      `/trxs/send/receive?trx_index=${trxIndex}`,
       {
         receiverWalletAddress: receiverWalletAddress,
         receiveTokenWaleltType: receiveTokenWalletType,
@@ -63,7 +63,7 @@ export const receiveTrxs = async (
     )
     .then((data) => {
       console.log(data.data);
-      returnValue = data.data.result;
+      returnValue = data.data;
     });
 
   return returnValue;
