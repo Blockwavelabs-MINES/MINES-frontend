@@ -1,5 +1,5 @@
 import axios from "axios";
-import { privateHeaders } from "./base";
+import { handleTokenExpired, privateHeaders } from "./base";
 
 export const sendTrxs = async (
   senderWalletAddress,
@@ -72,16 +72,10 @@ export const receiveTrxs = async (
 export const getTrxsLinkInfo = async (linkKey) => {
   let returnValue = 0;
   await axios
-    .get(`/trxs?linkKey=${linkKey}`)
-    .then(
-      (data) => {
-        console.log(data.data);
-        returnValue = data.data.result;
-      },
-      {
-        headers: privateHeaders,
-      }
-    )
+    .get(`public/trxs?link_key=${linkKey}`)
+    .then((data) => {
+      returnValue = data.data;
+    })
     .catch((error) => {
       console.log(error);
     });

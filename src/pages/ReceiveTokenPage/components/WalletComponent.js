@@ -84,7 +84,7 @@ function toFixed(x) {
 }
 
 const WalletComponent = ({
-  userInfoProps,
+  walletList,
   setInfoChange,
   infoChange,
   setComplete,
@@ -97,12 +97,10 @@ const WalletComponent = ({
   select,
   setSelect,
 }) => {
-  const [walletList, setWalletList] = useState([]);
   const [deleteModalOn, setDeleteModalOn] = useState(false);
   const [realDelete, setRealDelete] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState(-1);
   const [addedWallet, setAddedWallet] = useState();
-  const [userInfo, setUserInfo] = useState(userInfoProps);
   const [transactionHash, setTransactionHash] = useState(null);
   const [transactionStatus, setTransactionStatus] = useState(null);
   const [checkStatus, setCheckStatus] = useState(false);
@@ -112,8 +110,8 @@ const WalletComponent = ({
   const Web3 = require("web3");
   const TokenABI = require("../../../utils/abis/IERC20_ABI");
   let web3 = "";
-  console.log(Number(linkInfo.network_id));
-  if (Number(linkInfo.network_id) == 137) {
+  console.log(Number(linkInfo.networkId));
+  if (Number(linkInfo.networkId) == 137) {
     web3 = new Web3(
       new Web3.providers.HttpProvider(process.env.REACT_APP_POLYGON_URL)
     );
@@ -133,21 +131,17 @@ const WalletComponent = ({
   }, []);
 
   useEffect(() => {
-    console.log(getTokenOnClick);
-    setSendOnClick(getTokenOnClick);
+    // setSendOnClick(getTokenOnClick);
   }, []);
 
   useEffect(() => {
-    console.log("hihihihi");
     if (transactionHash) {
       console.log("holololololo");
     }
   }, [checkStatus]);
 
   useEffect(() => {
-    console.log(transactionHash);
     if (transactionHash) {
-      console.log(transactionHash);
       // Check the status of the transaction every 1 second
       const interval = setInterval(() => {
         web3.eth
@@ -179,14 +173,6 @@ const WalletComponent = ({
   }, [transactionHash, checkStatus]);
 
   useEffect(() => {
-    setWalletList(userInfoProps?.wallets);
-    setUserInfo(userInfoProps);
-    console.log(userInfoProps);
-  }, [userInfoProps]);
-
-  console.log(realDelete + "realDelete");
-
-  useEffect(() => {
     console.log("realDelete is false");
     if (realDelete) {
       // 지우는 action
@@ -212,11 +198,7 @@ const WalletComponent = ({
         });
         if (notDuplicated) {
           // 추가하는 action
-          const addWalletResult = await addWallet(
-            userInfo.user.user_id,
-            "METAMASK",
-            addedWallet
-          ).then((data) => {
+          await addWallet("METAMASK", addedWallet).then((data) => {
             console.log(data);
             var tmpWalletList = walletList;
             tmpWalletList.push({
@@ -259,31 +241,28 @@ const WalletComponent = ({
 
   const getTokenOnClick2 = async () => {
     // setTransactionHash("hihihihi");
-    console.log(linkInfo.network_id);
+    console.log(linkInfo.networkId);
   };
 
   const getTokenOnClick = async () => {
-    await getTrxsLinkInfo(linkInfo.link_key).then(async (infoRes) => {
-      console.log(infoRes);
+    await getTrxsLinkInfo(linkInfo.linkKey).then(async (infoRes) => {
       if (infoRes.isValid) {
         if (resend) {
           setLoading(true);
         }
         console.log(linkInfo);
         const chainIndex = Chainlist.findIndex(
-          (v) => v.chainId == Number(linkInfo.network_id) // 지금은 goerli 밖에 없으니까..
+          (v) => v.chainId == Number(linkInfo.networkId) // 지금은 goerli 밖에 없으니까..
         );
         const chainInfo = Chainlist[chainIndex]?.tokenList;
         const tokenIndex = chainInfo.findIndex(
-          (v) => v.symbol == linkInfo.token_udenom
+          (v) => v.symbol == linkInfo.tokenUdenom
         );
         const tokenInfo = chainInfo[tokenIndex];
-        console.log(tokenInfo);
 
         const account = await web3.eth.accounts.privateKeyToAccount(
           process.env.REACT_APP_WALLET_PRIVATE_KEY
         );
-        console.log(account);
 
         if (tokenInfo.symbol == "USDC" || tokenInfo.symbol == "USDT") {
           let minABI = [
@@ -355,7 +334,7 @@ const WalletComponent = ({
           );
 
           async function sendToken() {
-            console.log(Number(linkInfo.token_amount));
+            console.log(Number(linkInfo.tokenAmount));
             setLoading(true);
             console.log("set loading...");
             let data = tempContract.methods
@@ -363,7 +342,7 @@ const WalletComponent = ({
                 walletList[select].walletAddress,
                 web3.utils.toHex(
                   toFixed(
-                    Number(linkInfo.token_amount) *
+                    Number(linkInfo.tokenAmount) *
                       Math.pow(10, tokenInfo.decimals)
                   )
                 )
@@ -386,11 +365,11 @@ const WalletComponent = ({
             };
 
             const gasPrice = await web3.eth.getGasPrice();
-            console.log(Number(linkInfo.token_amount));
+            console.log(Number(linkInfo.tokenAmount));
             const gasAmount = await getGasAmount(
               account.address,
               tokenInfo.address,
-              toFixed(Number(linkInfo.token_amount))
+              toFixed(Number(linkInfo.tokenAmount))
               // web3.utils.toHex(Number(linkInfo.token_amount) * Math.pow(10, 18))
             );
             // const fee = Number(gasPrice) + gasAmount;
@@ -437,7 +416,7 @@ const WalletComponent = ({
                         setTransactionHash(res);
 
                         let tmpReceiveInfo = linkInfo;
-                        tmpReceiveInfo.receiver_walletAddress =
+                        tmpReceiveInfo.receiverWalletAddress =
                           walletList[select].walletAddress;
                         tmpReceiveInfo.transaction_escrow_hash = res;
                         await receiveTrxs(
@@ -469,13 +448,17 @@ const WalletComponent = ({
             return gasAmount;
           };
 
+          console.log(walletList);
+          console.log(walletList[select]);
+          console.log(walletList[select].walletAddress);
+
           const gasPrice = await web3.eth.getGasPrice();
-          console.log(Number(linkInfo.token_amount));
-          console.log(toFixed(Number(linkInfo.token_amount)));
+          console.log(Number(linkInfo.tokenAmount));
+          console.log(toFixed(Number(linkInfo.tokenAmount)));
           const gasAmount = await getGasAmount(
             account.address,
             walletList[select].walletAddress,
-            toFixed(Number(linkInfo.token_amount))
+            toFixed(Number(linkInfo.tokenAmount))
             // web3.utils.toHex(Number(linkInfo.token_amount) * Math.pow(10, 18))
           );
           // const fee = Number(gasPrice) + gasAmount;
@@ -485,11 +468,11 @@ const WalletComponent = ({
           console.log(gasAmount);
           // const fee = gasPrice * 32000;
 
-          console.log(Number(linkInfo.token_amount));
+          console.log(Number(linkInfo.tokenAmount));
           const txObj = {
             // data: data,
             value: web3.utils.toHex(
-              toFixed(Number(linkInfo.token_amount) * Math.pow(10, 18))
+              toFixed(Number(linkInfo.tokenAmount) * Math.pow(10, 18))
             ),
             // gas: web3.utils.toHex(25000000),
             gas: fee,
@@ -557,8 +540,8 @@ const WalletComponent = ({
           );
         }
       } else {
-        alert(t("receiveTokenAlreadyReceived1"));
-        window.location.href = "/";
+        // alert(t("receiveTokenAlreadyReceived1"));
+        // window.location.href = "/";
       }
     });
 

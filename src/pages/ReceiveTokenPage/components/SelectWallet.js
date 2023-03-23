@@ -31,8 +31,7 @@ const SubtextBox = styled.div`
   color: ${palette.grey_2};
 `;
 
-const SelectWallet = ({ linkInfo }) => {
-  const [userInfo, setUserInfo] = useState({});
+const SelectWallet = ({ linkInfo, userInfo, walletData }) => {
   const [infoChange, setInfoChange] = useState(false);
   const [complete, setComplete] = useState(false);
   const [receiveInfo, setReceiveInfo] = useState({});
@@ -42,14 +41,6 @@ const SelectWallet = ({ linkInfo }) => {
   const [resend, setResend] = useState(false);
   const [select, setSelect] = useState(0);
   const { t } = useTranslation();
-
-  useEffect(() => {
-    (async () => {
-      await getUserInfo().then((data) => {
-        setUserInfo(data);
-      });
-    })();
-  }, [infoChange]);
 
   const leftOnClick = () => {
     window.location.href = "/";
@@ -88,7 +79,7 @@ const SelectWallet = ({ linkInfo }) => {
                     </>
                   )}
                   <WalletComponent
-                    userInfoProps={userInfo}
+                    walletList={walletData}
                     setInfoChange={setInfoChange}
                     infoChange={infoChange}
                     setComplete={setComplete}

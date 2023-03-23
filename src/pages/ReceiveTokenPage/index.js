@@ -13,10 +13,12 @@ import {
   CheckImage,
 } from "../../assets/images";
 import { LoginModal } from "../../components/modal";
-import { getUserInfoAndProfileDeco } from "../../utils/api/auth";
+import { getUserInfo, getUserInfoAndProfileDeco } from "../../utils/api/auth";
 import { SelectWallet } from "./components";
 import { getTrxsLinkInfo } from "../../utils/api/trxs";
 import { useTranslation } from "react-i18next";
+import { useRecoilValue } from "recoil";
+import { loginState } from "../../utils/atoms/login";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -241,8 +243,9 @@ const ReceiveTokenPage = () => {
   const [senderUser, setSenderUser] = useState("");
   const [notiClick, setNotiClick] = useState(false);
   const [loginDone, setLoginDone] = useState(false);
-  const [isValid, setIsValid] = useState(true);
-  const [isExpired, setIsExpired] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
+  const [walletData, setWalletData] = useState(null);
+  const isLoggedIn = useRecoilValue(loginState);
   const { t } = useTranslation();
 
   const TooltipText = (
@@ -255,37 +258,23 @@ const ReceiveTokenPage = () => {
   );
 
   useEffect(() => {
-    (async () => {
-      const pathname = window.location.pathname.split("/");
-      const trxsLink = pathname[pathname.length - 1];
-      await getTrxsLinkInfo(trxsLink).then(async (data) => {
-        if (data == 0) {
-          setIsValid(false);
-        } else if (!data.isValid) {
-          setIsValid(false);
-          let tmpData = data;
-          tmpData.tokenAmount = convert(data.tokenAmount);
-          setLinkInfo(tmpData);
-          if (Date.parse(new Date()) > Date.parse(data.expiredAt)) {
-            setIsExpired(true);
-          }
-        } else {
-          await getUserInfoAndProfileDeco(data.senderUserId).then((res) => {
-            setSenderUser(res.user.userId);
+    const pathname = window.location.pathname.split("/");
+    const trxsLink = pathname[pathname.length - 1];
+    getTrxsLinkInfo(trxsLink).then(async (data) => {
+      let convertedData = data;
+      setSenderUser(data.senderUserId);
+      if (data.isValid && isLoggedIn) {
+        await getUserInfo().then((data) => {
+          getUserInfoAndProfileDeco(data.userId).then((data) => {
+            setUserInfo(data.user);
+            setWalletData(data.wallets);
           });
-          console.log(data);
-          let tmpData = data;
-          tmpData.tokenAmount = convert(data.tokenAmount);
-          setLinkInfo(tmpData);
-          //  + 32400000는 한국시간 때문!
-          if (Date.parse(new Date()) + 32400000 > Date.parse(data.expiredAt)) {
-            setIsExpired(true);
-            setIsValid(false);
-          }
-        }
-      });
-    })();
-  }, []);
+        });
+      }
+      convertedData.tokenAmount = convert(data.tokenAmount);
+      setLinkInfo(convertedData);
+    });
+  }, [isLoggedIn]);
 
   useEffect(() => {
     document.body.style.overflow = "auto";
@@ -323,8 +312,12 @@ const ReceiveTokenPage = () => {
     <>
       {" "}
       <FullContainer>
-        {loginDone ? (
-          <SelectWallet linkInfo={linkInfo} />
+        {loginDone || isLoggedIn ? (
+          <SelectWallet
+            linkInfo={linkInfo}
+            userInfo={userInfo}
+            walletData={walletData}
+          />
         ) : (
           <>
             <LoginHeader onVisible={setLoginModalVisible} />
@@ -339,7 +332,7 @@ const ReceiveTokenPage = () => {
               />
             )}
             <ContentContainer>
-              {isValid ? (
+              {linkInfo.isValid ? (
                 <>
                   <ImageContainer src={PigImage} />
                   <InfoLine>
@@ -397,14 +390,13 @@ const ReceiveTokenPage = () => {
                     onClick={() => {
                       setLoginModalVisible(true);
                     }}
-                  />{" "}
+                  />
                 </>
               ) : (
                 <>
-                  {/* _expired > isExpired로 변경 */}
                   {linkInfo.isExpired != undefined ? (
                     <>
-                      {isExpired ? (
+                      {linkInfo.isExpired ? (
                         <>
                           <ImageContainer src={CloudImage} />
                           <TextLine>{t("receiveTokenTimeOver1")}</TextLine>
