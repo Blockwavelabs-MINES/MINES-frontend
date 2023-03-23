@@ -61,10 +61,6 @@ const CreateSuccess = ({ linkId }) => {
   const myRef = useRef(null);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    setIsSignup(false);
-  });
-
   const settingOnClick = () => {
     window.location.href = "/editProfile";
   };

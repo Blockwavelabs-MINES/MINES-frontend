@@ -92,7 +92,6 @@ const CreateLinkPage = () => {
   const createOnClick = () => {
     checkUserId(linkId)
       .then(async () => {
-        console.log(localStorage.getItem("accessToken"));
         await axios
           .put(
             `/users/edit/userid?new_id=${linkId}`,
