@@ -5,12 +5,9 @@ import { InputBox } from "../../components/input";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import CreateSuccess from "./CreateSuccess";
-import {
-  setLocalUserInfo,
-  getLocalUserInfo,
-} from "../../utils/functions/setLocalVariable";
 import { createUserId, checkUserId } from "../../utils/api/auth";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -61,21 +58,11 @@ const ButtonContainer = styled.div`
 // state = ["inactive", "filled", "typing", "verified", "error", "help"]
 
 const CreateLinkPage = () => {
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [linkId, setLinkId] = useState("");
   const [state, setState] = useState("inactive");
   const [createSuccess, setCreateSuccess] = useState(false);
   const [errorComment, setErrorComment] = useState("");
-  const [userInfo, setUserInfo] = useState();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
-      setUserInfo(globalUserInfo);
-      console.log(globalUserInfo);
-    }
-  }, []);
 
   useEffect(() => {
     if (linkId.length > 0) {
@@ -84,8 +71,8 @@ const CreateLinkPage = () => {
       setState("inactive");
     }
 
-    var regExp = /^[a-zA-Z0-9_]+[a-zA-Z0-9_]{4,18}$/g;
-    var testResult = regExp.test(linkId);
+    let regExp = /^[a-zA-Z0-9_]+[a-zA-Z0-9_]{4,18}$/g;
+    let testResult = regExp.test(linkId);
 
     if ((linkId.length <= 4 || linkId.length >= 20) && linkId) {
       setState("error");
@@ -98,37 +85,38 @@ const CreateLinkPage = () => {
     }
   }, [linkId]);
 
-  const closeLoginModal = () => {
-    setLoginModalVisible(false);
-  };
-
   const linkIdOnChange = (e) => {
     setLinkId(e.target.value);
   };
 
-  const createOnClick = async () => {
-    const checkUserIdResult = await checkUserId(linkId).then(async (data) => {
-      console.log(data);
-      if (data == false) {
-        const createUserIdResult = await createUserId(
-          linkId,
-          userInfo.user.index
-        ).then((data) => {
-          setLocalUserInfo({
-            type: "edit",
-            editKey: ["user", "user_id"],
-            editValue: linkId,
+  const createOnClick = () => {
+    checkUserId(linkId)
+      .then(async () => {
+        await axios
+          .put(
+            `/users/edit/userid?new_id=${linkId}`,
+            {},
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("accessToken"),
+              },
+            }
+          )
+          .then(() => {
+            setCreateSuccess(true);
+          })
+          .catch((e) => {
+            console.log(e);
           });
-          setCreateSuccess(true);
-        });
-      } else {
+      })
+      .catch(() => {
         setState("error");
         setErrorComment(
           `${t("createLink7")} "${linkId}" ${t("createLink7_2")}`
         );
-      }
-    });
+      });
   };
+
   return (
     <FullContainer>
       {createSuccess ? (

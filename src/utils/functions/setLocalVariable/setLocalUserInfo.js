@@ -22,15 +22,15 @@ const dataForm = {
     {
       index: 3,
       user_index: 10,
-      link_title: "vvv",
-      link_url: "newnewnew",
+      linkTitle: "vvv",
+      linkUrl: "newnewnew",
     },
   ],
   wallets: [
     {
       index: 3,
       user_index: 10,
-      wallet_address: "address2",
+      walletAddress: "address2",
     },
   ],
   user: {

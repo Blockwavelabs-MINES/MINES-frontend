@@ -242,7 +242,7 @@ const ErrorIconBox = styled.img`
 
 const ErrorText = styled.div`
   ${Typography.Caption2}
-  color: ${palette.red_1}
+  color: ${palette.red_1};
 `;
 
 const InfoIconBox = styled.img`
@@ -368,7 +368,12 @@ const Step2 = ({
   );
 
   useEffect(() => {
-    console.log(networkId);
+    console.log(networkId + "networkId");
+    console.log(
+      Chainlist[Chainlist.findIndex((v) => v.chainId == networkId)]
+        ?.tokenList[0]
+    );
+
     setTokenList(
       Chainlist[Chainlist.findIndex((v) => v.chainId == networkId)]?.tokenList
     );
@@ -377,6 +382,7 @@ const Step2 = ({
         Chainlist[Chainlist.findIndex((v) => v.chainId == networkId)]
           ?.tokenList[0]
       );
+      console.log(tokenInfo);
     } else {
       console.log("hi");
       setTokenInfo({});
@@ -384,11 +390,6 @@ const Step2 = ({
   }, [networkId]);
 
   useEffect(() => {
-    console.log(Number(amount));
-    console.log(Number(balance));
-    console.log(Number(amount) > Number(balance));
-    console.log(isInt(Number(amount)));
-    console.log(isFloat(Number(amount)));
     if (!(isInt(Number(amount)) || isFloat(Number(amount)))) {
       setErrorMessage(t("sendpage02_3"));
     } else if (Number(amount) > Number(realBalance)) {

@@ -5,10 +5,12 @@ import {
   DropboxBubbleTail,
   DropboxLogout,
   DropboxSettings,
-  DropboxFeedback
+  DropboxFeedback,
 } from "../../../assets/icons";
 import Typography from "../../../utils/style/Typography";
 import { useTranslation } from "react-i18next";
+import { useSetRecoilState } from "recoil";
+import { loginState } from "../../../utils/atoms/login";
 
 const DropBoxContainer = styled.div`
   min-width: 92px;
@@ -76,6 +78,7 @@ const Divider = styled.div`
 `;
 
 const ProfileDropbox = ({ className, onClose, maskClosable, visible }) => {
+  const setIsLoggedIn = useSetRecoilState(loginState);
   const { t } = useTranslation();
 
   const onMaskClick = (e) => {
@@ -85,6 +88,7 @@ const ProfileDropbox = ({ className, onClose, maskClosable, visible }) => {
   };
 
   const logoutOnClick = () => {
+    setIsLoggedIn(false);
     localStorage.clear();
     window.location.reload();
   };
@@ -94,8 +98,8 @@ const ProfileDropbox = ({ className, onClose, maskClosable, visible }) => {
   };
 
   const feedbackOnClick = () => {
-    window.open("https://forms.gle/PvgL1PV8tKcNkzmy5")
-  }
+    window.open("https://forms.gle/PvgL1PV8tKcNkzmy5");
+  };
 
   return (
     <>
@@ -125,7 +129,9 @@ const ProfileDropbox = ({ className, onClose, maskClosable, visible }) => {
             </TapButton>
             <Divider />
             <TapButton onClick={logoutOnClick}>
-              <TapText style={{ color: palette.red_2 }}>{t("introPageHeader4")}</TapText>
+              <TapText style={{ color: palette.red_2 }}>
+                {t("introPageHeader4")}
+              </TapText>
               <TapIcon src={DropboxLogout} />
             </TapButton>
           </DropBoxContainer>

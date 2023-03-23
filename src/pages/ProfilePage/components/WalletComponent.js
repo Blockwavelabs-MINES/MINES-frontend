@@ -63,12 +63,9 @@ const WalletComponent = ({ userWalletList, profileDecorate }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    console.log("i");
     if (myRef.current[copyIdx] && copyIdx > -1) {
       let tmpX = myRef.current[copyIdx].getBoundingClientRect().top;
       let tmpY = myRef.current[copyIdx].getBoundingClientRect().left;
-      console.log(tmpX);
-      console.log(tmpY);
       setClickX(tmpX);
       setClickY(tmpY);
     }
@@ -112,7 +109,9 @@ const WalletComponent = ({ userWalletList, profileDecorate }) => {
   return (
     <FullContainer>
       <TitleContainer ref={myRef}>
-        <TItleText style={{color: profileDecorate?.font_color}}>{t("profilePage2")}</TItleText>
+        <TItleText style={{ color: profileDecorate.fontColor }}>
+          {t("profilePage2")}
+        </TItleText>
       </TitleContainer>
       {walletList?.length == 0 ? (
         <EmptyCard icon={EmptyWallet} text={t("selectWalletPage3_3")} />
@@ -137,11 +136,14 @@ const WalletComponent = ({ userWalletList, profileDecorate }) => {
               <div ref={(element) => (myRef.current[idx] = element)}>
                 <EditableCard
                   // ref={myRef}
-                  label={walletConvert(wallet.wallet_address)}
+                  label={walletConvert(wallet.walletAddress)}
                   // icon={wallet.icon}
                   icon={MetamaskIcon}
-                  onClick={() => walletOnClick(wallet.wallet_address, idx)}
-                  style={{backgroundColor: profileDecorate?.button_color, color: profileDecorate?.button_font_color}}
+                  onClick={() => walletOnClick(wallet.walletAddress, idx)}
+                  style={{
+                    backgroundColor: profileDecorate.buttonColor,
+                    color: profileDecorate.buttonFontColor,
+                  }}
                 />
               </div>
             </>

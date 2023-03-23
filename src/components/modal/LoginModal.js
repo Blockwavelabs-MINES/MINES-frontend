@@ -7,23 +7,17 @@ import { BottomModal } from ".";
 import { SocialGoogle } from "../../assets/icons";
 // import { GoogleLogin } from "react-google-login";
 import { GoogleLogin } from "@react-oauth/google";
-import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import { setLocalUserInfo } from "../../utils/functions/setLocalVariable";
-import {
-  createUser,
-  loginUser,
-  getUserInfo,
-  getInfoFromAccessToken,
-  editProfile,
-} from "../../utils/api/auth";
-import { getProfileDeco, editDecoFont } from "../../utils/api/profile";
+import { requestLogin } from "../../utils/api/auth";
 import { useTranslation } from "react-i18next";
+import { useSetRecoilState } from "recoil";
+import { loginState, signupState } from "../../utils/atoms/login";
 
 const FullContainer = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
-  //   margin-top: 109px;
   padding: 20px;
   z-index: 903;
 `;
@@ -55,83 +49,26 @@ const TermsBox = styled.div`
 `;
 
 const LoginModalInner = (type, setStatus, onClose) => {
-  const [googleAccessToken, setGoogleAccessToken] = useState("");
-
+  const setIsLoggedIn = useSetRecoilState(loginState);
+  const setIsSignup = useSetRecoilState(signupState);
   const { t } = useTranslation();
 
-  const responseGoogle = async (accessToken) => {
-    const getInfoFromAccessTokenResult = await getInfoFromAccessToken(
-      accessToken
-    ).then(async (res) => {
-      const createUserResult = await createUser(res.email, "GOOGLE", accessToken)
-        .then(async (userInfo) => {
-          const loginUserResult = await loginUser(res.email, accessToken)
-            .then(async (data) => {
-              const formData = new FormData();
-
-              formData.append("profileImage", "");
-
-              const formJson = {
-                frontKey: process.env.REACT_APP_3TREE_API_KEY,
-                jwtToken: JSON.parse(
-                  localStorage.getItem(
-                    process.env.REACT_APP_LOCAL_USER_INFO_NAME
-                  )
-                )?.jwtToken,
-                profileName: res.name,
-                profileBio: `${res.name}'s 3TREE page :)`,
-              };
-
-              formData.append("json", JSON.stringify(formJson));
-
-              const editProfileResult = await editProfile(
-                userInfo.user_id,
-                formData
-              );
-              console.log(data);
-            })
-            .then(() => {
-              if (type == "receive") {
-                setStatus(true);
-              } else {
-                setStatus(false);
-                // window.location.href = "/createLink";
-              }
-              onClose();
-            });
-        })
-        .catch(async (error) => {
-          const loginUserResult = await loginUser(res.email, accessToken)
-            .then(async (data) => {
-              console.log(data);
-              
-              // const getProfileDecoResult = await getProfileDeco(
-              //   data.user.index
-              // ).then((res) => {
-              //   alert(res);
-              // });
-              if (!data) {
-                alert(t("profilePage4"));
-                localStorage.clear();
-                window.location.href = "/";
-              }
-            })
-            .then(() => {
-              if (type == "receive") {
-                setStatus(true);
-              } else {
-                window.location.href = "/";
-              }
-              onClose();
-            });
-        });
+  const responseGoogle = async (code) => {
+    await requestLogin(code).then((data) => {
+      if (type == "receive" || data === "SIGNUP") {
+        setStatus(true);
+        setIsSignup(true);
+        console.log(type);
+      } else if (data === "LOGIN") {
+        setStatus(false);
+      }
+      setIsLoggedIn(true);
+      onClose();
     });
   };
 
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => {
-      console.log(codeResponse);
-      setGoogleAccessToken(codeResponse.access_token);
       responseGoogle(codeResponse.access_token);
     },
   });
@@ -156,7 +93,6 @@ const LoginModalInner = (type, setStatus, onClose) => {
         className={"googleButton"}
         onClick={login}
       />
-      {/* </GoogleOAuthProvider> */}
       <TermsBox>
         {t("loginModal4")}
         <a>{t("loginModal5")}</a>

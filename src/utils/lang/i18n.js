@@ -13,29 +13,27 @@ const resource = {
   },
 };
 
-i18n
-  .use(initReactI18next)
-  .init({
-    resources: resource,
-    lng: JSON.parse(localStorage.getItem("language"))?.lang
-      ? JSON.parse(localStorage.getItem("language"))?.lang
-      : "en",
-    //초기값
-    fallbackLng: JSON.parse(localStorage.getItem("language"))?.lang
-      ? JSON.parse(localStorage.getItem("language"))?.lang
-      : "en",
-    debug: true,
-    defaultNS: "translations",
-    ns: "translations",
-    keySeparator: false,
-    interpolation: {
-      escapeValue: false,
-    },
-  })
-  .then(() => {
-    if (!JSON.parse(localStorage.getItem("language"))?.lang) {
-      localStorage.setItem("language", JSON.stringify({ lang: "en", id: 1 }));
-    }
-  });
+const browserLanguage = () => {
+  if (navigator.language.slice(0, 2) !== ("ko" || "en")) {
+    return "en";
+  }
+  return navigator.language.slice(0, 2);
+};
+
+i18n.use(initReactI18next).init({
+  resources: resource,
+  lng: localStorage.getItem("language")
+    ? localStorage.getItem("language")
+    : browserLanguage(),
+  //유저의 언어세팅이 작동하지 않을 때.
+  fallbackLng: "en",
+  debug: true,
+  defaultNS: "translations",
+  ns: "translations",
+  keySeparator: false,
+  interpolation: {
+    escapeValue: false,
+  },
+});
 
 export default i18n;

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { SettingProfileHeader } from "../../components/header";
-import { ContainedButton } from "../../components/button";
-import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import {
   AddLinkModal,
@@ -12,9 +10,10 @@ import {
   CustomizeMyInfo,
 } from "./components";
 import { ProfileCard } from "../../components/card";
-import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { getUserInfo } from "../../utils/api/auth";
 import { useTranslation } from "react-i18next";
+import { useRecoilValue } from "recoil";
+import { loginState } from "../../utils/atoms/login";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -37,25 +36,23 @@ const EditProfilePage = () => {
   const [editMyInfo, setEditMyInfo] = useState();
   const [customizeMyInfo, setCustomizeMyInfo] = useState(false);
   const [infoChange, setInfoChange] = useState(false);
+  const isLoggedIn = useRecoilValue(loginState);
   const { t } = useTranslation();
 
+  const getUserInfoData = async () => {
+    await getUserInfo().then((data) => {
+      setUserInfo(data);
+    });
+  };
+
   useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
-      console.log(globalUserInfo);
-      (async () => {
-        const getUserInfoResult = await getUserInfo(
-          globalUserInfo.user.user_id
-        ).then((data) => {
-          console.log(data);
-          setUserInfo(data);
-        });
-      })();
+    if (isLoggedIn) {
+      getUserInfoData();
     } else {
       alert(t("introPageAlert1"));
       window.location.href = "/";
     }
-  }, [infoChange, customizeMyInfo]);
+  }, [infoChange]);
 
   const closeLoginModal = () => {
     setLoginModalVisible(false);
@@ -71,60 +68,56 @@ const EditProfilePage = () => {
 
   return (
     <>
-      {editMyInfo ? (
+      {userInfo && !editMyInfo && !customizeMyInfo && (
+        <FullContainer>
+          <SettingProfileHeader
+            userId={userInfo.userId}
+            title={t("manageProfilePageHeader")}
+          />
+          {loginModalVisible && (
+            <AddLinkModal
+              visible={loginModalVisible}
+              closable={true}
+              maskClosable={true}
+              onClose={closeLoginModal}
+            />
+          )}
+          <ProfileCard
+            profileImg={userInfo.profileImg}
+            userName={userInfo.profileName}
+            introduction={userInfo.profileBio}
+            onClick={editOnClick}
+            onClickRight={customizeOnClick}
+            isEditable={true}
+          />
+          <LinkComponent
+            userId={userInfo.userId}
+            setInfoChange={setInfoChange}
+            infoChange={infoChange}
+          />
+          {/* <Divider /> */}
+          <WalletComponent
+            userId={userInfo.userId}
+            setInfoChange={setInfoChange}
+            infoChange={infoChange}
+          />
+        </FullContainer>
+      )}
+      {editMyInfo && (
         <EditMyInfo
           userInfo={userInfo}
           setEditMyInfo={setEditMyInfo}
           setInfoChange={setInfoChange}
           infoChange={infoChange}
         />
-      ) : (
-        <>
-          {customizeMyInfo ? (
-            <CustomizeMyInfo
-              userInfo={userInfo}
-              setCustomizeMyInfo={setCustomizeMyInfo}
-              setInfoChange={setInfoChange}
-              infoChange={infoChange}
-            />
-          ) : (
-            <FullContainer>
-              <SettingProfileHeader
-                info={userInfo}
-                title={t("manageProfilePageHeader")}
-              />
-              {loginModalVisible ? (
-                <AddLinkModal
-                  visible={loginModalVisible}
-                  closable={true}
-                  maskClosable={true}
-                  onClose={closeLoginModal}
-                />
-              ) : (
-                <></>
-              )}
-              <ProfileCard
-                profileImg={userInfo?.user.profile_img}
-                userName={userInfo?.user.profile_name}
-                introduction={userInfo?.user.profile_bio}
-                onClick={editOnClick}
-                onClickRight={customizeOnClick}
-                isEditable={true}
-              />
-              <LinkComponent
-                userInfoProps={userInfo}
-                setInfoChange={setInfoChange}
-                infoChange={infoChange}
-              />
-              {/* <Divider /> */}
-              <WalletComponent
-                userInfoProps={userInfo}
-                setInfoChange={setInfoChange}
-                infoChange={infoChange}
-              />
-            </FullContainer>
-          )}
-        </>
+      )}
+      {customizeMyInfo && (
+        <CustomizeMyInfo
+          userId={userInfo.userId}
+          setCustomizeMyInfo={setCustomizeMyInfo}
+          setInfoChange={setInfoChange}
+          infoChange={infoChange}
+        />
       )}
     </>
   );

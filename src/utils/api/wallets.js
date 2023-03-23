@@ -1,91 +1,49 @@
 import axios from "axios";
+import { privateHeaders, handleTokenExpired } from "./base";
 
-import langEn from "../lang/lang.en.json";
-import langKo from "../lang/lang.ko.json";
+export const getWallet = async (userId) => {
+  let resultValue = 0;
+  await axios.get(`/public/wallets/all?userId=${userId}`).then((data) => {
+    resultValue = data.data;
+  });
 
-const languageList = [
-  {
-    lang: "ko",
-    id: 0,
-    text: langKo,
-  },
-  {
-    lang: "en",
-    id: 1,
-    text: langEn,
-  },
-];
+  return resultValue;
+};
 
-export const addWallet = async (
-  userId,
-  walletType,
-  walletAddress
-) => {
-  const currentLang = JSON.parse(localStorage.getItem("language"))
-  let langFile = {}
-  if (currentLang) {
-    langFile = languageList[currentLang.id].text
-  }
-
+export const addWallet = async (walletType, walletAddress) => {
   let returnValue = 0;
-  const result = await axios
+  await axios
     .post(
-      process.env.REACT_APP_DB_HOST + `/wallets/new?userId=${userId}`,
-      `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "jwtToken":"${JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME))?.jwtToken}", "walletType":"${walletType}", "walletAddress":"${walletAddress}"}`,
+      "/wallets/new",
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        walletType: walletType,
+        walletAddress: walletAddress,
+      },
+      {
+        headers: privateHeaders,
       }
     )
     .then((data) => {
-      console.log(data.data);
-      if (data.data?.code == 404) {
-        alert(langFile?.sessionError);
-        localStorage.clear();
-        window.location.href = "/";
-      }
-      returnValue = data.data.result;
+      returnValue = data.data;
+    })
+    .catch((error) => {
+      handleTokenExpired(error);
     });
 
   return returnValue;
 };
 
-export const deleteWallet = async (userId, userWalletIndex) => {
-  const currentLang = JSON.parse(localStorage.getItem("language"))
-  let langFile = {}
-  if (currentLang) {
-    langFile = languageList[currentLang.id].text
-  }
-
+export const deleteWallet = async (userWalletIndex) => {
   let returnValue = 0;
-  const result = await axios
-  .post(
-    process.env.REACT_APP_DB_HOST + `/wallets/delete?userId=${userId}&userWalletIndex=${userWalletIndex}`,
-    `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "jwtToken":"${JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME))?.jwtToken}"}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  )
-    // .delete(
-    //   process.env.REACT_APP_DB_HOST +
-    //     `/wallets?userWalletIndex=${userWalletIndex}`,
-    //   {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // )
+  await axios
+    .delete(`/wallets?user_wallet_index=${userWalletIndex}`, {
+      headers: privateHeaders,
+    })
     .then((data) => {
-      console.log(data.data);
-      if (data.data?.code == 404) {
-        alert(langFile?.sessionError);
-        localStorage.clear();
-        window.location.href = "/";
-      }
-      returnValue = data.data.result;
+      returnValue = data.data;
+    })
+    .catch((error) => {
+      handleTokenExpired(error);
     });
 
   return returnValue;

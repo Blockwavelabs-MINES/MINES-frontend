@@ -1,78 +1,75 @@
 import axios from "axios";
-import { setLocalUserInfo } from "../functions/setLocalVariable";
+import {
+  privateHeaders,
+  privateHeadersMultipart,
+  handleTokenExpired,
+} from "./base";
 
-import langEn from "../lang/lang.en.json";
-import langKo from "../lang/lang.ko.json";
-
-const languageList = [
-  {
-    lang: "ko",
-    id: 0,
-    text: langKo,
-  },
-  {
-    lang: "en",
-    id: 1,
-    text: langEn,
-  },
-];
-
-export const createUser = async (socialID, socialPlatform, accessToken) => {
-  let returnValue = 0;
-  const result = await axios
-    .post(
-      process.env.REACT_APP_DB_HOST + `/users/signup`,
-      `{"accessToken":"${accessToken}", "socialID":"${socialID}", "socialPlatform":"${socialPlatform}"}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+export const requestLogin = async (code) => {
+  let returnValue;
+  await axios
+    .get(`/public/users/login/google?code=${code}`)
     .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.result;
+      localStorage.setItem(
+        "accessToken",
+        data.data.resultData.tokenDto.access_token
+      );
+      localStorage.setItem(
+        "refreshToken",
+        data.data.resultData.tokenDto.refresh_token
+      );
+      //회원가입 및 로그인 여부.
+      returnValue = data.data.resultData.socialLoginResponse.status;
+    })
+    .catch((error) => {
+      console.log(error);
     });
 
   return returnValue;
 };
 
-export const loginUser = async (socialID, accessToken) => {
-  let returnValue = 0;
-  const result = await axios
-    .post(
-      process.env.REACT_APP_DB_HOST + `/users/login`,
-      `{"socialID":"${socialID}", "accessToken":"${accessToken}"}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+export const requestRefreshToken = async () => {
+  let returnValue;
+  await axios
+    .post(`/public/users/reissue`, {
+      grant_type: "Bearer",
+      access_token: localStorage.getItem("accessToken"),
+      refresh_token: localStorage.getItem("refreshToken"),
+    })
+    //리프레쉬 토큰이 만료되었을 때.
     .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.result;
-      setLocalUserInfo({ type: "init", data: returnValue });
+      returnValue = data;
+      localStorage.setItem("accessToken", data.data.resultData.access_token);
+      localStorage.setItem("refreshToken", data.data.resultData.refresh_token);
+    })
+    .catch((error) => {
+      console.log("requestRefreshToken" + error);
     });
 
   return returnValue;
 };
 
 export const checkUserId = async (userID) => {
-  let returnValue = 0;
-  const result = await axios
-    .get(
-      process.env.REACT_APP_DB_HOST +
-        `/users/userId/validation?userId=${userID}`,
+  let returnValue;
+  await axios.get(`/public/users/id/check?user_id=${userID}`).then((data) => {
+    returnValue = data.data;
+  });
+
+  return returnValue;
+};
+
+export const createUserId = async (newId) => {
+  let returnValue;
+  await axios
+    .put(
+      `/users/edit/userid?new_id=${newId}`,
+      {},
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: privateHeaders,
       }
     )
-    .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.result; //true : 이미 존재 | false : 존재하지 않음(굿)
+    .then((response) => {
+      returnValue = response.data;
     })
     .catch((error) => {
       console.log(error);
@@ -81,62 +78,45 @@ export const checkUserId = async (userID) => {
   return returnValue;
 };
 
-export const editProfile = async (userID, formData) => {
-  //   const formData = new FormData();
-  //   formData.append(
-  //     "json",
-  //     `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "profileName":"${profileName}", "profileBio":"${profileBio}"}`
-  //   );
-  const currentLang = JSON.parse(localStorage.getItem("language"));
-  let langFile = {};
-  if (currentLang) {
-    langFile = languageList[currentLang.id].text;
-  }
-
-  var requestOptions = {
-    method: "PATCH",
-    headers: {
-      "Access-Control-Allow-Private-Network": true,
-      "Access-Control-Request-Private-Network": true,
-      // "Content-Type": "application/json",
-    },
-    body: formData,
-    redirect: "follow",
-  };
-
+export const editProfile = async (formData) => {
   let returnValue = {};
-
-  const result = await fetch(
-    process.env.REACT_APP_DB_HOST + `/users/userInfo?userId=${userID}`,
-    requestOptions
-  )
-    .then((response) => response.text())
+  await axios
+    .put(`/users/edit/profile`, formData, {
+      headers: privateHeadersMultipart,
+    })
     .then((result) => {
-      returnValue = JSON.parse(result);
-      console.log(returnValue);
-      if (returnValue?.code == 404) {
-        alert(langFile?.sessionError);
-        localStorage.clear();
-        window.location.href = "/";
-      }
-      return returnValue;
+      returnValue = result.data.resultData;
     })
     .catch((error) => {
-      console.log("error", error);
+      handleTokenExpired(error);
     });
+
+  return returnValue;
 };
 
-export const getUserInfo = async (userId) => {
-  let returnValue = 0;
-  const result = await axios
-    .get(process.env.REACT_APP_DB_HOST + `/users?userId=${userId}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
+export const getUserInfo = async () => {
+  let returnValue;
+  await axios
+    .get(`/users/my/info`, {
+      headers: privateHeaders,
     })
     .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.result;
+      returnValue = data.data.resultData;
+    })
+    .catch((error) => {
+      console.log(error);
+      handleTokenExpired(error);
+    });
+
+  return returnValue;
+};
+
+export const getUserInfoAndProfileDeco = async (userId) => {
+  let returnValue;
+  await axios
+    .get(`/public/users/info?user_id=${userId}`)
+    .then((data) => {
+      returnValue = data.data.resultData;
     })
     .catch((error) => {
       console.log(error);
@@ -145,74 +125,18 @@ export const getUserInfo = async (userId) => {
   return returnValue;
 };
 
-export const getUserInfoByIndex = async (userIndex) => {
-  let returnValue = 0;
-  const result = await axios
-    .get(
-      process.env.REACT_APP_DB_HOST + `/users/userInfo?userIndex=${userIndex}`,
+export const changeUserLanguage = async (newLanguage) => {
+  let returnValue;
+  await axios
+    .put(
+      `users/edit/language?language=${newLanguage}`,
+      {},
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: privateHeaders,
       }
     )
     .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.result;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-  return returnValue;
-};
-
-export const createUserId = async (newId, userIndex) => {
-  var requestOptions = {
-    method: "PATCH",
-    headers: {
-      //   "Access-Control-Allow-Private-Network": true,
-      //   "Access-Control-Request-Private-Network": true,
-      "Content-Type": "application/json",
-    },
-    body: `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}", "userId":"${newId}"}`,
-    redirect: "follow",
-  };
-
-  let returnValue = {};
-
-  const result = await fetch(
-    process.env.REACT_APP_DB_HOST + `/users/userId?userIndex=${userIndex}`,
-    requestOptions
-  )
-    .then((response) => response.text())
-    .then((result) => {
-      returnValue = JSON.parse(result);
-      console.log(returnValue);
-    })
-    .catch((error) => console.log("error", error));
-
-  return returnValue;
-};
-
-export const getInfoFromAccessToken = async (accessToken) => {
-  let returnValue = 0;
-  const result = await axios
-    .get(
-      `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-    .then((data) => {
-      console.log(data.data);
       returnValue = data.data;
-    })
-    .catch((error) => {
-      console.log(error);
     });
-
   return returnValue;
 };

@@ -24,8 +24,8 @@ const metamaskOnClick = (walletList, onConnected) => {
       });
 
       console.log(accounts[0]);
-      console.log(walletList.findIndex((v) => v.wallet_address === accounts[0]));
-      if (walletList.findIndex((v) => v.wallet_address == accounts[0]) > -1) {
+      console.log(walletList.findIndex((v) => v.walletAddress === accounts[0]));
+      if (walletList.findIndex((v) => v.walletAddress == accounts[0]) > -1) {
         console.log(walletList);
         alert("중복되는 주소가 있습니다.");
       } else {

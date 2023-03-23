@@ -148,7 +148,7 @@ function setExpiredDate() {
   var today = new Date();
   today.setDate(today.getDate() + 3);
   today.setHours(today.getHours() + 9);
-  return today.toISOString().replace("T", " ").substring(0, 19);
+  return today.toISOString().substring(0, 19);
 }
 
 const LoginModalInner = (
@@ -207,6 +207,8 @@ const LoginModalInner = (
   }, []);
 
   useEffect(() => {
+    console.log(tokenInfo);
+    console.log(tokenInfo.address + "this is tokenInfo.address");
     console.log(transactionHash);
     if (transactionHash) {
       console.log(transactionHash);
@@ -234,15 +236,13 @@ const LoginModalInner = (
           }),
         })
           .then(async (receipt) => {
+            setLoading(true);
             if (receipt == null) {
               console.log("pending");
               setTransactionStatus("pending");
-              setLoading(true);
             } else {
               setTransactionStatus("mined");
-              setLoading(false);
-              const sendTrxsResult = await sendTrxs(
-                userIdx,
+              await sendTrxs(
                 address,
                 "metamask",
                 "google",
@@ -252,12 +252,12 @@ const LoginModalInner = (
                 transactionHash,
                 escrowId,
                 expiredDateResult,
-                sender,
                 tokenInfo.address,
                 networkId
               ).then((data) => {
-                setFinalLink(data.link_key);
-                setExpired(data.expired_at);
+                setFinalLink(data.linkKey);
+                setExpired(data.expiredAt);
+                setLoading(false);
               });
 
               setStepStatus(stepStatus + 1);

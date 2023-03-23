@@ -5,7 +5,6 @@ import { ContainedButton } from "../../components/button";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import { LoginModal, SingleModal } from "../../components/modal";
-import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { MainImage1, MainImage2, MainImage3 } from "../../assets/images";
 import { useTranslation } from "react-i18next";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -14,6 +13,8 @@ import CreateLinkPage from "../CreateLinkPage";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { loginState, signupState } from "../../utils/atoms/login";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -72,16 +73,9 @@ const BannerBottom = styled.div`
 const IntroPage = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [loginAlertModalVisible, setLoginAlertModalVisible] = useState(false);
-  const [userInfo, setUserInfo] = useState();
-  const [notSignUp, setNotSignUp] = useState(true);
+  const [isSignup, setIsSignup] = useRecoilState(signupState);
+  const isLoggedIn = useRecoilValue(loginState);
   const { t } = useTranslation();
-
-  useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
-      setUserInfo(globalUserInfo);
-    }
-  }, []);
 
   const closeLoginModal = () => {
     setLoginModalVisible(false);
@@ -92,7 +86,7 @@ const IntroPage = () => {
   };
 
   const profileSettingOnClick = () => {
-    if (userInfo) {
+    if (isLoggedIn) {
       window.location.href = "/editProfile";
     } else {
       setLoginAlertModalVisible(true);
@@ -100,15 +94,16 @@ const IntroPage = () => {
   };
   const sendOnClick = () => {
     // alert("준비중입니다.");
-    if (userInfo) {
+    if (isLoggedIn) {
       window.location.href = "/sendToken";
     } else {
       setLoginAlertModalVisible(true);
     }
   };
+
   return (
     <>
-      {notSignUp ? (
+      {!isSignup ? (
         <FullContainer>
           <LoginHeader onVisible={setLoginModalVisible} />
           {loginModalVisible ? (
@@ -117,7 +112,7 @@ const IntroPage = () => {
               closable={true}
               maskClosable={true}
               onClose={closeLoginModal}
-              setStatus={setNotSignUp}
+              setStatus={setIsSignup}
             />
           ) : (
             <>

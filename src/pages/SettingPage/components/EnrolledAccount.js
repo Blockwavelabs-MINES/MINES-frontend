@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { getLocalUserInfo } from "../../../utils/functions/setLocalVariable";
+import { getUserInfo } from "../../../utils/api/auth";
 import PlatformList from "../../SendTokenPage/components/PlatformList";
 
 const Container = styled.div`
@@ -53,11 +53,9 @@ const EnrolledAccount = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
-      setUserInfo(globalUserInfo);
-      console.log(globalUserInfo);
-    }
+    getUserInfo().then((data) => {
+      setUserInfo(data);
+    });
   }, []);
 
   return (
@@ -70,12 +68,12 @@ const EnrolledAccount = () => {
               PlatformList.findIndex(
                 (v) =>
                   v.emailName.toLowerCase ==
-                  userInfo?.user.social_platform.toLowerCase
+                  userInfo?.socialPlatform.toLowerCase
               )
             ]?.emailIcon
           }
         />
-        <EmailName>{userInfo?.user.social_id}</EmailName>
+        <EmailName>{userInfo?.socialId}</EmailName>
       </OpenBoxItem>
     </Container>
   );

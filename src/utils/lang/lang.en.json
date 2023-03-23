@@ -78,8 +78,8 @@
   "socialAccountInfo1": "Enrolled Account",
 
   "languageSettingInfoHeader": "Setting Language",
-  "languageSettingInfo1": "KOR",
-  "languageSettingInfo2": "ENG",
+  "languageSettingInfo1": "한국어",
+  "languageSettingInfo2": "영어",
 
   "manageProfilePageHeader": "Edit Page",
   "manageProfilePageAlert1": "You have unsaved changes. Discard Changes?",
@@ -103,6 +103,8 @@
   "manageProfilePageAlertDeleteWallet1": "Delete this wallet?",
   "manageProfilePageAlertDeleteWallet2": "Delete",
   "manageProfilePageAlertDeleteWallet3": "Cancel",
+
+  "addWalletModalTitle": "Add Wallet Address",
 
   "editLinkModal1": "Link",
   "editLinkModal2": "Link Title",

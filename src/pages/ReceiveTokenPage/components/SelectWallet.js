@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { SendTokenHeader, LoginHeader } from "../../../components/header";
+import { SendTokenHeader } from "../../../components/header";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import WalletComponent from "./WalletComponent";
-import { getLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 import { getUserInfo } from "../../../utils/api/auth";
 import ReceiveComplete from "./ReceiveComplete";
 import { LoadingComponent } from "../../../components/card";
@@ -32,8 +31,7 @@ const SubtextBox = styled.div`
   color: ${palette.grey_2};
 `;
 
-const SelectWallet = ({ linkInfo }) => {
-  const [userInfo, setUserInfo] = useState({});
+const SelectWallet = ({ linkInfo, userInfo, walletData }) => {
   const [infoChange, setInfoChange] = useState(false);
   const [complete, setComplete] = useState(false);
   const [receiveInfo, setReceiveInfo] = useState({});
@@ -43,22 +41,6 @@ const SelectWallet = ({ linkInfo }) => {
   const [resend, setResend] = useState(false);
   const [select, setSelect] = useState(0);
   const { t } = useTranslation();
-
-  useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
-    // if (globalUserInfo) {
-    //   setUserInfo(globalUserInfo);
-    // }
-    console.log(globalUserInfo);
-    (async () => {
-      const getUserInfoResult = await getUserInfo(
-        globalUserInfo.user.user_id
-      ).then((data) => {
-        console.log(data);
-        setUserInfo(data);
-      });
-    })();
-  }, [infoChange]);
 
   const leftOnClick = () => {
     window.location.href = "/";
@@ -82,7 +64,7 @@ const SelectWallet = ({ linkInfo }) => {
                 />
               ) : (
                 <>
-                  {!resend ? (
+                  {!resend && (
                     <>
                       <SendTokenHeader
                         title={t("receiveTokenPage1")}
@@ -91,17 +73,13 @@ const SelectWallet = ({ linkInfo }) => {
                       <ContentContainer>
                         <TextBox>
                           <HeaderBox>{t("selectWalletPage1")}</HeaderBox>
-                          <SubtextBox>
-                          {t("selectWalletPage2")}
-                          </SubtextBox>
+                          <SubtextBox>{t("selectWalletPage2")}</SubtextBox>
                         </TextBox>
                       </ContentContainer>
                     </>
-                  ) : (
-                    <></>
                   )}
                   <WalletComponent
-                    userInfoProps={userInfo}
+                    walletList={walletData}
                     setInfoChange={setInfoChange}
                     infoChange={infoChange}
                     setComplete={setComplete}

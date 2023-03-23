@@ -150,11 +150,6 @@ const WalletButtonGroupMini = (props) => {
     }
   }, [account]);
 
-  // useEffect(() => {
-  //   const provider = window.localStorage.getItem("provider");
-  //   if (provider) activate(walletconnect);
-  // }, []);
-
   useEffect(() => {
     console.log(props);
     if (props.setPageStack) {

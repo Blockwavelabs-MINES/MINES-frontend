@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { SettingHeader } from "../../components/header";
-import Typography from "../../utils/style/Typography/index";
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
-import { getUserInfo } from "../../utils/api/auth";
 import { ListButton } from "../../components/button";
 import { useTranslation } from "react-i18next";
 import i18next from "../../utils/lang/i18n";
 import { ChangeID, EnrolledAccount } from "./components";
+import { changeUserLanguage } from "../../utils/api/auth";
+import { useRecoilValue } from "recoil";
+import { loginState } from "../../utils/atoms/login";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -18,49 +17,29 @@ const FullContainer = styled.div`
   padding-top: 75px;
 `;
 
-const LanguageNameList = ["한국어", "영어"];
-
 const SettingPage = () => {
-  const [userInfo, setUserInfo] = useState();
-  const [infoChange, setInfoChange] = useState(false);
   const [status, setStatus] = useState("");
-  const [language, setLanguage] = useState(
-    LanguageNameList[JSON.parse(localStorage.getItem("language"))?.id]
+  const isLoggedIn = useRecoilValue(loginState);
+  const [currentLanguage, setCurrentLanguage] = useState(
+    localStorage.getItem("language")
   );
-  const [langKo, setLangKo] = useState(0);
   const { t } = useTranslation();
-
-  const LanguageList = ["languageSettingInfo1", "languageSettingInfo2"];
   const StatusList = ["changeID", "checkID", "setLanguage"];
 
   useEffect(() => {
-    if (!language) {
-      setLanguage(LanguageNameList[1]);
-      localStorage.setItem("language", JSON.stringify({ lang: "en", id: 1 }));
-    } else {
-      console.log(JSON.parse(localStorage.getItem("language"))?.id);
-      console.log(LanguageList.length);
-      console.log(
-        JSON.parse(localStorage.getItem("language"))?.id % LanguageList.length
-      );
-      setLangKo(
-        JSON.parse(localStorage.getItem("language"))?.id % LanguageList.length
-      );
-    }
-  }, []);
-
-  const languageSwitchOnClick = () => {
-    var nextIdx = (language.id + 1) % LanguageList.length;
-    setLanguage({ lang: LanguageList[nextIdx], id: nextIdx });
-  };
+    setCurrentLanguage(localStorage.getItem("language"));
+  }, [localStorage.getItem("language")]);
 
   const langChange = () => {
-    i18next.changeLanguage(langKo ? "ko" : "en");
-    setLangKo((langKo + 1) % 2);
-    localStorage.setItem(
-      "language",
-      JSON.stringify({ lang: langKo ? "ko" : "en", id: (langKo + 1) % 2 })
-    );
+    if (currentLanguage === "en") {
+      i18next.changeLanguage("ko");
+      localStorage.setItem("language", "ko");
+      changeUserLanguage("KOR");
+    } else {
+      i18next.changeLanguage("en");
+      localStorage.setItem("language", "en");
+      changeUserLanguage("ENG");
+    }
   };
 
   const SettingList = [
@@ -94,7 +73,10 @@ const SettingPage = () => {
       onClick: () => {
         langChange();
       },
-      select: t(LanguageList[langKo]),
+      select:
+        currentLanguage === "en"
+          ? t("languageSettingInfo1")
+          : t("languageSettingInfo2"),
       component: ChangeID,
     },
     {
@@ -128,22 +110,11 @@ const SettingPage = () => {
   ];
 
   useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
-      console.log(globalUserInfo);
-      (async () => {
-        const getUserInfoResult = await getUserInfo(
-          globalUserInfo.user.user_id
-        ).then((data) => {
-          console.log(data);
-          setUserInfo(data);
-        });
-      })();
-    } else {
+    if (!isLoggedIn) {
       alert("로그인이 필요한 서비스입니다.");
       window.location.href = "/";
     }
-  }, [infoChange]);
+  }, []);
 
   return (
     <FullContainer>

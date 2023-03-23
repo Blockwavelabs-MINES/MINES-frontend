@@ -78,8 +78,8 @@
   "socialAccountInfo1": "가입한 계정",
 
   "languageSettingInfoHeader": "언어 설정",
-  "languageSettingInfo1": "한국어",
-  "languageSettingInfo2": "영어",
+  "languageSettingInfo1": "KOR",
+  "languageSettingInfo2": "ENG",
 
   "manageProfilePageHeader": "페이지 관리",
   "manageProfilePageAlert1": "저장되지 않은 변경 사항이 있어요. 저장하지 않고 나갈까요?",
@@ -110,6 +110,8 @@
   "editLinkModal4": "링크 URL",
   "editLinkModal5": "https://3tree.io",
   "editLinkModal6": "저장하기",
+
+  "addWalletModalTitle": "지갑 주소 추가하기",
 
   "editProfilePageHeader": "내 정보 수정",
   "editProfilePage1": "저장",
@@ -183,7 +185,7 @@
   "previewPage4": "",
   "previewPage5": "년 ",
   "previewPage6": "월 ",
-  "previewPage7": "일 ", 
+  "previewPage7": "일 ",
   "previewPage8": "까지",
   "previewPage9": "유의사항",
   "previewPage10": "수령은 전송일로부터 3일 내에 해당 소셜계정으로 인증하면 수령할 수 있으며, 기한 내 미수령시 반환됩니다.",

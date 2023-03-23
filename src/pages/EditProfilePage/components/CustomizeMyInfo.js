@@ -1,24 +1,16 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { EditProfileHeader } from "../../../components/header";
-import { IconButton, ContainedButton } from "../../../components/button";
-import { DeleteModal } from "../../../components/modal";
+import { ContainedButton } from "../../../components/button";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { ProfileCard } from "../../../components/card";
-import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
 import { CustomIcon } from "../../../assets/icons";
-import { InputBox, TextAreaBox } from "../../../components/input";
-import { editProfile } from "../../../utils/api/auth";
 import imageCompression from "browser-image-compression";
 import { useTranslation } from "react-i18next";
 import { SketchPicker } from "react-color";
 import { Preview } from ".";
-import {
-  editDecoBackground,
-  editDecoButton,
-  editDecoFont,
-} from "../../../utils/api/profile";
+import { getProfileDeco } from "../../../utils/api/profile";
+import { editProfileDeco } from "../../../utils/api/profile";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -140,40 +132,27 @@ const ButtonContainer = styled.div`
 `;
 
 const CustomizeMyInfo = ({
-  userInfo,
+  userId,
   setCustomizeMyInfo,
   setInfoChange,
   infoChange,
 }) => {
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
-  const [backImage, setProfileImage] = useState({
-    file: userInfo?.profileDecorate?.background_img,
-    imagePreviewUrl: userInfo?.profileDecorate?.background_img,
+  const [profileDecoData, setProfileDecoData] = useState(false);
+  const [backImage, setBackImg] = useState({
+    file: "",
+    imagePreviewUrl: "",
   });
-  const [backImageChange, setProfileImageChange] = useState(false);
-  const [name, setName] = useState(userInfo?.user.profile_name);
-  const [introduction, setIntroduction] = useState(userInfo?.user.profile_bio);
+  const [backImageChange, setBackImageChange] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
-  const [realDelete, setRealDelete] = useState(false);
-  const [backgroundColor, setBackgroundColor] = useState(
-    userInfo?.profileDecorate?.background_color
-  );
+  const [backgroundColor, setBackgroundColor] = useState("");
   const [backgroundColorPicker, setBackgroundColorPicker] = useState(false);
-  const [buttonColor, setButtonColor] = useState(
-    userInfo?.profileDecorate?.button_color
-  );
+  const [buttonColor, setButtonColor] = useState("");
   const [buttonColorPicker, setButtonColorPicker] = useState(false);
-  const [buttonFontColor, setButtonFontColor] = useState(
-    userInfo?.profileDecorate?.button_font_color
-  );
+  const [buttonFontColor, setButtonFontColor] = useState("");
   const [buttonFontColorPicker, setButtonFontColorPicker] = useState(false);
-  const [fontColor, setFontColor] = useState(
-    userInfo?.profileDecorate?.font_color
-  );
+  const [fontColor, setFontColor] = useState("");
   const [fontColorPicker, setFontColorPicker] = useState(false);
-  const [backTypeIsColor, setBackTypeIsColor] = useState(
-    userInfo?.profileDecorate?.background_type == "COLOR"
-  );
+  const [backTypeIsColor, setBackTypeIsColor] = useState(false);
   const [previewOn, setPreviewOn] = useState(false);
   const [pickerIndex, setPickerIndex] = useState(-1);
   const pickerRef = useRef(null);
@@ -198,11 +177,21 @@ const CustomizeMyInfo = ({
   ];
 
   const { t } = useTranslation();
-  // useEffect(() => {
-  //   if (introduction.length > 100) {
-  //     setIntroduction(introduction.substr(0, 100));
-  //   }
-  // }, [introduction]);
+
+  useEffect(() => {
+    getProfileDeco(userId).then((data) => {
+      setProfileDecoData(data);
+      setBackImg({
+        file: data.backgroundImg,
+        imagePreviewUrl: data.backgroundImg,
+      });
+      setBackgroundColor(data.backgroundColor);
+      setButtonColor(data.buttonColor);
+      setFontColor(data.fontColor);
+      setButtonFontColor(data.buttonFontColor);
+      setBackTypeIsColor(data.backgroundType === "COLOR");
+    });
+  }, []);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -211,52 +200,8 @@ const CustomizeMyInfo = ({
     };
   }, [pickerIndex]);
 
-  useEffect(() => {
-    (async () => {
-      const formData = new FormData();
-
-      formData.append("backgroundImg", backImage?.file);
-
-      const formJson = {
-        jwtToken: JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME)
-        )?.jwtToken,
-        backgroundType: backTypeIsColor ? "COLOR" : "IMAGE",
-        backgroundColor: backgroundColor,
-      };
-
-      formData.append("json", JSON.stringify(formJson));
-      const editDecoBackgroundResult = await editDecoBackground(
-        userInfo?.user?.user_id,
-        formData
-      );
-    })();
-  }, [backgroundColor, backImage, backTypeIsColor]);
-
-  useEffect(() => {
-    (async () => {
-      const editDecoButtonResult = await editDecoButton(
-        userInfo?.user?.user_id,
-        buttonColor,
-        buttonFontColor
-      );
-    })();
-  }, [buttonColor, buttonFontColor]);
-
-  useEffect(() => {
-    (async () => {
-      const editDecoFontResult = await editDecoFont(
-        userInfo?.user?.user_id,
-        fontColor
-      );
-    })();
-  }, [fontColor]);
-
-  const handleClick = (event) => {
+  const handleClick = () => {
     hiddenFileInput.current.click();
-    // console.log("??");
-
-    // alert("준비중인 기능입니다.");
   };
 
   const handleChange = async (event) => {
@@ -284,40 +229,28 @@ const CustomizeMyInfo = ({
           `compressedFile size ${compressedFile.size / 1024 / 1024} MB`
         ); // smaller than maxSizeMB
 
-        setProfileImage({
+        setBackImg({
           file: compressedFile,
           imagePreviewUrl: compressedFile,
         });
         reader.onloadend = () => {
-          setProfileImage({
+          setBackImg({
             file: compressedFile,
             imagePreviewUrl: reader.result,
           });
         };
         reader.readAsDataURL(compressedFile);
-        setProfileImageChange(true);
+        setBackImageChange(true);
       } catch (error) {
         console.log(error);
       }
     } else {
-      setProfileImage({ file: fileUploaded, imagePreviewUrl: fileUploaded });
+      setBackImg({ file: fileUploaded, imagePreviewUrl: fileUploaded });
       reader.onloadend = () => {
-        setProfileImage({ file: fileUploaded, imagePreviewUrl: reader.result });
+        setBackImg({ file: fileUploaded, imagePreviewUrl: reader.result });
       };
       reader.readAsDataURL(fileUploaded);
-      setProfileImageChange(true);
-    }
-  };
-
-  const nameOnChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const introductionOnChange = (e) => {
-    if (e.target.value.length < 101) {
-      setIntroduction(e.target.value);
-    } else {
-      setIntroduction(e.target.value.substr(0, 100));
+      setBackImageChange(true);
     }
   };
 
@@ -329,54 +262,24 @@ const CustomizeMyInfo = ({
     }
   };
 
-  const saveEditUserInfo = async () => {
-    // const saveData = {
-    //   userId: name,
-    //   userToken: "",
-    //   profileImg: backImage.imagePreviewUrl,
-    //   introduction: introduction,
-    // };
-    // setLocalUserInfo({ type: "init", data: saveData });
-    console.log(userInfo?.user.profile_name);
-
+  const saveProfileDecoEdited = async () => {
     const formData = new FormData();
-
-    formData.append("backImage", backImage?.file);
-
     const formJson = {
-      frontKey: process.env.REACT_APP_3TREE_API_KEY,
-      jwtToken: JSON.parse(
-        localStorage.getItem(process.env.REACT_APP_LOCAL_USER_INFO_NAME)
-      )?.jwtToken,
-      profileName: name,
-      profileBio: introduction,
+      background_color: backgroundColor,
+      button_color: buttonColor,
+      button_font_color: buttonFontColor,
+      font_color: fontColor,
     };
+    if (backTypeIsColor) {
+      formData.append("image", "");
+    } else {
+      formData.append("image", backImage.file);
+    }
+    formData.append("data", JSON.stringify(formJson));
 
-    formData.append("json", JSON.stringify(formJson));
-
-    const editProfileResult = await editProfile(
-      userInfo?.user.user_id,
-      formData
-    ).then((data) => {
-      console.log(data);
-      setLocalUserInfo({
-        type: "edit",
-        editKey: ["user", "profile_name"],
-        editValue: name,
-      });
-      setLocalUserInfo({
-        type: "edit",
-        editKey: ["user", "profile_img"],
-        editValue: backImage.imagePreviewUrl,
-      });
-      setLocalUserInfo({
-        type: "edit",
-        editKey: ["user", "profile_bio"],
-        editValue: introduction,
-      });
-
-      setCustomizeMyInfo();
-      setInfoChange(!infoChange);
+    editProfileDeco(formData).then(() => {
+      setInfoChange(true);
+      setCustomizeMyInfo(false);
     });
   };
 
@@ -391,11 +294,6 @@ const CustomizeMyInfo = ({
     setCustomizeMyInfo(false);
   };
 
-  const subDeleteOnClick = () => {
-    setCustomizeMyInfo(false);
-    console.log("hi");
-  };
-
   const handleBackgroundColorChangeComplete = (color) => {
     setBackgroundColor(color.hex);
     // setBackgroundColor(color.hex + Math.round(color.rgb.a * 255).toString(16));
@@ -407,12 +305,12 @@ const CustomizeMyInfo = ({
   };
 
   const handleButtonFontColorChangeComplete = (color) => {
-    setButtonFontColor(color.hex)
+    setButtonFontColor(color.hex);
     // setButtonFontColor(color.hex + Math.round(color.rgb.a * 255).toString(16));
   };
 
   const handleFontColorChangeComplete = (color) => {
-    setFontColor(color.hex)
+    setFontColor(color.hex);
     // setFontColor(color.hex + Math.round(color.rgb.a * 255).toString(16));
   };
 
@@ -448,7 +346,7 @@ const CustomizeMyInfo = ({
     <>
       {previewOn ? (
         <Preview
-          userInfo={userInfo}
+          userId={userId}
           setPreviewOn={setPreviewOn}
           backgroundColor={backgroundColor}
           backImage={backTypeIsColor ? "" : backImage}
@@ -462,7 +360,7 @@ const CustomizeMyInfo = ({
             <EditProfileHeader
               title={t("manageProfilePage11")}
               leftOnClick={leftOnClick}
-              rightOnClick={saveEditUserInfo}
+              rightOnClick={saveProfileDecoEdited}
             />
             <>
               {/* {cancelModalOpen ? (

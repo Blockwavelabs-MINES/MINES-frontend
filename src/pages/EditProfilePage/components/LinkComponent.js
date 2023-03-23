@@ -7,8 +7,12 @@ import { EmptyCard, EditableCard } from "../../../components/card";
 import { EmptyLink, LinkIcon } from "../../../assets/icons";
 import { DeleteModal } from "../../../components/modal";
 import AddLinkModal from "./AddLinkModal";
-import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
-import { addLink, deleteLink, editLink } from "../../../utils/api/link";
+import {
+  getLink,
+  addLink,
+  deleteLink,
+  editLink,
+} from "../../../utils/api/link";
 import { useTranslation } from "react-i18next";
 
 const FullContainer = styled.div`
@@ -36,43 +40,28 @@ const ListContainer = styled.div`
   gap: 20px;
 `;
 
-const LinkComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
-  const [linkList, setLinkList] = useState(userInfoProps?.links);
+const LinkComponent = ({ userId, setInfoChange, infoChange }) => {
+  const [linkList, setLinkList] = useState(userId?.links);
   const [deleteModalOn, setDeleteModalOn] = useState(false);
   const [realDelete, setRealDelete] = useState(false);
   const [deleteIdx, setDeleteIdx] = useState(-1);
   const [editIdx, setEditIdx] = useState(-1);
   const [linkModalOn, setLinkModalOn] = useState(false);
   const [editLinkModalOn, setEditLinkModalOn] = useState(false);
-  const [userInfo, setUserInfo] = useState(userInfoProps);
   const { t } = useTranslation();
 
   useEffect(() => {
-    setLinkList(userInfoProps?.links);
-    setUserInfo(userInfoProps);
-    console.log(userInfoProps);
-  }, [userInfoProps]);
+    getLink(userId).then((data) => {
+      setLinkList(data);
+    });
+  }, [infoChange]);
 
   useEffect(() => {
     (async () => {
       if (realDelete) {
-        // 지우는 action
-        const deleteLinkResult = await deleteLink(
-          userInfo.user.user_id,
-          linkList[deleteIdx].index
-        ).then((data) => {
-          console.log(data);
+        await deleteLink(linkList[deleteIdx].id).then(() => {
           setInfoChange(!infoChange);
         });
-        // var tmpLinkList = linkList;
-        // tmpLinkList.splice(deleteIdx, 1);
-        // setLocalUserInfo({
-        //   type: "edit",
-        //   editKey: "links",
-        //   editValue: tmpLinkList,
-        // });
-        // setLinkList(tmpLinkList);
-
         setDeleteIdx(-1);
         setRealDelete(false);
       }
@@ -99,8 +88,6 @@ const LinkComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
   const editOnClick = (idx) => {
     // alert("준비중입니다.");
     setEditIdx(idx);
-    console.log(idx);
-    console.log(linkList[idx]);
     setEditLinkModalOn(true);
   };
 
@@ -108,26 +95,18 @@ const LinkComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
     setEditLinkModalOn(false);
   };
 
-  const editAction = async ({ title, url }) => {
-    const editLinkResult = await editLink(
-      userInfo.user.user_id,
-      linkList[editIdx].index,
-      title,
-      url
-    ).then((data) => {
-      console.log(data);
+  const editAction = async ({ linkId, title, url }) => {
+    await editLink(linkId, title, url).then(() => {
       setInfoChange(!infoChange);
       setEditIdx(-1);
     });
   };
 
   const saveAction = async ({ title, url }) => {
-    const addLinkResult = await addLink(userInfo.user.user_id, title, url).then(
-      (data) => {
-        console.log(data);
-        setInfoChange(!infoChange);
-      }
-    );
+    await addLink(title, url).then((data) => {
+      console.log(data);
+      setInfoChange(!infoChange);
+    });
 
     // setLinkList(tmpLinkList);
   };
@@ -207,7 +186,8 @@ const LinkComponent = ({ userInfoProps, setInfoChange, infoChange }) => {
         <ListContainer>
           {linkList?.map((link, idx) => (
             <EditableCard
-              label={link.link_title}
+              key={link.id}
+              label={link.linkTitle}
               isEdit={true}
               isTrash={true}
               icon={LinkIcon}

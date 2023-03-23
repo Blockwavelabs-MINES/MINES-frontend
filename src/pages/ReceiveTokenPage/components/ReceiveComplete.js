@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { ContainedButton } from "../../../components/button";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { EditableCard } from "../../../components/card";
@@ -117,16 +116,13 @@ const ReceiveComplete = ({ receiveInfo }) => {
   const { t } = useTranslation();
 
   const txHashExplorerOnClick = () => {
-    if (Number(receiveInfo.network_id) == 5) {
+    if (Number(receiveInfo.networkId) == 5) {
       window.open(
-        `https://goerli.etherscan.io/tx/${receiveInfo.transaction_escrow_hash}`
+        `https://goerli.etherscan.io/tx/${receiveInfo.transactionHash}`
       );
-    } else if (Number(receiveInfo.network_id) == 137) {
-      window.open(
-        `https://polygonscan.com/tx/${receiveInfo.transaction_escrow_hash}`
-      );
+    } else if (Number(receiveInfo.networkId) == 137) {
+      window.open(`https://polygonscan.com/tx/${receiveInfo.transactionHash}`);
     }
-    
   };
   return (
     <>
@@ -135,14 +131,14 @@ const ReceiveComplete = ({ receiveInfo }) => {
           <Lottie animationData={animation} loop={false} play />
         </LottieContainer>
         <TextLine>
-          {receiveInfo?.token_amount} {receiveInfo?.token_udenom}
+          {receiveInfo?.tokenAmount} {receiveInfo?.tokenUdenom}
           <br />
           {t("receiveTokenComplete2")}
         </TextLine>
         <WalletBox>
           <CheckBox src={GreenCheck} />
           <EditableCard
-            label={walletConvert(receiveInfo?.receiver_wallet_address)}
+            label={walletConvert(receiveInfo?.receiverWalletAddress)}
             isEdit={false}
             isTrash={false}
             // icon={wallet.icon}
@@ -157,7 +153,7 @@ const ReceiveComplete = ({ receiveInfo }) => {
             <TxHashInfoTitle>{t("receiveTokenComplete4")}</TxHashInfoTitle>
             <TxHashAddressBox>
               <TxHashAddress>
-                {walletConvert(receiveInfo?.transaction_escrow_hash)}
+                {walletConvert(receiveInfo?.transactionHash)}
               </TxHashAddress>
             </TxHashAddressBox>
           </TxHashInfobox>

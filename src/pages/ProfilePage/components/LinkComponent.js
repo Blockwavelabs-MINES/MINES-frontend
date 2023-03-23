@@ -43,13 +43,15 @@ const LinkComponent = ({ userLinkList, profileDecorate }) => {
   }, [userLinkList]);
 
   const linkOnClick = (idx) => {
-    window.location.href = linkList[idx].link_url;
+    window.location.href = linkList[idx].linkUrl;
   };
 
   return (
     <FullContainer>
       <TitleContainer>
-        <TItleText style={{color: profileDecorate?.font_color}}>{t("manageProfilePage1")}</TItleText>
+        <TItleText style={{ color: profileDecorate.fontColor }}>
+          {t("manageProfilePage1")}
+        </TItleText>
       </TitleContainer>
       {linkList?.length == 0 ? (
         <>
@@ -59,10 +61,13 @@ const LinkComponent = ({ userLinkList, profileDecorate }) => {
         <ListContainer>
           {linkList?.map((link, idx) => (
             <EditableCard
-              label={link.link_title}
+              label={link.linkTitle}
               icon={LinkIcon}
               onClick={() => linkOnClick(idx)}
-              style={{backgroundColor: profileDecorate?.button_color, color: profileDecorate?.button_font_color}}
+              style={{
+                backgroundColor: profileDecorate.buttonColor,
+                color: profileDecorate.buttonFontColor,
+              }}
             />
           ))}
         </ListContainer>

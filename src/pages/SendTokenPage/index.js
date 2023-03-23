@@ -3,9 +3,6 @@ import styled from "styled-components";
 import { SendTokenHeader } from "../../components/header";
 import Typography from "../../utils/style/Typography/index";
 import { COLORS as palette } from "../../utils/style/Color/colors";
-import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
-import { useLocation } from "react-router-dom";
-import { MetamaskIcon } from "../../assets/icons";
 import {
   Step1,
   Step2,
@@ -18,6 +15,9 @@ import { DeleteModal } from "../../components/modal";
 import { ContainedButton } from "../../components/button";
 import { LoadingComponent } from "../../components/card";
 import { useTranslation } from "react-i18next";
+import { getUserInfo } from "../../utils/api/auth";
+import { useRecoilValue } from "recoil";
+import { loginState } from "../../utils/atoms/login";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -157,8 +157,6 @@ const StepComponentBox = styled.div`
   min-height: 40vh;
 `;
 
-const LoadingBox = styled.div``;
-
 function isMobileDevice() {
   return "ontouchstart" in window || "onmsgesturechange" in window;
 }
@@ -188,13 +186,15 @@ const SendTokenPage = () => {
   const [balance, setBalance] = useState("0");
   const [realBalance, setRealBalance] = useState("0");
   const [modalVisible, setModalVisible] = useState(false);
+  const isLoggedIn = useRecoilValue(loginState);
 
   const { t } = useTranslation();
 
   useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
-      setUserInfo(globalUserInfo);
+    if (isLoggedIn) {
+      getUserInfo().then((data) => {
+        setUserInfo(data);
+      });
     } else {
       alert(t("introPageAlert1"));
       window.location.href = "/";
@@ -251,9 +251,8 @@ const SendTokenPage = () => {
         currency: currency,
         email: email,
         platformIcon: platformIcon,
-        userId: userInfo?.user?.user_id,
+        userId: userInfo?.userId,
         stepStatus: stepStatus,
-        userIdx: userInfo?.user?.index,
         setExpired: setExpired,
         setFinalLink: setFinalLink,
         setLoading: setLoading,
@@ -356,7 +355,7 @@ const SendTokenPage = () => {
                   walletType={walletType}
                   address={senderAddress}
                   network={network}
-                  userId={userInfo.userId}
+                  userId={userInfo?.userId}
                   setVisible={setFinalModalVisible}
                   setSendDone={setSendDone}
                 />

@@ -38,8 +38,9 @@ const InputContainer = styled.div`
 `;
 
 function AddLinkModalInner(saveAction, onClose, original) {
-  const [title, setTitle] = useState(original ? original.link_title : "");
-  const [url, setUrl] = useState(original ? original.link_url : "");
+  const [linkId, setLinkId] = useState(original ? original.link_id : "");
+  const [title, setTitle] = useState(original ? original.linkTitle : "");
+  const [url, setUrl] = useState(original ? original.linkUrl : "");
   const [canSave, setCanSave] = useState(false);
   const { t } = useTranslation();
 
@@ -53,8 +54,9 @@ function AddLinkModalInner(saveAction, onClose, original) {
 
   useEffect(() => {
     console.log(original);
-    setTitle(original?.link_title);
-    setUrl(original?.link_url);
+    setLinkId(original?.id);
+    setTitle(original?.linkTitle);
+    setUrl(original?.linkUrl);
   }, [original]);
 
   const titleOnChange = (e) => {
@@ -66,8 +68,7 @@ function AddLinkModalInner(saveAction, onClose, original) {
   };
 
   const saveOnClick = () => {
-    console.log(title, url);
-    saveAction({ title: title, url: url });
+    saveAction({ linkId: linkId, title: title, url: url });
     document.body.style.overflow = "auto";
     onClose();
   };
@@ -81,7 +82,7 @@ function AddLinkModalInner(saveAction, onClose, original) {
             state="filled"
             isRequired={true}
             placeholder={t("editLinkModal3")}
-            value={title}
+            value={title || ""}
             onChange={(e) => titleOnChange(e)}
           />
           <InputBox
@@ -89,7 +90,7 @@ function AddLinkModalInner(saveAction, onClose, original) {
             state="filled"
             isRequired={true}
             placeholder={t("editLinkModal5")}
-            value={url}
+            value={url || ""}
             onChange={(e) => urlOnChange(e)}
           />
         </InputContainer>

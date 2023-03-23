@@ -4,21 +4,14 @@ import TypographyEn from "./typographyEn";
 import TypographyKo from "./typographyKo";
 
 const Typography = () => {
-  // const [language, setLanguage] = useState(
-  //   JSON.parse(localStorage.getItem("language"))
-  // );
-  let language = JSON.parse(localStorage.getItem("language"));
-  // const language = { lang: "en", id: 1 };
-  // const language = { lang: "ko", id: 0 };
+  let language = localStorage.getItem("language");
   if (!language) {
-    language = { lang: "en", id: 1 };
-  } 
+    language = "en";
+  }
 
-  if (language.lang === "en") {
-    console.log(language.lang);
+  if (language === "en") {
     return TypographyEn;
   } else {
-    console.log(language.lang);
     return TypographyKo;
   }
 };

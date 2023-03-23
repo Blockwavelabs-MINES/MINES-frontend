@@ -1,40 +1,42 @@
 import axios from "axios";
+import { handleTokenExpired, privateHeaders } from "./base";
 
 export const sendTrxs = async (
-  senderUserIndex,
   senderWalletAddress,
   senderTokenWalletType,
   receiverSocialPlatform,
   receiverSocialId,
   tokenUdenom,
   tokenAmount,
-  transactionEscrowHash,
+  transactionHash,
   transactionEscrowId,
   expiredAt,
-  senderUserId,
   tokenContractAddress,
   networkId
 ) => {
   let returnValue = 0;
-  const result = await axios
+  await axios
     .post(
-      process.env.REACT_APP_DB_HOST + `/trxs/send`,
-      `{"frontKey":"${
-        process.env.REACT_APP_3TREE_API_KEY
-      }","senderUserIndex":${Number(
-        senderUserIndex
-      )},"senderWalletAddress":"${senderWalletAddress}","senderTokenWalletType":"${senderTokenWalletType}","receiverSocialPlatform":"${receiverSocialPlatform}","receiverSocialId":"${receiverSocialId}","tokenUdenom":"${tokenUdenom}","tokenAmount":${Number(
-        tokenAmount
-      )},"transactionEscrowHash":"${transactionEscrowHash}","transactionEscrowId":"${transactionEscrowId}","expiredAt":"${expiredAt}","senderUserId":"${senderUserId}","tokenContractAddress":"${tokenContractAddress}","networkId":"${networkId}"}`,
+      `/trxs/send`,
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        senderWalletAddress: senderWalletAddress,
+        senderTokenWalletType: senderTokenWalletType.toUpperCase(),
+        receiverSocialPlatform: receiverSocialPlatform.toUpperCase(),
+        receiverSocialId: receiverSocialId,
+        tokenUdenom: tokenUdenom,
+        tokenAmount: tokenAmount,
+        transactionHash: transactionHash,
+        transactionEscrowId: transactionEscrowId,
+        expiredAt: expiredAt,
+        tokenContractAddress: tokenContractAddress,
+        networkId: networkId,
+      },
+      {
+        headers: privateHeaders,
       }
     )
     .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.result;
+      returnValue = data.data;
     });
 
   return returnValue;
@@ -44,27 +46,24 @@ export const receiveTrxs = async (
   receiverWalletAddress,
   receiveTokenWalletType,
   transactionGasFee,
-  linkIndex
+  trxIndex
 ) => {
   let returnValue = 0;
-  const result = await axios
+  await axios
     .post(
-      process.env.REACT_APP_DB_HOST +
-        `/trxs/send/receive?trxIndex=${linkIndex}`,
-      `{"frontKey":"${
-        process.env.REACT_APP_3TREE_API_KEY
-      }","receiverWalletAddress":"${receiverWalletAddress}","receiveTokenWalletType":"${receiveTokenWalletType}","transactionGasFee":${Number(
-        transactionGasFee
-      )}}`,
+      `/trxs/send/receive?trx_index=${trxIndex}`,
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        receiverWalletAddress: receiverWalletAddress,
+        receiveTokenWaleltType: receiveTokenWalletType,
+        transactionGasFee: transactionGasFee,
+      },
+      {
+        headers: privateHeaders,
       }
     )
     .then((data) => {
       console.log(data.data);
-      returnValue = data.data.result;
+      returnValue = data.data;
     });
 
   return returnValue;
@@ -72,24 +71,10 @@ export const receiveTrxs = async (
 
 export const getTrxsLinkInfo = async (linkKey) => {
   let returnValue = 0;
-  const result = await axios
-    .post(
-      process.env.REACT_APP_DB_HOST + `/trxs?linkKey=${linkKey}`,
-      `{"frontKey":"${process.env.REACT_APP_3TREE_API_KEY}"}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-    // .get(process.env.REACT_APP_DB_HOST + `/trxs?linkKey=${linkKey}`, {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // })
+  await axios
+    .get(`public/trxs?link_key=${linkKey}`)
     .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.result;
+      returnValue = data.data;
     })
     .catch((error) => {
       console.log(error);

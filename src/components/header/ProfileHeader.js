@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import { IconButton, TextButton } from "../button";
-import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { useTranslation } from "react-i18next";
 import { CopyPivot } from "../../components/modal";
 
@@ -99,8 +98,8 @@ const ProfileHeader = () =>
               onClose={copyOnClose}
               label={t("sendPage03_10")}
               type={"down"}
-              x={clickX+45}
-              y={clickY-10}
+              x={clickX + 45}
+              y={clickY - 10}
             />
           ) : (
             <></>
