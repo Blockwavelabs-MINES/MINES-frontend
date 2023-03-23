@@ -7,6 +7,7 @@ import { COLORS as palette } from "../../utils/style/Color/colors";
 import CreateSuccess from "./CreateSuccess";
 import { createUserId, checkUserId } from "../../utils/api/auth";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -88,12 +89,26 @@ const CreateLinkPage = () => {
     setLinkId(e.target.value);
   };
 
-  const createOnClick = async () => {
-    await checkUserId(linkId)
+  const createOnClick = () => {
+    checkUserId(linkId)
       .then(async () => {
-        await createUserId(linkId).then(() => {
-          setCreateSuccess(true);
-        });
+        console.log(localStorage.getItem("accessToken"));
+        await axios
+          .put(
+            `/users/edit/userid?new_id=${linkId}`,
+            {},
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("accessToken"),
+              },
+            }
+          )
+          .then(() => {
+            setCreateSuccess(true);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       })
       .catch(() => {
         setState("error");

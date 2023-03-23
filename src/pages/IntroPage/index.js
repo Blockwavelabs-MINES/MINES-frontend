@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { LoginHeader } from "../../components/header";
 import { ContainedButton } from "../../components/button";
@@ -13,8 +13,8 @@ import CreateLinkPage from "../CreateLinkPage";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { useRecoilValue } from "recoil";
-import { loginState } from "../../utils/atoms/login";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { loginState, signupState } from "../../utils/atoms/login";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -73,7 +73,7 @@ const BannerBottom = styled.div`
 const IntroPage = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [loginAlertModalVisible, setLoginAlertModalVisible] = useState(false);
-  const [notSignUp, setNotSignUp] = useState(true);
+  const [isSignup, setIsSignup] = useRecoilState(signupState);
   const isLoggedIn = useRecoilValue(loginState);
   const { t } = useTranslation();
 
@@ -100,9 +100,10 @@ const IntroPage = () => {
       setLoginAlertModalVisible(true);
     }
   };
+
   return (
     <>
-      {notSignUp ? (
+      {!isSignup ? (
         <FullContainer>
           <LoginHeader onVisible={setLoginModalVisible} />
           {loginModalVisible ? (
@@ -111,7 +112,7 @@ const IntroPage = () => {
               closable={true}
               maskClosable={true}
               onClose={closeLoginModal}
-              setStatus={setNotSignUp}
+              setStatus={setIsSignup}
             />
           ) : (
             <>

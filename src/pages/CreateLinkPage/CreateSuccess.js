@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { ContainedButton } from "../../components/button";
 import Typography from "../../utils/style/Typography/index";
@@ -6,6 +6,8 @@ import { COLORS as palette } from "../../utils/style/Color/colors";
 import { CreateSuccess as SuccessImg } from "../../assets/icons";
 import { useTranslation } from "react-i18next";
 import { CopyPivot } from "../../components/modal";
+import { useSetRecoilState } from "recoil";
+import { signupState } from "../../utils/atoms/login";
 
 const IntroTextBox = styled.div`
   width: 90%;
@@ -54,9 +56,14 @@ const CreateSuccess = ({ linkId }) => {
   const [copyPivotVisible, setCopyPivotVisible] = useState(false);
   const [clickX, setClickX] = useState(0);
   const [clickY, setClickY] = useState(0);
+  const setIsSignup = useSetRecoilState(signupState);
 
   const myRef = useRef(null);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setIsSignup(false);
+  });
 
   const settingOnClick = () => {
     window.location.href = "/editProfile";

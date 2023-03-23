@@ -72,7 +72,7 @@ export const createUserId = async (newId) => {
       returnValue = response.data;
     })
     .catch((error) => {
-      handleTokenExpired(error);
+      console.log(error);
     });
 
   return returnValue;

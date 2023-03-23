@@ -12,7 +12,7 @@ import { setLocalUserInfo } from "../../utils/functions/setLocalVariable";
 import { requestLogin } from "../../utils/api/auth";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
-import { loginState } from "../../utils/atoms/login";
+import { loginState, signupState } from "../../utils/atoms/login";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -50,14 +50,17 @@ const TermsBox = styled.div`
 
 const LoginModalInner = (type, setStatus, onClose) => {
   const setIsLoggedIn = useSetRecoilState(loginState);
+  const setIsSignup = useSetRecoilState(signupState);
   const { t } = useTranslation();
 
   const responseGoogle = async (code) => {
     await requestLogin(code).then((data) => {
-      if (type == "receive" && data === "SIGNUP") {
-        setStatus(false);
-      } else if (data === "LOGIN") {
+      if (type == "receive" || data === "SIGNUP") {
         setStatus(true);
+        setIsSignup(true);
+        console.log(type);
+      } else if (data === "LOGIN") {
+        setStatus(false);
       }
       setIsLoggedIn(true);
       onClose();

@@ -8,7 +8,9 @@ import { ProfileDropbox } from "./components";
 import { useTranslation } from "react-i18next";
 import { getUserInfo } from "../../utils/api/auth";
 import { useRecoilValue } from "recoil";
-import { loginState } from "../../utils/atoms/login";
+import { loginState, signupState } from "../../utils/atoms/login";
+import axios from "axios";
+import { handleTokenExpired } from "../../utils/api/base";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -52,6 +54,7 @@ const LoginHeader = ({ onVisible }) => {
   const [dropBoxOn, setDropBoxOn] = useState(false);
   const [userInfo, setUserInfo] = useState("");
   const isLoggedIn = useRecoilValue(loginState);
+  const isSignup = useRecoilValue(signupState);
   const { t } = useTranslation();
 
   const loginOnClick = () => {
@@ -67,18 +70,31 @@ const LoginHeader = ({ onVisible }) => {
   };
 
   const getUserData = async () => {
-    await getUserInfo().then((data) => {
-      setUserInfo(data);
-      const userLanguage = data.language.toLowerCase().slice(0, 2);
-      localStorage.setItem("language", userLanguage);
-    });
+    let returnValue;
+    await axios
+      .get(`/users/my/info`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        },
+      })
+      .then((data) => {
+        returnValue = data.data.resultData;
+        console.log(localStorage.getItem("accessToken"));
+        setUserInfo(returnValue);
+        const userLanguage = returnValue?.language.toLowerCase().slice(0, 2);
+        localStorage.setItem("language", userLanguage);
+      })
+      .catch((error) => {
+        console.log(error);
+        handleTokenExpired(error);
+      });
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && localStorage.getItem("accessToken")) {
       getUserData();
     }
-  }, [isLoggedIn]);
+  }, [localStorage.getItem("accessToken")]);
 
   return (
     <HeaderContainer>
