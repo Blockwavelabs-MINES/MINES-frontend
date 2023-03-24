@@ -7,7 +7,11 @@ import { EmptyCard, EditableCard } from "../../../components/card";
 import { EmptyWallet, MetamaskIcon } from "../../../assets/icons";
 import { DeleteModal } from "../../../components/modal";
 import { addWallet, deleteWallet } from "../../../utils/api/wallets";
-import { receiveTrxs, getTrxsLinkInfo } from "../../../utils/api/trxs";
+import {
+  receiveTrxs,
+  getTrxsLinkInfo,
+  toggleIsValid,
+} from "../../../utils/api/trxs";
 import Chainlist from "../../SendTokenPage/data/SimpleTokenList";
 import { useTranslation } from "react-i18next";
 import AddWalletAddress from "../../../components/modal/AddWalletAddress";
@@ -414,12 +418,15 @@ const WalletComponent = ({
                         tmpReceiveInfo.receiverWalletAddress =
                           walletList[select].walletAddress;
                         tmpReceiveInfo.transactionHash = res;
+                        toggleIsValid(linkInfo.id, false);
                         await receiveTrxs(
                           walletList[select].walletAddress,
                           "METAMASK",
                           0.000001,
                           linkInfo.id
-                        );
+                        ).then((data) => {
+                          setReceiveInfo(data);
+                        });
                         setLoading(true);
                         setCheckStatus(!checkStatus);
                         console.log("here");
@@ -496,17 +503,8 @@ const WalletComponent = ({
                     if (err) {
                       console.log(walletList[select].walletAddress);
                       console.log(String(err));
-                      if (
-                        String(err).startsWith(
-                          "Error: Returned error: already known"
-                        ) ||
-                        String(err).startsWith(
-                          "Error: Returned error: replacement transaction underpriced"
-                        )
-                      ) {
-                        setLoading(false);
-                        setFailed(true);
-                      }
+                      setLoading(false);
+                      setFailed(true);
                     } else {
                       console.log(res); // 저장해야할 hash값
                       setTransactionHash(res);
@@ -515,6 +513,7 @@ const WalletComponent = ({
                       tmpReceiveInfo.receiverWalletAddress =
                         walletList[select].walletAddress;
                       tmpReceiveInfo.transactionHash = res;
+                      toggleIsValid(linkInfo.id, false);
                       await receiveTrxs(
                         walletList[select].walletAddress,
                         "METAMASK",
@@ -523,7 +522,6 @@ const WalletComponent = ({
                       ).then((data) => {
                         setReceiveInfo(data);
                       });
-
                       // setReceiveInfo(tmpReceiveInfo);
                       setLoading(true);
                       setCheckStatus(!checkStatus);

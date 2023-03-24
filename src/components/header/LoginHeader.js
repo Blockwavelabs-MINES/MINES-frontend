@@ -11,6 +11,7 @@ import { useRecoilValue } from "recoil";
 import { loginState, signupState } from "../../utils/atoms/login";
 import axios from "axios";
 import { handleTokenExpired } from "../../utils/api/base";
+import i18next from "i18next";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -79,9 +80,13 @@ const LoginHeader = ({ onVisible }) => {
       })
       .then((data) => {
         returnValue = data.data.resultData;
-        console.log(localStorage.getItem("accessToken"));
         setUserInfo(returnValue);
         const userLanguage = returnValue?.language.toLowerCase().slice(0, 2);
+        if (userLanguage === "en") {
+          i18next.changeLanguage("en");
+        } else {
+          i18next.changeLanguage("ko");
+        }
         localStorage.setItem("language", userLanguage);
       })
       .catch((error) => {

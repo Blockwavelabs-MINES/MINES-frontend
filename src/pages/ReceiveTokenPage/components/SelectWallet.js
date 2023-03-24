@@ -49,7 +49,7 @@ const SelectWallet = ({ linkInfo, userInfo, walletData }) => {
   return (
     <>
       {complete ? (
-        <ReceiveComplete receiveInfo={receiveInfo} />
+        <ReceiveComplete walletList={walletData} select={select} />
       ) : (
         <>
           {loading ? (
@@ -76,22 +76,22 @@ const SelectWallet = ({ linkInfo, userInfo, walletData }) => {
                           <SubtextBox>{t("selectWalletPage2")}</SubtextBox>
                         </TextBox>
                       </ContentContainer>
+                      <WalletComponent
+                        walletList={walletData}
+                        setInfoChange={setInfoChange}
+                        infoChange={infoChange}
+                        setComplete={setComplete}
+                        setReceiveInfo={setReceiveInfo}
+                        linkInfo={linkInfo}
+                        setLoading={setLoading}
+                        setFailed={setFailed}
+                        setSendOnClick={setSendOnClick}
+                        resend={resend}
+                        select={select}
+                        setSelect={setSelect}
+                      />
                     </>
                   )}
-                  <WalletComponent
-                    walletList={walletData}
-                    setInfoChange={setInfoChange}
-                    infoChange={infoChange}
-                    setComplete={setComplete}
-                    setReceiveInfo={setReceiveInfo}
-                    linkInfo={linkInfo}
-                    setLoading={setLoading}
-                    setFailed={setFailed}
-                    setSendOnClick={setSendOnClick}
-                    resend={resend}
-                    select={select}
-                    setSelect={setSelect}
-                  />
                 </>
               )}
             </>

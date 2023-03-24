@@ -1,7 +1,7 @@
 import axios from "axios";
 import { requestRefreshToken } from "./auth";
 
-axios.defaults.baseURL = process.env.REACT_APP_DB_HOST_NEW;
+axios.defaults.baseURL = process.env.REACT_APP_DB_HOST;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 export const privateHeaders = {
