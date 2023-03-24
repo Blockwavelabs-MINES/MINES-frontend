@@ -133,7 +133,7 @@ const ReceiveComplete = ({ walletList, select }) => {
     getTrxsLinkInfo(trxsLink).then((data) => {
       setReceiveInfo(data);
     });
-  });
+  }, []);
 
   return (
     <>
