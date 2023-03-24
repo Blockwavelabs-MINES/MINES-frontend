@@ -419,7 +419,14 @@ const WalletComponent = ({
                           "METAMASK",
                           0.000001,
                           linkInfo.id
-                        );
+                        )
+                          .then((data) => {
+                            setReceiveInfo(data);
+                          })
+                          .catch(() => {
+                            setLoading(false);
+                            setFailed(true);
+                          });
                         setLoading(true);
                         setCheckStatus(!checkStatus);
                         console.log("here");
@@ -497,11 +504,9 @@ const WalletComponent = ({
                       console.log(walletList[select].walletAddress);
                       console.log(String(err));
                       if (
-                        String(err).startsWith(
-                          "Error: Returned error: already known"
-                        ) ||
-                        String(err).startsWith(
-                          "Error: Returned error: replacement transaction underpriced"
+                        String(err).includes("already known") ||
+                        String(err).includes(
+                          "replacement transaction underpriced"
                         )
                       ) {
                         setLoading(false);
@@ -520,9 +525,14 @@ const WalletComponent = ({
                         "METAMASK",
                         0.000001,
                         linkInfo.id
-                      ).then((data) => {
-                        setReceiveInfo(data);
-                      });
+                      )
+                        .then((data) => {
+                          setReceiveInfo(data);
+                        })
+                        .catch(() => {
+                          setLoading(false);
+                          setFailed(true);
+                        });
 
                       // setReceiveInfo(tmpReceiveInfo);
                       setLoading(true);
