@@ -7,7 +7,11 @@ import { EmptyCard, EditableCard } from "../../../components/card";
 import { EmptyWallet, MetamaskIcon } from "../../../assets/icons";
 import { DeleteModal } from "../../../components/modal";
 import { addWallet, deleteWallet } from "../../../utils/api/wallets";
-import { receiveTrxs, getTrxsLinkInfo } from "../../../utils/api/trxs";
+import {
+  receiveTrxs,
+  getTrxsLinkInfo,
+  toggleIsValid,
+} from "../../../utils/api/trxs";
 import Chainlist from "../../SendTokenPage/data/SimpleTokenList";
 import { useTranslation } from "react-i18next";
 import AddWalletAddress from "../../../components/modal/AddWalletAddress";
@@ -414,6 +418,7 @@ const WalletComponent = ({
                         tmpReceiveInfo.receiverWalletAddress =
                           walletList[select].walletAddress;
                         tmpReceiveInfo.transactionHash = res;
+                        toggleIsValid(linkInfo.id, false);
                         await receiveTrxs(
                           walletList[select].walletAddress,
                           "METAMASK",
@@ -520,6 +525,7 @@ const WalletComponent = ({
                       tmpReceiveInfo.receiverWalletAddress =
                         walletList[select].walletAddress;
                       tmpReceiveInfo.transactionHash = res;
+                      toggleIsValid(linkInfo.id, false);
                       await receiveTrxs(
                         walletList[select].walletAddress,
                         "METAMASK",
@@ -533,7 +539,6 @@ const WalletComponent = ({
                           setLoading(false);
                           setFailed(true);
                         });
-
                       // setReceiveInfo(tmpReceiveInfo);
                       setLoading(true);
                       setCheckStatus(!checkStatus);

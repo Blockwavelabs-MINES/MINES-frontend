@@ -82,3 +82,23 @@ export const getTrxsLinkInfo = async (linkKey) => {
 
   return returnValue;
 };
+
+export const toggleIsValid = async (sendTrxIndex, isValid) => {
+  let returnValue;
+  await axios
+    .patch(
+      `/trxs/toggle/valid`,
+      {
+        sendTrxIndex: sendTrxIndex,
+        isValid: isValid,
+      },
+      {
+        headers: privateHeaders,
+      }
+    )
+    .then((data) => {
+      returnValue = data.data;
+    });
+
+  return returnValue;
+};
