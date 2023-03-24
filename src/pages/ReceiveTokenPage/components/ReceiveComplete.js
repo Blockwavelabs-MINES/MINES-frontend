@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
@@ -8,6 +8,7 @@ import animation from "../../../assets/lottie/check-lottie.json";
 import { MetamaskIcon, GreenCheck, ChevronRight } from "../../../assets/icons";
 import { CompasImage } from "../../../assets/images";
 import { useTranslation } from "react-i18next";
+import { getTrxsLinkInfo } from "../../../utils/api/trxs";
 
 const ContentContainer = styled.div`
   padding-left: 20px;
@@ -112,8 +113,9 @@ const walletConvert = (walletAddress) => {
   return returnAddress;
 };
 
-const ReceiveComplete = ({ receiveInfo }) => {
+const ReceiveComplete = () => {
   const { t } = useTranslation();
+  const [receiveInfo, setReceiveInfo] = useState(null);
 
   const txHashExplorerOnClick = () => {
     if (Number(receiveInfo.networkId) == 5) {
@@ -124,6 +126,15 @@ const ReceiveComplete = ({ receiveInfo }) => {
       window.open(`https://polygonscan.com/tx/${receiveInfo.transactionHash}`);
     }
   };
+
+  useEffect(() => {
+    const pathname = window.location.pathname.split("/");
+    const trxsLink = pathname[pathname.length - 1];
+    getTrxsLinkInfo(trxsLink).then((data) => {
+      setReceiveInfo(data);
+    });
+  });
+
   return (
     <>
       <ContentContainer>

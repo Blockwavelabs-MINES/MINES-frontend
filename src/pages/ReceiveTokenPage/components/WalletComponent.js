@@ -424,14 +424,9 @@ const WalletComponent = ({
                           "METAMASK",
                           0.000001,
                           linkInfo.id
-                        )
-                          .then((data) => {
-                            setReceiveInfo(data);
-                          })
-                          .catch(() => {
-                            setLoading(false);
-                            setFailed(true);
-                          });
+                        ).then((data) => {
+                          setReceiveInfo(data);
+                        });
                         setLoading(true);
                         setCheckStatus(!checkStatus);
                         console.log("here");
@@ -508,15 +503,8 @@ const WalletComponent = ({
                     if (err) {
                       console.log(walletList[select].walletAddress);
                       console.log(String(err));
-                      if (
-                        String(err).includes("already known") ||
-                        String(err).includes(
-                          "replacement transaction underpriced"
-                        )
-                      ) {
-                        setLoading(false);
-                        setFailed(true);
-                      }
+                      setLoading(false);
+                      setFailed(true);
                     } else {
                       console.log(res); // 저장해야할 hash값
                       setTransactionHash(res);
@@ -531,14 +519,9 @@ const WalletComponent = ({
                         "METAMASK",
                         0.000001,
                         linkInfo.id
-                      )
-                        .then((data) => {
-                          setReceiveInfo(data);
-                        })
-                        .catch(() => {
-                          setLoading(false);
-                          setFailed(true);
-                        });
+                      ).then((data) => {
+                        setReceiveInfo(data);
+                      });
                       // setReceiveInfo(tmpReceiveInfo);
                       setLoading(true);
                       setCheckStatus(!checkStatus);
