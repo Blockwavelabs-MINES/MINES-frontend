@@ -32,7 +32,9 @@ export const sendTrxs = async (
         networkId: networkId,
       },
       {
-        headers: privateHeaders,
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        },
       }
     )
     .then((data) => {
@@ -58,7 +60,9 @@ export const receiveTrxs = async (
         transactionGasFee: transactionGasFee,
       },
       {
-        headers: privateHeaders,
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        },
       }
     )
     .then((data) => {
@@ -93,7 +97,9 @@ export const toggleIsValid = async (sendTrxIndex, isValid) => {
         isValid: isValid,
       },
       {
-        headers: privateHeaders,
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        },
       }
     )
     .then((data) => {
