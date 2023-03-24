@@ -113,7 +113,7 @@ const walletConvert = (walletAddress) => {
   return returnAddress;
 };
 
-const ReceiveComplete = () => {
+const ReceiveComplete = ({ walletList, select }) => {
   const { t } = useTranslation();
   const [receiveInfo, setReceiveInfo] = useState(null);
 
@@ -149,7 +149,7 @@ const ReceiveComplete = () => {
         <WalletBox>
           <CheckBox src={GreenCheck} />
           <EditableCard
-            label={walletConvert(receiveInfo?.receiverWalletAddress)}
+            label={walletConvert(walletList[select].walletAddress)}
             isEdit={false}
             isTrash={false}
             // icon={wallet.icon}

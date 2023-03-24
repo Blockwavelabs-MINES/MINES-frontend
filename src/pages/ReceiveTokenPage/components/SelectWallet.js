@@ -49,7 +49,7 @@ const SelectWallet = ({ linkInfo, userInfo, walletData }) => {
   return (
     <>
       {complete ? (
-        <ReceiveComplete receiveInfo={receiveInfo} />
+        <ReceiveComplete walletList={walletData} select={select} />
       ) : (
         <>
           {loading ? (
