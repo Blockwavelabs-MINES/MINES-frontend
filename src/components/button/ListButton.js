@@ -32,17 +32,11 @@ const ListButton = ({ label, select, onClick }) => {
         <TextButton
           styles="active"
           states="default"
-                  size="large"
-                  style={{marginRight: "-10px"}}
+          size="large"
+          style={{ marginRight: "-10px" }}
           label={select}
         />
       ) : (
-        // <IconButton
-        //   styles="active"
-        //   states="default"
-        //   size="large"
-        //   icon={ChevronRight}
-        // />
         <RightIcon src={ChevronRightGray} />
       )}
     </ButtonContainer>

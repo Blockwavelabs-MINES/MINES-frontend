@@ -78,8 +78,8 @@
   "socialAccountInfo1": "Enrolled Account",
 
   "languageSettingInfoHeader": "Setting Language",
-  "languageSettingInfo1": "한국어",
-  "languageSettingInfo2": "영어",
+  "languageSettingInfo1": "KOR",
+  "languageSettingInfo2": "ENG",
 
   "manageProfilePageHeader": "Edit Page",
   "manageProfilePageAlert1": "You have unsaved changes. Discard Changes?",
