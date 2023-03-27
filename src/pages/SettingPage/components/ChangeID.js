@@ -4,7 +4,11 @@ import { useTranslation } from "react-i18next";
 import { InputBox } from "../../../components/input";
 import { InfoCard } from "../../../components/card";
 import { ContainedButton } from "../../../components/button";
-import { createUserId, checkUserId } from "../../../utils/api/auth";
+import {
+  createUserId,
+  checkUserId,
+  getUserInfo,
+} from "../../../utils/api/auth";
 
 const Container = styled.div`
   width: 100%;
@@ -25,12 +29,18 @@ const ChangeID = () => {
   const [linkId, setLinkId] = useState("");
   const [state, setState] = useState("inactive");
   const [errorComment, setErrorComment] = useState("");
-  const [userInfo, setUserInfo] = useState();
+  const [userId, setUserId] = useState();
 
   const { t } = useTranslation();
 
   const infoHeader = t("changeUserId6");
   const infoDescription = t("changeUserId7");
+
+  useEffect(() => {
+    getUserInfo().then((data) => {
+      setUserId(data.userId);
+    });
+  }, []);
 
   useEffect(() => {
     if (linkId.length > 0) {
@@ -79,11 +89,10 @@ const ChangeID = () => {
           label={t("changeUserId1")}
           isRequired={false}
           state={state}
-          placeholder={"UserID"}
+          placeholder={userId}
           message={errorComment}
           fixedMent={"3tree.io/@"}
           fixedMentSize={"93px"}
-          value={linkId}
           onChange={(e) => {
             linkIdOnChange(e);
           }}
