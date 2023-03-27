@@ -45,7 +45,9 @@ function AddLinkModalInner(saveAction, onClose, original) {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (title && url) {
+    let regex =
+      /^(https?:\/\/)((\w+)[.])(asia|biz|cc|cn|com|de|eu|in|info|jobs|jp|kr|mobi|mx|name|net|nz|org|travel|tv|tw|uk|us|site|io)(\/(\w*))*$/i;
+    if (title && url && regex.test(url)) {
       setCanSave(true);
     } else {
       setCanSave(false);
