@@ -9,6 +9,7 @@ import {
   checkUserId,
   getUserInfo,
 } from "../../../utils/api/auth";
+import { ConfirmModal } from "../../../components/modal";
 
 const Container = styled.div`
   width: 100%;
@@ -30,6 +31,7 @@ const ChangeID = () => {
   const [state, setState] = useState("inactive");
   const [errorComment, setErrorComment] = useState("");
   const [userId, setUserId] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { t } = useTranslation();
 
@@ -65,6 +67,10 @@ const ChangeID = () => {
 
   const linkIdOnChange = (e) => {
     setLinkId(e.target.value);
+  };
+
+  const clickSwitch = () => {
+    setIsModalOpen(true);
   };
 
   const createOnClick = async () => {
@@ -115,10 +121,21 @@ const ChangeID = () => {
             states="default"
             size="large"
             label={t("changeUserId8")}
-            onClick={createOnClick}
+            onClick={clickSwitch}
           />
         )}
       </ButtonContainer>
+      {isModalOpen && (
+        <ConfirmModal
+          visible={isModalOpen}
+          closable={true}
+          maskClosable={true}
+          onClose={() => setIsModalOpen(false)}
+          text={<>{t("changeUserIdAlert1")}</>}
+          buttonText={t("changeUserIdAlert2")}
+          subActionOnClick={createOnClick}
+        />
+      )}
     </Container>
   );
 };
