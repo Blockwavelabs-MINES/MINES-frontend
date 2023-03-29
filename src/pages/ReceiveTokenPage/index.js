@@ -239,7 +239,7 @@ const ReceiveTokenPage = () => {
   const [stepStatus, setStepStatus] = useState(1);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
-  const [linkInfo, setLinkInfo] = useState({});
+  const [linkInfo, setLinkInfo] = useState(null);
   const [senderUser, setSenderUser] = useState("");
   const [notiClick, setNotiClick] = useState(false);
   const [loginDone, setLoginDone] = useState(false);
@@ -308,11 +308,13 @@ const ReceiveTokenPage = () => {
     setNotiClick(false);
   };
 
+  console.log(linkInfo);
   return (
     <>
-      {" "}
       <FullContainer>
-        {(loginDone || isLoggedIn) && linkInfo.isValid ? (
+        {(loginDone || isLoggedIn) &&
+        linkInfo?.isValid &&
+        !linkInfo?.isExpired ? (
           <SelectWallet
             linkInfo={linkInfo}
             userInfo={userInfo}
@@ -332,7 +334,7 @@ const ReceiveTokenPage = () => {
               />
             )}
             <ContentContainer>
-              {linkInfo.isValid ? (
+              {linkInfo?.isValid && !isLoggedIn ? (
                 <>
                   <ImageContainer src={PigImage} />
                   <InfoLine>
@@ -396,7 +398,7 @@ const ReceiveTokenPage = () => {
                 <>
                   {linkInfo ? (
                     <>
-                      {linkInfo.isExpired ? (
+                      {linkInfo.isExpired && linkInfo.isValid ? (
                         <>
                           <ImageContainer src={CloudImage} />
                           <TextLine>{t("receiveTokenTimeOver1")}</TextLine>
