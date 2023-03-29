@@ -15,15 +15,7 @@ export const privateHeadersMultipart = {
 
 export const handleTokenExpired = (error) => {
   if (error.response.status === 401) {
-    requestRefreshToken()
-      .then(() => {
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error(error);
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-      });
+    requestRefreshToken();
   }
 
   return;

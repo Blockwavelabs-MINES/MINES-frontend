@@ -394,7 +394,7 @@ const ReceiveTokenPage = () => {
                 </>
               ) : (
                 <>
-                  {linkInfo.isExpired != undefined ? (
+                  {linkInfo ? (
                     <>
                       {linkInfo.isExpired ? (
                         <>

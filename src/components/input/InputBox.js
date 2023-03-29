@@ -38,7 +38,7 @@ const InputContainer = styled.input`
   border-radius: 8px;
   ${Typograpy.Headline3}
   &::-webkit-input-placeholder {
-    color: ${palette.grey_5};
+    color: ${palette.grey_1};
   }
   &:focus {
     outline: none;
@@ -85,7 +85,8 @@ const FixedMentBox = styled.div`
   left: 15px;
   top: 16px;
   ${Typograpy.Headline3}
-  color: ${palette.Black};
+  color: ${(props) =>
+    props.state === "typing" ? `${palette.black}` : `${palette.grey_1}`}
 `;
 
 // state = ["inactive", "filled", "typing", "verified", "error", "help"]
@@ -105,7 +106,7 @@ const InputBox = ({
     <InputBoxContainer>
       <LableFullBox>
         <LabelBox>{label}</LabelBox>
-        {isRequired ? <RequiredMark>*</RequiredMark> : <></>}
+        {isRequired && <RequiredMark>*</RequiredMark>}
       </LableFullBox>
       <InputFullBox>
         <InputContainer
@@ -116,7 +117,11 @@ const InputBox = ({
           value={value}
           onChange={onChange}
         />
-        {fixedMent ? <FixedMentBox>{fixedMent}</FixedMentBox> : <></>}
+        {fixedMent ? (
+          <FixedMentBox state={state}>{fixedMent}</FixedMentBox>
+        ) : (
+          <></>
+        )}
       </InputFullBox>
       {message ? (
         <MessageBox>

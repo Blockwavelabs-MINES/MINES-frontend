@@ -78,8 +78,8 @@
   "socialAccountInfo1": "Enrolled Account",
 
   "languageSettingInfoHeader": "Setting Language",
-  "languageSettingInfo1": "한국어",
-  "languageSettingInfo2": "영어",
+  "languageSettingInfo1": "KOR",
+  "languageSettingInfo2": "ENG",
 
   "manageProfilePageHeader": "Edit Page",
   "manageProfilePageAlert1": "You have unsaved changes. Discard Changes?",
@@ -112,6 +112,7 @@
   "editLinkModal4": "Link URL",
   "editLinkModal5": "https://3tree.io",
   "editLinkModal6": "Save",
+  "editLinkModal7": "Unvalid link!",
 
   "editProfilePageHeader": "Edit Profile",
   "editProfilePage1": "Save",
@@ -120,6 +121,7 @@
   "editProfilePage4": "Name",
   "editProfilePage5": "Bio",
   "editProfilePage6": "Please describe who you are.",
+  "editProfilePage7": "Please enter your name",
 
   "profilePage1": "Link",
   "profilePage2": "Wallet",

@@ -4,7 +4,12 @@ import { useTranslation } from "react-i18next";
 import { InputBox } from "../../../components/input";
 import { InfoCard } from "../../../components/card";
 import { ContainedButton } from "../../../components/button";
-import { createUserId, checkUserId } from "../../../utils/api/auth";
+import {
+  createUserId,
+  checkUserId,
+  getUserInfo,
+} from "../../../utils/api/auth";
+import { ConfirmModal } from "../../../components/modal";
 
 const Container = styled.div`
   width: 100%;
@@ -25,12 +30,19 @@ const ChangeID = () => {
   const [linkId, setLinkId] = useState("");
   const [state, setState] = useState("inactive");
   const [errorComment, setErrorComment] = useState("");
-  const [userInfo, setUserInfo] = useState();
+  const [userId, setUserId] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { t } = useTranslation();
 
   const infoHeader = t("changeUserId6");
   const infoDescription = t("changeUserId7");
+
+  useEffect(() => {
+    getUserInfo().then((data) => {
+      setUserId(data.userId);
+    });
+  }, []);
 
   useEffect(() => {
     if (linkId.length > 0) {
@@ -57,6 +69,10 @@ const ChangeID = () => {
     setLinkId(e.target.value);
   };
 
+  const clickSwitch = () => {
+    setIsModalOpen(true);
+  };
+
   const createOnClick = async () => {
     await checkUserId(linkId)
       .then(async () => {
@@ -79,11 +95,10 @@ const ChangeID = () => {
           label={t("changeUserId1")}
           isRequired={false}
           state={state}
-          placeholder={"UserID"}
+          placeholder={userId}
           message={errorComment}
           fixedMent={"3tree.io/@"}
           fixedMentSize={"93px"}
-          value={linkId}
           onChange={(e) => {
             linkIdOnChange(e);
           }}
@@ -106,10 +121,21 @@ const ChangeID = () => {
             states="default"
             size="large"
             label={t("changeUserId8")}
-            onClick={createOnClick}
+            onClick={clickSwitch}
           />
         )}
       </ButtonContainer>
+      {isModalOpen && (
+        <ConfirmModal
+          visible={isModalOpen}
+          closable={true}
+          maskClosable={true}
+          onClose={() => setIsModalOpen(false)}
+          text={<>{t("changeUserIdAlert1")}</>}
+          buttonText={t("changeUserIdAlert2")}
+          subActionOnClick={createOnClick}
+        />
+      )}
     </Container>
   );
 };

@@ -41,9 +41,14 @@ export const requestRefreshToken = async () => {
       returnValue = data;
       localStorage.setItem("accessToken", data.data.resultData.access_token);
       localStorage.setItem("refreshToken", data.data.resultData.refresh_token);
+      window.location.reload();
     })
     .catch((error) => {
       console.log("requestRefreshToken" + error);
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("language");
+      window.location.reload();
     });
 
   return returnValue;

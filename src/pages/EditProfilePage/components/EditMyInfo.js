@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { EditProfileHeader } from "../../../components/header";
 import { IconButton } from "../../../components/button";
@@ -70,12 +70,8 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   const [introduction, setIntroduction] = useState(userInfo?.profileBio);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [realDelete, setRealDelete] = useState(false);
+  const [nameInputState, setNameInputState] = useState("invalid");
   const { t } = useTranslation();
-  // useEffect(() => {
-  //   if (introduction.length > 100) {
-  //     setIntroduction(introduction.substr(0, 100));
-  //   }
-  // }, [introduction]);
 
   const handleClick = () => {
     hiddenFileInput.current.click();
@@ -134,6 +130,14 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
     setName(e.target.value);
   };
 
+  useEffect(() => {
+    if (!name) {
+      setNameInputState("error");
+    } else {
+      setNameInputState("invalid");
+    }
+  }, [name]);
+
   const introductionOnChange = (e) => {
     if (e.target.value.length < 101) {
       setIntroduction(e.target.value);
@@ -143,6 +147,9 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   };
 
   const saveEditUserInfo = async () => {
+    if (!name) {
+      return;
+    }
     const formData = new FormData();
     const formJson = {
       profile_name: name,
@@ -164,12 +171,18 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   };
 
   const leftOnClick = () => {
-    setCancelModalOpen(true);
+    if (
+      name === userInfo?.profileName &&
+      introduction === userInfo?.profileBio
+    ) {
+      setEditMyInfo(false);
+    } else {
+      setCancelModalOpen(true);
+    }
   };
 
   const subDeleteOnClick = () => {
     setEditMyInfo(false);
-    console.log("hi");
   };
 
   return (
@@ -240,11 +253,12 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
         <InnerContainer>
           <InputBox
             label={t("editProfilePage4")}
-            state="inactive"
+            state={nameInputState}
             isRequired={true}
             placeholder={t("editProfilePage4")}
             value={name}
             onChange={(e) => nameOnChange(e)}
+            message={!name && t("editProfilePage7")}
           />
           <TextAreaBox
             label={t("editProfilePage5")}

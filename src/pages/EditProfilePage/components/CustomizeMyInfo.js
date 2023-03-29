@@ -95,15 +95,24 @@ const ColorPicker = styled.button`
   background-color: ${(props) => props.color};
 `;
 
-const ColorHexBox = styled.div`
+const ColorHexBox = styled.input`
   width: 100%;
   height: 51px;
   border-radius: 10px;
-  border: 1px solid ${palette.sky_3};
+  border: ${({ state, hexCodeError }) =>
+    state === "error" && hexCodeError
+      ? `${palette.red_1} solid 1px`
+      : `${palette.sky_3} solid 1px`};
   background-color: ${palette.sky_4};
   padding: 15px 16px;
   color: ${palette.grey_1};
   ${Typography.Headline3};
+  &:focus {
+    outline: ${({ state }) =>
+      state === "error"
+        ? `${palette.red_1} solid 1px`
+        : `${palette.blue_2} solid 1px`};
+  }
 `;
 
 const PickerBox = styled.div`
@@ -155,6 +164,11 @@ const CustomizeMyInfo = ({
   const [backTypeIsColor, setBackTypeIsColor] = useState(false);
   const [previewOn, setPreviewOn] = useState(false);
   const [pickerIndex, setPickerIndex] = useState(-1);
+  const [backgroundColorState, setBackgroundColorState] = useState("verified");
+  const [buttonColorState, setButtonColorState] = useState("verified");
+  const [buttonFontColorState, setButtonFontColorState] = useState("verified");
+  const [fontColorState, setFontColorState] = useState("verified");
+  const [hexCodeError, setHexCodeError] = useState(false);
   const pickerRef = useRef(null);
 
   const pickerList = [
@@ -191,6 +205,8 @@ const CustomizeMyInfo = ({
       setButtonFontColor(data.buttonFontColor);
       setBackTypeIsColor(data.backgroundType === "COLOR");
     });
+
+    setHexCodeError(false);
   }, []);
 
   useEffect(() => {
@@ -262,7 +278,25 @@ const CustomizeMyInfo = ({
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (
+      (event.keyCode === 8 || event.keyCode === 46) &&
+      event.target.value.length === 1
+    ) {
+      event.preventDefault();
+    }
+  };
+
   const saveProfileDecoEdited = async () => {
+    if (
+      backgroundColorState === "error" ||
+      buttonColorState === "error" ||
+      buttonFontColorState === "error" ||
+      fontColor === "error"
+    ) {
+      setHexCodeError(true);
+      return;
+    }
     const formData = new FormData();
     const formJson = {
       background_color: backgroundColor,
@@ -296,21 +330,25 @@ const CustomizeMyInfo = ({
 
   const handleBackgroundColorChangeComplete = (color) => {
     setBackgroundColor(color.hex);
+    setBackgroundColorState("verified");
     // setBackgroundColor(color.hex + Math.round(color.rgb.a * 255).toString(16));
   };
 
   const handleButtonColorChangeComplete = (color) => {
     setButtonColor(color.hex);
+    setButtonColorState("verified");
     // setButtonColor(color.hex + Math.round(color.rgb.a * 255).toString(16));
   };
 
   const handleButtonFontColorChangeComplete = (color) => {
     setButtonFontColor(color.hex);
+    setButtonFontColorState("verified");
     // setButtonFontColor(color.hex + Math.round(color.rgb.a * 255).toString(16));
   };
 
   const handleFontColorChangeComplete = (color) => {
     setFontColor(color.hex);
+    setFontColorState("verified");
     // setFontColor(color.hex + Math.round(color.rgb.a * 255).toString(16));
   };
 
@@ -421,7 +459,7 @@ const CustomizeMyInfo = ({
                 </SelectBackTypeBox>
                 <SubTitleBox>배경 색상</SubTitleBox>
                 <ColorBar>
-                  {backgroundColorPicker ? (
+                  {backgroundColorPicker && (
                     <PickerBox>
                       <div ref={pickerRef}>
                         <SketchPicker
@@ -430,21 +468,35 @@ const CustomizeMyInfo = ({
                         />
                       </div>
                     </PickerBox>
-                  ) : (
-                    <></>
                   )}
                   <ColorPicker
                     color={backgroundColor}
                     onClick={backColorPickerOnClick}
                   />
-                  <ColorHexBox>{backgroundColor}</ColorHexBox>
+                  <ColorHexBox
+                    onChange={(e) => {
+                      let regExp = /^#([A-Fa-f0-9]{6})$/i;
+                      if (regExp.test(e.target.value)) {
+                        setBackgroundColorState("verified");
+                      } else {
+                        setBackgroundColorState("error");
+                      }
+                      setBackgroundColor(e.target.value);
+                    }}
+                    defaultValue={backgroundColor}
+                    state={backgroundColorState}
+                    value={backgroundColor}
+                    hexCodeError={hexCodeError}
+                    maxLength={7}
+                    onKeyDown={handleKeyDown}
+                  />
                 </ColorBar>
               </ComponentBox>
               <ComponentTitle>버튼</ComponentTitle>
               <ComponentBox>
                 <SubTitleBox>버튼 색상</SubTitleBox>
                 <ColorBar>
-                  {buttonColorPicker ? (
+                  {buttonColorPicker && (
                     <PickerBox>
                       <div ref={pickerRef}>
                         <SketchPicker
@@ -453,20 +505,34 @@ const CustomizeMyInfo = ({
                         />{" "}
                       </div>
                     </PickerBox>
-                  ) : (
-                    <></>
                   )}
                   <ColorPicker
                     color={buttonColor}
                     onClick={buttonColorPickerOnClick}
                   />
-                  <ColorHexBox>{buttonColor}</ColorHexBox>
+                  <ColorHexBox
+                    onChange={(e) => {
+                      let regExp = /^#([A-Fa-f0-9]{6})$/i;
+                      if (regExp.test(e.target.value)) {
+                        setButtonColorState("verified");
+                      } else {
+                        setButtonColorState("error");
+                      }
+                      setButtonColor(e.target.value);
+                    }}
+                    defaultValue={buttonColor}
+                    state={buttonColorState}
+                    value={buttonColor}
+                    hexCodeError={hexCodeError}
+                    maxLength={7}
+                    onKeyDown={handleKeyDown}
+                  />
                 </ColorBar>
                 <SubTitleBox style={{ marginTop: "24px" }}>
                   버튼 폰트 색상
                 </SubTitleBox>
                 <ColorBar>
-                  {buttonFontColorPicker ? (
+                  {buttonFontColorPicker && (
                     <PickerBox>
                       <div ref={pickerRef}>
                         <SketchPicker
@@ -475,21 +541,35 @@ const CustomizeMyInfo = ({
                         />{" "}
                       </div>
                     </PickerBox>
-                  ) : (
-                    <></>
                   )}
                   <ColorPicker
                     color={buttonFontColor}
                     onClick={buttonFontColorPickerOnClick}
                   />
-                  <ColorHexBox>{buttonFontColor}</ColorHexBox>
+                  <ColorHexBox
+                    onChange={(e) => {
+                      let regExp = /^#([A-Fa-f0-9]{6})$/i;
+                      if (regExp.test(e.target.value)) {
+                        setButtonFontColorState("verified");
+                      } else {
+                        setButtonFontColorState("error");
+                      }
+                      setButtonFontColor(e.target.value);
+                    }}
+                    defaultValue={buttonFontColor}
+                    state={buttonFontColorState}
+                    value={buttonFontColor}
+                    hexCodeError={hexCodeError}
+                    maxLength={7}
+                    onKeyDown={handleKeyDown}
+                  />
                 </ColorBar>
               </ComponentBox>
               <ComponentTitle>폰트</ComponentTitle>
               <ComponentBox style={{ marginBottom: "350px" }}>
                 <SubTitleBox>폰트 색상</SubTitleBox>
                 <ColorBar>
-                  {fontColorPicker ? (
+                  {fontColorPicker && (
                     <PickerBox>
                       <div ref={pickerRef}>
                         <SketchPicker
@@ -498,14 +578,28 @@ const CustomizeMyInfo = ({
                         />{" "}
                       </div>
                     </PickerBox>
-                  ) : (
-                    <></>
                   )}
                   <ColorPicker
                     color={fontColor}
                     onClick={fontColorPickerOnClick}
                   />
-                  <ColorHexBox>{fontColor}</ColorHexBox>
+                  <ColorHexBox
+                    onChange={(e) => {
+                      let regExp = /^#([A-Fa-f0-9]{6})$/i;
+                      if (regExp.test(e.target.value)) {
+                        setFontColorState("verified");
+                      } else {
+                        setFontColorState("error");
+                      }
+                      setFontColor(e.target.value);
+                    }}
+                    defaultValue={fontColor}
+                    state={fontColorState}
+                    value={fontColor}
+                    hexCodeError={hexCodeError}
+                    maxLength={7}
+                    onKeyDown={handleKeyDown}
+                  />
                 </ColorBar>
               </ComponentBox>
             </ContentBox>

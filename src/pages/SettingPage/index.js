@@ -4,7 +4,7 @@ import { SettingHeader } from "../../components/header";
 import { ListButton } from "../../components/button";
 import { useTranslation } from "react-i18next";
 import i18next from "../../utils/lang/i18n";
-import { ChangeID, EnrolledAccount } from "./components";
+import { ChangeID, EnrolledAccount, ChangeLanguage } from "./components";
 import { changeUserLanguage } from "../../utils/api/auth";
 import { useRecoilValue } from "recoil";
 import { loginState } from "../../utils/atoms/login";
@@ -20,27 +20,21 @@ const FullContainer = styled.div`
 const SettingPage = () => {
   const [status, setStatus] = useState("");
   const isLoggedIn = useRecoilValue(loginState);
-  const [currentLanguage, setCurrentLanguage] = useState(
-    localStorage.getItem("language")
-  );
   const { t } = useTranslation();
   const StatusList = ["changeID", "checkID", "setLanguage"];
+  const [currentLanguage, setCurrentLanguage] = useState(null);
 
   useEffect(() => {
-    setCurrentLanguage(localStorage.getItem("language"));
+    const currentLanguage = localStorage.getItem("language");
+    const convertLang = () => {
+      if (currentLanguage === "ko") {
+        return "한국어";
+      } else {
+        return "ENG";
+      }
+    };
+    setCurrentLanguage(convertLang());
   }, [localStorage.getItem("language")]);
-
-  const langChange = () => {
-    if (currentLanguage === "en") {
-      i18next.changeLanguage("ko");
-      localStorage.setItem("language", "ko");
-      changeUserLanguage("KOR");
-    } else {
-      i18next.changeLanguage("en");
-      localStorage.setItem("language", "en");
-      changeUserLanguage("ENG");
-    }
-  };
 
   const SettingList = [
     {
@@ -67,17 +61,11 @@ const SettingPage = () => {
       title: t("settingsPage3"),
       header: t("languageSettingInfoHeader"),
       icon: "",
-      // onClick: () => {
-      //   setStatus("setLanguage");
-      // },
       onClick: () => {
-        langChange();
+        setStatus("setLanguage");
       },
-      select:
-        currentLanguage === "en"
-          ? t("languageSettingInfo1")
-          : t("languageSettingInfo2"),
-      component: ChangeID,
+      select: currentLanguage,
+      component: <ChangeLanguage />,
     },
     {
       title: t("settingsPage4"),
@@ -128,6 +116,7 @@ const SettingPage = () => {
         <>
           {SettingList.map((item, idx) => (
             <ListButton
+              key={item.title}
               label={item.title}
               select={item.select}
               onClick={item.onClick}
