@@ -42,15 +42,21 @@ function AddLinkModalInner(saveAction, onClose, original) {
   const [title, setTitle] = useState(original ? original.linkTitle : "");
   const [url, setUrl] = useState(original ? original.linkUrl : "");
   const [canSave, setCanSave] = useState(false);
+  const [errorComment, setErrorComment] = useState("");
+  const [linkInputState, setLinkInputState] = useState("typing");
   const { t } = useTranslation();
 
   useEffect(() => {
     let regex =
       /^(https?:\/\/)((\w+)[.])(asia|biz|cc|cn|com|de|eu|in|info|jobs|jp|kr|mobi|mx|name|net|nz|org|travel|tv|tw|uk|us|site|io)(\/(\w*))*$/i;
-    if (title && url && regex.test(url)) {
+    if ((title && url && regex.test(url)) || !url) {
       setCanSave(true);
+      setErrorComment("");
+      setLinkInputState("filled");
     } else {
       setCanSave(false);
+      setErrorComment(t("editLinkModal7"));
+      setLinkInputState("error");
     }
   }, [title, url]);
 
@@ -89,11 +95,12 @@ function AddLinkModalInner(saveAction, onClose, original) {
           />
           <InputBox
             label={t("editLinkModal4")}
-            state="filled"
             isRequired={true}
             placeholder={t("editLinkModal5")}
             value={url || ""}
             onChange={(e) => urlOnChange(e)}
+            message={errorComment}
+            state={linkInputState}
           />
         </InputContainer>
         {canSave ? (
