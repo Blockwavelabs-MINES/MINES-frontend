@@ -308,8 +308,6 @@ const ReceiveTokenPage = () => {
     setNotiClick(false);
   };
 
-  console.log(linkInfo.isExpired);
-
   return (
     <>
       {" "}
