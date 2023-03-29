@@ -48,9 +48,13 @@ function AddLinkModalInner(saveAction, onClose, original) {
 
   useEffect(() => {
     let regex =
-      /^(https?:\/\/)((\w+)[.])(asia|biz|cc|cn|com|de|eu|in|info|jobs|jp|kr|mobi|mx|name|net|nz|org|travel|tv|tw|uk|us|site|io)(\/(\w*))*$/i;
-    if ((title && url && regex.test(url)) || !url) {
+      /http(s)?[:\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i;
+    if (title && url && regex.test(url)) {
       setCanSave(true);
+      setErrorComment("");
+      setLinkInputState("filled");
+    } else if (!url) {
+      setCanSave(false);
       setErrorComment("");
       setLinkInputState("filled");
     } else {
@@ -61,7 +65,6 @@ function AddLinkModalInner(saveAction, onClose, original) {
   }, [title, url]);
 
   useEffect(() => {
-    console.log(original);
     setLinkId(original?.id);
     setTitle(original?.linkTitle);
     setUrl(original?.linkUrl);
