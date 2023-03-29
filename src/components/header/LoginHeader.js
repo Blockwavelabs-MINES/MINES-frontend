@@ -7,7 +7,7 @@ import { ProfileDefault } from "../../assets/icons";
 import { ProfileDropbox } from "./components";
 import { useTranslation } from "react-i18next";
 import { getUserInfo } from "../../utils/api/auth";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { loginState, signupState } from "../../utils/atoms/login";
 import axios from "axios";
 import { handleTokenExpired } from "../../utils/api/base";
@@ -54,7 +54,7 @@ const ProfileButton = styled.button`
 const LoginHeader = ({ onVisible }) => {
   const [dropBoxOn, setDropBoxOn] = useState(false);
   const [userInfo, setUserInfo] = useState("");
-  const isLoggedIn = useRecoilValue(loginState);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const isSignup = useRecoilValue(signupState);
   const { t } = useTranslation();
 
@@ -100,6 +100,12 @@ const LoginHeader = ({ onVisible }) => {
       getUserData();
     }
   }, [localStorage.getItem("accessToken")]);
+
+  useEffect(() => {
+    if (!localStorage.getItem("accessToken")) {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   return (
     <HeaderContainer>
