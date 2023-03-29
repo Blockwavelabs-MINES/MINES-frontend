@@ -4,7 +4,7 @@ import { privateHeaders, handleTokenExpired } from "./base";
 export const getWallet = async (userId) => {
   let resultValue = 0;
   await axios.get(`/public/wallets/all?userId=${userId}`).then((data) => {
-    resultValue = data.data;
+    resultValue = data.data.resultData;
   });
 
   return resultValue;
@@ -24,7 +24,7 @@ export const addWallet = async (walletType, walletAddress) => {
       }
     )
     .then((data) => {
-      returnValue = data.data;
+      returnValue = data.data.resultData;
     })
     .catch((error) => {
       handleTokenExpired(error);
@@ -40,7 +40,7 @@ export const deleteWallet = async (userWalletIndex) => {
       headers: privateHeaders,
     })
     .then((data) => {
-      returnValue = data.data;
+      returnValue = data.data.resultData;
     })
     .catch((error) => {
       handleTokenExpired(error);

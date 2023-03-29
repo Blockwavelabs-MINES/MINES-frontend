@@ -38,7 +38,7 @@ export const sendTrxs = async (
       }
     )
     .then((data) => {
-      returnValue = data.data;
+      returnValue = data.data.resultData;
     });
 
   return returnValue;
@@ -67,7 +67,7 @@ export const receiveTrxs = async (
     )
     .then((data) => {
       console.log(data.data);
-      returnValue = data.data;
+      returnValue = data.data.resultData;
     });
 
   return returnValue;
@@ -78,7 +78,7 @@ export const getTrxsLinkInfo = async (linkKey) => {
   await axios
     .get(`public/trxs?link_key=${linkKey}`)
     .then((data) => {
-      returnValue = data.data;
+      returnValue = data.data.resultData;
     })
     .catch((error) => {
       console.log(error);
@@ -103,7 +103,7 @@ export const toggleIsValid = async (sendTrxIndex, isValid) => {
       }
     )
     .then((data) => {
-      returnValue = data.data;
+      returnValue = data.data.resultData;
     });
 
   return returnValue;
