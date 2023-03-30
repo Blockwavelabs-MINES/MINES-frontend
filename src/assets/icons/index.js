@@ -35,3 +35,4 @@ export { default as BlingIcon } from "./bling-icon.svg";
 export { default as CustomIcon } from "./custom-icon.svg";
 export { default as EthereumMainnetIcon } from "./ethereumMainnet-icon.svg";
 export { default as PolygonMainnetIcon } from "./polygonMainnet-icon.svg";
+export { default as SmileySad } from "./smiley-sad.svg";

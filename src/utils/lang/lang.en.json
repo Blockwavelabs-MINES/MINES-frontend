@@ -261,5 +261,8 @@
   "receiveTokenComplete4": "Check the transaction hash!",
   "receiveTokenComplete5": "Do you have a problem?",
 
-  "sessionError": "Your session has expired. Please sign in again."
+  "sessionError": "Your session has expired. Please sign in again.",
+
+  "unvalidFormatModal1": "File format not supported",
+  "unvalidFormatModal2": "Please upload files in JPG, JPEG, or PNG format."
 }
