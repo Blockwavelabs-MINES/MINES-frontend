@@ -46,6 +46,11 @@ const TermsBox = styled.div`
   margin-top: 64px;
   ${Typography.Caption2}
   color: ${palette.grey_5};
+
+  & > a {
+    text-decoration: underline;
+    color: ${palette.grey_5};
+  }
 `;
 
 const LoginModalInner = (type, setStatus, onClose) => {
@@ -95,9 +100,9 @@ const LoginModalInner = (type, setStatus, onClose) => {
       />
       <TermsBox>
         {t("loginModal4")}
-        <a>{t("loginModal5")}</a>
+        <a href="https://3tree.io/privacyPolicy">{t("loginModal5")}</a>
         {t("loginModal6")}
-        <a>{t("loginModal7")}</a>
+        <a href="https://3tree.io/termsOfCondition">{t("loginModal7")}</a>
         {t("loginModal8")}
       </TermsBox>
     </FullContainer>

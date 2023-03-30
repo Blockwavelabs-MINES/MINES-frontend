@@ -17,6 +17,7 @@ import ScrollToTop from "./utils/functions/ScrollTop";
 import { COLORS as palette } from "./utils/style/Color/colors";
 import "./utils/style/Font/font.css";
 import { RecoilRoot } from "recoil";
+import { PrivacyPolicy, TermsOfService } from "./pages/TermsAndConditionPage";
 
 const BodyInner = styled.div`
   display: flex;
@@ -56,6 +57,8 @@ function App() {
                   element={<ReceiveTokenPage />}
                 />
                 <Route path="/@:id" element={<ProfilePage />} />
+                <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
+                <Route path="/termsOfService" element={<TermsOfService />} />
                 <Route path="/*" element={<NotFoundPage />} />
               </Routes>
             </WebAppContainer>
