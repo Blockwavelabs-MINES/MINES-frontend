@@ -1,11 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
-import DropBox from "./Dropbox";
-import MetamaskChainList from "./MetamaskChainlist";
-import PlatformList from "./PlatformList";
-import { MetamaskIcon, InputHelp, CopyIconGray } from "../../../assets/icons";
+import { InputHelp, CopyIconGray } from "../../../assets/icons";
 import { Tooltip } from "../../../components/card";
 import { ContainedButton } from "../../../components/button";
 import { ConfirmModal, CopyPivot } from "../../../components/modal";
@@ -144,7 +141,6 @@ function pad(n) {
 
 const convertDateFormat = (dateString, a, b, c, d) => {
   const toTimestamp = Date.parse(dateString);
-  console.log(toTimestamp);
   let convertedDate = "";
   if (localStorage.getItem("language") === "en") {
     const monthNames = [
@@ -249,8 +245,6 @@ const Step3 = ({
       if (myRef.current) {
         let tmpX = myRef.current.getBoundingClientRect().top;
         let tmpY = myRef.current.getBoundingClientRect().left;
-        console.log(tmpX);
-        console.log(tmpY);
         setClickX(tmpX);
         setClickY(tmpY);
       }

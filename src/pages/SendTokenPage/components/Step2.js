@@ -3,14 +3,12 @@ import styled from "styled-components";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import MetamaskChainList from "./MetamaskChainlist";
-import { MetamaskIcon, GoogleIcon } from "../../../assets/icons";
+import { MetamaskIcon } from "../../../assets/icons";
 import { DropIcon, InputHelp, InputError } from "../../../assets/icons";
 import { ContainedButton } from "../../../components/button";
 import { Tooltip } from "../../../components/card";
 import Chainlist from "../data/SimpleTokenList";
-// import BigNumber from "big-number";
-// import math from "math.js";
-import { add, bignumber, format, subtract } from "mathjs";
+import { bignumber, format, subtract } from "mathjs";
 import { useTranslation } from "react-i18next";
 import { MobileNetworkBox, TokenBottomModal, CheckSendModal, DropBox } from ".";
 
@@ -18,25 +16,6 @@ const Container = styled.div`
   width: 100%;
   display: grid;
   gap: 10px;
-`;
-
-const ConnectedBox = styled.div`
-  width: 100%;
-`;
-
-const NetworkBox = styled.div`
-  width: 100%;
-`;
-
-const BoxHeader = styled.li`
-  font-family: Pretendard;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 14px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: ${palette.gray};
-  margin-bottom: 4px;
 `;
 
 const WalletContainer = styled.div`
@@ -62,28 +41,6 @@ const AddressBox = styled.div`
   text-align: center;
 `;
 
-const NetworkText = styled.div`
-  height: 37px;
-  width: 100%;
-  border-radius: 8px;
-  padding: 12px;
-  border: 1px solid ${palette.light_gray};
-  font-family: Pretendard;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 17px;
-  letter-spacing: 0em;
-  text-align: left;
-`;
-
-const Divider = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: ${palette.light_gray};
-  margin-top: 27px;
-  margin-bottom: 27px;
-`;
-
 const HelpTextContainer = styled.div`
   width: 100%;
   display: flex;
@@ -95,11 +52,6 @@ const HelpTextContainer = styled.div`
 const HelpText = styled.div`
   ${Typography.Headline4}
   color: ${palette.grey_4};
-`;
-
-const HelpTextLi = styled.li`
-  padding-left: 1.28571429em;
-  text-indent: -1.28571429em;
 `;
 
 const EmailCheckBox = styled.div`
@@ -245,12 +197,6 @@ const ErrorText = styled.div`
   color: ${palette.red_1};
 `;
 
-const InfoIconBox = styled.img`
-  width: 13px;
-  height: 13px;
-  margin-left: 4px;
-`;
-
 const TooltipStyle = styled.div`
   ${Typography.Footer}
   color: ${palette.white};
@@ -354,7 +300,6 @@ const Step2 = ({
   const [tokenOpen, setTokenOpen] = useState(false);
   const [tokenList, setTokenList] = useState([]);
   const [tokenInfo, setTokenInfo] = useState({});
-  const [undefinedChain, setUndefinedChain] = useState(true);
   const [isFinalCheck, setIsFinalCheck] = useState(false);
   const { t } = useTranslation();
   const TooltipText = (
@@ -368,12 +313,6 @@ const Step2 = ({
   );
 
   useEffect(() => {
-    console.log(networkId + "networkId");
-    console.log(
-      Chainlist[Chainlist.findIndex((v) => v.chainId == networkId)]
-        ?.tokenList[0]
-    );
-
     setTokenList(
       Chainlist[Chainlist.findIndex((v) => v.chainId == networkId)]?.tokenList
     );
@@ -382,151 +321,147 @@ const Step2 = ({
         Chainlist[Chainlist.findIndex((v) => v.chainId == networkId)]
           ?.tokenList[0]
       );
-      console.log(tokenInfo);
     } else {
-      console.log("hi");
       setTokenInfo({});
     }
   }, [networkId]);
 
   useEffect(() => {
+    //숫자만 입력하세요.
     if (!(isInt(Number(amount)) || isFloat(Number(amount)))) {
       setErrorMessage(t("sendpage02_3"));
+      //보유량만큼만 입력하세요.
     } else if (Number(amount) > Number(realBalance)) {
       setErrorMessage(t("sendpage02_7"));
+      //0보다 큰 수치를 입력하세요.
     } else if (amount == "" || Number(amount) == 0) {
-      console.log(Number(amount));
       setErrorMessage(t("sendpage02_5"));
+      //양수만 입력하세요.
     } else if (Number(amount) < 0) {
       setBalance(0);
       setErrorMessage(t("sendpage02_4"));
-    } else if (isFloat(Number(amount)) && String(amount).split(".")[1]) {
-      if (String(amount).split(".")[1].length > 18) {
-        setErrorMessage(t("sendpage02_6"));
-      } else {
-        setErrorMessage("");
-      }
+      //소숫점 아래 18 자리까지만 입력할 수 있어요.
+    } else if (
+      isFloat(Number(amount)) &&
+      String(amount).split(".")[1] &&
+      String(amount).split(".")[1].length > 18
+    ) {
+      setErrorMessage(t("sendpage02_6"));
     } else {
+      //그 외.
       setErrorMessage("");
     }
   }, [amount]);
 
   useEffect(() => {
-    (async () => {
-      const account = address;
-      // get balance of custom token (start)
-      const Web3 = require("web3");
-      let rpcURL = process.env.REACT_APP_GO_URL;
-      if (networkId == 137) {
-        rpcURL = process.env.REACT_APP_POLYGON_URL;
-      }
-      const web3 = new Web3(rpcURL);
+    // get balance of custom token (start)
+    const Web3 = require("web3");
+    let rpcURL;
+    if (networkId == 5) {
+      rpcURL = process.env.REACT_APP_GO_URL;
+    } else if (networkId == 137) {
+      rpcURL = process.env.REACT_APP_POLYGON_URL;
+    }
 
-      let tokenAddress = tokenInfo.address;
-      let walletAddress = account;
-      console.log(tokenAddress);
+    const web3 = new Web3(rpcURL);
 
-      // The minimum ABI to get ERC20 Token balance
-      let minABI = [
-        // balanceOf
-        {
-          constant: true,
-          inputs: [{ name: "_owner", type: "address" }],
-          name: "balanceOf",
-          outputs: [{ name: "balance", type: "uint256" }],
-          type: "function",
-        },
-        // decimals
-        {
-          constant: true,
-          inputs: [],
-          name: "decimals",
-          outputs: [{ name: "", type: "uint8" }],
-          type: "function",
-        },
-      ];
+    let tokenAddress = tokenInfo.address;
+    let walletAddress = address;
 
-      let contract = new web3.eth.Contract(minABI, tokenAddress);
-      async function getBalance() {
-        let balance = await contract.methods.balanceOf(walletAddress).call();
-        balance = balance / Math.pow(10, tokenInfo.decimals);
-        return balance;
-      }
+    // The minimum ABI to get ERC20 Token balance
+    let minABI = [
+      // balanceOf
+      {
+        constant: true,
+        inputs: [{ name: "_owner", type: "address" }],
+        name: "balanceOf",
+        outputs: [{ name: "balance", type: "uint256" }],
+        type: "function",
+      },
+      // decimals
+      {
+        constant: true,
+        inputs: [],
+        name: "decimals",
+        outputs: [{ name: "", type: "uint8" }],
+        type: "function",
+      },
+    ];
 
-      getBalance()
-        .then(function (result) {
-          console.log(result);
-          if (String(result).includes("e")) {
-            // alert(result)
-            setBalance(
-              result * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
-            );
-            setRealBalance(
-              result * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
-            );
+    let contract = new web3.eth.Contract(minABI, tokenAddress);
+    const getBalance = async () => {
+      let balance = await contract.methods.balanceOf(walletAddress).call();
+      balance = balance / Math.pow(10, tokenInfo.decimals);
+      return balance;
+    };
+
+    //잔액 가져오기 성공/에러 처리.
+    getBalance()
+      .then((result) => {
+        if (String(result).includes("e")) {
+          setBalance(
+            result * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+          );
+          setRealBalance(
+            result * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+          );
+        } else {
+          setBalance(result);
+          setRealBalance(result);
+        }
+      })
+      .catch(async (err) => {
+        if (
+          !err
+            .toString()
+            .startsWith(
+              "Error: Returned values aren't valid, did it run Out of Gas? "
+            )
+        ) {
+          if (isMobileDevice()) {
+            await web3.eth.getBalance(address).then((result) => {
+              setBalance(result / Math.pow(10, 18));
+              setRealBalance(result / Math.pow(10, 18));
+            });
           } else {
-            // alert(result)
-            setBalance(result);
-            setRealBalance(result);
-          }
-        })
-        .catch(async (err) => {
-          if (
-            !err
-              .toString()
-              .startsWith(
-                "Error: Returned values aren't valid, did it run Out of Gas? "
-              )
-          ) {
-            if (isMobileDevice()) {
-              const tmpBalance = await web3.eth
-                .getBalance(address)
-                .then((result) => {
-                  setBalance(result / Math.pow(10, 18));
-                  setRealBalance(result / Math.pow(10, 18));
-                });
+            let metamaskProvider = "";
+            if (window.ethereum.providers) {
+              metamaskProvider = window.ethereum.providers.find(
+                (provider) => provider.isMetaMask
+              );
             } else {
-              let metamaskProvider = "";
-              if (window.ethereum.providers) {
-                metamaskProvider = window.ethereum.providers.find(
-                  (provider) => provider.isMetaMask
-                );
-              } else {
-                metamaskProvider = window.ethereum;
-              }
-
-              const isMetamask = metamaskProvider.isMetaMask;
-
-              console.log("isMetamask? ", isMetamask);
-              let balance = "0";
-
-              balance = await metamaskProvider.request({
-                method: "eth_getBalance",
-                params: [address, "latest"],
-              });
-
-              const decimal = parseInt(balance, 16) / Math.pow(10, 18);
-              console.log(decimal);
-              if (String(decimal).includes("e")) {
-                setBalance(
-                  decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
-                );
-                setRealBalance(
-                  decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
-                );
-              } else {
-                setBalance(toFixed(decimal));
-                setRealBalance(toFixed(decimal));
-              }
+              metamaskProvider = window.ethereum;
             }
-          } else {
-            // 해당 token(asset)이 아예 존재하지 않으면
-            setBalance("0");
-            setRealBalance("0");
+
+            const isMetamask = metamaskProvider.isMetaMask;
+
+            let balance = "0";
+
+            balance = await metamaskProvider.request({
+              method: "eth_getBalance",
+              params: [address, "latest"],
+            });
+
+            const decimal = parseInt(balance, 16) / Math.pow(10, 18);
+            if (String(decimal).includes("e")) {
+              setBalance(
+                decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+              );
+              setRealBalance(
+                decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+              );
+            } else {
+              setBalance(toFixed(decimal));
+              setRealBalance(toFixed(decimal));
+            }
           }
-        });
-      // get balance of custom token (end)
-    })();
+        } else {
+          // 해당 token(asset)이 아예 존재하지 않으면
+          setBalance("0");
+          setRealBalance("0");
+        }
+      });
+    // get balance of custom token (end)
   }, [tokenInfo, address]);
 
   useEffect(() => {
@@ -551,7 +486,6 @@ const Step2 = ({
       });
 
       const account = accounts[0];
-      console.log(account);
       setAddress(account);
 
       const balance = await metamaskProvider.request({
@@ -561,12 +495,10 @@ const Step2 = ({
 
       metamaskProvider.on("accountsChanged", function (accounts) {
         // Time to reload your interface with accounts[0]!
-        console.log(accounts[0]);
         setAddress(accounts[0]);
       });
 
       const decimal = parseInt(balance, 16) / Math.pow(10, 18);
-      console.log(decimal);
       if (String(decimal).includes("e")) {
         setBalance(decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12));
         setRealBalance(
@@ -586,7 +518,6 @@ const Step2 = ({
         // const balance = accounts[0];
 
         const decimal2 = parseInt(balance2, 16) / Math.pow(10, 18);
-        console.log(decimal2);
         if (String(decimal2).includes("e")) {
           setBalance(
             decimal2 * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
@@ -602,9 +533,7 @@ const Step2 = ({
 
       // const currentNetwork = parseInt(metamaskProvider.networkVersion, 16);
       const currentNetwork = metamaskProvider.networkVersion;
-      console.log(currentNetwork);
       setNetworkId(currentNetwork);
-      console.log(MetamaskChainList);
       if (currentNetwork == 5 || currentNetwork == 137) {
         // 현재 지원하는 네트워크 유효성 검사
         setNetwork(
@@ -628,7 +557,6 @@ const Step2 = ({
       metamaskProvider.on("chainChanged", function (chainId) {
         // Time to reload your interface with accounts[0]!
         const decChainId = parseInt(chainId, 16);
-        console.log(decChainId);
         if (decChainId == 5 || decChainId == 137) {
           // 현재 지원하는 네트워크 유효성 검사
           setNetwork(
@@ -751,23 +679,16 @@ const Step2 = ({
               // console.log(toFixed(tmpBalance));
               const tmpBalance = toFixed(format(result));
               setBalance(tmpBalance);
-              console.log(
-                "전송 후 잔액 , ",
-                // Number(realBalance) - Number(e.target.value)
-                tmpBalance
-              );
             } else {
               setBalance(toFixed(realBalance));
             }
           }}
         />
-        {errorMessage ? (
+        {errorMessage && (
           <ErrorBox>
             <ErrorIconBox src={InputError} />
             <ErrorText>{errorMessage}</ErrorText>
           </ErrorBox>
-        ) : (
-          <></>
         )}
         {realBalance == balance ? (
           <ContainedButton

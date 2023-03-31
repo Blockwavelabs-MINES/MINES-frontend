@@ -164,11 +164,9 @@ function isMobileDevice() {
 const SendTokenPage = () => {
   const [userInfo, setUserInfo] = useState();
   const [stepStatus, setStepStatus] = useState(1);
-  const [finalModalVisible, setFinalModalVisible] = useState(false);
   const [platform, setPlatform] = useState("google");
   const [email, setEmail] = useState("");
   const [platformIcon, setPlatformIcon] = useState("");
-  const [trash, setTrash] = useState("");
   const [senderAddress, setSenderAddress] = useState("");
   const [currency, setCurrency] = useState("");
   const [network, setNetwork] = useState("");
@@ -177,14 +175,17 @@ const SendTokenPage = () => {
   const [amount, setAmount] = useState("");
   const [walletType, setWalletType] = useState("");
   const [sendDone, setSendDone] = useState(false);
-  const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [expired, setExpired] = useState("");
   const [finalLink, setFinalLink] = useState("");
+  const [balance, setBalance] = useState("0");
+  const [realBalance, setRealBalance] = useState("0");
+
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
   const [resend, setResend] = useState(false);
-  const [balance, setBalance] = useState("0");
-  const [realBalance, setRealBalance] = useState("0");
+
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [finalModalVisible, setFinalModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const isLoggedIn = useRecoilValue(loginState);
 
@@ -215,23 +216,7 @@ const SendTokenPage = () => {
         setPlatform: setPlatform,
         setPlatformIcon: setPlatformIcon,
         setEmail: setEmail,
-        setTrash: setTrash,
         email: email,
-        urlInfo: "",
-        platform: platform,
-        setBalance: setBalance,
-        setRealBalance: setRealBalance,
-        realBalance: realBalance,
-        balance: balance,
-        setAddress: setSenderAddress,
-        setNetworkId: setNetworkId,
-        setNetwork: setNetwork,
-        setCurrency: setCurrency,
-        setWalletType: setWalletType,
-        modalVisible: modalVisible,
-        setModalVisible: setModalVisible,
-        setStepStatus: setStepStatus,
-        stepStatus: stepStatus,
       }),
     },
     {
@@ -311,7 +296,6 @@ const SendTokenPage = () => {
 
   const headerRightOnClick = () => {
     setCancelModalOpen(true);
-    console.log(cancelModalOpen);
   };
 
   const closeCancelModal = () => {
@@ -332,7 +316,7 @@ const SendTokenPage = () => {
             <FailedComponent setFailed={setFailed} setResend={setResend} />
           ) : (
             <>
-              {cancelModalOpen ? (
+              {cancelModalOpen && (
                 <DeleteModal
                   visible={cancelModalOpen}
                   closable={true}
@@ -342,8 +326,6 @@ const SendTokenPage = () => {
                   setRealDelete={setRealDelete}
                   buttonText={t("sendPage01Alert2")}
                 />
-              ) : (
-                <></>
               )}
               {finalModalVisible ? (
                 <FinalConfirmation
@@ -416,7 +398,7 @@ const SendTokenPage = () => {
                           {StepList[stepStatus - 1].component}
                         </StepComponentBox>
                         <StepButtonContainer>
-                          {stepStatus == 1 ? (
+                          {stepStatus == 1 && (
                             <>
                               {email ? (
                                 <ContainedButton
@@ -437,8 +419,6 @@ const SendTokenPage = () => {
                                 />
                               )}
                             </>
-                          ) : (
-                            <></>
                           )}
                         </StepButtonContainer>
                       </ContentContainer>
