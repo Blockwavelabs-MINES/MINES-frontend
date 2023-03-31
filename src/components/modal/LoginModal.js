@@ -102,7 +102,7 @@ const LoginModalInner = (type, setStatus, onClose) => {
         {t("loginModal4")}
         <a href="https://3tree.io/privacyPolicy">{t("loginModal5")}</a>
         {t("loginModal6")}
-        <a href="https://3tree.io/termsOfCondition">{t("loginModal7")}</a>
+        <a href="https://3tree.io/termsOfService">{t("loginModal7")}</a>
         {t("loginModal8")}
       </TermsBox>
     </FullContainer>

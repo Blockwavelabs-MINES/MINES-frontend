@@ -81,7 +81,7 @@ const SettingPage = () => {
       title: t("settingsPage5"),
       icon: "",
       onClick: () => {
-        window.location.href = "https://3tree.io/termsOfCondition";
+        window.location.href = "https://3tree.io/termsOfService";
       },
       select: "",
     },
