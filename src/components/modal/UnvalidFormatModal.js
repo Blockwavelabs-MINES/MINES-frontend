@@ -6,6 +6,7 @@ import Typography from "../../utils/style/Typography";
 import { useTranslation } from "react-i18next";
 
 const ModalWrapper = styled.div`
+  z-index: 101;
   position: fixed;
   bottom: 0;
   width: calc(100% - 40px);

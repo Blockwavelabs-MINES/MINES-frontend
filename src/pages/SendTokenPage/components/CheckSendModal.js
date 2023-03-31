@@ -528,7 +528,6 @@ const LoginModalInner = (
 
       if (!isMobileDevice()) {
         const Web3 = require("web3");
-        const TokenABI = require("../../../utils/abis/IERC20_ABI");
         const web3 = new Web3(
           // window?.ethereum
           metamaskProvider

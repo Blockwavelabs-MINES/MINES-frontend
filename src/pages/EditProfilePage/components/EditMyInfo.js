@@ -81,7 +81,11 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   const handleChange = async (event) => {
     let reader = new FileReader();
     const fileUploaded = event.target.files[0];
-    if (!["image/jpeg", "image/jpg", "image/png"].includes(fileUploaded.type)) {
+    if (
+      !["image/jpeg", "image/jpg", "image/png", "image/gif"].includes(
+        fileUploaded.type
+      )
+    ) {
       setShowFormatModal(true);
       setTimeout(() => {
         setShowFormatModal(false);

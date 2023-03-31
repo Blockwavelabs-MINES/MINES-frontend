@@ -112,7 +112,6 @@ const WalletComponent = ({
   const { t } = useTranslation();
 
   const Web3 = require("web3");
-  const TokenABI = require("../../../utils/abis/IERC20_ABI");
   let web3 = "";
   console.log(Number(linkInfo.networkId));
   if (Number(linkInfo.networkId) == 137) {
@@ -438,8 +437,6 @@ const WalletComponent = ({
             );
           });
         } else {
-          let minABI = TokenABI;
-
           const getGasAmount = async (fromAddress, toAddress, amount) => {
             const gasAmount = await web3.eth.estimateGas({
               to: toAddress,

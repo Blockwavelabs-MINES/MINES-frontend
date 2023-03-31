@@ -264,5 +264,5 @@
   "sessionError": "Your session has expired. Please sign in again.",
 
   "unvalidFormatModal1": "File format not supported",
-  "unvalidFormatModal2": "Please upload files in JPG, JPEG, or PNG format."
+  "unvalidFormatModal2": "Please upload files in JPG, PNG, or GIF format."
 }

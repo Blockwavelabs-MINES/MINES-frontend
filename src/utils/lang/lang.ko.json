@@ -264,5 +264,5 @@
   "sessionError": "세션이 만료되었습니다. 다시 로그인해주세요.",
 
   "unvalidFormatModal1": "지원하지 않는 형식이에요.",
-  "unvalidFormatModal2": "JPG, JPEG, PNG 형식의 파일을 업로드 해주세요."
+  "unvalidFormatModal2": "JPG, PNG, GIF 형식의 파일을 업로드 해주세요."
 }
