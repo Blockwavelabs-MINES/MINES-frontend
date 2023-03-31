@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { EditProfileHeader } from "../../../components/header";
 import { IconButton } from "../../../components/button";
-import { DeleteModal } from "../../../components/modal";
+import { DeleteModal, UnvalidFormatModal } from "../../../components/modal";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import { CameraIcon, ProfileDefault } from "../../../assets/icons";
@@ -71,6 +71,7 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [realDelete, setRealDelete] = useState(false);
   const [nameInputState, setNameInputState] = useState("invalid");
+  const [showFormatModal, setShowFormatModal] = useState(false);
   const { t } = useTranslation();
 
   const handleClick = () => {
@@ -80,6 +81,19 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   const handleChange = async (event) => {
     let reader = new FileReader();
     const fileUploaded = event.target.files[0];
+    if (
+      !["image/jpeg", "image/jpg", "image/png", "image/gif"].includes(
+        fileUploaded.type
+      )
+    ) {
+      setShowFormatModal(true);
+      setTimeout(() => {
+        setShowFormatModal(false);
+      }, 4000);
+      return;
+    } else {
+      setShowFormatModal(false);
+    }
     setNewProfileImage(fileUploaded);
     let imageSize = fileUploaded?.size / 1024 / 1024;
 
@@ -268,6 +282,12 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
             maxSize={100}
           />
         </InnerContainer>
+        <UnvalidFormatModal
+          visible={showFormatModal}
+          onClickEvent={() => {
+            setShowFormatModal(false);
+          }}
+        />
       </FullContainer>
     </>
   );

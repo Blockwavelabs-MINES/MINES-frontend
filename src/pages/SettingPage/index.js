@@ -81,8 +81,7 @@ const SettingPage = () => {
       title: t("settingsPage5"),
       icon: "",
       onClick: () => {
-        window.location.href =
-          "https://propwave.notion.site/Terms-of-Service-2d8c34caef5d448d9523844e1790bc35";
+        window.location.href = "https://3tree.io/termsOfCondition";
       },
       select: "",
     },
@@ -90,8 +89,7 @@ const SettingPage = () => {
       title: t("settingsPage6"),
       icon: "",
       onClick: () => {
-        window.location.href =
-          "https://propwave.notion.site/Privacy-Policy-534c654c440f43b8884c35aa29097dc9";
+        window.location.href = "https://3tree.io/privacyPolicy";
       },
       select: "",
     },

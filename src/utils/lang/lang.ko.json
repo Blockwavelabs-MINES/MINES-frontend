@@ -261,5 +261,8 @@
   "receiveTokenComplete4": "트랜잭션 해시로 받은 내역 확인해요!",
   "receiveTokenComplete5": "문제가 생겼나요?",
 
-  "sessionError": "세션이 만료되었습니다. 다시 로그인해주세요."
+  "sessionError": "세션이 만료되었습니다. 다시 로그인해주세요.",
+
+  "unvalidFormatModal1": "지원하지 않는 형식이에요.",
+  "unvalidFormatModal2": "JPG, PNG, GIF 형식의 파일을 업로드 해주세요."
 }

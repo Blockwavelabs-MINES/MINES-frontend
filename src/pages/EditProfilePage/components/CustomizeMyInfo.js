@@ -11,6 +11,7 @@ import { SketchPicker } from "react-color";
 import { Preview } from ".";
 import { getProfileDeco } from "../../../utils/api/profile";
 import { editProfileDeco } from "../../../utils/api/profile";
+import { UnvalidFormatModal } from "../../../components/modal";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -169,6 +170,7 @@ const CustomizeMyInfo = ({
   const [buttonFontColorState, setButtonFontColorState] = useState("verified");
   const [fontColorState, setFontColorState] = useState("verified");
   const [hexCodeError, setHexCodeError] = useState(false);
+  const [showFormatModal, setShowFormatModal] = useState(false);
   const pickerRef = useRef(null);
 
   const pickerList = [
@@ -221,10 +223,21 @@ const CustomizeMyInfo = ({
   };
 
   const handleChange = async (event) => {
-    console.log("hello");
     let reader = new FileReader();
     const fileUploaded = event.target.files[0];
-    console.log(fileUploaded);
+    if (
+      !["image/jpeg", "image/jpg", "image/png", "image/gif"].includes(
+        fileUploaded.type
+      )
+    ) {
+      setShowFormatModal(true);
+      setTimeout(() => {
+        setShowFormatModal(false);
+      }, 4000);
+      return;
+    } else {
+      setShowFormatModal(false);
+    }
     let imageSize = fileUploaded.size / 1024 / 1024;
     console.log(imageSize, "MB");
 
@@ -603,6 +616,12 @@ const CustomizeMyInfo = ({
                 </ColorBar>
               </ComponentBox>
             </ContentBox>
+            <UnvalidFormatModal
+              visible={showFormatModal}
+              onClickEvent={() => {
+                setShowFormatModal(false);
+              }}
+            />
           </FullContainer>
           <ButtonContainer>
             <ContainedButton
