@@ -53,7 +53,7 @@ const Step1 = ({
       setErrorComment("");
     } else {
       setEmailState("error");
-      setErrorComment("유효하지 않은 계정입니다");
+      setErrorComment(t("sendPage01_7"));
     }
   };
 
