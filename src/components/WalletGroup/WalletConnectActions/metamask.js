@@ -3,68 +3,53 @@ function isMobileDevice() {
 }
 
 const metamaskOnClick = (onConnected) => {
-  // if (!window.ethereum) {
-  //   alert("Get MetaMask!");
-  //   return;
-  // }
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async () => {
     try {
       await window.ethereum.request({
-        // method: "wallet_requestPermissions",
         method: "eth_requestAccounts",
-        // params: [
-        //   {
-        //     eth_accounts: {},
-        //   },
-        // ],
       });
-      
+
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
       });
 
-      console.log(accounts[0]);
       localStorage.setItem("currentAddress", accounts[0]);
       onConnected(accounts[0]);
     } catch (error) {
       if (isMobileDevice()) {
-        try{
+        try {
           const accounts = await window.ethereum.request({
             method: "eth_requestAccounts",
           });
-        
+
           onConnected(accounts[0]);
         } catch (error) {
           alert(error.message);
-          console.error(error.message);
         }
       } else {
-        alert(error.message);
-        console.error(error.message);
+        //현재 에러나는 부분.
+        alert("메타 마스크 익스텐션을 설치해주세요!");
       }
     }
   });
-  // const accounts = await window.ethereum.request({
-  //   method: "eth_requestAccounts",
-  // });
 };
 
-async function checkIfWalletIsConnected(onConnected) {
-  if (window.ethereum) {
-    const accounts = await window.ethereum.request({
-      method: "eth_accounts",
-    });
+// async function checkIfWalletIsConnected(onConnected) {
+//   if (window.ethereum) {
+//     const accounts = await window.ethereum.request({
+//       method: "eth_accounts",
+//     });
 
-    if (accounts.length > 0) {
-      const account = accounts[0];
-      onConnected(account);
-      return;
-    }
+//     if (accounts.length > 0) {
+//       const account = accounts[0];
+//       onConnected(account);
+//       return;
+//     }
 
-    if (isMobileDevice()) {
-      await metamaskOnClick(onConnected);
-    }
-  }
-}
+//     if (isMobileDevice()) {
+//       await metamaskOnClick(onConnected);
+//     }
+//   }
+// }
 
 export default metamaskOnClick;
