@@ -166,6 +166,7 @@ const SendTokenPage = () => {
   const [stepStatus, setStepStatus] = useState(1);
   const [platform, setPlatform] = useState("google");
   const [email, setEmail] = useState("");
+  const [emailState, setEmailState] = useState("unvalid");
   const [platformIcon, setPlatformIcon] = useState("");
   const [senderAddress, setSenderAddress] = useState("");
   const [currency, setCurrency] = useState("");
@@ -217,6 +218,8 @@ const SendTokenPage = () => {
         setPlatformIcon: setPlatformIcon,
         setEmail: setEmail,
         email: email,
+        setEmailState: setEmailState,
+        emailState: emailState,
       }),
     },
     {
@@ -400,7 +403,7 @@ const SendTokenPage = () => {
                         <StepButtonContainer>
                           {stepStatus == 1 && (
                             <>
-                              {email ? (
+                              {emailState === "filled" ? (
                                 <ContainedButton
                                   type="primary"
                                   styles="filled"
