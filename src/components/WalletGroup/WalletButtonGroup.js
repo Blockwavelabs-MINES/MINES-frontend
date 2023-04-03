@@ -77,7 +77,7 @@ const metamaskOnClick = (onConnected) => {
   // }
   return new Promise(async (resolve, reject) => {
     try {
-      const accounts = await window.ethereum.request({
+      const accounts = await window.ethereum?.request({
         method: "eth_accounts",
       });
 
@@ -86,7 +86,7 @@ const metamaskOnClick = (onConnected) => {
     } catch (error) {
       if (isMobileDevice()) {
         try {
-          const accounts = await window.ethereum.request({
+          const accounts = await window.ethereum?.request({
             method: "eth_requestAccounts",
           });
 
