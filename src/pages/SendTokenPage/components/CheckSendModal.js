@@ -7,8 +7,7 @@ import { BottomModal } from "../../../components/modal";
 import { Sender3TreeIcon } from "../../../assets/icons";
 import { sendTrxs } from "../../../utils/api/trxs";
 import { useTranslation } from "react-i18next";
-import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
+import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 
 const FullContainer = styled.div`
@@ -36,54 +35,6 @@ const FirstIntro = styled.div`
   padding-left: 16px;
 `;
 
-const SecondIntro = styled.div`
-  ${Typography.Body}
-  color: ${palette.grey_2};
-  line-height: 23.8px;
-  margin-top: 14px;
-`;
-
-const TermsBox = styled.div`
-  margin-top: 64px;
-  ${Typography.Caption2}
-  color: ${palette.grey_5};
-`;
-
-const TokenListBox = styled.div`
-  padding: 12px 8px;
-  margin-top: 10px;
-`;
-
-const TokenListItem = styled.div`
-  width: 100%;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  padding: 20px 16px;
-`;
-
-const TokenIcon = styled.img`
-  width: 32px;
-  height: 32px;
-  border-radius: 16px;
-  margin: 4px;
-`;
-
-const TokenTextInfo = styled.div`
-  margin-left: 8px;
-`;
-
-const TokenCurrency = styled.div`
-  margin-bottom: 4px;
-  ${Typography.Heading2}
-  ${palette.Black};
-`;
-
-const TokenSemi = styled.div`
-  ${Typography.Caption2}
-  ${palette.grey3};
-`;
-
 const SendAmountInfo = styled.div`
   display: flex;
   align-items: center;
@@ -95,11 +46,6 @@ const SendAmountBox = styled.div`
   font-weight: 600;
   margin-right: 8px;
   text-align: left;
-`;
-
-const SendAmountText = styled.div`
-  ${Typography.Subhead}
-  color: ${palette.grey_1};
 `;
 
 const MainInfoBox = styled.div`
@@ -175,16 +121,18 @@ const LoginModalInner = (
   const [transactionStatus, setTransactionStatus] = useState(null);
   const [escrowId, setEscrowId] = useState();
   const [expiredDateResult, setExpiredDateResult] = useState();
-  const { connector, active, provider, account, chainId, library } =
-    useWeb3React();
+  const { library } = useWeb3React();
 
   const Web3 = require("web3");
-  let rpcURL = process.env.REACT_APP_GO_URL;
-  if (networkId == 137) {
+  let rpcURL;
+  if (networkId == 5) {
+    rpcURL = process.env.REACT_APP_GO_URL;
+  } else if (networkId == 137) {
     rpcURL = process.env.REACT_APP_POLYGON_URL;
   }
-  // const web3 = new Web3(rpcURL);
+
   let metamaskProvider = "";
+
   if (window?.ethereum?.providers) {
     metamaskProvider = window?.ethereum?.providers.find(
       (provider) => provider.isMetaMask
@@ -199,30 +147,14 @@ const LoginModalInner = (
   const web3 = new Web3(metamaskProvider);
 
   useEffect(() => {
-    console.log(resend);
     if (resend) {
       sendOnClick();
-      // setLoading(true);
     }
   }, []);
 
   useEffect(() => {
-    console.log(tokenInfo);
-    console.log(tokenInfo.address + "this is tokenInfo.address");
-    console.log(transactionHash);
     if (transactionHash) {
-      console.log(transactionHash);
-      // alert("in useEffect" + transactionHash);
-      // setLoading(false); // failed창 테스트
-      // setFailed(true); // failed창 테스트
-      // Check the status of the transaction every 1 second
       const interval = setInterval(async () => {
-        // web3.eth
-        //   .getTransactionReceipt(
-        //     transactionHash
-        //     // "dfsdfdfd"
-        //   )
-
         await fetch(rpcURL, {
           method: "POST",
           headers: {
@@ -269,7 +201,6 @@ const LoginModalInner = (
           .catch((err) => {
             // 존재하지 않는 hash 값일 경우 (+ pending이 길게 되어 tx가 사라진 경우)
             console.log(err);
-            // alert(JSON.stringify(err));
             setLoading(false);
             setFailed(true);
             clearInterval(interval);
@@ -278,14 +209,10 @@ const LoginModalInner = (
     }
   }, [transactionHash]);
 
-  console.log(amount);
-  console.log(currency);
   const sendOnClick = async () => {
     document.body.style.overflow = "auto";
-    console.log(tokenInfo);
 
     if (currency == "USDC" || currency == "USDT") {
-      console.log("hi");
       let minABI = [
         // balanceOf
         {
@@ -325,17 +252,9 @@ const LoginModalInner = (
       } else {
         tempProvider = new ethers.providers.Web3Provider(metamaskProvider);
       }
-      // const tempSigner = web3.getSigner();
-      // let tmpWeb3 = new Web3(rpcURL);
 
-      // const tempContract = new web3.eth.Contract(
-      //   minABI,
-      //   tokenInfo.address
-      //   // tempSigner
-      // );
       async function sendToken() {
         setLoading(true);
-        console.log("ho");
         if (isMobileDevice()) {
           const contract = new web3.eth.Contract(minABI, tokenInfo.address);
           const transferMethod = await contract.methods.transfer(
@@ -344,14 +263,6 @@ const LoginModalInner = (
           );
           const encodedData = await transferMethod.encodeABI();
           alert(encodedData);
-          const tx = {
-            // value: web3.utils.toHex(Number(amount) * Math.pow(10, 18)),
-            data: encodedData,
-            // gas: web3.utils.toHex(200000),
-            // to: process.env.REACT_APP_3TREE_ADDRES,
-            from: "0xfE9fDf1adC8Fa2DE65d3e26C0bFEF4C7F66e1120",
-            address: "0xfE9fDf1adC8Fa2DE65d3e26C0bFEF4C7F66e1120",
-          };
           metamaskProvider = library.provider;
           await metamaskProvider
             .request({
@@ -359,27 +270,13 @@ const LoginModalInner = (
               params: [encodedData, address],
             })
             .then(async (txHash) => {
-              alert("hihi");
               alert(txHash);
-              // alert(txHash.rawTransaction);
-              // const transactionHash = await metamaskProvider.request({
-              //   method: "eth_sendTransaction",
-              //   params: [txHash.rawTransaction],
-              // });
-              // escrow hash와 id 생성 (with escrow Contract)
-              // alert(transactionHash);
               const escrowHash = txHash;
-              // const escrowHash = transactionHash;
               setEscrowId("1234"); // 현재는 escrow로 관리하지 않으므로 일단 임의의 값
               setExpiredDateResult(setExpiredDate());
-              console.log(sender);
-              console.log(tokenInfo.address);
-              console.log(networkId);
               setTransactionHash(escrowHash);
-              // alert(escrowHash);
             })
             .catch((error) => {
-              // console.error;
               alert(JSON.stringify(error));
             });
         } else {
@@ -390,61 +287,21 @@ const LoginModalInner = (
             tempSigner
           );
 
-          const data = await tempContract.functions
+          await tempContract.functions
             .transfer(
               process.env.REACT_APP_3TREE_ADDRESS,
               web3.utils.toHex(
                 Number(amount) * Math.pow(10, tokenInfo.decimals)
               )
-              // { from: address },
             )
-            // .send({
-            //   gasPrice: ethers.utils.parseUnits("20", "gwei"),
-            //   gasLimit: 1000000,
-            //   nonce: await metamaskProvider.getTransactionCount(address),
-            //   from: address,
-            // })
             .then((transaction) => {
               console.log("Transaction hash:", transaction.hash);
               transaction.wait().then(async (receipt) => {
                 console.log("Transaction receipt:", receipt);
                 if (receipt.status === 1) {
-                  console.log("success");
-                  const txHash = transaction.hash;
-                  const escrowHash = txHash;
-                  const escrowId = "1234";
-                  const expiredDate = setExpiredDate();
-                  console.log(expiredDate);
-                  console.log(amount);
-                  console.log(sender);
-                  console.log(tokenInfo.address);
-                  console.log(networkId);
-                  // const sendTrxsResult = await sendTrxs(
-                  //   userIdx,
-                  //   address,
-                  //   "metamask",
-                  //   "google",
-                  //   receiver,
-                  //   currency,
-                  //   amount,
-                  //   escrowHash,
-                  //   escrowId,
-                  //   expiredDate,
-                  //   sender,
-                  //   tokenInfo.address,
-                  //   networkId
-                  // ).then((data) => {
-                  //   setLoading(false);
-                  //   setFinalLink(data.link_key);
-                  //   setExpired(data.expired_at);
-                  // });
-
-                  //test
                   setLoading(false);
                   setFinalLink("sdsd");
                   setExpired("sdsdad");
-
-                  //test
                   setStepStatus(stepStatus + 1);
                   onClose();
                 } else if (receipt.status !== undefined) {
@@ -453,31 +310,10 @@ const LoginModalInner = (
                 }
               });
             });
-
-          console.log("this is encodeABI()");
         }
-
-        // console.log(data);
-        // return data;
-        // return returnValue;
       }
 
       sendToken();
-      //   .then(async (data) => {
-      //     console.log(data);
-      //     // const txHash = data.transactionHash;
-      //     const txHash = data;
-      //     // const txHash = await web3.eth.sendTransaction({
-      //     //   data: data,
-      //     //   value: web3.utils.toHex(Number(amount) * Math.pow(10, 18)),
-      //     //   gas: web3.utils.toHex(200000),
-      //     //   to: process.env.REACT_APP_3TREE_ADDRES,
-      //     //   from: address,
-      //     // });
-      //     // escrow hash와 id 생성 (with escrow Contract)
-      //     console.log(txHash);
-      //   })
-      //   .catch((error) => console.error);
     } else {
       // 보내고 tx값 받은 다음 백호출
       let metamaskProvider = "";
@@ -518,8 +354,7 @@ const LoginModalInner = (
               // alert(escrowHash);
             })
             .catch((error) => {
-              // console.error;
-              // alert(error);
+              console.log(error);
             });
         } else {
           metamaskProvider = window?.ethereum;
@@ -528,11 +363,7 @@ const LoginModalInner = (
 
       if (!isMobileDevice()) {
         const Web3 = require("web3");
-        const web3 = new Web3(
-          // window?.ethereum
-          metamaskProvider
-          // new Web3.providers.Web3Provider(window.ethereum)
-        );
+        const web3 = new Web3(metamaskProvider);
 
         const getGasAmount = async (fromAddress, toAddress, amount) => {
           const gasAmount = await web3.eth.estimateGas({
@@ -580,18 +411,14 @@ const LoginModalInner = (
             ],
           })
           .then(async (txHash) => {
-            console.log(txHash);
             // escrow hash와 id 생성 (with escrow Contract)
 
             const escrowHash = txHash;
             setEscrowId("1234"); // 현재는 escrow로 관리하지 않으므로 일단 임의의 값
             setExpiredDateResult(setExpiredDate());
-            console.log(sender);
-            console.log(tokenInfo.address);
-            console.log(networkId);
             setTransactionHash(escrowHash);
           })
-          .catch((error) => console.error);
+          .catch((error) => console.log(error));
       }
     }
   };
@@ -612,7 +439,6 @@ const LoginModalInner = (
               {t("sendConfirmModal3")}
             </font>
           </SendAmountBox>
-          {/* <SendAmountText>를 보냅니다.</SendAmountText> */}
         </SendAmountInfo>
         <PersonInfoBox>
           <PersonInfoLine>

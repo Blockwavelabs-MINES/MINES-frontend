@@ -409,6 +409,17 @@ const WalletComponent = ({
                     async (err, res) => {
                       if (err) {
                         console.log(err);
+                        if (
+                          String(err).startsWith(
+                            "Error: Returned error: already known"
+                          ) ||
+                          String(err).startsWith(
+                            "Error: Returned error: replacement transaction underpriced"
+                          )
+                        ) {
+                          setLoading(false);
+                          setFailed(true);
+                        }
                       } else {
                         console.log(res); // 저장해야할 hash값
                         setTransactionHash(res);

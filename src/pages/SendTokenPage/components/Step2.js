@@ -433,8 +433,6 @@ const Step2 = ({
               metamaskProvider = window.ethereum;
             }
 
-            const isMetamask = metamaskProvider.isMetaMask;
-
             let balance = "0";
 
             balance = await metamaskProvider.request({
@@ -476,25 +474,24 @@ const Step2 = ({
         metamaskProvider = window.ethereum;
       }
 
-      const isMetamask = metamaskProvider.isMetaMask;
-
-      console.log("isMetamask? ", isMetamask);
-
-      await metamaskProvider.enable();
+      //계정 목록 가져오기.
       const accounts = await metamaskProvider.request({
         method: "eth_requestAccounts",
       });
 
+      //첫 번째 계정을 선택.
       const account = accounts[0];
       setAddress(account);
 
+      //선택한 계정의 잔액을 가져오기.
       const balance = await metamaskProvider.request({
         method: "eth_getBalance",
         params: [account, "latest"],
       });
 
+      //계정이 변경될 때 잔액을 다시 가져오도록 등록.
       metamaskProvider.on("accountsChanged", function (accounts) {
-        // Time to reload your interface with accounts[0]!
+        // 현재 계정 주소를 업데이트.
         setAddress(accounts[0]);
       });
 
@@ -509,13 +506,13 @@ const Step2 = ({
         setRealBalance(toFixed(decimal));
       }
 
-      metamaskProvider.on("chainChanged", async function (chainId) {
-        // Time to reload your interface with accounts[0]!
+      //현재 네트워크 ID와 네이티브 토큰 심볼을 가져옴.
+      //네트워크 ID와 currency를 업데이트
+      metamaskProvider.on("chainChanged", async function () {
         const balance2 = await metamaskProvider.request({
           method: "eth_getBalance",
           params: [account, "latest"],
         });
-        // const balance = accounts[0];
 
         const decimal2 = parseInt(balance2, 16) / Math.pow(10, 18);
         if (String(decimal2).includes("e")) {
@@ -531,7 +528,6 @@ const Step2 = ({
         }
       });
 
-      // const currentNetwork = parseInt(metamaskProvider.networkVersion, 16);
       const currentNetwork = metamaskProvider.networkVersion;
       setNetworkId(currentNetwork);
       if (currentNetwork == 5 || currentNetwork == 137) {
@@ -609,7 +605,7 @@ const Step2 = ({
         />
       ) : (
         <>
-          {isFinalCheck ? (
+          {isFinalCheck && (
             <CheckSendModal
               visible={isFinalCheck}
               closable={true}
@@ -632,8 +628,6 @@ const Step2 = ({
               setFailed={setFailed}
               resend={resend}
             />
-          ) : (
-            <></>
           )}
         </>
       )}
@@ -647,13 +641,11 @@ const Step2 = ({
       <SendContainer>
         <SelectTokenBox onClick={() => setTokenOpen(true)}>
           <TokenInfo>
-            {tokenInfo?.symbol ? (
+            {tokenInfo?.symbol && (
               <>
                 <TokenIcon src={tokenInfo?.logoURI} />
                 <TokenName>{tokenInfo?.symbol}</TokenName>
               </>
-            ) : (
-              <></>
             )}
           </TokenInfo>
           <DropIconBox src={DropIcon} />
@@ -676,7 +668,6 @@ const Step2 = ({
                 bignumber(Number(e.target.value))
                 // bignumber(Number(e.target.value))
               );
-              // console.log(toFixed(tmpBalance));
               const tmpBalance = toFixed(format(result));
               setBalance(tmpBalance);
             } else {
@@ -728,7 +719,6 @@ const Step2 = ({
                   <>
                     {/* <NetworkStatusCircle style={{backgroundColor:palette.red_2}}/> */}
                     <NetworkName style={{ color: palette.red_2 }}>
-                      {" "}
                       {t("sendpage02_13")}
                     </NetworkName>
                   </>
@@ -748,7 +738,7 @@ const Step2 = ({
             <HelpTextContainer>
               <HelpText>{t("sendpage02_14")}</HelpText>
               <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
-                {notiClick ? (
+                {notiClick && (
                   <Tooltip
                     text={TooltipText}
                     visible={notiClick}
@@ -756,8 +746,6 @@ const Step2 = ({
                     maskClosable={true}
                     onClose={notiOnClose}
                   />
-                ) : (
-                  <></>
                 )}
               </NoticeIcon>
             </HelpTextContainer>
