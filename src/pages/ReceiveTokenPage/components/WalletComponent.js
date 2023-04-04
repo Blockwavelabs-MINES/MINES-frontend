@@ -15,6 +15,7 @@ import {
 import Chainlist from "../../SendTokenPage/data/SimpleTokenList";
 import { useTranslation } from "react-i18next";
 import AddWalletAddress from "../../../components/modal/AddWalletAddress";
+import { ConfirmModal } from "../../../components/modal";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -109,6 +110,7 @@ const WalletComponent = ({
   const [transactionStatus, setTransactionStatus] = useState(null);
   const [checkStatus, setCheckStatus] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const { t } = useTranslation();
 
   const Web3 = require("web3");
@@ -231,9 +233,19 @@ const WalletComponent = ({
     setDeleteModalOn(false);
   };
 
-  const walletConnectOnClick = () => {
-    // MetamaskOnClick(walletList, setAddedWallet);
-    setModalVisible(true);
+  function isMobileDevice() {
+    return (
+      ("ontouchstart" in window || "onmsgesturechange" in window) &&
+      !window.ethereum
+    );
+  }
+
+  const walletConnectOnClick = async () => {
+    if (!window.ethereum && !isMobileDevice()) {
+      setShowModal(true);
+    } else {
+      setModalVisible(true);
+    }
   };
 
   const handleSelectChange = (event) => {
@@ -554,6 +566,19 @@ const WalletComponent = ({
 
   return (
     <>
+      {showModal && (
+        <ConfirmModal
+          visible={setShowModal}
+          onClose={() => setShowModal(false)}
+          text={<>{t("addWalletModalAlert")}</>}
+          buttonText={<>{t("addWalletModalAlertButton")}</>}
+          subActionOnClick={() => {
+            window.open(
+              "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=ko"
+            );
+          }}
+        />
+      )}
       {modalVisible ? (
         <AddWalletAddress
           visible={modalVisible}

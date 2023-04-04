@@ -11,6 +11,8 @@ import Chainlist from "../data/SimpleTokenList";
 import { bignumber, format, subtract } from "mathjs";
 import { useTranslation } from "react-i18next";
 import { MobileNetworkBox, TokenBottomModal, CheckSendModal, DropBox } from ".";
+import { ConfirmModal } from "../../../components/modal";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -301,7 +303,9 @@ const Step2 = ({
   const [tokenList, setTokenList] = useState([]);
   const [tokenInfo, setTokenInfo] = useState({});
   const [isFinalCheck, setIsFinalCheck] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const { t } = useTranslation();
+
   const TooltipText = (
     <TooltipStyle>
       {/* 이더리움 메인넷 (ETH)
@@ -311,6 +315,19 @@ const Step2 = ({
       {t("sendpage02_15")}
     </TooltipStyle>
   );
+
+  function isMobileDevice() {
+    return (
+      ("ontouchstart" in window || "onmsgesturechange" in window) &&
+      !window.ethereum
+    );
+  }
+
+  useEffect(() => {
+    if (!window.ethereum) {
+      setShowModal(true);
+    }
+  }, []);
 
   useEffect(() => {
     setTokenList(
@@ -591,8 +608,23 @@ const Step2 = ({
     setNotiClick(false);
   };
 
+  const navigation = useNavigate();
+
   return (
     <Container>
+      {showModal && (
+        <ConfirmModal
+          visible={setShowModal}
+          onClose={() => navigation("/")}
+          text={<>{t("addWalletModalAlert")}</>}
+          buttonText={<>{t("addWalletModalAlertButton")}</>}
+          subActionOnClick={() => {
+            window.open(
+              "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=ko"
+            );
+          }}
+        />
+      )}
       {tokenOpen && tokenList ? (
         <TokenBottomModal
           visible={tokenOpen}
