@@ -9,6 +9,7 @@ import { DeleteModal } from "../../../components/modal";
 import { getWallet, addWallet, deleteWallet } from "../../../utils/api/wallets";
 import { useTranslation } from "react-i18next";
 import AddWalletAddress from "../../../components/modal/AddWalletAddress";
+import { ConfirmModal } from "../../../components/modal";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -60,6 +61,7 @@ const WalletComponent = ({ userId, setInfoChange, infoChange }) => {
   const [deleteIdx, setDeleteIdx] = useState(-1);
   const [addedWallet, setAddedWallet] = useState();
   const [modalVisible, setModalVisible] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -140,14 +142,17 @@ const WalletComponent = ({ userId, setInfoChange, infoChange }) => {
     setDeleteModalOn(false);
   };
 
-  const walletConnectOnClick = () => {
-    // MetamaskOnClick(walletList, setAddedWallet);
-    setModalVisible(true);
+  const walletConnectOnClick = async () => {
+    if (!window.ethereum && !isMobileDevice()) {
+      setShowModal(true);
+    } else {
+      setModalVisible(true);
+    }
   };
 
   return (
     <FullContainer>
-      {modalVisible ? (
+      {modalVisible && (
         <AddWalletAddress
           visible={modalVisible}
           closable={true}
@@ -155,8 +160,19 @@ const WalletComponent = ({ userId, setInfoChange, infoChange }) => {
           onClose={closeModal}
           setAddedWallet={setAddedWallet}
         />
-      ) : (
-        <></>
+      )}
+      {showModal && (
+        <ConfirmModal
+          visible={setShowModal}
+          onClose={() => setShowModal(false)}
+          text={<>{t("addWalletModalAlert")}</>}
+          buttonText={<>{t("addWalletModalAlertButton")}</>}
+          subActionOnClick={() => {
+            window.open(
+              "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=ko"
+            );
+          }}
+        />
       )}
       {deleteModalOn ? (
         <DeleteModal

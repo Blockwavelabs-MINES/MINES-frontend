@@ -105,6 +105,9 @@
   "manageProfilePageAlertDeleteWallet3": "Cancel",
 
   "addWalletModalTitle": "Add Wallet Address",
+  "addWalletModalAlert": "You don't have a wallet to connect to 3TREE",
+  "addWalletModalAlertButton": "Install Metamask",
+  "addWalletModalAlertButton2": "Cancel",
 
   "editLinkModal1": "Link",
   "editLinkModal2": "Link Title",

@@ -113,6 +113,9 @@
   "editLinkModal7": "유효하지 않은 링크입니다.",
 
   "addWalletModalTitle": "지갑 주소 추가하기",
+  "addWalletModalAlert": "연결할 수 있는 지갑이 없어요!",
+  "addWalletModalAlertButton": "메타마스크 설치하기",
+  "addWalletModalAlertButton2": "취소",
 
   "editProfilePageHeader": "내 정보 수정",
   "editProfilePage1": "저장",
