@@ -33,12 +33,22 @@ const TitleContainer = styled.div`
   margin: auto 0px;
 `;
 
+const OnlyTitleContainer = styled.div`
+  ${Typograpy.Headline1}
+  color: ${palette.Black};
+  font-family: Montserrat;
+  margin: auto 0px;
+  width: 100%;
+  text-align: center;
+`;
+
 const SendTokenHeader = ({
   onVisible,
   title,
   iconLeft = ChevronLeft,
   leftOnClick,
   rightOnClick,
+  stepStatus,
 }) => {
   const { t } = useTranslation();
 
@@ -49,30 +59,34 @@ const SendTokenHeader = ({
   return (
     <HeaderContainer>
       <InnerContainer>
-        <div style={{ width: "58px" }}>
-          <IconButton
-            type="secondary"
-            styles="outlined"
-            states="default"
-            size="xs"
-            icon={iconLeft}
-            onClick={leftIconOnClick}
-          />
-        </div>
-        <TitleContainer>{title}</TitleContainer>
-        <div style={{ width: "58px" }}>
-          {rightOnClick ? (
-            <TextButton
-              styles="active"
-              states="default"
-              size="large"
-              label={t("sendPage01Header2")}
-              onClick={rightOnClick}
-            />
-          ) : (
-            <></>
-          )}
-        </div>
+        {stepStatus === 3 ? (
+          <OnlyTitleContainer>{title}</OnlyTitleContainer>
+        ) : (
+          <>
+            <div style={{ width: "58px" }}>
+              <IconButton
+                type="secondary"
+                styles="outlined"
+                states="default"
+                size="xs"
+                icon={iconLeft}
+                onClick={leftIconOnClick}
+              />
+            </div>
+            <TitleContainer>{title}</TitleContainer>
+            <div style={{ width: "58px" }}>
+              {rightOnClick && (
+                <TextButton
+                  styles="active"
+                  states="default"
+                  size="large"
+                  label={t("sendPage01Header2")}
+                  onClick={rightOnClick}
+                />
+              )}
+            </div>
+          </>
+        )}
       </InnerContainer>
     </HeaderContainer>
   );

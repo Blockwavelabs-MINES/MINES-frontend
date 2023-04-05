@@ -354,6 +354,7 @@ const SendTokenPage = () => {
                         title={t("sendpage02Header1")}
                         leftOnClick={leftOnClick}
                         rightOnClick={headerRightOnClick}
+                        stepStatus={stepStatus}
                       />
                       <ContentContainer>
                         <StepStatusBox>
