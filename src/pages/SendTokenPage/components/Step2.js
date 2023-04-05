@@ -476,106 +476,88 @@ const Step2 = ({
           setRealBalance("0");
         }
       });
-    // get balance of custom token (end)
+
+    setAmount("");
+    setCurrency(tokenInfo.symbol);
   }, [tokenInfo, address]);
 
   useEffect(() => {
-    (async () => {
-      setWalletType("Metamask");
-      let metamaskProvider = "";
-      if (window.ethereum.providers) {
-        metamaskProvider = window.ethereum.providers.find(
-          (provider) => provider.isMetaMask
-        );
-      } else {
-        metamaskProvider = window.ethereum;
-      }
+    if (stepStatus === 2) {
+      (async () => {
+        setWalletType("Metamask");
+        let metamaskProvider = "";
+        if (window.ethereum.providers) {
+          metamaskProvider = window.ethereum.providers.find(
+            (provider) => provider.isMetaMask
+          );
+        } else {
+          metamaskProvider = window.ethereum;
+        }
 
-      //계정 목록 가져오기.
-      const accounts = await metamaskProvider.request({
-        method: "eth_requestAccounts",
-      });
+        //계정 목록 가져오기.
+        const accounts = await metamaskProvider.request({
+          method: "eth_requestAccounts",
+        });
 
-      //첫 번째 계정을 선택.
-      const account = accounts[0];
-      setAddress(account);
+        //첫 번째 계정을 선택.
+        const account = accounts[0];
+        setAddress(account);
 
-      //선택한 계정의 잔액을 가져오기.
-      const balance = await metamaskProvider.request({
-        method: "eth_getBalance",
-        params: [account, "latest"],
-      });
-
-      //계정이 변경될 때 잔액을 다시 가져오도록 등록.
-      metamaskProvider.on("accountsChanged", function (accounts) {
-        // 현재 계정 주소를 업데이트.
-        setAddress(accounts[0]);
-      });
-
-      const decimal = parseInt(balance, 16) / Math.pow(10, 18);
-      if (String(decimal).includes("e")) {
-        setBalance(decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12));
-        setRealBalance(
-          decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
-        );
-      } else {
-        setBalance(toFixed(decimal));
-        setRealBalance(toFixed(decimal));
-      }
-
-      //현재 네트워크 ID와 네이티브 토큰 심볼을 가져옴.
-      //네트워크 ID와 currency를 업데이트
-      metamaskProvider.on("chainChanged", async function () {
-        const balance2 = await metamaskProvider.request({
+        //선택한 계정의 잔액을 가져오기.
+        const balance = await metamaskProvider.request({
           method: "eth_getBalance",
           params: [account, "latest"],
         });
 
-        const decimal2 = parseInt(balance2, 16) / Math.pow(10, 18);
-        if (String(decimal2).includes("e")) {
+        //계정이 변경될 때 잔액을 다시 가져오도록 등록.
+        metamaskProvider.on("accountsChanged", function (accounts) {
+          // 현재 계정 주소를 업데이트.
+          setAddress(accounts[0]);
+        });
+
+        const decimal = parseInt(balance, 16) / Math.pow(10, 18);
+        if (String(decimal).includes("e")) {
           setBalance(
-            decimal2 * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+            decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
           );
           setRealBalance(
-            decimal2 * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+            decimal * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
           );
         } else {
-          setBalance(toFixed(decimal2));
-          setRealBalance(toFixed(decimal2));
+          setBalance(toFixed(decimal));
+          setRealBalance(toFixed(decimal));
         }
-      });
 
-      const currentNetwork = metamaskProvider.networkVersion;
-      setNetworkId(currentNetwork);
-      if (currentNetwork == 5 || currentNetwork == 137) {
-        // 현재 지원하는 네트워크 유효성 검사
-        setNetwork(
-          MetamaskChainList[
-            MetamaskChainList.findIndex(
-              (v) => v.pageProps.chain.chainId == currentNetwork
-            )
-          ].pageProps.chain.name
-        );
-      } else {
-        setNetwork(t("sendpage02_13"));
-      }
+        //현재 네트워크 ID와 네이티브 토큰 심볼을 가져옴.
+        //네트워크 ID와 currency를 업데이트
+        metamaskProvider.on("chainChanged", async function () {
+          const balance2 = await metamaskProvider.request({
+            method: "eth_getBalance",
+            params: [account, "latest"],
+          });
 
-      setCurrency(
-        MetamaskChainList[
-          MetamaskChainList.findIndex(
-            (v) => v.pageProps.chain.chainId == currentNetwork
-          )
-        ].pageProps.chain.nativeCurrency.symbol
-      );
-      metamaskProvider.on("chainChanged", function (chainId) {
-        // Time to reload your interface with accounts[0]!
-        const decChainId = parseInt(chainId, 16);
-        if (decChainId == 5 || decChainId == 137) {
+          const decimal2 = parseInt(balance2, 16) / Math.pow(10, 18);
+          if (String(decimal2).includes("e")) {
+            setBalance(
+              decimal2 * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+            );
+            setRealBalance(
+              decimal2 * Math.pow(10, 18 - tokenInfo.decimals).toFixed(12)
+            );
+          } else {
+            setBalance(toFixed(decimal2));
+            setRealBalance(toFixed(decimal2));
+          }
+        });
+
+        const currentNetwork = metamaskProvider.networkVersion;
+        setNetworkId(currentNetwork);
+        if (currentNetwork == 5 || currentNetwork == 137) {
           // 현재 지원하는 네트워크 유효성 검사
           setNetwork(
             MetamaskChainList[
               MetamaskChainList.findIndex(
-                (v) => v.pageProps.chain.chainId == decChainId
+                (v) => v.pageProps.chain.chainId == currentNetwork
               )
             ].pageProps.chain.name
           );
@@ -583,17 +565,27 @@ const Step2 = ({
           setNetwork(t("sendpage02_13"));
         }
 
-        setNetworkId(decChainId);
-        setCurrency(
-          MetamaskChainList[
-            MetamaskChainList.findIndex(
-              (v) => v.pageProps.chain.chainId == decChainId
-            )
-          ].pageProps.chain.nativeCurrency.symbol
-        );
-      });
-    })();
-  }, []);
+        metamaskProvider.on("chainChanged", function (chainId) {
+          // Time to reload your interface with accounts[0]!
+          const decChainId = parseInt(chainId, 16);
+          if (decChainId == 5 || decChainId == 137) {
+            // 현재 지원하는 네트워크 유효성 검사
+            setNetwork(
+              MetamaskChainList[
+                MetamaskChainList.findIndex(
+                  (v) => v.pageProps.chain.chainId == decChainId
+                )
+              ].pageProps.chain.name
+            );
+          } else {
+            setNetwork(t("sendpage02_13"));
+          }
+
+          setNetworkId(decChainId);
+        });
+      })();
+    }
+  }, [stepStatus]);
 
   const sendOnClick = () => {
     setIsFinalCheck(true);
@@ -720,14 +712,14 @@ const Step2 = ({
             states="default"
             size="small"
             label={
-              balance
+              balance && realBalance
                 ? `${t("sendpage02_8")}${balance} ${currency}${t(
                     "sendpage02_9"
                   )}`
                 : t("sendpage02_10")
             }
             style={{ margin: "0px auto", marginTop: "32px" }}
-            onClick={maxOnClick}
+            onClick={balance && realBalance ? maxOnClick : null}
           />
         ) : (
           <CurrentBalanceText>
@@ -769,7 +761,16 @@ const Step2 = ({
             </NetworkWalletInfoBox>
             <HelpTextContainer>
               <HelpText>{t("sendpage02_14")}</HelpText>
-              <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
+              <NoticeIcon
+                onClick={() => setNotiClick(!notiClick)}
+                setNotiClick={setNotiClick}
+                onMouseEnter={() => {
+                  setNotiClick(true);
+                }}
+                onMouseLeave={() => {
+                  setNotiClick(false);
+                }}
+              >
                 {notiClick && (
                   <Tooltip
                     text={TooltipText}
