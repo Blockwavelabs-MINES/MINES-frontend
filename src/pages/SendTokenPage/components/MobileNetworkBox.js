@@ -195,7 +195,8 @@ const MobileNetworkBox = ({ networkId, setNetworkId, network }) => {
   const { connector, active, provider, account, chainId, library } =
     useWeb3React();
   const [message, setMessage] = useState("");
-  const [notiClick, setNotiClick] = useState(false);
+  const [iconClicked, setIconClicked] = useState(false);
+  const [iconHovering, setIconHovering] = useState(false);
   const [networkOpen, setNetworkOpen] = useState(false);
   const [newNetworkId, setNewNetworkId] = useState(chainId);
 
@@ -247,7 +248,7 @@ const MobileNetworkBox = ({ networkId, setNetworkId, network }) => {
   };
 
   const notiOnClose = () => {
-    setNotiClick(false);
+    setIconClicked(false);
   };
 
   return (
@@ -291,17 +292,22 @@ const MobileNetworkBox = ({ networkId, setNetworkId, network }) => {
         </NetworkBox>
         <HelpTextContainer>
           <HelpText>{t("sendpage02_14")}</HelpText>
-          <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
-            {notiClick ? (
+          <NoticeIcon
+            onClick={() => setIconClicked(!iconClicked)}
+            onMouseEnter={() => {
+              setIconHovering(true);
+            }}
+            onMouseLeave={() => {
+              setIconHovering(false);
+            }}
+          >
+            {(iconClicked || iconHovering) && (
               <Tooltip
                 text={TooltipText}
-                visible={notiClick}
                 closable={true}
                 maskClosable={true}
                 onClose={notiOnClose}
               />
-            ) : (
-              <></>
             )}
           </NoticeIcon>
         </HelpTextContainer>

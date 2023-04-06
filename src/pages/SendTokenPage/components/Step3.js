@@ -210,7 +210,8 @@ const Step3 = ({
   expired,
   finalLink,
 }) => {
-  const [notiClick, setNotiClick] = useState(false);
+  const [iconClicked, setIconClicked] = useState(false);
+  const [iconHovering, setIconHovering] = useState(false);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
   const [copyPivotVisible, setCopyPivotVisible] = useState(false);
   const [clickX, setClickX] = useState(0);
@@ -229,7 +230,7 @@ const Step3 = ({
   );
 
   const notiOnClose = () => {
-    setNotiClick(false);
+    setIconClicked(false);
   };
 
   const copyOnClick = () => {
@@ -273,17 +274,22 @@ const Step3 = ({
       <SemiTitle>{t("sendPage03Success2")}</SemiTitle>
       <HelpTextContainer>
         <HelpText>{t("sendPage03_1")}</HelpText>
-        <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
-          {notiClick ? (
+        <NoticeIcon
+          onClick={() => setIconClicked(!iconClicked)}
+          onMouseEnter={() => {
+            setIconHovering(true);
+          }}
+          onMouseLeave={() => {
+            setIconHovering(false);
+          }}
+        >
+          {(iconClicked || iconHovering) && (
             <Tooltip
               text={TooltipText}
-              visible={notiClick}
               closable={true}
               maskClosable={true}
               onClose={notiOnClose}
             />
-          ) : (
-            <></>
           )}
         </NoticeIcon>
       </HelpTextContainer>

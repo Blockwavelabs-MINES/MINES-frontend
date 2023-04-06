@@ -32,10 +32,9 @@ const DropBoxOuterBox = styled.div`
   margin: 0px auto;
   position: relative;
   z-index: 900;
-  display: ${(props) => (props.visible ? "block" : "none")};
 `;
 
-const Tooltip = ({ className, onClose, maskClosable, visible, text }) => {
+const Tooltip = ({ className, onClose, maskClosable, text }) => {
   const onMaskClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose(e);
@@ -48,7 +47,6 @@ const Tooltip = ({ className, onClose, maskClosable, visible, text }) => {
         className={className}
         onClick={maskClosable ? onMaskClick : null}
         tabIndex="-1"
-        visible={visible}
       >
         <FullBox>
           <BubbleTailBox src={TooltipBubbleTail} />

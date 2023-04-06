@@ -298,7 +298,8 @@ const Step2 = ({
 }) => {
   const [amount, setAmount] = useState();
   const [errorMessage, setErrorMessage] = useState("");
-  const [notiClick, setNotiClick] = useState(false);
+  const [iconClicked, setIconClicked] = useState(false);
+  const [iconHovering, setIconHovering] = useState(false);
   const [tokenOpen, setTokenOpen] = useState(false);
   const [tokenList, setTokenList] = useState([]);
   const [tokenInfo, setTokenInfo] = useState({});
@@ -597,7 +598,7 @@ const Step2 = ({
   };
 
   const notiOnClose = () => {
-    setNotiClick(false);
+    setIconClicked(false);
   };
 
   const navigation = useNavigate();
@@ -762,19 +763,17 @@ const Step2 = ({
             <HelpTextContainer>
               <HelpText>{t("sendpage02_14")}</HelpText>
               <NoticeIcon
-                onClick={() => setNotiClick(!notiClick)}
-                setNotiClick={setNotiClick}
+                onClick={() => setIconClicked(!iconClicked)}
                 onMouseEnter={() => {
-                  setNotiClick(true);
+                  setIconHovering(true);
                 }}
                 onMouseLeave={() => {
-                  setNotiClick(false);
+                  setIconHovering(false);
                 }}
               >
-                {notiClick && (
+                {(iconClicked || iconHovering) && (
                   <Tooltip
                     text={TooltipText}
-                    visible={notiClick}
                     closable={true}
                     maskClosable={true}
                     onClose={notiOnClose}

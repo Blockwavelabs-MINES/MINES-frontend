@@ -241,7 +241,8 @@ const ReceiveTokenPage = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [linkInfo, setLinkInfo] = useState(null);
   const [senderUser, setSenderUser] = useState("");
-  const [notiClick, setNotiClick] = useState(false);
+  const [iconClicked, setIconClicked] = useState(false);
+  const [iconHovering, setIconHovering] = useState(false);
   const [loginDone, setLoginDone] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [walletData, setWalletData] = useState(null);
@@ -305,7 +306,7 @@ const ReceiveTokenPage = () => {
   };
 
   const notiOnClose = () => {
-    setNotiClick(false);
+    setIconClicked(false);
   };
 
   console.log(linkInfo);
@@ -371,11 +372,18 @@ const ReceiveTokenPage = () => {
                   </ExpiredCard>
                   <NoticeBox>
                     <NoticeText>{t("receiveTokenPage10")}</NoticeText>
-                    <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
-                      {notiClick && (
+                    <NoticeIcon
+                      onClick={() => setIconClicked(!iconClicked)}
+                      onMouseEnter={() => {
+                        setIconHovering(true);
+                      }}
+                      onMouseLeave={() => {
+                        setIconHovering(false);
+                      }}
+                    >
+                      {(iconClicked || iconHovering) && (
                         <Tooltip
                           text={TooltipText}
-                          visible={notiClick}
                           closable={true}
                           maskClosable={true}
                           onClose={notiOnClose}
