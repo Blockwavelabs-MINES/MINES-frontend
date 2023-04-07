@@ -113,6 +113,9 @@
   "editLinkModal7": "유효하지 않은 링크입니다.",
 
   "addWalletModalTitle": "지갑 주소 추가하기",
+  "addWalletModalAlert": "연결할 수 있는 지갑이 없어요!",
+  "addWalletModalAlertButton": "메타마스크 설치하기",
+  "addWalletModalAlertButton2": "취소",
 
   "editProfilePageHeader": "내 정보 수정",
   "editProfilePage1": "저장",
@@ -136,7 +139,8 @@
   "sendPage01_3": "플랫폼",
   "sendPage01_4": "소셜 계정",
   "sendPage01_5": "0x3tree@gmail.com",
-  "sendPage01_6": "다음",
+  "sendPage01_6": "지갑연결",
+  "sendPage01_7": "유효하지 않은 계정입니다.",
   "sendPage01Alert1": "지금까지 입력한 정보가 모두 초기화됩니다. 초기화 하시겠어요?",
   "sendPage01Alert2": "초기화하기",
   "sendPage01Alert3": "취소",

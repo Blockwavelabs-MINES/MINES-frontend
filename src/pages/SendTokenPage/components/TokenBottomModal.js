@@ -89,14 +89,6 @@ const LoginModalInner = (
 ) => {
   const { t } = useTranslation();
 
-  useEffect(() => {
-    if (tokenList.length > 0) {
-      setTokenInfo(tokenList[0]);
-    } else {
-      setTokenInfo({});
-    }
-  }, [networkId]);
-
   const TokenItemOnClick = (idx) => {
     setTokenInfo(tokenList[idx]);
     document.body.style.overflow = "auto";

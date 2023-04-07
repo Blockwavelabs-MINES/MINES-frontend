@@ -105,6 +105,9 @@
   "manageProfilePageAlertDeleteWallet3": "Cancel",
 
   "addWalletModalTitle": "Add Wallet Address",
+  "addWalletModalAlert": "You don't have a wallet to connect to 3TREE",
+  "addWalletModalAlertButton": "Install Metamask",
+  "addWalletModalAlertButton2": "Cancel",
 
   "editLinkModal1": "Link",
   "editLinkModal2": "Link Title",
@@ -136,7 +139,8 @@
   "sendPage01_3": "Platform",
   "sendPage01_4": "Social Media Account",
   "sendPage01_5": "0x3tree@gmail.com",
-  "sendPage01_6": "Next",
+  "sendPage01_6": "Connect Wallet",
+  "sendPage01_7": "Unvalid account!",
   "sendPage01Alert1": "All information entered will be reset. Would you like to reset it?",
   "sendPage01Alert2": "Confirm",
   "sendPage01Alert3": "Cancel",

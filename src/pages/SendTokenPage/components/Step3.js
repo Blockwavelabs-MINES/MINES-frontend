@@ -139,78 +139,57 @@ function pad(n) {
   return n < 10 ? "0" + n : n;
 }
 
-const convertDateFormat = (dateString, a, b, c, d) => {
-  const toTimestamp = Date.parse(dateString);
-  let convertedDate = "";
+const convertDateFormat = (date, a, b, c, d) => {
+  let dateString = date.replaceAll("-", "").replaceAll("T", "");
+  let monthNames = {
+    "01": "January",
+    "02": "February",
+    "03": "March",
+    "04": "April",
+    "05": "May",
+    "06": "June",
+    "07": "July",
+    "08": "August",
+    "09": "September",
+    10: "October",
+    11: "November",
+    12: "December",
+  };
+  let convertedDate;
   if (localStorage.getItem("language") === "en") {
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
     convertedDate =
       a +
-      pad(new Date(toTimestamp).getUTCHours()) +
-      ":" +
-      pad(new Date(toTimestamp).getUTCMinutes()) +
-      b +
-      monthNames[Number(new Date(toTimestamp).getUTCMonth())] +
       " " +
-      pad(new Date(toTimestamp).getUTCDate()) +
+      dateString.slice(8, 13) +
+      " " +
+      b +
+      " " +
+      monthNames[dateString.slice(4, 6)] +
+      " " +
+      dateString.slice(6, 8) +
       d +
       " " +
-      pad(new Date(toTimestamp).getFullYear().toString());
+      dateString.slice(0, 4);
   } else {
     convertedDate =
-      a +
-      pad(new Date(toTimestamp).getFullYear().toString()) +
+      dateString.slice(0, 4) +
       b +
-      pad(new Date(toTimestamp).getUTCMonth() + 1) +
+      " " +
+      dateString.slice(4, 6) +
       c +
-      pad(new Date(toTimestamp).getUTCDate()) +
+      " " +
+      dateString.slice(6, 8) +
       d +
-      pad(new Date(toTimestamp).getUTCHours()) +
-      ":" +
-      pad(new Date(toTimestamp).getUTCMinutes());
+      " " +
+      dateString.slice(8, 13);
   }
-  // ":" +
-  // pad(new Date(toTimestamp).getUTCSeconds());
+
   return convertedDate;
 };
 
-const walletConvert = (walletAddress) => {
-  var returnAddress = walletAddress;
-  if (walletAddress?.length > 15) {
-    returnAddress =
-      walletAddress.substr(0, 6) +
-      "..." +
-      walletAddress.substr(walletAddress.length - 6, walletAddress.length);
-  }
-  return returnAddress;
-};
-
-const Step3 = ({
-  setAmount,
-  setToken,
-  setCurrency,
-  currency,
-  amount,
-  token,
-  networkId,
-  createdLink,
-  expired,
-  finalLink,
-}) => {
-  const [notiClick, setNotiClick] = useState(false);
+const Step3 = ({ expired, finalLink }) => {
+  const [iconClicked, setIconClicked] = useState(false);
+  const [iconHovering, setIconHovering] = useState(false);
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
   const [copyPivotVisible, setCopyPivotVisible] = useState(false);
   const [clickX, setClickX] = useState(0);
@@ -229,7 +208,7 @@ const Step3 = ({
   );
 
   const notiOnClose = () => {
-    setNotiClick(false);
+    setIconClicked(false);
   };
 
   const copyOnClick = () => {
@@ -273,17 +252,22 @@ const Step3 = ({
       <SemiTitle>{t("sendPage03Success2")}</SemiTitle>
       <HelpTextContainer>
         <HelpText>{t("sendPage03_1")}</HelpText>
-        <NoticeIcon onClick={() => setNotiClick(!notiClick)}>
-          {notiClick ? (
+        <NoticeIcon
+          onClick={() => setIconClicked(!iconClicked)}
+          onMouseEnter={() => {
+            setIconHovering(true);
+          }}
+          onMouseLeave={() => {
+            setIconHovering(false);
+          }}
+        >
+          {(iconClicked || iconHovering) && (
             <Tooltip
               text={TooltipText}
-              visible={notiClick}
               closable={true}
               maskClosable={true}
               onClose={notiOnClose}
             />
-          ) : (
-            <></>
           )}
         </NoticeIcon>
       </HelpTextContainer>

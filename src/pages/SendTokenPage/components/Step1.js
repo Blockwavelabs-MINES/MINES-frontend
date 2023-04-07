@@ -26,8 +26,16 @@ const BoxHeader = styled.div`
   margin-bottom: 4px;
 `;
 
-const Step1 = ({ setPlatform, setPlatformIcon, email, setEmail }) => {
+const Step1 = ({
+  setPlatform,
+  setPlatformIcon,
+  email,
+  setEmail,
+  emailState,
+  setEmailState,
+}) => {
   const [platformIdx, setPlatformIdx] = useState(0);
+  const [errorComment, setErrorComment] = useState("");
 
   const { t } = useTranslation();
 
@@ -38,6 +46,15 @@ const Step1 = ({ setPlatform, setPlatformIcon, email, setEmail }) => {
 
   const emailOnChange = (e) => {
     setEmail(e.target.value);
+    let regex =
+      /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{1,6}(?:\.[a-z])?)$/i;
+    if (email && regex.test(email)) {
+      setEmailState("filled");
+      setErrorComment("");
+    } else {
+      setEmailState("error");
+      setErrorComment(t("sendPage01_7"));
+    }
   };
 
   return (
@@ -53,12 +70,13 @@ const Step1 = ({ setPlatform, setPlatformIcon, email, setEmail }) => {
       <EmailBox>
         <InputBox
           label={t("sendPage01_4")}
-          state="filled"
+          state={emailState}
           isRequired={false}
           placeholder={t("sendPage01_5")}
           value={email}
           height={51}
           onChange={(e) => emailOnChange(e)}
+          message={errorComment}
         />
       </EmailBox>
     </Container>
