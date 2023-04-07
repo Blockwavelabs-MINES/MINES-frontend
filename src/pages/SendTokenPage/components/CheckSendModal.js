@@ -299,9 +299,23 @@ const LoginModalInner = (
               transaction.wait().then(async (receipt) => {
                 console.log("Transaction receipt:", receipt);
                 if (receipt.status === 1) {
-                  setLoading(false);
-                  setFinalLink("sdsd");
-                  setExpired("sdsdad");
+                  await sendTrxs(
+                    address,
+                    "metamask",
+                    "google",
+                    receiver,
+                    currency,
+                    amount,
+                    transaction.hash,
+                    1234,
+                    setExpiredDate(),
+                    tokenInfo.address,
+                    networkId
+                  ).then((data) => {
+                    setFinalLink(data.linkKey);
+                    setExpired(data.expiredAt);
+                    setLoading(false);
+                  });
                   setStepStatus(stepStatus + 1);
                   onClose();
                 } else if (receipt.status !== undefined) {

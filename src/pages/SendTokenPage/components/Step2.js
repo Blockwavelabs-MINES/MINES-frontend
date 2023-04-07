@@ -686,15 +686,10 @@ const Step2 = ({
               !(Number(e.target.value) > Number(realBalance))
             ) {
               const result = subtract(
-                // bignumber(0.00006326),
-                // bignumber(0.0000632)
-                // bignumber(Number(realBalance)),
                 bignumber(Number(realBalance)),
                 bignumber(Number(e.target.value))
-                // bignumber(Number(e.target.value))
               );
-              const tmpBalance = toFixed(format(result));
-              setBalance(tmpBalance);
+              setBalance(String(result));
             } else {
               setBalance(toFixed(realBalance));
             }
