@@ -114,6 +114,11 @@ const ColorHexBox = styled.input`
         ? `${palette.red_1} solid 1px`
         : `${palette.blue_2} solid 1px`};
   }
+  & {
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+  }
 `;
 
 const PickerBox = styled.div`
