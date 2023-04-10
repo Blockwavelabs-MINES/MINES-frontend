@@ -193,7 +193,7 @@ const SendTokenPage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (localStorage.getItem("accessToken")) {
       getUserInfo().then((data) => {
         setUserInfo(data);
       });
