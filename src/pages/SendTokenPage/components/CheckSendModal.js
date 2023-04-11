@@ -254,7 +254,6 @@ const LoginModalInner = (
       }
 
       async function sendToken() {
-        setLoading(true);
         if (isMobileDevice()) {
           const contract = new web3.eth.Contract(minABI, tokenInfo.address);
           const transferMethod = await contract.methods.transfer(
@@ -279,8 +278,9 @@ const LoginModalInner = (
             .catch((error) => {
               alert(JSON.stringify(error));
             });
+          setLoading(true);
         } else {
-          const tempSigner = tempProvider.getSigner();
+          const tempSigner = await tempProvider.getSigner();
           let tempContract = new ethers.Contract(
             tokenInfo.address,
             minABI,
@@ -294,14 +294,29 @@ const LoginModalInner = (
                 Number(amount) * Math.pow(10, tokenInfo.decimals)
               )
             )
-            .then((transaction) => {
+            .then(async (transaction) => {
               console.log("Transaction hash:", transaction.hash);
-              transaction.wait().then(async (receipt) => {
+              setLoading(true);
+              await transaction.wait().then(async (receipt) => {
                 console.log("Transaction receipt:", receipt);
                 if (receipt.status === 1) {
-                  setLoading(false);
-                  setFinalLink("sdsd");
-                  setExpired("sdsdad");
+                  await sendTrxs(
+                    address,
+                    "metamask",
+                    "google",
+                    receiver,
+                    currency,
+                    amount,
+                    transaction.hash,
+                    1234,
+                    setExpiredDate(),
+                    tokenInfo.address,
+                    networkId
+                  ).then((data) => {
+                    setFinalLink(data.linkKey);
+                    setExpired(data.expiredAt);
+                    setLoading(false);
+                  });
                   setStepStatus(stepStatus + 1);
                   onClose();
                 } else if (receipt.status !== undefined) {
@@ -347,9 +362,6 @@ const LoginModalInner = (
               const escrowHash = txHash;
               setEscrowId("1234"); // 현재는 escrow로 관리하지 않으므로 일단 임의의 값
               setExpiredDateResult(setExpiredDate());
-              console.log(sender);
-              console.log(tokenInfo.address);
-              console.log(networkId);
               setTransactionHash(escrowHash);
               // alert(escrowHash);
             })

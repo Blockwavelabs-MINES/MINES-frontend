@@ -46,7 +46,7 @@ const EditProfilePage = () => {
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (localStorage.getItem("accessToken")) {
       getUserInfoData();
     } else {
       alert(t("introPageAlert1"));

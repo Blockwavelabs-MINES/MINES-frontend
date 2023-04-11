@@ -4,7 +4,6 @@ import { SendTokenHeader } from "../../../components/header";
 import Typography from "../../../utils/style/Typography/index";
 import { COLORS as palette } from "../../../utils/style/Color/colors";
 import WalletComponent from "./WalletComponent";
-import { getUserInfo } from "../../../utils/api/auth";
 import ReceiveComplete from "./ReceiveComplete";
 import { LoadingComponent } from "../../../components/card";
 import FailComponent from "./FailComponent";
@@ -31,7 +30,7 @@ const SubtextBox = styled.div`
   color: ${palette.grey_2};
 `;
 
-const SelectWallet = ({ linkInfo, userInfo, walletData }) => {
+const SelectWallet = ({ linkInfo, walletData }) => {
   const [infoChange, setInfoChange] = useState(false);
   const [complete, setComplete] = useState(false);
   const [receiveInfo, setReceiveInfo] = useState({});
