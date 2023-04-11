@@ -358,6 +358,7 @@ const WalletComponent = ({
                 )
               )
               .encodeABI();
+            console.log("data");
             console.log(data);
             return data;
           }
@@ -369,7 +370,7 @@ const WalletComponent = ({
               const gasAmount = await web3.eth.estimateGas({
                 to: toAddress,
                 from: fromAddress,
-                value: web3.utils.toWei(`${amount}`, "ether"),
+                data: data,
               });
               return gasAmount;
             };
