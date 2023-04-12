@@ -3,9 +3,9 @@ import Typograpy from "../../utils/style/Typography";
 import styled from "styled-components";
 
 const PrimaryButton = styled.button`
-  // min-width: ${({ size }) =>
+  min-width: ${({ size }) =>
     size === "large" ? "75px" : size === "small" ? "68px" : "75px"};
-  height: 30px;
+  height: 32px;
   border-radius: 15px;
   background-color: transparent;
   border: hidden;
