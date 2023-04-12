@@ -16,6 +16,8 @@ import Chainlist from "../../SendTokenPage/data/SimpleTokenList";
 import { useTranslation } from "react-i18next";
 import AddWalletAddress from "../../../components/modal/AddWalletAddress";
 import { ConfirmModal } from "../../../components/modal";
+import { useSetRecoilState } from "recoil";
+import { receiveTrxHashState } from "../../../utils/atoms/trxs";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -111,6 +113,7 @@ const WalletComponent = ({
   const [checkStatus, setCheckStatus] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const setReceiveTrxHash = useSetRecoilState(receiveTrxHashState);
   const { t } = useTranslation();
 
   const Web3 = require("web3");
@@ -128,7 +131,6 @@ const WalletComponent = ({
   }
 
   useEffect(() => {
-    console.log(resend);
     if (resend) {
       getTokenOnClick();
       // setLoading(true);
@@ -146,6 +148,7 @@ const WalletComponent = ({
   }, [checkStatus]);
 
   useEffect(() => {
+    console.log(transactionHash);
     if (transactionHash) {
       // Check the status of the transaction every 1 second
       const interval = setInterval(() => {
@@ -358,15 +361,12 @@ const WalletComponent = ({
                 )
               )
               .encodeABI();
-            console.log("data");
-            console.log(data);
             return data;
           }
           //            Number(linkInfo.token_amount) * Math.pow(10, tokenInfo.decimals)
 
           sendToken().then(async (data) => {
-            console.log(data);
-            const getGasAmount = async (fromAddress, toAddress, amount) => {
+            const getGasAmount = async (fromAddress, toAddress) => {
               const gasAmount = await web3.eth.estimateGas({
                 to: toAddress,
                 from: fromAddress,
@@ -375,17 +375,15 @@ const WalletComponent = ({
               return gasAmount;
             };
 
-            const gasPrice = await web3.eth.getGasPrice();
-            console.log(Number(linkInfo.tokenAmount));
             const gasAmount = await getGasAmount(
               account.address,
               tokenInfo.address,
               toFixed(Number(linkInfo.tokenAmount))
-              // web3.utils.toHex(Number(linkInfo.token_amount) * Math.pow(10, 18))
             );
-            // const fee = Number(gasPrice) + gasAmount;
+
             const fee = gasAmount;
-            // const fee = gasPrice * 32000;
+
+            console.log("fee");
             console.log(fee);
 
             const txObj = {
@@ -415,6 +413,7 @@ const WalletComponent = ({
                   return err;
                 } else {
                   console.log(signedTx);
+                  setReceiveTrxHash(signedTx.transactionHash);
                   setTransactionHash(signedTx.transactionHash); // asnyc 문제 때문에
 
                   return await web3.eth.sendSignedTransaction(
@@ -436,6 +435,30 @@ const WalletComponent = ({
                       } else {
                         console.log(res); // 저장해야할 hash값
                         setTransactionHash(res);
+
+                        const interval = setInterval(() => {
+                          web3.eth
+                            .getTransactionReceipt(signedTx.transactionHash)
+                            .then((receipt) => {
+                              if (receipt == null) {
+                                console.log("pending");
+                                setTransactionStatus("pending");
+                                setLoading(true);
+                              } else {
+                                setTransactionStatus("mined");
+                                setLoading(false);
+                                setComplete(true);
+                                clearInterval(interval);
+                              }
+                            })
+                            .catch((err) => {
+                              // 존재하지 않는 hash 값일 경우 (+ pending이 길게 되어 tx가 사라진 경우)
+                              console.log(err);
+                              setLoading(false);
+                              setFailed(true);
+                              clearInterval(interval);
+                            });
+                        }, 1000);
 
                         let tmpReceiveInfo = linkInfo;
                         tmpReceiveInfo.receiverWalletAddress =

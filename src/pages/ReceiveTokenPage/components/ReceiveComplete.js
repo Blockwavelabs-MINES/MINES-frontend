@@ -9,6 +9,8 @@ import { MetamaskIcon, GreenCheck, ChevronRight } from "../../../assets/icons";
 import { CompasImage } from "../../../assets/images";
 import { useTranslation } from "react-i18next";
 import { getTrxsLinkInfo } from "../../../utils/api/trxs";
+import { useRecoilValue } from "recoil";
+import { receiveTrxHashState } from "../../../utils/atoms/trxs";
 
 const ContentContainer = styled.div`
   padding-left: 20px;
@@ -116,14 +118,13 @@ const walletConvert = (walletAddress) => {
 const ReceiveComplete = ({ walletList, select }) => {
   const { t } = useTranslation();
   const [receiveInfo, setReceiveInfo] = useState(null);
+  const receiveTrxHash = useRecoilValue(receiveTrxHashState);
 
   const txHashExplorerOnClick = () => {
     if (Number(receiveInfo.networkId) == 5) {
-      window.open(
-        `https://goerli.etherscan.io/tx/${receiveInfo.transactionHash}`
-      );
+      window.open(`https://goerli.etherscan.io/tx/${receiveTrxHash}`);
     } else if (Number(receiveInfo.networkId) == 137) {
-      window.open(`https://polygonscan.com/tx/${receiveInfo.transactionHash}`);
+      window.open(`https://polygonscan.com/tx/${receiveTrxHash}`);
     }
   };
 
@@ -163,9 +164,7 @@ const ReceiveComplete = ({ walletList, select }) => {
           <TxHashInfobox>
             <TxHashInfoTitle>{t("receiveTokenComplete4")}</TxHashInfoTitle>
             <TxHashAddressBox>
-              <TxHashAddress>
-                {walletConvert(receiveInfo?.transactionHash)}
-              </TxHashAddress>
+              <TxHashAddress>{walletConvert(receiveTrxHash)}</TxHashAddress>
             </TxHashAddressBox>
           </TxHashInfobox>
         </TxHashCard>
