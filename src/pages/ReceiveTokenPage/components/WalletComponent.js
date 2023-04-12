@@ -539,6 +539,7 @@ const WalletComponent = ({
               } else {
                 console.log(signedTx);
                 console.log(signedTx.transactionHash);
+                setReceiveTrxHash(signedTx.transactionHash);
                 setTransactionHash(signedTx.transactionHash); // asnyc 문제 때문에
 
                 return await web3.eth.sendSignedTransaction(
