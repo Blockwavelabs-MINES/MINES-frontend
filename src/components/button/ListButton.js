@@ -17,6 +17,7 @@ const ButtonContainer = styled.button`
 
 const LabelBox = styled.div`
   ${Typograpy.Headline2}
+  -webkit-text-fill-color: ${palette.Black};
 `;
 
 const RightIcon = styled.img`
