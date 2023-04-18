@@ -31,6 +31,7 @@ const PrimaryTextBox = styled.div`
       ? palette.grey_5
       : palette.blue_1};
   margin: auto 0px;
+  text-align: center;
 `;
 
 // type="primary";
