@@ -325,7 +325,7 @@ const Step2 = ({
   }
 
   useEffect(() => {
-    if (!window.ethereum) {
+    if (!window.ethereum && !isMobileDevice()) {
       setShowModal(true);
     }
   }, []);

@@ -5,6 +5,7 @@ import i18next from "i18next";
 import { changeUserLanguage } from "../../../utils/api/auth";
 import Typography from "../../../utils/style/Typography";
 import { GreenCheck } from "../../../assets/icons";
+import { COLORS as palette } from "../../../utils/style/Color/colors";
 
 const Container = styled.div`
   width: 100%;
@@ -23,6 +24,7 @@ const ListButton = styled.button`
 
   & > p {
     ${Typography.Headline2}
+    -webkit-text-fill-color: ${palette.Black};
   }
 `;
 
