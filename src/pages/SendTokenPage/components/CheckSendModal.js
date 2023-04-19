@@ -268,7 +268,6 @@ const LoginModalInner = (
               params: [encodedData, address],
             })
             .then(async (transaction) => {
-              alert("transaction: " + transaction);
               const escrowHash = transaction;
               setEscrowId("1234"); // 현재는 escrow로 관리하지 않으므로 일단 임의의 값
               setExpiredDateResult(setExpiredDate());
