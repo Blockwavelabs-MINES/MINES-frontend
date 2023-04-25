@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import styled from "styled-components";
 import { COLORS as palette } from "../../utils/style/Color/colors";
 import Typograpy from "../../utils/style/Typography";
-import styled from "styled-components";
 
 const InputBoxContainer = styled.div``;
 
@@ -35,13 +35,17 @@ const TextareaContainer = styled.textarea`
     color: ${palette.grey_5};
   }
   &:focus {
-    outline: 1px solid ${palette.blue_2};
+    outline: none;
+    border: 1px solid ${palette.blue_2};
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
   }
 `;
 
 const TypeNumber = styled.div`
   width: 100%;
-  diplay: flex;
+  display: flex;
   ${Typograpy.Caption2}
   text-align: right;
   color: ${palette.grey_3};
