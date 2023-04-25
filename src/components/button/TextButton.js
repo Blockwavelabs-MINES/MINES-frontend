@@ -1,9 +1,9 @@
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import Typograpy from "../../utils/style/Typography";
 import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typograpy from "utils/style/Typography";
 
 const PrimaryButton = styled.button`
-  // min-width: ${({ size }) =>
+  min-width: ${({ size }) =>
     size === "large" ? "75px" : size === "small" ? "68px" : "75px"};
   height: 30px;
   border-radius: 15px;

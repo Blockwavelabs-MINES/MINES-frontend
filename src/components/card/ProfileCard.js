@@ -1,15 +1,9 @@
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import Typograpy from "../../utils/style/Typography";
-import styled from "styled-components";
-import {
-  CardEdit,
-  CardTrash,
-  ProfileDefault,
-  ProfileEdit,
-  BlingIcon,
-} from "../../assets/icons";
-import { ContainedButton } from "../button";
+import { BlingIcon, ProfileDefault, ProfileEdit } from "assets/icons";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typograpy from "utils/style/Typography";
+import { ContainedButton } from "../button";
 
 const FullContainer = styled.div`
   width: 100%;

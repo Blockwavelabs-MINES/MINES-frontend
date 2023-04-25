@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { BottomModalX } from "assets/icons";
 import PropTypes from "prop-types";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { BottomModalX } from "../../assets/icons";
 
 function BottomModal({
   className,

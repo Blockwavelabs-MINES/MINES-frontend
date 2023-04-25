@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { TooltipBubbleTailGray, TooltipBubbleTailGrayDown } from "assets/icons";
 import styled from "styled-components";
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import {
-  TooltipBubbleTailGray,
-  TooltipBubbleTailGrayDown,
-} from "../../assets/icons";
-import Typography from "../../utils/style/Typography";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography";
 
 const DropBoxContainer = styled.div`
   // width: 181px;

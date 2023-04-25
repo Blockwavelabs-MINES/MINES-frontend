@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import Typograpy from "../../utils/style/Typography";
-import { ContainedButton } from "../button";
-import { ProfileDefault } from "../../assets/icons";
-import { ProfileDropbox } from "./components";
-import { useTranslation } from "react-i18next";
-import { getUserInfo } from "../../utils/api/auth";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { loginState, signupState } from "../../utils/atoms/login";
+import { ProfileDefault } from "assets/icons";
 import axios from "axios";
-import { handleTokenExpired } from "../../utils/api/base";
 import i18next from "i18next";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useRecoilState, useRecoilValue } from "recoil";
+import styled from "styled-components";
+import { handleTokenExpired } from "utils/api/base";
+import { loginState, signupState } from "utils/atoms/login";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typograpy from "utils/style/Typography";
+import { ContainedButton } from "../button";
+import { ProfileDropbox } from "./components";
 
 const HeaderContainer = styled.div`
   width: 100%;

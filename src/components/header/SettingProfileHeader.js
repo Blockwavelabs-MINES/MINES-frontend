@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { ChevronLeft, ExternalLink } from "assets/icons";
+import { useState } from "react";
 import styled from "styled-components";
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import Typograpy from "../../utils/style/Typography";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typograpy from "utils/style/Typography";
 import { IconButton } from "../button";
-import { ChevronLeft, ExternalLink } from "../../assets/icons";
-import { getLocalUserInfo } from "../../utils/functions/setLocalVariable";
 
 const HeaderContainer = styled.div`
   width: 100%;

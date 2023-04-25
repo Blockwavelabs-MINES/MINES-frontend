@@ -1,7 +1,7 @@
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import Typograpy from "../../utils/style/Typography";
+import { CardEdit, CardTrash } from "assets/icons";
 import styled from "styled-components";
-import { CardEdit, CardTrash } from "../../assets/icons";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typograpy from "utils/style/Typography";
 
 const CardContainer = styled.div`
   width: 100%;

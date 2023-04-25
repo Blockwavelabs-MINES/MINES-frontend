@@ -1,8 +1,7 @@
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import Typograpy from "../../utils/style/Typography";
+import { ChevronRightGray } from "assets/icons";
 import styled from "styled-components";
+import Typograpy from "utils/style/Typography";
 import TextButton from "./TextButton";
-import { ChevronRightGray } from "../../assets/icons";
 
 const ButtonContainer = styled.button`
   width: 100%;

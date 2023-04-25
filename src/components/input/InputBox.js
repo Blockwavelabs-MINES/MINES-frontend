@@ -1,7 +1,7 @@
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import Typograpy from "../../utils/style/Typography";
+import { InputError, InputHelp, InputVerified } from "assets/icons";
 import styled from "styled-components";
-import { InputError, InputVerified, InputHelp } from "../../assets/icons";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typograpy from "utils/style/Typography";
 
 const InputBoxContainer = styled.div``;
 
