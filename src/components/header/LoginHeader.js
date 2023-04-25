@@ -1,12 +1,12 @@
 import { ProfileDefault } from "assets/icons";
 import axios from "axios";
-import i18next from "i18next";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { handleTokenExpired } from "utils/api/base";
 import { loginState, signupState } from "utils/atoms/login";
+import i18n from "utils/lang/i18n";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typograpy from "utils/style/Typography";
 import { ContainedButton } from "../button";
@@ -82,9 +82,9 @@ const LoginHeader = ({ onVisible }) => {
         setUserInfo(returnValue);
         const userLanguage = returnValue?.language.toLowerCase().slice(0, 2);
         if (userLanguage === "en") {
-          i18next.changeLanguage("en");
+          i18n.changeLanguage("en");
         } else {
-          i18next.changeLanguage("ko");
+          i18n.changeLanguage("ko");
         }
         localStorage.setItem("language", userLanguage);
       })
