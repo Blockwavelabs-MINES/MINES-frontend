@@ -1,15 +1,15 @@
-import React, { useState, useRef, useEffect } from "react";
-import styled from "styled-components";
-import { EditProfileHeader } from "../../../components/header";
-import { IconButton } from "../../../components/button";
-import { DeleteModal, UnvalidFormatModal } from "../../../components/modal";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { CameraIcon, ProfileDefault } from "../../../assets/icons";
-import { InputBox, TextAreaBox } from "../../../components/input";
-import { editProfile } from "../../../utils/api/auth";
+import { CameraIcon, ProfileDefault } from "assets/icons";
 import imageCompression from "browser-image-compression";
+import { IconButton } from "components/button";
+import { EditProfileHeader } from "components/header";
+import { InputBox, TextAreaBox } from "components/input";
+import { DeleteModal, UnvalidFormatModal } from "components/modal";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { editProfile } from "utils/api/auth";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const FullContainer = styled.div`
   width: 100%;

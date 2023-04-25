@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { ContainedButton } from "../../../components/button";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { BottomModal } from "../../../components/modal";
+import { BottomModal } from "components/modal";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -131,7 +129,7 @@ const NetworkSwitchModalInner = (
     //   library,
     //   networkList[idx].chainId
     // );
-    setNewNetworkId(networkList[idx].chainId)
+    setNewNetworkId(networkList[idx].chainId);
     document.body.style.overflow = "auto";
     // onClose();
   };
@@ -175,7 +173,7 @@ const NetworkSwitchModal = ({
   networkList,
   networkId,
   switchChain,
-  setNewNetworkId
+  setNewNetworkId,
 }) => {
   return (
     <BottomModal

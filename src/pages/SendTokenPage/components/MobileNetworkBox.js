@@ -1,19 +1,14 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { TextButton } from "../../../components/button";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
+import { useWeb3React } from "@web3-react/core";
+import { InputHelp, MetamaskIcon } from "assets/icons";
+import { TextButton } from "components/button";
+import { Tooltip } from "components/card";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import NetworkList from "./NetworkList";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 import { NetworkSwitchModal } from ".";
-import { DropIcon, InputHelp, InputError } from "../../../assets/icons";
-import { Tooltip } from "../../../components/card";
-import { MetamaskIcon, GoogleIcon } from "../../../assets/icons";
-
-import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
-import { WalletConnectOnClick } from "../../../components/WalletGroup/WalletConnectActions";
-import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
-// import { networkConnection, walletConnectConnection } from './connection'
+import NetworkList from "./NetworkList";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -22,8 +17,7 @@ const FullContainer = styled.div`
 
 const NetworkHeader = styled.div`
   width: 100%;
-  display: flex;
-  justify-content: space-between;
+  display: space-between;
   align-items: center;
 `;
 

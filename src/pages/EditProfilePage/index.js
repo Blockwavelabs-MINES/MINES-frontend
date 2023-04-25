@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { SettingProfileHeader } from "../../components/header";
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import {
-  AddLinkModal,
-  LinkComponent,
-  WalletComponent,
-  EditMyInfo,
-  CustomizeMyInfo,
-} from "./components";
-import { ProfileCard } from "../../components/card";
-import { getUserInfo } from "../../utils/api/auth";
+import { ProfileCard } from "components/card";
+import { SettingProfileHeader } from "components/header";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
-import { loginState } from "../../utils/atoms/login";
+import styled from "styled-components";
+import { getUserInfo } from "utils/api/auth";
+import { loginState } from "utils/atoms/login";
+import { COLORS as palette } from "utils/style/Color/colors";
+import {
+  AddLinkModal,
+  CustomizeMyInfo,
+  EditMyInfo,
+  LinkComponent,
+  WalletComponent,
+} from "./components";
 
 const FullContainer = styled.div`
   width: 100%;

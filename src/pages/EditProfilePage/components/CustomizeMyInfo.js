@@ -1,17 +1,16 @@
-import React, { useEffect, useState, useRef } from "react";
-import styled from "styled-components";
-import { EditProfileHeader } from "../../../components/header";
-import { ContainedButton } from "../../../components/button";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { CustomIcon } from "../../../assets/icons";
+import { CustomIcon } from "assets/icons";
 import imageCompression from "browser-image-compression";
-import { useTranslation } from "react-i18next";
+import { ContainedButton } from "components/button";
+import { EditProfileHeader } from "components/header";
+import { UnvalidFormatModal } from "components/modal";
+import { useEffect, useRef, useState } from "react";
 import { SketchPicker } from "react-color";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { editProfileDeco, getProfileDeco } from "utils/api/profile";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 import { Preview } from ".";
-import { getProfileDeco } from "../../../utils/api/profile";
-import { editProfileDeco } from "../../../utils/api/profile";
-import { UnvalidFormatModal } from "../../../components/modal";
 
 const FullContainer = styled.div`
   width: 100%;

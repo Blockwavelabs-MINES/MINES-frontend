@@ -1,13 +1,13 @@
-import React, { useState, useRef } from "react";
-import styled from "styled-components";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { InputHelp, CopyIconGray } from "../../../assets/icons";
-import { Tooltip } from "../../../components/card";
-import { ContainedButton } from "../../../components/button";
-import { ConfirmModal, CopyPivot } from "../../../components/modal";
-import { TimerImage } from "../../../assets/images";
+import { CopyIconGray, InputHelp } from "assets/icons";
+import { TimerImage } from "assets/images";
+import { ContainedButton } from "components/button";
+import { Tooltip } from "components/card";
+import { ConfirmModal, CopyPivot } from "components/modal";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const Container = styled.div`
   width: 100%;

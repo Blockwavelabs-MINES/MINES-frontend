@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { ContainedButton } from "../../../components/button";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { EmptyCard, EditableCard } from "../../../components/card";
-import { EmptyLink, LinkIcon } from "../../../assets/icons";
-import { DeleteModal } from "../../../components/modal";
-import AddLinkModal from "./AddLinkModal";
+import { EmptyLink, LinkIcon } from "assets/icons";
+import { EditableCard, EmptyCard } from "components/card";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const FullContainer = styled.div`
   width: 100%;

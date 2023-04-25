@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { MetamaskIcon } from "assets/icons";
+import { ContainedButton } from "components/button";
+import { ProfileCard } from "components/card";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { ContainedButton } from "../../../components/button";
-import Typography from "../../../utils/style/Typography/index";
-import { ProfileCard } from "../../../components/card";
-import { getUserInfo } from "../../../utils/api/auth";
-import { getWallet } from "../../../utils/api/wallets";
-import { getLink } from "../../../utils/api/link";
-import { MetamaskIcon } from "../../../assets/icons";
+import { getUserInfo } from "utils/api/auth";
+import { getLink } from "utils/api/link";
+import { getWallet } from "utils/api/wallets";
+import Typography from "utils/style/Typography/index";
 
 const FullContainer = styled.div`
   width: 100%;

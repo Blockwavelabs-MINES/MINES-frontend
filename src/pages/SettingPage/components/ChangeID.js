@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import { ContainedButton } from "components/button";
+import { InfoCard } from "components/card";
+import { InputBox } from "components/input";
+import { ConfirmModal } from "components/modal";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { InputBox } from "../../../components/input";
-import { InfoCard } from "../../../components/card";
-import { ContainedButton } from "../../../components/button";
-import {
-  createUserId,
-  checkUserId,
-  getUserInfo,
-} from "../../../utils/api/auth";
-import { ConfirmModal } from "../../../components/modal";
+import styled from "styled-components";
+import { checkUserId, createUserId, getUserInfo } from "utils/api/auth";
 
 const Container = styled.div`
   width: 100%;

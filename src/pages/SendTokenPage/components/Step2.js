@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import MetamaskChainList from "./MetamaskChainlist";
-import { MetamaskIcon } from "../../../assets/icons";
-import { DropIcon, InputHelp, InputError } from "../../../assets/icons";
-import { ContainedButton } from "../../../components/button";
-import { Tooltip } from "../../../components/card";
-import Chainlist from "../data/SimpleTokenList";
-import { bignumber, format, subtract } from "mathjs";
+import { DropIcon, InputError, InputHelp, MetamaskIcon } from "assets/icons";
+import { ContainedButton } from "components/button";
+import { Tooltip } from "components/card";
+import { ConfirmModal } from "components/modal";
+import { bignumber, subtract } from "mathjs";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { MobileNetworkBox, TokenBottomModal, CheckSendModal, DropBox } from ".";
-import { ConfirmModal } from "../../../components/modal";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
+import { CheckSendModal, MobileNetworkBox, TokenBottomModal } from ".";
+import Chainlist from "../data/SimpleTokenList";
+import MetamaskChainList from "./MetamaskChainlist";
 
 const Container = styled.div`
   width: 100%;
@@ -132,8 +131,7 @@ const AmountInputBox = styled.input`
   height: 41px;
   padding: 0px 10px;
   ${Typography.Title2}
-  text-align: center;
-  &::-webkit-input-placeholder {
+  text-align: cente-input-placeholder {
     color: ${palette.grey_4};
   }
   &:focus {

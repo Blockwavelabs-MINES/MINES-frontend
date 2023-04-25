@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { SettingHeader } from "../../components/header";
-import { ListButton } from "../../components/button";
+import { ListButton } from "components/button";
+import { SettingHeader } from "components/header";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import i18next from "../../utils/lang/i18n";
-import { ChangeID, EnrolledAccount, ChangeLanguage } from "./components";
-import { changeUserLanguage } from "../../utils/api/auth";
 import { useRecoilValue } from "recoil";
-import { loginState } from "../../utils/atoms/login";
+import styled from "styled-components";
+import { loginState } from "utils/atoms/login";
+import { ChangeID, ChangeLanguage, EnrolledAccount } from "./components";
 
 const FullContainer = styled.div`
   width: 100%;

@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { MetamaskIcon, GoogleIcon } from "../../../assets/icons";
+import { GoogleIcon, MetamaskIcon } from "assets/icons";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -260,8 +258,7 @@ const FinalConfirmation = ({
 
   const platformIconList = {
     google: GoogleIcon,
-    twitter:
-      "https://upload.wikimedia.org/wikipedia/commons/4/4f/Twitter-logo.svg",
+    twitter: "https://upload.wikimedia.org/wikipedia/commons/4/4f/",
   };
 
   const SendTransaction = async () => {

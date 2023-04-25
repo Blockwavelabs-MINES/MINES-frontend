@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { EditableCard } from "../../../components/card";
-import Lottie from "react-lottie-player";
-import animation from "../../../assets/lottie/check-lottie.json";
-import { MetamaskIcon, GreenCheck, ChevronRight } from "../../../assets/icons";
-import { CompasImage } from "../../../assets/images";
+import { ChevronRight, GreenCheck, MetamaskIcon } from "assets/icons";
+import { CompasImage } from "assets/images";
+import animation from "assets/lottie/check-lottie.json";
+import { EditableCard } from "components/card";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getTrxsLinkInfo } from "../../../utils/api/trxs";
+import Lottie from "react-lottie-player";
+import styled from "styled-components";
+import { getTrxsLinkInfo } from "utils/api/trxs";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const ContentContainer = styled.div`
   padding-left: 20px;

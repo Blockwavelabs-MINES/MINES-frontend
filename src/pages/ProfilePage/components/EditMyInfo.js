@@ -1,14 +1,13 @@
-import React, { useEffect, useState, useRef } from "react";
-import styled from "styled-components";
-import { EditProfileHeader } from "../../../components/header";
-import { IconButton } from "../../../components/button";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { ProfileCard } from "../../../components/card";
-import { setLocalUserInfo } from "../../../utils/functions/setLocalVariable";
-import { CameraIcon, ProfileDefault } from "../../../assets/icons";
-import { InputBox, TextAreaBox } from "../../../components/input";
+import { CameraIcon, ProfileDefault } from "assets/icons";
+import { IconButton } from "components/button";
+import { EditProfileHeader } from "components/header";
+import { InputBox, TextAreaBox } from "components/input";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { setLocalUserInfo } from "utils/functions/setLocalVariable";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const FullContainer = styled.div`
   width: 100%;
