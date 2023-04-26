@@ -81,7 +81,6 @@ const LinkComponent = ({ userId, setInfoChange, infoChange }) => {
   };
 
   const editOnClick = (idx) => {
-    // alert("준비중입니다.");
     setEditIdx(idx);
     setEditLinkModalOn(true);
   };
@@ -98,12 +97,9 @@ const LinkComponent = ({ userId, setInfoChange, infoChange }) => {
   };
 
   const saveAction = async ({ title, url }) => {
-    await addLink(title, url).then((data) => {
-      console.log(data);
+    await addLink(title, url).then(() => {
       setInfoChange(!infoChange);
     });
-
-    // setLinkList(tmpLinkList);
   };
 
   return (
@@ -134,7 +130,7 @@ const LinkComponent = ({ userId, setInfoChange, infoChange }) => {
             />
           ) : (
             <>
-              {editLinkModalOn ? (
+              {editLinkModalOn && (
                 <AddLinkModal
                   visible={editLinkModalOn}
                   closable={true}
@@ -143,8 +139,6 @@ const LinkComponent = ({ userId, setInfoChange, infoChange }) => {
                   saveAction={editAction}
                   original={linkList[editIdx]}
                 />
-              ) : (
-                <></>
               )}
             </>
           )}
@@ -152,7 +146,7 @@ const LinkComponent = ({ userId, setInfoChange, infoChange }) => {
       )}
       <TitleContainer>
         <TItleText>{t("manageProfilePage1")}</TItleText>
-        {linkList?.length > 0 ? (
+        {linkList?.length > 0 && (
           <ContainedButton
             type="secondary"
             styles="filled"
@@ -161,8 +155,6 @@ const LinkComponent = ({ userId, setInfoChange, infoChange }) => {
             label={t("manageProfilePage2")}
             onClick={addLinkOnClick}
           />
-        ) : (
-          <></>
         )}
       </TitleContainer>
       {linkList?.length == 0 ? (

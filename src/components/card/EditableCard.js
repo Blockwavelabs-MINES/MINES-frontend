@@ -5,29 +5,22 @@ import Typograpy from "utils/style/Typography";
 
 const CardContainer = styled.div`
   width: 100%;
-  //   min-width: 350px;
   padding: 18px 16px;
   border-radius: 16px;
   background-color: ${palette.white};
   display: flex;
   justify-content: space-between;
   box-shadow: 0px 0px 6px 0px #f0f1f2;
-  //   box-shadow: 0px 4px 20px 0px #E9EAEC33;
-  //   border: 1px solid;
   border: ${(props) => (props.value ? `1px solid ${palette.sky_1}` : "")};
 `;
 
 const CardContainerButton = styled.button`
   width: 100%;
-  //   min-width: 350px;
   padding: 18px 16px;
   border-radius: 16px;
   background-color: ${palette.white};
   display: flex;
   justify-content: space-between;
-  // box-shadow: 0px 0px  6px 0px #f0f1f2;
-  //   box-shadow: 0px 4px 20px 0px #E9EAEC33;
-  //   border: 1px solid;
   border: hidden;
 `;
 
@@ -71,7 +64,6 @@ const Item = styled.div`
   height: auto;
   width: auto;
   position: relative;
-  // border: 1px solid #ccc;
   box-sizing: border-box;
 `;
 
@@ -95,15 +87,6 @@ const RadioButton = styled.input`
   margin-right: 10px;
   &:hover ~ ${RadioButtonLabel} {
     background: #ccc;
-    &::after {
-      // content: "\f005";
-      // font-family: "FontAwesome";
-      // display: block;
-      // color: white;
-      // width: 12px;
-      // height: 12px;
-      // margin: 4px;
-    }
   }
   &:checked + ${Item} {
     background: ${palette.blue_1};
@@ -113,15 +96,6 @@ const RadioButton = styled.input`
     background: ${palette.blue_1};
     border: 1px solid ${palette.blue_1};
     box-shadow: 0 0 0 4px #fff inset;
-    &::after {
-      // content: "\f005";
-      // font-family: "FontAwesome";
-      // display: block;
-      // color: white;
-      // width: 12px;
-      // height: 12px;
-      // margin: 4px;
-    }
   }
 `;
 
@@ -157,17 +131,11 @@ const EditableCard = ({
             <CardLabel>{label}</CardLabel>
           </CardInfoBox>
           <CardToolBox>
-            {isEdit ? (
-              <CardToolButton icon={CardEdit} onClick={editOnClick} />
-            ) : (
-              <></>
-            )}
-            {isTrash ? (
+            {isEdit && <CardToolButton icon={CardEdit} onClick={editOnClick} />}
+            {isTrash && (
               <CardToolButton icon={CardTrash} onClick={deleteOnClick} />
-            ) : (
-              <></>
             )}
-            {isCheck ? (
+            {isCheck && (
               <Item>
                 <RadioButton
                   type="radio"
@@ -178,8 +146,6 @@ const EditableCard = ({
                 />
                 <RadioButtonLabel />
               </Item>
-            ) : (
-              <></>
             )}
           </CardToolBox>
         </CardContainer>

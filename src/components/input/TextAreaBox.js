@@ -40,7 +40,7 @@ const TextareaContainer = styled.textarea`
 
 const TypeNumber = styled.div`
   width: 100%;
-  diplay: flex;
+  display: flex;
   ${Typograpy.Caption2}
   text-align: right;
   color: ${palette.grey_3};
@@ -59,25 +59,11 @@ const TextAreaBox = ({
   value,
   onChange,
 }) => {
-  // const [text, setText] = useState(value ? value.substr(0, maxSize) : "");
-
-  // useEffect(() => {
-  //   console.log("value");
-  //   if (value?.length > maxSize) {
-  //     value = value?.substr(0, maxSize);
-  //     // setText(value?.substr(0, maxSize));
-  //   } else if (!value) {
-  //     setText("");
-  //   } else {
-  //     setText(value);
-  //   }
-  // }, [value]);
-
   return (
     <InputBoxContainer>
       <LableFullBox>
         <LabelBox>{label}</LabelBox>
-        {isRequired ? <RequiredMark>*</RequiredMark> : <></>}
+        {isRequired && <RequiredMark>*</RequiredMark>}
       </LableFullBox>
       <InputFullBox>
         <TextareaContainer

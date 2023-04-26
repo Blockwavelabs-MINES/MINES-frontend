@@ -51,11 +51,8 @@ const ButtonContainer = styled.div`
   padding: 16px 20px;
   position: fixed;
   bottom: 0px;
-  //   top: 542px;
-  // display: grid;
   display: flex;
   gap: 10px;
-  // grid-template-columns: repeat(2, 1fr);
   z-index: 100;
   backdrop-filter: blur(15px);
 `;
@@ -93,12 +90,9 @@ const IntroPage = () => {
     }
   };
   const sendOnClick = () => {
-    // alert("준비중입니다.");
-    if (isLoggedIn) {
-      window.location.href = "/sendToken";
-    } else {
-      setLoginAlertModalVisible(true);
-    }
+    isLoggedIn
+      ? (window.location.href = "/sendToken")
+      : setLoginAlertModalVisible(true);
   };
 
   return (
@@ -116,7 +110,7 @@ const IntroPage = () => {
             />
           ) : (
             <>
-              {loginAlertModalVisible ? (
+              {loginAlertModalVisible && (
                 <SingleModal
                   visible={setLoginAlertModalVisible}
                   closable={true}
@@ -126,8 +120,6 @@ const IntroPage = () => {
                   setStatus={setLoginModalVisible}
                   buttonText={t("introPageAlert2")}
                 />
-              ) : (
-                <></>
               )}
             </>
           )}

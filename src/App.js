@@ -24,7 +24,6 @@ const BodyInner = styled.div`
   align-items: center;
   min-height: 100vh;
   background-color: ${palette.background};
-  // background-color: ${palette.white};
 `;
 
 const WebAppContainer = styled.div`
@@ -32,7 +31,6 @@ const WebAppContainer = styled.div`
   max-width: 600px;
   height: 100%;
   background-color: ${palette.white};
-  // position: absolute;
 `;
 
 function App() {
@@ -47,7 +45,6 @@ function App() {
                 <Route exact path="/" element={<IntroPage />} />
                 <Route path="/settings" element={<SettingPage />} />
                 <Route path="/components" element={<ComponentTestPage />} />
-                {/* <Route path="/createLink" element={<CreateLinkPage />} /> */}
                 <Route path="/editProfile" element={<EditProfilePage />} />
                 <Route path="/sendToken" element={<SendTokenPage />} />
                 <Route

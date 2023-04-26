@@ -42,7 +42,6 @@ const OnlyTitleContainer = styled.div`
 `;
 
 const SendTokenHeader = ({
-  onVisible,
   title,
   iconLeft = ChevronLeft,
   leftOnClick,

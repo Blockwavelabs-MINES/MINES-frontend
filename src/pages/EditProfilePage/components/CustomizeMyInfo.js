@@ -14,7 +14,6 @@ import { Preview } from ".";
 
 const FullContainer = styled.div`
   width: 100%;
-  //   height: 100%;
   min-height: calc(100vh + 300px);
   position: relative;
   padding-top: 75px;
@@ -145,19 +144,11 @@ const ButtonContainer = styled.div`
   backdrop-filter: blur(15px);
 `;
 
-const CustomizeMyInfo = ({
-  userId,
-  setCustomizeMyInfo,
-  setInfoChange,
-  infoChange,
-}) => {
-  const [profileDecoData, setProfileDecoData] = useState(false);
+const CustomizeMyInfo = ({ userId, setCustomizeMyInfo, setInfoChange }) => {
   const [backImage, setBackImg] = useState({
     file: "",
     imagePreviewUrl: "",
   });
-  const [backImageChange, setBackImageChange] = useState(false);
-  const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState("");
   const [backgroundColorPicker, setBackgroundColorPicker] = useState(false);
   const [buttonColor, setButtonColor] = useState("");
@@ -200,7 +191,6 @@ const CustomizeMyInfo = ({
 
   useEffect(() => {
     getProfileDeco(userId).then((data) => {
-      setProfileDecoData(data);
       setBackImg({
         file: data.backgroundImg,
         imagePreviewUrl: data.backgroundImg,
@@ -243,7 +233,6 @@ const CustomizeMyInfo = ({
       setShowFormatModal(false);
     }
     let imageSize = fileUploaded.size / 1024 / 1024;
-    console.log(imageSize, "MB");
 
     if (imageSize > 5) {
       const options = {
@@ -273,7 +262,6 @@ const CustomizeMyInfo = ({
           });
         };
         reader.readAsDataURL(compressedFile);
-        setBackImageChange(true);
       } catch (error) {
         console.log(error);
       }
@@ -283,15 +271,12 @@ const CustomizeMyInfo = ({
         setBackImg({ file: fileUploaded, imagePreviewUrl: reader.result });
       };
       reader.readAsDataURL(fileUploaded);
-      setBackImageChange(true);
     }
   };
 
   const handleClickOutside = (event) => {
     if (pickerRef.current && !pickerRef.current.contains(event.target)) {
-      console.log(pickerIndex);
       pickerList[pickerIndex].switch(false);
-      // setPickerIndex(-1);
     }
   };
 
@@ -336,64 +321,47 @@ const CustomizeMyInfo = ({
 
   const hiddenFileInput = useRef(null);
 
-  const closeCancelModal = () => {
-    setCancelModalOpen(false);
-  };
-
   const leftOnClick = () => {
-    // setCancelModalOpen(true);
     setCustomizeMyInfo(false);
   };
 
   const handleBackgroundColorChangeComplete = (color) => {
     setBackgroundColor(color.hex);
     setBackgroundColorState("verified");
-    // setBackgroundColor(color.hex + Math.round(color.rgb.a * 255).toString(16));
   };
 
   const handleButtonColorChangeComplete = (color) => {
     setButtonColor(color.hex);
     setButtonColorState("verified");
-    // setButtonColor(color.hex + Math.round(color.rgb.a * 255).toString(16));
   };
 
   const handleButtonFontColorChangeComplete = (color) => {
     setButtonFontColor(color.hex);
     setButtonFontColorState("verified");
-    // setButtonFontColor(color.hex + Math.round(color.rgb.a * 255).toString(16));
   };
 
   const handleFontColorChangeComplete = (color) => {
     setFontColor(color.hex);
     setFontColorState("verified");
-    // setFontColor(color.hex + Math.round(color.rgb.a * 255).toString(16));
   };
 
   const backColorPickerOnClick = () => {
-    // if (!backgroundColorPicker) {
     setPickerIndex(0);
-    // }
     setBackgroundColorPicker(!backgroundColorPicker);
   };
 
   const buttonColorPickerOnClick = () => {
-    // if (!buttonColorPicker) {
     setPickerIndex(1);
-    // }
     setButtonColorPicker(!buttonColorPicker);
   };
 
   const buttonFontColorPickerOnClick = () => {
-    // if (!buttonFontColorPicker) {
     setPickerIndex(2);
-    // }
     setButtonFontColorPicker(!buttonFontColorPicker);
   };
 
   const fontColorPickerOnClick = () => {
-    // if (!fontColorPicker) {
     setPickerIndex(3);
-    // }
     setFontColorPicker(!fontColorPicker);
   };
 
@@ -417,22 +385,6 @@ const CustomizeMyInfo = ({
               leftOnClick={leftOnClick}
               rightOnClick={saveProfileDecoEdited}
             />
-            <>
-              {/* {cancelModalOpen ? (
-                <DeleteModal
-                  visible={cancelModalOpen}
-                  closable={true}
-                  maskClosable={true}
-                  onClose={closeCancelModal}
-                  text={<>{t("manageProfilePageAlert1")}</>}
-                  setRealDelete={setRealDelete}
-                  buttonText={t("manageProfilePageAlert2")}
-                  subDeleteOnClick={subDeleteOnClick}
-                />
-              ) : (
-                <></>
-              )} */}
-            </>
             <ContentBox>
               <ComponentTitle>배경</ComponentTitle>
               <ComponentBox>

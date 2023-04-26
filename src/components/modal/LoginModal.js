@@ -59,7 +59,6 @@ const LoginModalInner = (type, setStatus, onClose) => {
       if (type == "receive" || data === "SIGNUP") {
         setStatus(true);
         setIsSignup(true);
-        console.log(type);
       } else if (data === "LOGIN") {
         setStatus(false);
       }

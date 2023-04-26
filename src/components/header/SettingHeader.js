@@ -1,5 +1,4 @@
 import { ChevronLeft } from "assets/icons";
-import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typograpy from "utils/style/Typography";
@@ -33,8 +32,6 @@ const TitleContainer = styled.div`
 `;
 
 const SettingHeader = ({ title, iconLeft = ChevronLeft, leftOnClick }) => {
-  const { t } = useTranslation();
-
   const leftIconOnClick = () => {
     leftOnClick();
   };

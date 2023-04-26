@@ -10,12 +10,6 @@ const PrimaryButton = styled.button`
     size === "large" ? "56px" : size === "small" ? "36px" : "40px"};
   border-radius: ${({ size }) =>
     size === "large" ? "18px" : size === "small" ? "10px" : "12px"};
-  /* // padding: ${({ size }) =>
-    size === "large"
-      ? "18px 16px"
-      : size === "small"
-      ? "8px 16px"
-      : "10px 16px"}; */
   display: flex;
   justify-content: center;
   gap: 2px;
@@ -47,12 +41,6 @@ const SecondaryButton = styled.button`
     size === "large" ? "56px" : size === "small" ? "36px" : "40px"};
   border-radius: ${({ size }) =>
     size === "large" ? "18px" : size === "small" ? "10px" : "12px"};
-  /* // padding: ${({ size }) =>
-    size === "large"
-      ? "18px 16px"
-      : size === "small"
-      ? "8px 16px"
-      : "10px 16px"}; */
   display: flex;
   justify-content: center;
   gap: 2px;
@@ -142,13 +130,11 @@ const ContainedButton = ({
           onClick={onClick}
           style={style}
         >
-          {icon ? <IconContainer src={icon} /> : <></>}
-          {show_txt ? (
+          {icon && <IconContainer src={icon} />}
+          {show_txt && (
             <PrimaryTextBox styles={styles} states={states} size={size}>
               {label}
             </PrimaryTextBox>
-          ) : (
-            <></>
           )}
         </PrimaryButton>
       ) : (
@@ -160,13 +146,11 @@ const ContainedButton = ({
           onClick={onClick}
           style={style}
         >
-          {icon ? <IconContainer src={icon} /> : <></>}
-          {show_txt ? (
+          {icon && <IconContainer src={icon} />}
+          {show_txt && (
             <SecondaryTextBox styles={styles} states={states} size={size}>
               {label}
             </SecondaryTextBox>
-          ) : (
-            <></>
           )}
         </SecondaryButton>
       )}

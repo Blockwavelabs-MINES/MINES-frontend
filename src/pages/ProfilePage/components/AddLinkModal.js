@@ -11,7 +11,6 @@ const FullContainer = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  //   margin-top: 109px;
   padding: 20px;
   z-index: 903;
 `;

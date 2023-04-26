@@ -11,13 +11,6 @@ const WalletList = [
     sendAction: metamaskSend,
     walletId: 0,
   },
-  // {
-  //   walletName: "WalletConnect",
-  //   deepLink:"",
-  //   walletIcon: WalletConnectIcon,
-  //   action: WalletConnectOnClick,
-  //   walletId: 1,
-  // }
 ];
 
 export default WalletList;

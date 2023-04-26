@@ -1,5 +1,6 @@
 import { CrossImage } from "assets/images";
 import { ContainedButton } from "components/button";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
@@ -47,6 +48,9 @@ const ComplainLink = styled.a`
 
 const FailComponent = ({ buttonOnClick, setFailed, setResend }) => {
   const { t } = useTranslation();
+  useEffect(() => {
+    setFailed(true);
+  }, []);
 
   console.log(buttonOnClick);
   return (

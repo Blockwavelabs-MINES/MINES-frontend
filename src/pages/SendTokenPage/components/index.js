@@ -1,4 +1,4 @@
-export { default as LoadingComponent } from "../../../components/card/LoadingComponent";
+export { default as LoadingComponent } from "components/card/LoadingComponent";
 export { default as CheckSendModal } from "./CheckSendModal";
 export { default as FailedComponent } from "./FailComponent";
 export { default as FinalConfirmation } from "./FinalConfirmation";

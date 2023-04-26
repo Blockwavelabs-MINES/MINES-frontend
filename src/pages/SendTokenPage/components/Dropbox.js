@@ -10,7 +10,6 @@ const Container = styled.button`
   background-color: ${palette.white};
   display: flex;
   justify-content: space-between;
-  //   box-shadow: 0px 2px 10px #c4c4c440;
   padding: 8px 16px;
   margin: 10px auto;
   border: 1px solid ${palette.light_gray};
@@ -77,24 +76,11 @@ const DropIconBox = styled.img`
   height: 24px;
 `;
 
-const emailNameConverter = (emailName) => {
-  let returnString = "";
-  if (emailName?.length > 15) {
-    returnString =
-      emailName.substr(0, 6) +
-      "..." +
-      emailName.substr(emailName.length - 6, emailName.length);
-  }
-  return returnString;
-};
-
 const DropBox = (props) => {
   const [selectIndex, setSelectIndex] = useState(0);
   const [itemList, setItemList] = useState([]);
   const [dropboxType, setDropboxType] = useState("");
   const [open, setOpen] = useState(false);
-  const [denom, setDenom] = useState("");
-  //   const params = getAllQueryParams();
 
   useEffect(() => {
     setItemList(props.itemList);
@@ -111,8 +97,6 @@ const DropBox = (props) => {
     })();
   }, [props.itemList, props.dropboxType]);
 
-  useEffect(() => {}, []);
-
   const dropBoxOnClick = () => {
     setOpen(!open);
   };
@@ -124,7 +108,7 @@ const DropBox = (props) => {
 
   return (
     <>
-      {dropboxType == "myEmail" ? (
+      {dropboxType == "myEmail" && (
         <>
           <Container onClick={dropBoxOnClick}>
             <SideBox>
@@ -135,7 +119,7 @@ const DropBox = (props) => {
               <DropIconBox src={DropIcon} />
             </SideBox>
           </Container>
-          {open ? (
+          {open && (
             <OpenBox>
               {itemList?.map((val, idx) => (
                 <OpenBoxItem
@@ -150,12 +134,8 @@ const DropBox = (props) => {
                 </OpenBoxItem>
               ))}
             </OpenBox>
-          ) : (
-            <></>
           )}
         </>
-      ) : (
-        <></>
       )}
     </>
   );

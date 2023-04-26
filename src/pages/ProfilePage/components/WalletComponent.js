@@ -43,20 +43,11 @@ const walletConvert = (walletAddress) => {
   return returnAddress;
 };
 
-function isMobileDevice() {
-  return (
-    ("ontouchstart" in window || "onmsgesturechange" in window) &&
-    !window.ethereum
-  );
-}
-
 const WalletComponent = ({ userWalletList, profileDecorate }) => {
   const [walletList, setWalletList] = useState(userWalletList);
-  const [copyPivotVisible, setCopyPivotVisible] = useState(false);
   const [copyOn, setCopyOn] = useState(false);
   const [copyIdx, setCopyIdx] = useState(-1);
   const [clickX, setClickX] = useState(0);
-  const [clickY, setClickY] = useState(0);
 
   const myRef = useRef(null);
 
@@ -65,9 +56,7 @@ const WalletComponent = ({ userWalletList, profileDecorate }) => {
   useEffect(() => {
     if (myRef.current[copyIdx] && copyIdx > -1) {
       let tmpX = myRef.current[copyIdx].getBoundingClientRect().top;
-      let tmpY = myRef.current[copyIdx].getBoundingClientRect().left;
       setClickX(tmpX);
-      setClickY(tmpY);
     }
   }, [copyIdx]);
 
@@ -78,14 +67,6 @@ const WalletComponent = ({ userWalletList, profileDecorate }) => {
   const walletOnClick = (walletAddress, idx) => {
     setCopyOn(true);
     setCopyIdx(idx);
-    // let elem = document.querySelector("div");
-    // console.log(myRef.current);
-    // let rect = myRef.current.getBoundingClientRect();
-
-    // console.log(rect["left"]);
-    // console.log(rect["top"]);
-    // setClickX(rect["left"]);
-    // setClickY(rect["top"]);
 
     const handleCopyClipBoard = async (text) => {
       var textarea = document.createElement("textarea");
@@ -95,7 +76,6 @@ const WalletComponent = ({ userWalletList, profileDecorate }) => {
       textarea.setSelectionRange(0, 9999); // For IOS
       document.execCommand("copy");
       document.body.removeChild(textarea);
-      // alert(t("createLinkDone5"));
     };
 
     handleCopyClipBoard(walletAddress);
@@ -119,7 +99,7 @@ const WalletComponent = ({ userWalletList, profileDecorate }) => {
         <ListContainer>
           {walletList?.map((wallet, idx) => (
             <>
-              {idx == copyIdx && copyOn ? (
+              {idx == copyIdx && copyOn && (
                 <CopyPivot
                   visible={copyOn}
                   closable={true}
@@ -130,14 +110,10 @@ const WalletComponent = ({ userWalletList, profileDecorate }) => {
                   x={`calc(${clickX}px - 70px)`}
                   y={"calc(50% - 90px)"}
                 />
-              ) : (
-                <></>
               )}
               <div ref={(element) => (myRef.current[idx] = element)}>
                 <EditableCard
-                  // ref={myRef}
                   label={walletConvert(wallet.walletAddress)}
-                  // icon={wallet.icon}
                   icon={MetamaskIcon}
                   onClick={() => walletOnClick(wallet.walletAddress, idx)}
                   style={{

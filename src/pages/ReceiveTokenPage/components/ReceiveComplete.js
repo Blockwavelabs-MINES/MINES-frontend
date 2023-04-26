@@ -5,8 +5,10 @@ import { EditableCard } from "components/card";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Lottie from "react-lottie-player";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { getTrxsLinkInfo } from "utils/api/trxs";
+import { receiveTrxHashState } from "utils/atoms/trxs";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 
@@ -116,14 +118,13 @@ const walletConvert = (walletAddress) => {
 const ReceiveComplete = ({ walletList, select }) => {
   const { t } = useTranslation();
   const [receiveInfo, setReceiveInfo] = useState(null);
+  const receiveTrxHash = useRecoilValue(receiveTrxHashState);
 
   const txHashExplorerOnClick = () => {
     if (Number(receiveInfo.networkId) == 5) {
-      window.open(
-        `https://goerli.etherscan.io/tx/${receiveInfo.transactionHash}`
-      );
+      window.open(`https://goerli.etherscan.io/tx/${receiveTrxHash}`);
     } else if (Number(receiveInfo.networkId) == 137) {
-      window.open(`https://polygonscan.com/tx/${receiveInfo.transactionHash}`);
+      window.open(`https://polygonscan.com/tx/${receiveTrxHash}`);
     }
   };
 
@@ -152,7 +153,6 @@ const ReceiveComplete = ({ walletList, select }) => {
             label={walletConvert(walletList[select].walletAddress)}
             isEdit={false}
             isTrash={false}
-            // icon={wallet.icon}
             icon={MetamaskIcon}
           />
         </WalletBox>

@@ -7,9 +7,6 @@ const WalletList = [
     deepLink: "",
     walletIcon: WalletConnectIcon,
     action: WalletConnectOnClick,
-    // action: () => {
-    //   alert("hi");
-    // },
     walletId: 0,
   },
 ];

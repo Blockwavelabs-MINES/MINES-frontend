@@ -117,19 +117,13 @@ const InputBox = ({
           value={value}
           onChange={onChange}
         />
-        {fixedMent ? (
-          <FixedMentBox state={state}>{fixedMent}</FixedMentBox>
-        ) : (
-          <></>
-        )}
+        {fixedMent && <FixedMentBox state={state}>{fixedMent}</FixedMentBox>}
       </InputFullBox>
-      {message ? (
+      {message && (
         <MessageBox>
           <MessageIcon state={state} />
           <MessageText state={state}>{message}</MessageText>
         </MessageBox>
-      ) : (
-        <></>
       )}
     </InputBoxContainer>
   );

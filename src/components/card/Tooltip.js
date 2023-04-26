@@ -44,7 +44,7 @@ const Tooltip = ({ className, onClose, maskClosable, text }) => {
     <>
       <DropBoxOuterBox
         className={className}
-        onClick={maskClosable ? onMaskClick : null}
+        onClick={maskClosable && onMaskClick}
         tabIndex="-1"
       >
         <FullBox>

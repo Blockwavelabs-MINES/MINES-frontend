@@ -63,34 +63,33 @@ const SelectWallet = ({ linkInfo, walletData }) => {
                 />
               ) : (
                 <>
-                  {!resend && (
-                    <>
-                      <SendTokenHeader
-                        title={t("receiveTokenPage1")}
-                        leftOnClick={leftOnClick}
-                      />
-                      <ContentContainer>
-                        <TextBox>
-                          <HeaderBox>{t("selectWalletPage1")}</HeaderBox>
-                          <SubtextBox>{t("selectWalletPage2")}</SubtextBox>
-                        </TextBox>
-                      </ContentContainer>
-                      <WalletComponent
-                        walletList={walletData}
-                        setInfoChange={setInfoChange}
-                        infoChange={infoChange}
-                        setComplete={setComplete}
-                        setReceiveInfo={setReceiveInfo}
-                        linkInfo={linkInfo}
-                        setLoading={setLoading}
-                        setFailed={setFailed}
-                        setSendOnClick={setSendOnClick}
-                        resend={resend}
-                        select={select}
-                        setSelect={setSelect}
-                      />
-                    </>
-                  )}
+                  <>
+                    <SendTokenHeader
+                      title={t("receiveTokenPage1")}
+                      leftOnClick={leftOnClick}
+                    />
+                    <ContentContainer>
+                      <TextBox>
+                        <HeaderBox>{t("selectWalletPage1")}</HeaderBox>
+                        <SubtextBox>{t("selectWalletPage2")}</SubtextBox>
+                      </TextBox>
+                    </ContentContainer>
+                    <WalletComponent
+                      walletList={walletData}
+                      setInfoChange={setInfoChange}
+                      infoChange={infoChange}
+                      setComplete={setComplete}
+                      setReceiveInfo={setReceiveInfo}
+                      linkInfo={linkInfo}
+                      setLoading={setLoading}
+                      setFailed={setFailed}
+                      failed={failed}
+                      setSendOnClick={setSendOnClick}
+                      resend={resend}
+                      select={select}
+                      setSelect={setSelect}
+                    />
+                  </>
                 </>
               )}
             </>

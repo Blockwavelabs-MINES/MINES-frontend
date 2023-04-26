@@ -3,22 +3,13 @@ import { ContainedButton } from "components/button";
 import { CopyPivot } from "components/modal";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { signupState } from "utils/atoms/login";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 
 const IntroTextBox = styled.div`
   width: 90%;
   margin: 0px auto;
-  // margin-top: 70px;
-`;
-
-const InputContainer = styled.div`
-  width: 90%;
-  margin: 0px auto;
-  margin-top: 70px;
 `;
 
 const FirstIntro = styled.div`
@@ -40,7 +31,6 @@ const ButtonContainer = styled.div`
   padding-bottom: 160px;
   position: absolute;
   top: 460px;
-  //   bottom: 100px;
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(1, 1fr);
@@ -55,8 +45,6 @@ const SuccessImage = styled.img`
 const CreateSuccess = ({ linkId }) => {
   const [copyPivotVisible, setCopyPivotVisible] = useState(false);
   const [clickX, setClickX] = useState(0);
-  const [clickY, setClickY] = useState(0);
-  const setIsSignup = useSetRecoilState(signupState);
 
   const myRef = useRef(null);
   const { t } = useTranslation();
@@ -77,14 +65,9 @@ const CreateSuccess = ({ linkId }) => {
 
       if (myRef.current) {
         let tmpX = myRef.current.getBoundingClientRect().top;
-        let tmpY = myRef.current.getBoundingClientRect().left;
-        console.log(tmpX);
-        console.log(tmpY);
         setClickX(tmpX);
-        setClickY(tmpY);
       }
       setCopyPivotVisible(true);
-      // alert(t("createLinkDone5"));
     };
 
     handleCopyClipBoard(`https://3tree.io/@${linkId}`);
@@ -124,7 +107,7 @@ const CreateSuccess = ({ linkId }) => {
             onClick={copyOnClick}
           />
         </div>
-        {copyPivotVisible ? (
+        {copyPivotVisible && (
           <CopyPivot
             visible={copyPivotVisible}
             closable={true}
@@ -135,8 +118,6 @@ const CreateSuccess = ({ linkId }) => {
             x={`calc(${clickX}px - 70px)`}
             y={"calc(50% - 90px)"}
           />
-        ) : (
-          <></>
         )}
       </ButtonContainer>
     </>

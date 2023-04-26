@@ -4,10 +4,8 @@ import { SendTokenHeader } from "components/header";
 import { DeleteModal } from "components/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { getUserInfo } from "utils/api/auth";
-import { loginState } from "utils/atoms/login";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 import {
@@ -21,11 +19,9 @@ import {
 
 const FullContainer = styled.div`
   width: 100%;
-  //   height: 100%;
   min-height: 100vh;
   position: relative;
   padding: auto 50px;
-  // padding-top: 75px;
 `;
 
 const ContentContainer = styled.div`
@@ -123,36 +119,6 @@ const StepButtonContainer = styled.div`
   margin-top: 15px;
 `;
 
-const StepLeftButton = styled.button`
-  height: 33px;
-  width: 73px;
-  border-radius: 24px;
-  border: 1px solid ${palette.blue_1};
-  background-color: ${palette.white};
-  color: ${palette.blue_1};
-  font-family: Pretendard;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 17px;
-  letter-spacing: 0em;
-  box-shadow: 0px 10px 10px 0px #e6e6e640;
-`;
-
-const StepRightButton = styled.button`
-  height: 33px;
-  width: 73px;
-  border-radius: 24px;
-  border: 1px solid ${palette.blue_1};
-  background-color: ${palette.blue_1};
-  color: ${palette.white};
-  font-family: Pretendard;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 17px;
-  letter-spacing: 0em;
-  box-shadow: 0px 10px 10px 0px #e6e6e640;
-`;
-
 const StepComponentBox = styled.div`
   min-height: 40vh;
 `;
@@ -188,7 +154,6 @@ const SendTokenPage = () => {
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [finalModalVisible, setFinalModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const isLoggedIn = useRecoilValue(loginState);
 
   const { t } = useTranslation();
 

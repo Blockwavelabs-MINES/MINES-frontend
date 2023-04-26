@@ -20,10 +20,7 @@ function AddWalletAddress({
   className,
   onClose,
   maskClosable,
-  closable,
   visible,
-  children,
-  mode,
   setAddedWallet = () => {},
   setBalance = () => {},
   setRealBalance = () => {},
@@ -48,11 +45,9 @@ function AddWalletAddress({
         setStepStatus(stepStatus + 1);
         onClose();
       }
-    } else {
-      if (newWalletAddress) {
-        setAddedWallet(newWalletAddress);
-        onClose();
-      }
+    } else if (newWalletAddress) {
+      setAddedWallet(newWalletAddress);
+      onClose();
     }
   }, [newWalletId]);
 
@@ -71,7 +66,7 @@ function AddWalletAddress({
       <ModalOverlay visible={visible} />
       <ModalWrapper
         className={className}
-        onClick={maskClosable ? onMaskClick : null}
+        onClick={maskClosable && onMaskClick}
         tabIndex="-1"
         visible={visible}
       >

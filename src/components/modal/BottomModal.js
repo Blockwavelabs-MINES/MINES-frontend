@@ -11,12 +11,9 @@ function BottomModal({
   renderInput,
 }) {
   useEffect(() => {
-    console.log(visible);
-    if (visible) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    visible
+      ? (document.body.style.overflow = "hidden")
+      : (document.body.style.overflow = "auto");
   }, [visible]);
 
   const onMaskClick = (e) => {
@@ -42,14 +39,12 @@ function BottomModal({
       <ModalOverlay visible={visible} />
       <ModalWrapper
         className={className}
-        onClick={maskClosable ? onMaskClick : null}
+        onClick={maskClosable && onMaskClick}
         tabIndex="-1"
         visible={visible}
       >
         <ModalInner tabIndex="0" className="modal-inner">
-          {/* <ContentContainer> */}
           <CloseButton onClick={closeOnClick} />
-          {/* </ContentContainer> */}
           {_renderInput()}
         </ModalInner>
       </ModalWrapper>
@@ -66,15 +61,12 @@ const ModalWrapper = styled.div`
   box-sizing: border-box;
   display: ${(props) => (props.visible ? "block" : "none")};
   position: fixed;
-  //   top: 200px;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   z-index: 901;
   overflow: hidden;
-  //   overflow: auto;
-  //   outline: 0;
 `;
 
 const ModalOverlay = styled.div`

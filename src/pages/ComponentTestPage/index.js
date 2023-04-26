@@ -65,13 +65,13 @@ const ComponentTestPage = () => {
   return (
     <>
       <FullBox>
-        {iconSizeList.map((size, sizeIdx) => (
+        {iconSizeList.map((size) => (
           <ButtonBox>
-            {typeList.map((type, typeIdx) => (
+            {typeList.map((type) => (
               <ButtonOneContainer>
-                {statesList.map((state, stateIdx) => (
+                {statesList.map((state) => (
                   <>
-                    {styleList.map((style, styleIdx) => (
+                    {styleList.map((style) => (
                       <IconButton
                         type={type}
                         styles={style}
@@ -88,13 +88,13 @@ const ComponentTestPage = () => {
         ))}
       </FullBox>
       <FullBox>
-        {sizeList.map((size, sizeIdx) => (
+        {sizeList.map((size) => (
           <ButtonBox>
-            {typeList.map((type, typeIdx) => (
+            {typeList.map((type) => (
               <ButtonOneContainer>
-                {statesList.map((state, stateIdx) => (
+                {statesList.map((state) => (
                   <>
-                    {styleList.map((style, styleIdx) => (
+                    {styleList.map((style) => (
                       <ContainedButton
                         type={type}
                         styles={style}
@@ -112,9 +112,9 @@ const ComponentTestPage = () => {
         ))}
       </FullBox>
       <FullBox>
-        {textSizeList.map((size, sizeIdx) => (
+        {textSizeList.map((size) => (
           <ButtonBox>
-            {textStyleList.map((style, styleIdx) => (
+            {textStyleList.map((style) => (
               <TextButton
                 styles={style}
                 states={textStates}
@@ -126,7 +126,7 @@ const ComponentTestPage = () => {
         ))}
       </FullBox>
       <FullBox>
-        {inputState.map((state, stateIdx) => (
+        {inputState.map((state) => (
           <InputBox
             label={label}
             state={state}
@@ -137,7 +137,7 @@ const ComponentTestPage = () => {
         ))}
       </FullBox>
       <FullBox>
-        {cardMetaData.map((data, idx) => (
+        {cardMetaData.map((data) => (
           <EditableCard
             label={data.label}
             isEdit={data.isEdit}

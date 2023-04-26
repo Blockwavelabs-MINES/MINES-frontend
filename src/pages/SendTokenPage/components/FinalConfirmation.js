@@ -5,11 +5,9 @@ import { COLORS as palette } from "utils/style/Color/colors";
 
 const FullContainer = styled.div`
   width: 100%;
-  //   height: 100%;
   min-height: 100vh;
   position: relative;
   padding: 57px 25px;
-  // padding-top: 75px;
 `;
 
 const Header = styled.div`
@@ -248,7 +246,6 @@ const FinalConfirmation = ({
   currency,
   networkId,
   userId,
-  walletType,
   network,
   address,
   setVisible,
@@ -279,18 +276,15 @@ const FinalConfirmation = ({
         ],
       })
       .then((txHash) => {
-        console.log(txHash);
         setVisible(false);
         setSendDone(true);
       })
-      .catch((error) => console.error);
+      .catch(() => console.error);
   };
 
   const leftOnClick = () => {
     alert("Coming soon.");
   };
-
-  const rightOnClick = () => {};
 
   const previousOnClick = () => {
     setVisible(false);
