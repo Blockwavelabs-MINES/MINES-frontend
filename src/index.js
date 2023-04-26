@@ -1,13 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import { Web3Provider } from "@ethersproject/providers";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Web3ReactProvider } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
+import App from "App";
+import "index.css";
+import ReactDOM from "react-dom/client";
+import reportWebVitals from "reportWebVitals";
 
 const injected = new InjectedConnector({
   supportedChainIds: [1, 3, 4, 5, 42, 137],

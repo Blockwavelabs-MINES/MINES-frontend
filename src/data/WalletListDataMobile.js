@@ -1,5 +1,5 @@
-import { WalletConnectOnClick } from "../components/WalletGroup/WalletConnectActions";
-import WalletConnectIcon from "../assets/icons/wallets/icon-walletConnect.svg";
+import WalletConnectIcon from "assets/icons/wallets/icon-walletConnect.svg";
+import { WalletConnectOnClick } from "components/WalletGroup/WalletConnectActions";
 
 const WalletList = [
   {

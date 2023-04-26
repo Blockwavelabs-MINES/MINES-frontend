@@ -2,8 +2,6 @@ import { DropIcon } from "assets/icons";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
-// import LoadCurrencyInputPanel from "./LoadCurrencyInputPanel";
-// import { isName, getAllQueryParams } from "../utils";
 
 const Container = styled.button`
   width: 100%;

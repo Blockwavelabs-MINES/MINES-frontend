@@ -5,14 +5,9 @@ import { DeleteModal } from "components/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { addLink, deleteLink, editLink, getLink } from "utils/api/link";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
-import {
-  addLink,
-  deleteLink,
-  editLink,
-  getLink,
-} from "../../../utils/api/link";
 import AddLinkModal from "./AddLinkModal";
 
 const FullContainer = styled.div`

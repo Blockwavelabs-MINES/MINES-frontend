@@ -5,9 +5,9 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { requestLogin } from "utils/api/auth";
 import { loginState, signupState } from "utils/atoms/login";
+import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 import { BottomModal } from ".";
-import { COLORS as palette } from "../../utils/style/Color/colors";
 import { ContainedButton } from "../button";
 
 const FullContainer = styled.div`

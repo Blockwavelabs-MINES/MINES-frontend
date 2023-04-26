@@ -1,5 +1,3 @@
-// import { store, useGlobalState } from "state-pool";
-import React, { useState } from "react";
 import TypographyEn from "./typographyEn";
 import TypographyKo from "./typographyKo";
 

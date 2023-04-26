@@ -1,23 +1,21 @@
-import "./App.css";
+import "App.css";
 import {
   ComponentTestPage,
-  IntroPage,
-  CreateLinkPage,
   EditProfilePage,
-  ProfilePage,
-  SendTokenPage,
-  ReceiveTokenPage,
-  SettingPage,
+  IntroPage,
   NotFoundPage,
-} from "./pages";
-import React from "react";
-import styled from "styled-components";
+  ProfilePage,
+  ReceiveTokenPage,
+  SendTokenPage,
+  SettingPage,
+} from "pages";
+import { PrivacyPolicy, TermsOfService } from "pages/TermsAndConditionPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ScrollToTop from "./utils/functions/ScrollTop";
-import { COLORS as palette } from "./utils/style/Color/colors";
-import "./utils/style/Font/font.css";
 import { RecoilRoot } from "recoil";
-import { PrivacyPolicy, TermsOfService } from "./pages/TermsAndConditionPage";
+import styled from "styled-components";
+import ScrollToTop from "utils/functions/ScrollTop";
+import { COLORS as palette } from "utils/style/Color/colors";
+import "utils/style/Font/font.css";
 
 const BodyInner = styled.div`
   display: flex;
