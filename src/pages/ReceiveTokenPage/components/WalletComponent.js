@@ -372,15 +372,29 @@ const WalletComponent = ({
                           const interval = setInterval(() => {
                             web3.eth
                               .getTransactionReceipt(signedTx.transactionHash)
-                              .then((receipt) => {
+                              .then(async (receipt) => {
                                 if (!receipt && !failed) {
                                   console.log(failed);
                                   console.log("pending");
                                   setLoading(true);
                                 } else {
-                                  setLoading(false);
-                                  setComplete(true);
                                   clearInterval(interval);
+                                  let tmpReceiveInfo = linkInfo;
+                                  tmpReceiveInfo.receiverWalletAddress =
+                                    walletList[select].walletAddress;
+                                  tmpReceiveInfo.transactionHash = res;
+                                  toggleIsValid(linkInfo.id, false);
+                                  await receiveTrxs(
+                                    walletList[select].walletAddress,
+                                    "METAMASK",
+                                    0.000001,
+                                    linkInfo.id
+                                  ).then((data) => {
+                                    setReceiveInfo(data);
+                                    setLoading(false);
+                                    setComplete(true);
+                                  });
+                                  setCheckStatus(!checkStatus);
                                 }
                               })
                               .catch((err) => {
@@ -392,22 +406,6 @@ const WalletComponent = ({
                               });
                           }, 1000);
                         }
-
-                        let tmpReceiveInfo = linkInfo;
-                        tmpReceiveInfo.receiverWalletAddress =
-                          walletList[select].walletAddress;
-                        tmpReceiveInfo.transactionHash = res;
-                        toggleIsValid(linkInfo.id, false);
-                        await receiveTrxs(
-                          walletList[select].walletAddress,
-                          "METAMASK",
-                          0.000001,
-                          linkInfo.id
-                        ).then((data) => {
-                          setReceiveInfo(data);
-                        });
-                        setLoading(true);
-                        setCheckStatus(!checkStatus);
                       }
                     }
                   );
@@ -479,15 +477,29 @@ const WalletComponent = ({
                         const interval = setInterval(() => {
                           web3.eth
                             .getTransactionReceipt(signedTx.transactionHash)
-                            .then((receipt) => {
+                            .then(async (receipt) => {
                               if (!receipt && !failed) {
                                 console.log(failed);
                                 console.log("pending");
                                 setLoading(true);
                               } else {
-                                setLoading(false);
-                                setComplete(true);
                                 clearInterval(interval);
+                                let tmpReceiveInfo = linkInfo;
+                                tmpReceiveInfo.receiverWalletAddress =
+                                  walletList[select].walletAddress;
+                                tmpReceiveInfo.transactionHash = res;
+                                toggleIsValid(linkInfo.id, false);
+                                await receiveTrxs(
+                                  walletList[select].walletAddress,
+                                  "METAMASK",
+                                  0.000001,
+                                  linkInfo.id
+                                ).then((data) => {
+                                  setReceiveInfo(data);
+                                  setLoading(false);
+                                  setComplete(true);
+                                });
+                                setCheckStatus(!checkStatus);
                               }
                             })
                             .catch((err) => {
@@ -499,22 +511,6 @@ const WalletComponent = ({
                             });
                         }, 1000);
                       }
-
-                      let tmpReceiveInfo = linkInfo;
-                      tmpReceiveInfo.receiverWalletAddress =
-                        walletList[select].walletAddress;
-                      tmpReceiveInfo.transactionHash = res;
-                      toggleIsValid(linkInfo.id, false);
-                      await receiveTrxs(
-                        walletList[select].walletAddress,
-                        "METAMASK",
-                        0.000001,
-                        linkInfo.id
-                      ).then((data) => {
-                        setReceiveInfo(data);
-                      });
-                      setLoading(true);
-                      setCheckStatus(!checkStatus);
                     }
                   }
                 );
