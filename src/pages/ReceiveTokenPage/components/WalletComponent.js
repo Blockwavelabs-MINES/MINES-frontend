@@ -358,13 +358,17 @@ const WalletComponent = ({
                             "Error: Returned error: insufficient funds"
                           )
                         ) {
+                          console.log("here");
                           setLoading(false);
                           setFailed(true);
                         }
                       } else {
                         setTransactionHash(res); // 저장해야할 hash값
-
-                        if (transactionHash || resend) {
+                        console.log(res);
+                        console.log("res here");
+                        console.log(transactionHash);
+                        if (res || resend) {
+                          console.log("hahaha");
                           const interval = setInterval(() => {
                             web3.eth
                               .getTransactionReceipt(signedTx.transactionHash)
@@ -468,8 +472,10 @@ const WalletComponent = ({
                       }
                     } else {
                       setTransactionHash(res); // 저장해야할 hash값
+                      console.log(transactionHash);
 
-                      if (transactionHash || resend) {
+                      if (res || resend) {
+                        console.log("hihihi");
                         const interval = setInterval(() => {
                           web3.eth
                             .getTransactionReceipt(signedTx.transactionHash)
