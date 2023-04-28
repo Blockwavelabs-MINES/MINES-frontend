@@ -2,6 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import { Sender3TreeIcon } from "assets/icons";
 import { ContainedButton } from "components/button";
 import { BottomModal } from "components/modal";
+import { minABI } from "data/minABI";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,7 +10,6 @@ import styled from "styled-components";
 import { sendTrxs } from "utils/api/trxs";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
-import { minABI } from "../data/minABI";
 
 const FullContainer = styled.div`
   width: 100%;
