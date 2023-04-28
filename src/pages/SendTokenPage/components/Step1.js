@@ -1,4 +1,5 @@
 import { InputBox } from "components/input";
+import AddWalletAddress from "components/modal/AddWalletAddress";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -33,6 +34,17 @@ const Step1 = ({
   setEmail,
   emailState,
   setEmailState,
+  setBalance,
+  setRealBalance,
+  setAddress,
+  setNetworkId,
+  setNetwork,
+  setCurrency,
+  setWalletType,
+  modalVisible,
+  setModalVisible,
+  setStepStatus,
+  stepStatus,
 }) => {
   const [platformIdx, setPlatformIdx] = useState(0);
   const [errorComment, setErrorComment] = useState("");
@@ -57,8 +69,29 @@ const Step1 = ({
     }
   };
 
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   return (
     <Container>
+      {modalVisible && (
+        <AddWalletAddress
+          visible={modalVisible}
+          closable={true}
+          maskClosable={true}
+          onClose={closeModal}
+          setAddedWallet={setAddress}
+          setBalance={setBalance}
+          setRealBalance={setRealBalance}
+          setNetworkId={setNetworkId}
+          setNetwork={setNetwork}
+          setCurrency={setCurrency}
+          setWalletType={setWalletType}
+          setStepStatus={setStepStatus}
+          stepStatus={stepStatus}
+        />
+      )}
       <PlatformBox>
         <BoxHeader>{t("sendPage01_3")}</BoxHeader>
         <DropBox

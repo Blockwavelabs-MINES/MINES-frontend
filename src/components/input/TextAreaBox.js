@@ -34,7 +34,11 @@ const TextareaContainer = styled.textarea`
     color: ${palette.grey_5};
   }
   &:focus {
-    outline: 1px solid ${palette.blue_2};
+    outline: none;
+    border: 1px solid ${palette.blue_2};
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
   }
 `;
 

@@ -72,7 +72,6 @@ const IconContainer = styled.img`
 `;
 
 const PrimaryTextBox = styled.div`
-  min-width: 30px;
   ${Typograpy.Headline2}
   font-size: ${({ size }) =>
     size === "large" ? "17px" : size === "small" ? "13px" : "15px"};

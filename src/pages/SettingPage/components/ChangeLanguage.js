@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { changeUserLanguage } from "utils/api/auth";
+import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography";
 
 const Container = styled.div`
@@ -23,6 +24,7 @@ const ListButton = styled.button`
 
   & > p {
     ${Typography.Headline2}
+    -webkit-text-fill-color: ${palette.Black};
   }
 `;
 

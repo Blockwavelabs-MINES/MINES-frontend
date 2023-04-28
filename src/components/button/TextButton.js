@@ -5,7 +5,7 @@ import Typograpy from "utils/style/Typography";
 const PrimaryButton = styled.button`
   min-width: ${({ size }) =>
     size === "large" ? "75px" : size === "small" ? "68px" : "75px"};
-  height: 30px;
+  height: 32px;
   border-radius: 15px;
   background-color: transparent;
   border: hidden;
@@ -20,6 +20,7 @@ const PrimaryButton = styled.button`
 `;
 
 const PrimaryTextBox = styled.div`
+  width: 100%;
   ${Typograpy.Caption1}
   font-size: ${({ size }) =>
     size === "large" ? "15px" : size === "small" ? "10px" : "15px"};
@@ -30,6 +31,7 @@ const PrimaryTextBox = styled.div`
       ? palette.grey_5
       : palette.blue_1};
   margin: auto 0px;
+  text-align: center;
 `;
 
 // type="primary";

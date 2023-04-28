@@ -69,6 +69,7 @@ const EmailName = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  -webkit-text-fill-color: ${palette.Black};
 `;
 
 const DropIconBox = styled.img`
