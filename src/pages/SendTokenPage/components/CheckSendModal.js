@@ -136,11 +136,9 @@ const LoginModalInner = (
       (provider) => provider.isMetaMask
     );
   } else {
-    if (isMobileDevice()) {
-      metamaskProvider = library.provider;
-    } else {
-      metamaskProvider = window?.ethereum;
-    }
+    isMobileDevice()
+      ? (metamaskProvider = library.provider)
+      : (metamaskProvider = window?.ethereum);
   }
   const web3 = new Web3(metamaskProvider);
 
@@ -244,11 +242,9 @@ const LoginModalInner = (
       ];
       let tempProvider = metamaskProvider;
 
-      if (isMobileDevice()) {
-        tempProvider = new Web3(new Web3.providers.HttpProvider(rpcURL));
-      } else {
-        tempProvider = new ethers.providers.Web3Provider(metamaskProvider);
-      }
+      isMobileDevice()
+        ? (tempProvider = new Web3(new Web3.providers.HttpProvider(rpcURL)))
+        : (tempProvider = new ethers.providers.Web3Provider(metamaskProvider));
 
       async function sendToken() {
         if (isMobileDevice()) {
