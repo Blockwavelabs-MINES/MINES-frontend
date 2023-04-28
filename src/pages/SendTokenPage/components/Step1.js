@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { InputBox } from "components/input";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 import DropBox from "./Dropbox";
 import PlatformList from "./PlatformList";
-import { InputBox } from "../../../components/input";
-import { useTranslation } from "react-i18next";
-import AddWalletAddress from "../../../components/modal/AddWalletAddress";
 
 const Container = styled.div`
   width: 100%;
@@ -34,17 +33,6 @@ const Step1 = ({
   setEmail,
   emailState,
   setEmailState,
-  setBalance,
-  setRealBalance,
-  setAddress,
-  setNetworkId,
-  setNetwork,
-  setCurrency,
-  setWalletType,
-  modalVisible,
-  setModalVisible,
-  setStepStatus,
-  stepStatus,
 }) => {
   const [platformIdx, setPlatformIdx] = useState(0);
   const [errorComment, setErrorComment] = useState("");
@@ -69,29 +57,8 @@ const Step1 = ({
     }
   };
 
-  const closeModal = () => {
-    setModalVisible(false);
-  };
-
   return (
     <Container>
-      {modalVisible && (
-        <AddWalletAddress
-          visible={modalVisible}
-          closable={true}
-          maskClosable={true}
-          onClose={closeModal}
-          setAddedWallet={setAddress}
-          setBalance={setBalance}
-          setRealBalance={setRealBalance}
-          setNetworkId={setNetworkId}
-          setNetwork={setNetwork}
-          setCurrency={setCurrency}
-          setWalletType={setWalletType}
-          setStepStatus={setStepStatus}
-          stepStatus={stepStatus}
-        />
-      )}
       <PlatformBox>
         <BoxHeader>{t("sendPage01_3")}</BoxHeader>
         <DropBox

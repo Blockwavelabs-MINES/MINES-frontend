@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
 import {
   DropboxBubbleTail,
+  DropboxFeedback,
   DropboxLogout,
   DropboxSettings,
-  DropboxFeedback,
-} from "../../../assets/icons";
-import Typography from "../../../utils/style/Typography";
+} from "assets/icons";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
-import { loginState } from "../../../utils/atoms/login";
+import styled from "styled-components";
+import { loginState } from "utils/atoms/login";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography";
 
 const DropBoxContainer = styled.div`
   min-width: 92px;

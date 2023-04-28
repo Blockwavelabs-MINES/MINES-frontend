@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Typography from "../../utils/style/Typography/index";
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import Lottie from "react-lottie-player";
-import animation from "../../assets/lottie/airplane-lottie.json";
+import animation from "assets/lottie/airplane-lottie.json";
 import { useTranslation } from "react-i18next";
+import Lottie from "react-lottie-player";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const ContentContainer = styled.div`
   padding-left: 20px;
@@ -53,7 +52,7 @@ const LoadingComponent = () => {
         </LottieContainer>
         <TextLine>{t("sendPage03Pending1")}</TextLine>
         <CheckTxTitle>
-        {t("sendPage03Pending2")}
+          {t("sendPage03Pending2")}
           <br />
           {t("sendPage03Pending3")}
         </CheckTxTitle>

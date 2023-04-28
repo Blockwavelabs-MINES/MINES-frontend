@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import { SmileySad } from "../../assets/icons";
-import Typography from "../../utils/style/Typography";
+import { SmileySad } from "assets/icons";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography";
 
 const ModalWrapper = styled.div`
   z-index: 101;

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { ContainedButton } from "../../components/button";
-import { InputBox } from "../../components/input";
-import Typography from "../../utils/style/Typography/index";
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import CreateSuccess from "./CreateSuccess";
-import { createUserId, checkUserId } from "../../utils/api/auth";
-import { useTranslation } from "react-i18next";
 import axios from "axios";
+import { ContainedButton } from "components/button";
+import { InputBox } from "components/input";
+import CreateSuccess from "pages/CreateLinkPage/CreateSuccess";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { checkUserId } from "utils/api/auth";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const FullContainer = styled.div`
   width: 100%;

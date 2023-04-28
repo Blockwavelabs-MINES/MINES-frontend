@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import PlatformList from "pages/SendTokenPage/components/PlatformList";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { getUserInfo } from "../../../utils/api/auth";
-import PlatformList from "../../SendTokenPage/components/PlatformList";
+import styled from "styled-components";
+import { getUserInfo } from "utils/api/auth";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const Container = styled.div`
   width: 100%;

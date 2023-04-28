@@ -1,10 +1,9 @@
-import React from "react";
-import styled from "styled-components";
-import Typography from "../../utils/style/Typography/index";
-import { COLORS as palette } from "../../utils/style/Color/colors";
+import { SorryImage } from "assets/images";
+import { ContainedButton } from "components/button";
 import { useTranslation } from "react-i18next";
-import { SorryImage } from "../../assets/images";
-import { ContainedButton } from "../../components/button";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const FullContainer = styled.div`
   width: 100%;

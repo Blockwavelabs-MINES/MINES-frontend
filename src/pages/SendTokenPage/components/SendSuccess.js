@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { CopyIcon } from "assets/icons";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { CopyIcon } from "../../../assets/icons";
-import { useTranslation } from "react-i18next";
+import { COLORS as palette } from "utils/style/Color/colors";
 
 const FullContainer = styled.div`
   width: 100%;

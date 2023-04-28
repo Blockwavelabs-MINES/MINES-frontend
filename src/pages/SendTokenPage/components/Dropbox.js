@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { DropIcon } from "assets/icons";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { DropIcon } from "../../../assets/icons";
+import { COLORS as palette } from "utils/style/Color/colors";
 // import LoadCurrencyInputPanel from "./LoadCurrencyInputPanel";
 // import { isName, getAllQueryParams } from "../utils";
 
@@ -72,7 +72,6 @@ const EmailName = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  -webkit-text-fill-color: ${palette.Black};
 `;
 
 const DropIconBox = styled.img`

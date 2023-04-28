@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { ContainedButton } from "components/button";
 import PropTypes from "prop-types";
-import styled from "styled-components";
-import Typography from "../../utils/style/Typography";
-import { ContainedButton } from "../../components/button";
-import { COLORS as palette } from "../../utils/style/Color/colors";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography";
 
 const InnerContainer = styled.div`
   width: 100%;

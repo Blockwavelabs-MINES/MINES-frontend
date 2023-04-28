@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
-import styled from "styled-components";
-import { COLORS as palette } from "../../../utils/styles/colors";
-import useWindowDimensions from "../../../utils/functions/useWindowDimensions";
-import WalletList from "../../../datas/WalletListData";
-import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
+import { useWeb3React } from "@web3-react/core";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
+import WalletList from "datas/WalletListData";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import useWindowDimensions from "utils/functions/useWindowDimensions";
+import { COLORS as palette } from "utils/styles/colors";
 
 const BoxContainer = styled.div`
   width: 100%;

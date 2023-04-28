@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { LoginHeader } from "../../components/header";
-import { ContainedButton } from "../../components/button";
-import Typography from "../../utils/style/Typography/index";
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import { LoginModal, SingleModal } from "../../components/modal";
-import { MainImage1, MainImage2, MainImage3 } from "../../assets/images";
+import { MainImage1, MainImage2, MainImage3 } from "assets/images";
+import { ContainedButton } from "components/button";
+import { LoginHeader } from "components/header";
+import { LoginModal, SingleModal } from "components/modal";
+import CreateLinkPage from "pages/CreateLinkPage";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";
-import CreateLinkPage from "../CreateLinkPage";
+import { useRecoilState, useRecoilValue } from "recoil";
+import styled from "styled-components";
+import SwiperCore, { Autoplay, Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { useRecoilValue, useRecoilState } from "recoil";
-import { loginState, signupState } from "../../utils/atoms/login";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { loginState, signupState } from "utils/atoms/login";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 SwiperCore.use([Navigation, Pagination]);
 

@@ -1,6 +1,6 @@
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import Typograpy from "../../utils/style/Typography";
 import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typograpy from "utils/style/Typography";
 
 const PrimaryButton = styled.button`
   min-width: ${({ size }) =>
@@ -84,6 +84,7 @@ const IconContainer = styled.img`
 `;
 
 const PrimaryTextBox = styled.div`
+  min-width: 30px;
   ${Typograpy.Headline2}
   font-size: ${({ size }) =>
     size === "large" ? "17px" : size === "small" ? "13px" : "15px"};

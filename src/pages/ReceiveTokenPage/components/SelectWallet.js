@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { SendTokenHeader } from "../../../components/header";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import WalletComponent from "./WalletComponent";
-import ReceiveComplete from "./ReceiveComplete";
-import { LoadingComponent } from "../../../components/card";
-import FailComponent from "./FailComponent";
+import { LoadingComponent } from "components/card";
+import { SendTokenHeader } from "components/header";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
+import FailComponent from "./FailComponent";
+import ReceiveComplete from "./ReceiveComplete";
+import WalletComponent from "./WalletComponent";
 
 const ContentContainer = styled.div`
   padding-left: 20px;

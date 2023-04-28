@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
-import Typography from "../../utils/style/Typography";
-import { ContainedButton } from "../button";
-import { COLORS as palette } from "../../utils/style/Color/colors";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography";
+import { ContainedButton } from "../button";
 
 const InnerContainer = styled.div`
   width: 100%;
@@ -67,7 +67,11 @@ function ConfirmModal({
                 styles="filled"
                 states="default"
                 size="large"
-                label={buttonText ? buttonText : t("manageProfilePageAlertDeleteLink3")}
+                label={
+                  buttonText
+                    ? buttonText
+                    : t("manageProfilePageAlertDeleteLink3")
+                }
                 style={{ backgroundColor: palette.blue_1 }}
                 onClick={realConfirmOnClick}
               />

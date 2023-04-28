@@ -1,6 +1,5 @@
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import Typograpy from "../../utils/style/Typography";
 import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
 
 const PrimaryButton = styled.button`
   width: ${({ size }) =>

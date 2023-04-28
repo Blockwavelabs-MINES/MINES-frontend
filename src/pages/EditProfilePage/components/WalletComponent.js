@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { ContainedButton } from "../../../components/button";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { EmptyCard, EditableCard } from "../../../components/card";
-import { EmptyWallet, MetamaskIcon } from "../../../assets/icons";
-import { DeleteModal } from "../../../components/modal";
-import { getWallet, addWallet, deleteWallet } from "../../../utils/api/wallets";
+import { EmptyWallet, MetamaskIcon } from "assets/icons";
+import { ContainedButton } from "components/button";
+import { EditableCard, EmptyCard } from "components/card";
+import { ConfirmModal, DeleteModal } from "components/modal";
+import AddWalletAddress from "components/modal/AddWalletAddress";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import AddWalletAddress from "../../../components/modal/AddWalletAddress";
-import { ConfirmModal } from "../../../components/modal";
+import styled from "styled-components";
+import { addWallet, deleteWallet, getWallet } from "utils/api/wallets";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const FullContainer = styled.div`
   width: 100%;

@@ -1,10 +1,9 @@
-import React from "react";
-import styled from "styled-components";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { CrossImage } from "../../../assets/images";
-import { ContainedButton } from "../../../components/button";
+import { CrossImage } from "assets/images";
+import { ContainedButton } from "components/button";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const ContentContainer = styled.div`
   padding-left: 20px;

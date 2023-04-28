@@ -1,12 +1,8 @@
-import {
-  ContainedButton,
-  TextButton,
-  IconButton,
-} from "../../components/button";
-import { InputBox } from "../../components/input";
-import { EditableCard } from "../../components/card";
+import { ExternalLink } from "assets/icons";
+import { ContainedButton, IconButton, TextButton } from "components/button";
+import { EditableCard } from "components/card";
+import { InputBox } from "components/input";
 import styled from "styled-components";
-import { ExternalLink } from "../../assets/icons";
 
 const FullBox = styled.div`
   padding: 20px;

@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { ContainedButton } from "../../../components/button";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { BottomModal } from "../../../components/modal";
-import { Sender3TreeIcon } from "../../../assets/icons";
-import { sendTrxs } from "../../../utils/api/trxs";
-import { useTranslation } from "react-i18next";
 import { useWeb3React } from "@web3-react/core";
+import { Sender3TreeIcon } from "assets/icons";
+import { ContainedButton } from "components/button";
+import { BottomModal } from "components/modal";
 import { ethers } from "ethers";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { sendTrxs } from "utils/api/trxs";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -188,7 +188,7 @@ const LoginModalInner = (
                 networkId
               ).then((data) => {
                 setFinalLink(data.linkKey);
-                setExpired(setExpiredDate());
+                setExpired(data.expiredAt);
                 setLoading(false);
               });
 
@@ -261,69 +261,19 @@ const LoginModalInner = (
             web3.utils.toHex(Number(amount) * Math.pow(10, tokenInfo.decimals))
           );
           const encodedData = await transferMethod.encodeABI();
+          alert(encodedData);
           metamaskProvider = library.provider;
           await metamaskProvider
             .request({
               method: "personal_sign",
               params: [encodedData, address],
             })
-            .then(async (transaction) => {
-              const escrowHash = transaction;
+            .then(async (txHash) => {
+              alert(txHash);
+              const escrowHash = txHash;
               setEscrowId("1234"); // 현재는 escrow로 관리하지 않으므로 일단 임의의 값
               setExpiredDateResult(setExpiredDate());
               setTransactionHash(escrowHash);
-              const interval = setInterval(async () => {
-                await fetch(rpcURL, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    jsonrpc: "2.0",
-                    id: 1,
-                    method: "eth_getTransactionByHash",
-                    params: [transaction],
-                  }),
-                })
-                  .then(async (receipt) => {
-                    setLoading(true);
-                    if (receipt == null) {
-                      console.log("pending");
-                      setTransactionStatus("pending");
-                    } else {
-                      setTransactionStatus("mined");
-                      await sendTrxs(
-                        address,
-                        "metamask",
-                        "google",
-                        receiver,
-                        currency,
-                        amount,
-                        transaction,
-                        escrowId,
-                        expiredDateResult,
-                        tokenInfo.address,
-                        networkId
-                      ).then((data) => {
-                        setFinalLink(data.linkKey);
-                        setExpired(setExpiredDate());
-                        setLoading(false);
-                      });
-
-                      setStepStatus(stepStatus + 1);
-                      onClose();
-
-                      clearInterval(interval);
-                    }
-                  })
-                  .catch((err) => {
-                    // 존재하지 않는 hash 값일 경우 (+ pending이 길게 되어 tx가 사라진 경우)
-                    console.log(err);
-                    setLoading(false);
-                    setFailed(true);
-                    clearInterval(interval);
-                  });
-              }, 1000);
             })
             .catch((error) => {
               alert(JSON.stringify(error));

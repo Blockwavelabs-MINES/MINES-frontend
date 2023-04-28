@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { ProfileHeader } from "../../components/header";
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import { LinkComponent, WalletComponent } from "./components";
-import { ProfileCard } from "../../components/card";
-import { useLocation } from "react-router-dom";
-import { getUserInfoAndProfileDeco } from "../../utils/api/auth";
+import { ProfileCard } from "components/card";
+import { ProfileHeader } from "components/header";
+import { LinkComponent, WalletComponent } from "pages/ProfilePage/components";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
+import styled from "styled-components";
+import { getUserInfoAndProfileDeco } from "utils/api/auth";
+import { COLORS as palette } from "utils/style/Color/colors";
 
 const FullContainer = styled.div`
   width: 100%;

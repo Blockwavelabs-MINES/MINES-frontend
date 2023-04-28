@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { BottomModalX } from "assets/icons";
+import WalletList from "data/WalletListData";
+import WalletListMobile from "data/WalletListDataMobile";
 import PropTypes from "prop-types";
-import styled from "styled-components";
-import { BottomModalX } from "../../assets/icons";
-import WalletButtonGroup from "../WalletGroup/WalletButtonGroup";
-import WalletList from "../../data/WalletListData";
-import WalletListMobile from "../../data/WalletListDataMobile";
-// import { createWallet } from "../../utils/api/wallets";
-import Typography from "../../utils/style/Typography";
-import { COLORS as palette } from "../../utils/style/Color/colors";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography";
+import WalletButtonGroup from "../WalletGroup/WalletButtonGroup";
 
 function isMobileDevice() {
   return (

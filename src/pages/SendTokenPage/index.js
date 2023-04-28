@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
+import { ContainedButton } from "components/button";
+import { LoadingComponent } from "components/card";
+import { SendTokenHeader } from "components/header";
+import { DeleteModal } from "components/modal";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { SendTokenHeader } from "../../components/header";
-import Typography from "../../utils/style/Typography/index";
-import { COLORS as palette } from "../../utils/style/Color/colors";
+import { getUserInfo } from "utils/api/auth";
+import { loginState } from "utils/atoms/login";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 import {
+  FailedComponent,
+  FinalConfirmation,
+  SendSuccess,
   Step1,
   Step2,
   Step3,
-  FinalConfirmation,
-  SendSuccess,
-  FailedComponent,
 } from "./components";
-import { DeleteModal } from "../../components/modal";
-import { ContainedButton } from "../../components/button";
-import { LoadingComponent } from "../../components/card";
-import { useTranslation } from "react-i18next";
-import { getUserInfo } from "../../utils/api/auth";
-import { useRecoilValue } from "recoil";
-import { loginState } from "../../utils/atoms/login";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -220,19 +220,6 @@ const SendTokenPage = () => {
         email: email,
         setEmailState: setEmailState,
         emailState: emailState,
-        urlInfo: "",
-        platform: platform,
-        setBalance: setBalance,
-        setRealBalance: setRealBalance,
-        setAddress: setSenderAddress,
-        setNetworkId: setNetworkId,
-        setNetwork: setNetwork,
-        setCurrency: setCurrency,
-        setWalletType: setWalletType,
-        modalVisible: modalVisible,
-        setModalVisible: setModalVisible,
-        setStepStatus: setStepStatus,
-        stepStatus: stepStatus,
       }),
     },
     {

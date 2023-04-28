@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { useTranslation } from "react-i18next";
+import { GreenCheck } from "assets/icons";
 import i18next from "i18next";
-import { changeUserLanguage } from "../../../utils/api/auth";
-import Typography from "../../../utils/style/Typography";
-import { GreenCheck } from "../../../assets/icons";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { changeUserLanguage } from "utils/api/auth";
+import Typography from "utils/style/Typography";
 
 const Container = styled.div`
   width: 100%;
@@ -24,7 +23,6 @@ const ListButton = styled.button`
 
   & > p {
     ${Typography.Headline2}
-    -webkit-text-fill-color: ${palette.Black};
   }
 `;
 

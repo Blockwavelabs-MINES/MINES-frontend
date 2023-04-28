@@ -1,16 +1,16 @@
+import { CustomIcon } from "assets/icons";
 import imageCompression from "browser-image-compression";
-import React, { useEffect, useRef, useState } from "react";
+import { ContainedButton } from "components/button";
+import { EditProfileHeader } from "components/header";
+import { UnvalidFormatModal } from "components/modal";
+import { useEffect, useRef, useState } from "react";
 import { SketchPicker } from "react-color";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { editProfileDeco, getProfileDeco } from "utils/api/profile";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 import { Preview } from ".";
-import { CustomIcon } from "../../../assets/icons";
-import { ContainedButton } from "../../../components/button";
-import { EditProfileHeader } from "../../../components/header";
-import { UnvalidFormatModal } from "../../../components/modal";
-import { editProfileDeco, getProfileDeco } from "../../../utils/api/profile";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import Typography from "../../../utils/style/Typography/index";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -108,14 +108,10 @@ const ColorHexBox = styled.input`
   color: ${palette.grey_1};
   ${Typography.Headline3};
   &:focus {
-    outline: none;
-    border: ${({ state }) =>
+    outline: ${({ state }) =>
       state === "error"
         ? `${palette.red_1} solid 1px`
         : `${palette.blue_2} solid 1px`};
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
   }
   & {
     border-radius: 10px;

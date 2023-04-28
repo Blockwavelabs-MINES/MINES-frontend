@@ -1,7 +1,6 @@
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import Typograpy from "../../utils/style/Typography";
+import { TooltipBubbleTail } from "assets/icons";
 import styled from "styled-components";
-import { TooltipBubbleTail } from "../../assets/icons";
+import { COLORS as palette } from "utils/style/Color/colors";
 
 const FullBox = styled.div`
   display: absolute;

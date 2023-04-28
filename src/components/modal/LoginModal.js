@@ -1,18 +1,14 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { ContainedButton } from "../button";
-import Typography from "../../utils/style/Typography/index";
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import { BottomModal } from ".";
-import { SocialGoogle } from "../../assets/icons";
-// import { GoogleLogin } from "react-google-login";
-import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleLogin } from "@react-oauth/google";
-import { setLocalUserInfo } from "../../utils/functions/setLocalVariable";
-import { requestLogin } from "../../utils/api/auth";
+import { SocialGoogle } from "assets/icons";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
-import { loginState, signupState } from "../../utils/atoms/login";
+import styled from "styled-components";
+import { requestLogin } from "utils/api/auth";
+import { loginState, signupState } from "utils/atoms/login";
+import Typography from "utils/style/Typography/index";
+import { BottomModal } from ".";
+import { COLORS as palette } from "../../utils/style/Color/colors";
+import { ContainedButton } from "../button";
 
 const FullContainer = styled.div`
   width: 100%;

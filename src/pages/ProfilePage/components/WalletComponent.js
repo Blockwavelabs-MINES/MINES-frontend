@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { EmptyCard, EditableCard } from "../../../components/card";
-import { EmptyWallet, MetamaskIcon } from "../../../assets/icons";
+import { EmptyWallet, MetamaskIcon } from "assets/icons";
+import { EditableCard, EmptyCard } from "components/card";
+import { CopyPivot } from "components/modal";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CopyPivot } from "../../../components/modal";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const FullContainer = styled.div`
   width: 100%;

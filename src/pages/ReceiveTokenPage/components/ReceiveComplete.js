@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Typography from "../../../utils/style/Typography/index";
-import { COLORS as palette } from "../../../utils/style/Color/colors";
-import { EditableCard } from "../../../components/card";
-import Lottie from "react-lottie-player";
-import animation from "../../../assets/lottie/check-lottie.json";
-import { MetamaskIcon, GreenCheck, ChevronRight } from "../../../assets/icons";
-import { CompasImage } from "../../../assets/images";
+import { ChevronRight, GreenCheck, MetamaskIcon } from "assets/icons";
+import { CompasImage } from "assets/images";
+import animation from "assets/lottie/check-lottie.json";
+import { EditableCard } from "components/card";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getTrxsLinkInfo } from "../../../utils/api/trxs";
-import { useRecoilValue } from "recoil";
-import { receiveTrxHashState } from "../../../utils/atoms/trxs";
+import Lottie from "react-lottie-player";
+import styled from "styled-components";
+import { getTrxsLinkInfo } from "utils/api/trxs";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const ContentContainer = styled.div`
   padding-left: 20px;
@@ -118,13 +116,14 @@ const walletConvert = (walletAddress) => {
 const ReceiveComplete = ({ walletList, select }) => {
   const { t } = useTranslation();
   const [receiveInfo, setReceiveInfo] = useState(null);
-  const receiveTrxHash = useRecoilValue(receiveTrxHashState);
 
   const txHashExplorerOnClick = () => {
     if (Number(receiveInfo.networkId) == 5) {
-      window.open(`https://goerli.etherscan.io/tx/${receiveTrxHash}`);
+      window.open(
+        `https://goerli.etherscan.io/tx/${receiveInfo.transactionHash}`
+      );
     } else if (Number(receiveInfo.networkId) == 137) {
-      window.open(`https://polygonscan.com/tx/${receiveTrxHash}`);
+      window.open(`https://polygonscan.com/tx/${receiveInfo.transactionHash}`);
     }
   };
 
@@ -164,7 +163,9 @@ const ReceiveComplete = ({ walletList, select }) => {
           <TxHashInfobox>
             <TxHashInfoTitle>{t("receiveTokenComplete4")}</TxHashInfoTitle>
             <TxHashAddressBox>
-              <TxHashAddress>{walletConvert(receiveTrxHash)}</TxHashAddress>
+              <TxHashAddress>
+                {walletConvert(receiveInfo?.transactionHash)}
+              </TxHashAddress>
             </TxHashAddressBox>
           </TxHashInfobox>
         </TxHashCard>

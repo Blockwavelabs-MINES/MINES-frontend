@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 import langEn from "./lang.en.json";
 import langKo from "./lang.ko.json";
 
+import { getUserInfo } from "utils/api/auth";
+
 const resource = {
   en: {
     translations: langEn,
@@ -19,6 +21,10 @@ const browserLanguage = () => {
   }
   return navigator.language.slice(0, 2);
 };
+
+i18n.on("initialized", async () => {
+  await getUserInfo();
+});
 
 i18n.use(initReactI18next).init({
   resources: resource,

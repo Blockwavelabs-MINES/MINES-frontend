@@ -1,17 +1,13 @@
-import React, { useEffect, useState, useRef } from "react";
-import styled from "styled-components";
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import Typography from "../../utils/style/Typography";
-import { useTranslation } from "react-i18next";
-import useWindowDimensions from "../../utils/functions/useWindowDimensions";
-import WalletList from "../../data/WalletListData";
-import WalletListMobile from "../../data/WalletListDataMobile";
-import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
+import { useWeb3React } from "@web3-react/core";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
-import { chain } from "mathjs";
-import { formatEther } from "@ethersproject/units";
-import useSWR from "swr";
-import NetworkList from "../../pages/SendTokenPage/components/NetworkList";
+import WalletList from "data/WalletListData";
+import WalletListMobile from "data/WalletListDataMobile";
+import NetworkList from "pages/SendTokenPage/components/NetworkList";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import useWindowDimensions from "utils/functions/useWindowDimensions";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography";
 
 const BoxContainer = styled.div`
   width: 90%;

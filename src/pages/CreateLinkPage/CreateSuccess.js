@@ -1,13 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
-import styled from "styled-components";
-import { ContainedButton } from "../../components/button";
-import Typography from "../../utils/style/Typography/index";
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import { CreateSuccess as SuccessImg } from "../../assets/icons";
+import { CreateSuccess as SuccessImg } from "assets/icons";
+import { ContainedButton } from "components/button";
+import { CopyPivot } from "components/modal";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CopyPivot } from "../../components/modal";
 import { useSetRecoilState } from "recoil";
-import { signupState } from "../../utils/atoms/login";
+import styled from "styled-components";
+import { signupState } from "utils/atoms/login";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 const IntroTextBox = styled.div`
   width: 90%;

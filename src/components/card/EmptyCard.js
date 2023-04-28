@@ -1,7 +1,7 @@
-import { COLORS as palette } from "../../utils/style/Color/colors";
-import Typograpy from "../../utils/style/Typography";
-import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { COLORS as palette } from "utils/style/Color/colors";
+import Typograpy from "utils/style/Typography";
 
 const FullContainer = styled.div`
   height: 212px;

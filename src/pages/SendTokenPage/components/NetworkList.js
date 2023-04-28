@@ -1,4 +1,4 @@
-import { PolygonMainnetIcon, EthereumMainnetIcon } from "../../../assets/icons";
+import { EthereumMainnetIcon, PolygonMainnetIcon } from "assets/icons";
 
 const NetworkList = [
   //   {
