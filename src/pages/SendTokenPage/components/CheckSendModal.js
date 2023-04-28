@@ -148,60 +148,64 @@ const LoginModalInner = (
     }
   }, []);
 
+  const getReceiptWithTrxsHash = () => {
+    const interval = setInterval(async () => {
+      await fetch(rpcURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          id: 1,
+          method: "eth_getTransactionByHash",
+          params: [transactionHash],
+        }),
+      })
+        .then(async (receipt) => {
+          setLoading(true);
+          if (receipt == null) {
+            console.log("pending");
+            setTransactionStatus("pending");
+          } else {
+            setTransactionStatus("mined");
+            await sendTrxs(
+              address,
+              "metamask",
+              "google",
+              receiver,
+              currency,
+              amount,
+              transactionHash,
+              escrowId,
+              expiredDateResult,
+              tokenInfo.address,
+              networkId
+            ).then((data) => {
+              setFinalLink(data.linkKey);
+              setExpired(setExpiredDate());
+              setLoading(false);
+            });
+
+            setStepStatus(stepStatus + 1);
+            onClose();
+
+            clearInterval(interval);
+          }
+        })
+        .catch((err) => {
+          // 존재하지 않는 hash 값일 경우 (+ pending이 길게 되어 tx가 사라진 경우)
+          console.log(err);
+          setLoading(false);
+          setFailed(true);
+          clearInterval(interval);
+        });
+    }, 1000);
+  };
+
   useEffect(() => {
     if (transactionHash) {
-      const interval = setInterval(async () => {
-        await fetch(rpcURL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            jsonrpc: "2.0",
-            id: 1,
-            method: "eth_getTransactionByHash",
-            params: [transactionHash],
-          }),
-        })
-          .then(async (receipt) => {
-            setLoading(true);
-            if (receipt == null) {
-              console.log("pending");
-              setTransactionStatus("pending");
-            } else {
-              setTransactionStatus("mined");
-              await sendTrxs(
-                address,
-                "metamask",
-                "google",
-                receiver,
-                currency,
-                amount,
-                transactionHash,
-                escrowId,
-                expiredDateResult,
-                tokenInfo.address,
-                networkId
-              ).then((data) => {
-                setFinalLink(data.linkKey);
-                setExpired(setExpiredDate());
-                setLoading(false);
-              });
-
-              setStepStatus(stepStatus + 1);
-              onClose();
-
-              clearInterval(interval);
-            }
-          })
-          .catch((err) => {
-            // 존재하지 않는 hash 값일 경우 (+ pending이 길게 되어 tx가 사라진 경우)
-            console.log(err);
-            setLoading(false);
-            setFailed(true);
-            clearInterval(interval);
-          });
-      }, 1000);
+      getReceiptWithTrxsHash();
     }
   }, [transactionHash]);
 
@@ -265,58 +269,7 @@ const LoginModalInner = (
               setEscrowId("1234"); // 현재는 escrow로 관리하지 않으므로 일단 임의의 값
               setExpiredDateResult(setExpiredDate());
               setTransactionHash(escrowHash);
-              const interval = setInterval(async () => {
-                await fetch(rpcURL, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    jsonrpc: "2.0",
-                    id: 1,
-                    method: "eth_getTransactionByHash",
-                    params: [transaction],
-                  }),
-                })
-                  .then(async (receipt) => {
-                    setLoading(true);
-                    if (receipt == null) {
-                      console.log("pending");
-                      setTransactionStatus("pending");
-                    } else {
-                      setTransactionStatus("mined");
-                      await sendTrxs(
-                        address,
-                        "metamask",
-                        "google",
-                        receiver,
-                        currency,
-                        amount,
-                        transaction,
-                        escrowId,
-                        expiredDateResult,
-                        tokenInfo.address,
-                        networkId
-                      ).then((data) => {
-                        setFinalLink(data.linkKey);
-                        setExpired(setExpiredDate());
-                        setLoading(false);
-                      });
-
-                      setStepStatus(stepStatus + 1);
-                      onClose();
-
-                      clearInterval(interval);
-                    }
-                  })
-                  .catch((err) => {
-                    // 존재하지 않는 hash 값일 경우 (+ pending이 길게 되어 tx가 사라진 경우)
-                    console.log(err);
-                    setLoading(false);
-                    setFailed(true);
-                    clearInterval(interval);
-                  });
-              }, 1000);
+              getReceiptWithTrxsHash();
             })
             .catch((error) => {
               alert(JSON.stringify(error));
