@@ -2,10 +2,10 @@ import { ProfileDefault } from "assets/icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { handleTokenExpired } from "utils/api/base";
-import { loginState, signupState } from "utils/atoms/login";
+import { loginState } from "utils/atoms/login";
 import i18n from "utils/lang/i18n";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typograpy from "utils/style/Typography";
@@ -54,7 +54,6 @@ const LoginHeader = ({ onVisible }) => {
   const [dropBoxOn, setDropBoxOn] = useState(false);
   const [userInfo, setUserInfo] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
-  const isSignup = useRecoilValue(signupState);
   const { t } = useTranslation();
 
   const loginOnClick = () => {
@@ -81,11 +80,9 @@ const LoginHeader = ({ onVisible }) => {
         returnValue = data.data.resultData;
         setUserInfo(returnValue);
         const userLanguage = returnValue?.language.toLowerCase().slice(0, 2);
-        if (userLanguage === "en") {
-          i18n.changeLanguage("en");
-        } else {
-          i18n.changeLanguage("ko");
-        }
+        userLanguage === "en"
+          ? i18n.changeLanguage("en")
+          : i18n.changeLanguage("ko");
         localStorage.setItem("language", userLanguage);
       })
       .catch((error) => {
@@ -108,15 +105,13 @@ const LoginHeader = ({ onVisible }) => {
 
   return (
     <HeaderContainer>
-      {dropBoxOn ? (
+      {dropBoxOn && (
         <ProfileDropbox
           visible={dropBoxOn}
           closable={true}
           maskClosable={true}
           onClose={profileImgOnClose}
         />
-      ) : (
-        <></>
       )}
       <InnerContainer>
         <LogoContainer>3TREE</LogoContainer>

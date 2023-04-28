@@ -9,7 +9,6 @@ import { ChangeID, ChangeLanguage, EnrolledAccount } from "./components";
 
 const FullContainer = styled.div`
   width: 100%;
-  //   height: 100%;
   min-height: 100vh;
   position: relative;
   padding-top: 75px;
@@ -110,7 +109,7 @@ const SettingPage = () => {
       />
       {status == "" ? (
         <>
-          {SettingList.map((item, idx) => (
+          {SettingList.map((item) => (
             <ListButton
               key={item.title}
               label={item.title}

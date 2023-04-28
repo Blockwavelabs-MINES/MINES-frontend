@@ -46,7 +46,6 @@ function DeleteModal({
     try {
       subDeleteOnClick();
     } catch {}
-    console.log("hi");
     onClose();
   };
 
@@ -59,7 +58,7 @@ function DeleteModal({
       <ModalOverlay visible={visible} />
       <ModalWrapper
         className={className}
-        onClick={maskClosable ? onMaskClick : null}
+        onClick={maskClosable && onMaskClick}
         tabIndex="-1"
         visible={visible}
       >

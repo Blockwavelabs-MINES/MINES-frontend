@@ -1,5 +1,4 @@
 import { ChevronLeft, ExternalLink } from "assets/icons";
-import { useState } from "react";
 import styled from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typograpy from "utils/style/Typography";
@@ -33,35 +32,17 @@ const TitleContainer = styled.div`
 `;
 
 const SettingProfileHeader = ({
-  onVisible,
   title,
   userId,
   iconLeft = ChevronLeft,
   iconRight = ExternalLink,
 }) => {
-  const [dropBoxOn, setDropBoxOn] = useState(false);
-
-  const loginOnClick = () => {
-    console.log("jell");
-    onVisible(true);
-  };
-
-  const profileImgOnClick = () => {
-    setDropBoxOn(!dropBoxOn);
-  };
-
-  const profileImgOnClose = () => {
-    setDropBoxOn(false);
-  };
-
   const backOnClick = () => {
     window.history.back();
   };
 
   const externalOnClick = () => {
-    // alert("준비중입니다.");
     window.open("/@" + userId);
-    // window.location.href = "/@" + userInfo?.user.user_id;
   };
 
   return (

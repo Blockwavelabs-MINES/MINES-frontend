@@ -131,7 +131,8 @@ const AmountInputBox = styled.input`
   height: 41px;
   padding: 0px 10px;
   ${Typography.Title2}
-  text-align: cente-input-placeholder {
+  text-align: center;
+  input::placeholder {
     color: ${palette.grey_4};
   }
   &:focus {
@@ -226,10 +227,6 @@ const CurrentBalanceText = styled.div`
   margin-top: 28px;
 `;
 
-function isMobileDevice() {
-  return "ontouchstart" in window || "onmsgesturechange" in window;
-}
-
 const walletConvert = (walletAddress) => {
   var returnAddress = walletAddress;
   if (walletAddress?.length > 15) {
@@ -274,7 +271,6 @@ const Step2 = ({
   setNetworkId,
   setCurrency,
   setStepStatus,
-  walletType,
   address,
   network,
   networkId,
@@ -307,8 +303,6 @@ const Step2 = ({
 
   const TooltipText = (
     <TooltipStyle>
-      {/* 이더리움 메인넷 (ETH)
-      <br /> */}
       {t("sendpage02_17")}
       <br />
       {t("sendpage02_15")}

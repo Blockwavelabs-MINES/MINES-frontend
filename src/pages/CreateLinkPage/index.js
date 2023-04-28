@@ -11,7 +11,6 @@ import Typography from "utils/style/Typography/index";
 
 const FullContainer = styled.div`
   width: 100%;
-  // height: 100%;
   min-height: 100vh;
   position: relative;
   padding-top: 70px;
@@ -20,7 +19,6 @@ const FullContainer = styled.div`
 const IntroTextBox = styled.div`
   width: 90%;
   margin: 0px auto;
-  // margin-top: 70px;
 `;
 
 const InputContainer = styled.div`
@@ -48,8 +46,7 @@ const ButtonContainer = styled.div`
   position: absolute;
   top: 460px;
   padding-bottom: 160px;
-  // bottom: 100px;
-  bottom: 136px; // +76px
+  bottom: 136px;
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(1, 1fr);

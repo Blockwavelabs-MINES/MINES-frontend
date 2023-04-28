@@ -4,7 +4,6 @@ import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography";
 
 const DropBoxContainer = styled.div`
-  // width: 181px;
   width: 181px;
   height: 54px;
   border-radius: 18px;
@@ -16,15 +15,11 @@ const DropBoxContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  // padding-left: 16px;
-  // padding-right: 16px;
   box-shadow: 0px 4px 18px 0px #525a6b4b;
-  //   box-shadow: 0px 4px 12px 0px #a9adb533;
 `;
 
 const DropBoxOuterBox = styled.div`
   width: 100%;
-  // max-width: 600px;
   height: 100%;
   margin: 0px auto;
   position: relative;
@@ -41,7 +36,6 @@ const BubbleTailBox = styled.div`
   position: absolute;
   top: -100px;
   background-color: transparent;
-  //   box-shadow: 0px 2px 10px #c4c4c440;
   filter: drop-shadow(0px 2px 10px #c4c4c444);
 `;
 
@@ -68,26 +62,22 @@ const CopyPivot = ({
     }
   };
 
-  const settingOnClick = () => {
-    window.location.href = "editProfile";
-  };
-
   return (
     <>
       <ModalOverlay visible={visible} />
       <ModalWrapper
         className={className}
-        onClick={maskClosable ? onMaskClick : null}
+        onClick={maskClosable && onMaskClick}
         tabIndex="-1"
         visible={visible}
       >
         <DropBoxOuterBox
           className={className}
-          onClick={maskClosable ? onMaskClick : null}
+          onClick={maskClosable && onMaskClick}
           tabIndex="-1"
           visible={visible}
         >
-          {type == "down" ? (
+          {type == "down" && (
             <BubbleTailBox
               style={{
                 backgroundImage: `url(${TooltipBubbleTailGrayDown})`,
@@ -95,8 +85,6 @@ const CopyPivot = ({
                 left: y - 30,
               }}
             />
-          ) : (
-            <></>
           )}
           <DropBoxContainer
             style={
@@ -104,7 +92,7 @@ const CopyPivot = ({
             }
           >
             <TapText>{label}</TapText>
-            {type == "up" ? (
+            {type == "up" && (
               <BubbleTailBox
                 style={{
                   backgroundImage: `url(${TooltipBubbleTailGray})`,
@@ -112,8 +100,6 @@ const CopyPivot = ({
                   right: "83px",
                 }}
               />
-            ) : (
-              <></>
             )}
           </DropBoxContainer>
         </DropBoxOuterBox>
@@ -123,8 +109,6 @@ const CopyPivot = ({
 };
 
 const ModalWrapper = styled.div`
-  // width: 100%;
-  //   max-width: 600px;
   box-sizing: border-box;
   display: ${(props) => (props.visible ? "block" : "none")};
   position: fixed;

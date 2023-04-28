@@ -30,7 +30,7 @@ const NetworkBox = styled.div`
   height: 64px;
   display: flex;
   justify-content: space-between;
-  align-itens: center;
+  align-items: center;
   padding: 16px;
   background-color: ${palette.sky_4};
   border: 1px solid ${palette.sky_3};
@@ -120,25 +120,12 @@ const walletConvert = (walletAddress) => {
   return returnAddress;
 };
 
-export const switchChain = async (
-  connector,
-  account,
-  provider,
-  library,
-  newChainId
-) => {
+export const switchChain = async (connector, library, newChainId) => {
   const chainInfo =
     NetworkList[NetworkList.findIndex((v) => v.chainId == newChainId)];
 
-  if (
-    !connector
-    // connector === walletConnectConnection.connector ||
-    // connector === networkConnection.connector
-  ) {
+  if (!connector) {
   } else {
-    console.log("provider: ", provider);
-    console.log("connector: ", connector);
-
     await library.provider.on("chainChanged", (chainId) => {
       console.log(chainId);
     });
@@ -183,12 +170,11 @@ export const switchChain = async (
   }
 };
 
-const MobileNetworkBox = ({ networkId, setNetworkId, network }) => {
+const MobileNetworkBox = ({ setNetworkId }) => {
   const [networkName, setNetworkName] = useState("");
   const [networkImg, setNetworkImg] = useState("");
   const { connector, active, provider, account, chainId, library } =
     useWeb3React();
-  const [message, setMessage] = useState("");
   const [iconClicked, setIconClicked] = useState(false);
   const [iconHovering, setIconHovering] = useState(false);
   const [networkOpen, setNetworkOpen] = useState(false);
@@ -197,8 +183,6 @@ const MobileNetworkBox = ({ networkId, setNetworkId, network }) => {
   const { t } = useTranslation();
   const TooltipText = (
     <TooltipStyle>
-      {/* 이더리움 메인넷 (ETH)
-      <br /> */}
       {t("sendpage02_17")}
       <br />
       {t("sendpage02_15")}
@@ -226,18 +210,15 @@ const MobileNetworkBox = ({ networkId, setNetworkId, network }) => {
 
   const editOnClick = async () => {
     const checkParams = {
-      //   connector: connector,
       active: active,
       provider: library.provider,
       account: account,
       chainId: chainId,
       library: library,
     };
-    console.log(checkParams);
 
     if (connector) {
       setNetworkOpen(true);
-      //   switchChain(connector, account, provider, library, newChainId);
     }
   };
 
@@ -248,7 +229,7 @@ const MobileNetworkBox = ({ networkId, setNetworkId, network }) => {
   return (
     <>
       <>
-        {networkOpen && NetworkList ? (
+        {networkOpen && NetworkList && (
           <NetworkSwitchModal
             visible={networkOpen}
             closable={true}
@@ -259,8 +240,6 @@ const MobileNetworkBox = ({ networkId, setNetworkId, network }) => {
             switchChain={switchChain}
             setNewNetworkId={setNewNetworkId}
           />
-        ) : (
-          <></>
         )}
       </>
       <FullContainer>

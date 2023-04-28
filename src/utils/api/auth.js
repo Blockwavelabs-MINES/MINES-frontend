@@ -1,8 +1,8 @@
 import axios from "axios";
 import {
+  handleTokenExpired,
   privateHeaders,
   privateHeadersMultipart,
-  handleTokenExpired,
 } from "./base";
 
 export const requestLogin = async (code) => {

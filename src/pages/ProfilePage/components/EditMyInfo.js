@@ -11,7 +11,6 @@ import Typography from "utils/style/Typography/index";
 
 const FullContainer = styled.div`
   width: 100%;
-  //   height: 100%;
   min-height: 100vh;
   position: relative;
   padding-top: 75px;
@@ -58,7 +57,6 @@ const ProfileFilter = styled.div`
 `;
 
 const EditMyInfo = ({ userInfo, setEditMyInfo }) => {
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [profileImage, setProfileImage] = useState({
     file: userInfo.profile_img,
     imagePreviewUrl: userInfo.profile_img,
@@ -68,16 +66,14 @@ const EditMyInfo = ({ userInfo, setEditMyInfo }) => {
   const [introduction, setIntroduction] = useState(userInfo.introduction);
   const { t } = useTranslation();
 
-  const handleClick = (event) => {
+  const handleClick = () => {
     hiddenFileInput.current.click();
     console.log("??");
   };
 
   const handleChange = (event) => {
-    console.log("hello");
     let reader = new FileReader();
     const fileUploaded = event.target.files[0];
-    console.log(fileUploaded);
     setProfileImage({ file: fileUploaded, imagePreviewUrl: fileUploaded });
     reader.onloadend = () => {
       setProfileImage({ file: fileUploaded, imagePreviewUrl: reader.result });
@@ -95,13 +91,6 @@ const EditMyInfo = ({ userInfo, setEditMyInfo }) => {
   };
 
   const saveEditUserInfo = () => {
-    // const saveData = {
-    //   userId: name,
-    //   userToken: "",
-    //   profileImg: profileImage.imagePreviewUrl,
-    //   introduction: introduction,
-    // };
-    // setLocalUserInfo({ type: "init", data: saveData });
     setLocalUserInfo({
       type: "edit",
       editKey: ["user", "profile_name"],

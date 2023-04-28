@@ -23,8 +23,7 @@ const ProfileImageBox = styled.div`
   height: 120px;
   border-radius: 60px;
   border: 1px solid ${palette.grey_7};
-  background-image: url(${({ profileImg }) =>
-    profileImg ? profileImg : ProfileDefault});
+  background-image: url(${({ profileImg }) => (profileImg ? profileImg : ProfileDefault)});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

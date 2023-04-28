@@ -10,7 +10,6 @@ import Typography from "utils/style/Typography/index";
 
 const FullContainer = styled.div`
   width: 100%;
-  //   height: 100%;
   min-height: 100vh;
   position: relative;
   padding: 75px 20px;
@@ -18,7 +17,7 @@ const FullContainer = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  background-image: ${(props) => (props.value ? `url(${props.value})` : "")};
+  background-image: ${(props) => props.value && `url(${props.value})`};
 `;
 
 const ButtonContainer = styled.div`
@@ -113,12 +112,12 @@ const Preview = ({
           isEditable={false}
           color={fontColor}
         />
-        {linkList.map((link, idx) => (
+        {linkList.map((link) => (
           <LinkContainer color={buttonColor} value={buttonFontColor}>
             {link.linkTitle}
           </LinkContainer>
         ))}
-        {walletList.map((wallet, idx) => (
+        {walletList.map((wallet) => (
           <LinkContainer color={buttonColor} value={buttonFontColor}>
             <MetamaskIconImg src={MetamaskIcon} />
             {walletConvert(wallet.walletAddress)}

@@ -54,7 +54,7 @@ function ConfirmModal({
       <ModalOverlay visible={visible} />
       <ModalWrapper
         className={className}
-        onClick={maskClosable ? onMaskClick : null}
+        onClick={maskClosable && onMaskClick}
         tabIndex="-1"
         visible={visible}
       >

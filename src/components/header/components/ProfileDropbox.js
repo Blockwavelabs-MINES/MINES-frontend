@@ -21,7 +21,6 @@ const DropBoxContainer = styled.div`
   top: 70px;
   box-shadow: 0px 4px 30px 0px #a9adb533;
   z-index: 1010;
-  //   box-shadow: 0px 4px 12px 0px #a9adb533;
 `;
 
 const DropBoxOuterBox = styled.div`
@@ -42,7 +41,6 @@ const BubbleTailBox = styled.div`
   right: 16px;
   background-color: transparent;
   background-image: url(${DropboxBubbleTail});
-  //   box-shadow: 0px 2px 10px #c4c4c440;
   filter: drop-shadow(0px 2px 10px #c4c4c444);
 `;
 
@@ -105,13 +103,13 @@ const ProfileDropbox = ({ className, onClose, maskClosable, visible }) => {
       <ModalOverlay visible={visible} />
       <ModalWrapper
         className={className}
-        onClick={maskClosable ? onMaskClick : null}
+        onClick={maskClosable && onMaskClick}
         tabIndex="-1"
         visible={visible}
       >
         <DropBoxOuterBox
           className={className}
-          onClick={maskClosable ? onMaskClick : null}
+          onClick={maskClosable && onMaskClick}
           tabIndex="-1"
           visible={visible}
         >
@@ -141,8 +139,6 @@ const ProfileDropbox = ({ className, onClose, maskClosable, visible }) => {
 };
 
 const ModalWrapper = styled.div`
-  // width: 100%;
-  //   max-width: 600px;
   box-sizing: border-box;
   display: ${(props) => (props.visible ? "block" : "none")};
   position: fixed;

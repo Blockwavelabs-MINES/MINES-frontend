@@ -44,16 +44,12 @@ function SingleModal({
     onClose();
   };
 
-  const cancelOnClick = () => {
-    onClose();
-  };
-
   return (
     <React.Fragment>
       <ModalOverlay visible={visible} />
       <ModalWrapper
         className={className}
-        onClick={maskClosable ? onMaskClick : null}
+        onClick={maskClosable && onMaskClick}
         tabIndex="-1"
         visible={visible}
       >

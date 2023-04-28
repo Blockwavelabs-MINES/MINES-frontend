@@ -1,8 +1,6 @@
-import { ChevronLeft, ExternalLink } from "assets/icons";
-import { useEffect, useState } from "react";
+import { ChevronLeft } from "assets/icons";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { getLocalUserInfo } from "utils/functions/setLocalVariable";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typograpy from "utils/style/Typography";
 import { IconButton, TextButton } from "../button";
@@ -35,40 +33,12 @@ const TitleContainer = styled.div`
 `;
 
 const EditProfileHeader = ({
-  onVisible,
   title,
   iconLeft = ChevronLeft,
-  iconRight = ExternalLink,
   leftOnClick,
   rightOnClick,
 }) => {
-  const [userInfo, setUserInfo] = useState();
-  const [dropBoxOn, setDropBoxOn] = useState(false);
   const { t } = useTranslation();
-
-  useEffect(() => {
-    var globalUserInfo = getLocalUserInfo();
-    if (globalUserInfo) {
-      setUserInfo(globalUserInfo);
-    }
-  }, []);
-
-  const loginOnClick = () => {
-    console.log("jell");
-    onVisible(true);
-  };
-
-  const profileImgOnClick = () => {
-    setDropBoxOn(!dropBoxOn);
-  };
-
-  const profileImgOnClose = () => {
-    setDropBoxOn(false);
-  };
-
-  const backOnClick = () => {
-    window.history.back();
-  };
 
   const leftIconOnClick = () => {
     leftOnClick(false);
@@ -76,7 +46,6 @@ const EditProfileHeader = ({
 
   const rightIconOnClick = () => {
     rightOnClick();
-    // alert("준비중입니다.");
   };
 
   return (

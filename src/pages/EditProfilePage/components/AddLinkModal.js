@@ -11,7 +11,6 @@ const FullContainer = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  //   margin-top: 109px;
   padding: 20px;
   z-index: 903;
 `;
@@ -38,9 +37,9 @@ const InputContainer = styled.div`
 `;
 
 function AddLinkModalInner(saveAction, onClose, original) {
-  const [linkId, setLinkId] = useState(original ? original.link_id : "");
-  const [title, setTitle] = useState(original ? original.linkTitle : "");
-  const [url, setUrl] = useState(original ? original.linkUrl : "");
+  const [linkId, setLinkId] = useState(original && original.link_id);
+  const [title, setTitle] = useState(original && original.linkTitle);
+  const [url, setUrl] = useState(original && original.linkUrl);
   const [canSave, setCanSave] = useState(false);
   const [errorComment, setErrorComment] = useState("");
   const [linkInputState, setLinkInputState] = useState("typing");

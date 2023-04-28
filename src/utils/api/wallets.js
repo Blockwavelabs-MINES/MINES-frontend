@@ -1,5 +1,5 @@
 import axios from "axios";
-import { privateHeaders, handleTokenExpired } from "./base";
+import { handleTokenExpired, privateHeaders } from "./base";
 
 export const getWallet = async (userId) => {
   let resultValue = 0;

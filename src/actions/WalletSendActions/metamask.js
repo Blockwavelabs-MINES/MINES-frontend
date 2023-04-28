@@ -3,58 +3,30 @@ function isMobileDevice() {
 }
 
 const metamaskSend = (onConnected, settings) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async () => {
     try {
       const hexString = "0x" + Number(settings.value * 10 ** 18).toString(16);
-      console.log(hexString);
       const convertToNumber = parseInt(Number(hexString));
-      console.log(convertToNumber);
 
       const networkVersion = await window.ethereum.request({
         method: "net_version",
       });
-      console.log(networkVersion);
 
       var tmpChainId = "0x" + networkVersion;
 
       if ("0x" + networkVersion != settings.chainId) {
-        console.log("switch network");
-        console.log(settings.chainId);
-        // try {
         const switchChain = await window.ethereum.request({
-          // id: 1,
-          // jsonrpc: "2.0",
           method: "wallet_switchEthereumChain",
           params: [
             {
               chainId: settings.chainId,
-              // fallbackRpc: {
-              //   chainId: "0x5",
-              //   chainName: "Goerli",
-              //   rpcUrl: "https://goerli.infura.io/v3/INSERT_API_KEY_HERE",
-              //   nativeCurrency: {
-              //     name: "Goerli ETH",
-              //     symbol: "gorETH",
-              //     decimals: 18,
-              //   },
-              //   blockExplorerUrl: "https://goerli.etherscan.io",
-              // },
             },
           ], // chainId must be in hexadecimal numbers
         });
-        console.log(switchChain);
-        // } catch (error) {
-        //   console.log(error.code);
-        // }
-
-        console.log(tmpChainId);
-        console.log(settings.chainId);
         tmpChainId = settings.chainId;
       }
 
       if (tmpChainId == settings.chainId) {
-        console.log(settings.chainId);
-        console.log(settings.asset);
         const transactionParameters = {
           nonce: "0x00", // ignored by MetaMask
           gasPrice: "0x09184e72a000", // customizable by user during MetaMask confirmation.
@@ -72,8 +44,6 @@ const metamaskSend = (onConnected, settings) => {
           params: [transactionParameters],
         });
 
-        console.log(txHash);
-        // onConnected(txHash);
         const returnValue = {
           toWalletAddress: settings.toAddr,
           fromWalletAddress: settings.fromAddr,

@@ -5,7 +5,6 @@ import { COLORS as palette } from "utils/style/Color/colors";
 
 const FullContainer = styled.div`
   width: 100%;
-  //   height: 100%;
   min-height: 100vh;
   position: relative;
   padding: 57px 25px;
@@ -103,7 +102,6 @@ const SendSuccess = () => {
 
     var currentDate = new Date();
     var endDate = currentDate.addDays(3).toLocaleString();
-    console.log(endDate);
     setDueDate(endDate);
   }, []);
 

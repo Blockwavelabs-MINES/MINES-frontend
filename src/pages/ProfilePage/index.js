@@ -75,24 +75,19 @@ const ProfilePage = () => {
         />
         {userInfoData ? (
           <>
-            {linkData.length ? (
+            {linkData.length && (
               <LinkComponent
                 userLinkList={linkData}
                 profileDecorate={profileDecoData}
               />
-            ) : (
-              <></>
             )}
-            {walletData.length ? (
+            {walletData.length && (
               <>
-                {/* <Divider /> */}
                 <WalletComponent
                   userWalletList={walletData}
                   profileDecorate={profileDecoData}
                 />
               </>
-            ) : (
-              <></>
             )}
           </>
         ) : (

@@ -1,5 +1,4 @@
 import axios from "axios";
-import { handleTokenExpired, privateHeaders } from "./base";
 
 export const sendTrxs = async (
   senderWalletAddress,

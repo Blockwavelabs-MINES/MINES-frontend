@@ -2,11 +2,8 @@ import { ProfileCard } from "components/card";
 import { SettingProfileHeader } from "components/header";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { getUserInfo } from "utils/api/auth";
-import { loginState } from "utils/atoms/login";
-import { COLORS as palette } from "utils/style/Color/colors";
 import {
   AddLinkModal,
   CustomizeMyInfo,
@@ -17,17 +14,9 @@ import {
 
 const FullContainer = styled.div`
   width: 100%;
-  //   height: 100%;
   min-height: 100vh;
   position: relative;
   padding-top: 75px;
-`;
-
-const Divider = styled.div`
-  width: calc(100% - 40px);
-  height: 1px;
-  margin: 0px auto;
-  background-color: ${palette.grey_6};
 `;
 
 const EditProfilePage = () => {
@@ -36,7 +25,6 @@ const EditProfilePage = () => {
   const [editMyInfo, setEditMyInfo] = useState();
   const [customizeMyInfo, setCustomizeMyInfo] = useState(false);
   const [infoChange, setInfoChange] = useState(false);
-  const isLoggedIn = useRecoilValue(loginState);
   const { t } = useTranslation();
 
   const getUserInfoData = async () => {
@@ -95,7 +83,6 @@ const EditProfilePage = () => {
             setInfoChange={setInfoChange}
             infoChange={infoChange}
           />
-          {/* <Divider /> */}
           <WalletComponent
             userId={userInfo.userId}
             setInfoChange={setInfoChange}

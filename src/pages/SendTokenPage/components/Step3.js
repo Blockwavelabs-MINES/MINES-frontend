@@ -193,7 +193,6 @@ const Step3 = ({ expired, finalLink }) => {
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
   const [copyPivotVisible, setCopyPivotVisible] = useState(false);
   const [clickX, setClickX] = useState(0);
-  const [clickY, setClickY] = useState(0);
 
   const myRef = useRef(null);
   const { t } = useTranslation();
@@ -223,9 +222,7 @@ const Step3 = ({ expired, finalLink }) => {
 
       if (myRef.current) {
         let tmpX = myRef.current.getBoundingClientRect().top;
-        let tmpY = myRef.current.getBoundingClientRect().left;
         setClickX(tmpX);
-        setClickY(tmpY);
       }
       setCopyPivotVisible(true);
     };
@@ -296,7 +293,7 @@ const Step3 = ({ expired, finalLink }) => {
           <CopyButton />
         </CopyBox>
       </div>
-      {copyPivotVisible ? (
+      {copyPivotVisible && (
         <CopyPivot
           visible={copyPivotVisible}
           closable={true}
@@ -307,8 +304,6 @@ const Step3 = ({ expired, finalLink }) => {
           x={`calc(${clickX}px - 70px)`}
           y={"calc(50% - 90px)"}
         />
-      ) : (
-        <></>
       )}
       <ContainedButton
         type="primary"
@@ -318,7 +313,7 @@ const Step3 = ({ expired, finalLink }) => {
         label={t("sendPage03_11")}
         onClick={() => setCompleteModalVisible(true)}
       />
-      {completeModalVisible ? (
+      {completeModalVisible && (
         <ConfirmModal
           visible={completeModalVisible}
           closable={true}
@@ -333,8 +328,6 @@ const Step3 = ({ expired, finalLink }) => {
           buttonText={t("sendPage03_14")}
           subActionOnClick={subActionOnClick}
         />
-      ) : (
-        <></>
       )}
     </Container>
   );

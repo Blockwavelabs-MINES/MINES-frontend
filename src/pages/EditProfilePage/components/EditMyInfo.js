@@ -13,7 +13,6 @@ import Typography from "utils/style/Typography/index";
 
 const FullContainer = styled.div`
   width: 100%;
-  //   height: 100%;
   min-height: 100vh;
   position: relative;
   padding-top: 75px;
@@ -145,11 +144,7 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
   };
 
   useEffect(() => {
-    if (!name) {
-      setNameInputState("error");
-    } else {
-      setNameInputState("invalid");
-    }
+    name ? setNameInputState("invalid") : setNameInputState("error");
   }, [name]);
 
   const introductionOnChange = (e) => {
@@ -208,7 +203,7 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
           rightOnClick={saveEditUserInfo}
         />
         <>
-          {cancelModalOpen ? (
+          {cancelModalOpen && (
             <DeleteModal
               visible={cancelModalOpen}
               closable={true}
@@ -219,8 +214,6 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
               buttonText={t("manageProfilePageAlert2")}
               subDeleteOnClick={subDeleteOnClick}
             />
-          ) : (
-            <></>
           )}
         </>
         <ProfileImageButtonContainer>
