@@ -117,6 +117,7 @@ const LoginModalInner = (
 ) => {
   const { t } = useTranslation();
   const [transactionHash, setTransactionHash] = useState();
+  const [transactionStatus, setTransactionStatus] = useState(null);
   const [escrowId, setEscrowId] = useState();
   const [expiredDateResult, setExpiredDateResult] = useState();
   const { library } = useWeb3React();
@@ -148,61 +149,60 @@ const LoginModalInner = (
     }
   }, []);
 
-  const getReceiptWithTrxsHash = () => {
-    const interval = setInterval(async () => {
-      await fetch(rpcURL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          jsonrpc: "2.0",
-          id: 1,
-          method: "eth_getTransactionByHash",
-          params: [transactionHash],
-        }),
-      })
-        .then(async (receipt) => {
-          setLoading(true);
-          if (receipt == null) {
-            console.log("pending");
-            await sendTrxs(
-              address,
-              "metamask",
-              "google",
-              receiver,
-              currency,
-              amount,
-              transactionHash,
-              escrowId,
-              expiredDateResult,
-              tokenInfo.address,
-              networkId
-            ).then((data) => {
-              setFinalLink(data.linkKey);
-              setExpired(setExpiredDate());
-              setLoading(false);
-            });
-
-            setStepStatus(stepStatus + 1);
-            onClose();
-
-            clearInterval(interval);
-          }
-        })
-        .catch((err) => {
-          // 존재하지 않는 hash 값일 경우 (+ pending이 길게 되어 tx가 사라진 경우)
-          console.log(err);
-          setLoading(false);
-          setFailed(true);
-          clearInterval(interval);
-        });
-    }, 1000);
-  };
-
   useEffect(() => {
     if (transactionHash) {
-      getReceiptWithTrxsHash();
+      const interval = setInterval(async () => {
+        await fetch(rpcURL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            id: 1,
+            method: "eth_getTransactionByHash",
+            params: [transactionHash],
+          }),
+        })
+          .then(async (receipt) => {
+            setLoading(true);
+            if (receipt == null) {
+              console.log("pending");
+              setTransactionStatus("pending");
+            } else {
+              setTransactionStatus("mined");
+              await sendTrxs(
+                address,
+                "metamask",
+                "google",
+                receiver,
+                currency,
+                amount,
+                transactionHash,
+                escrowId,
+                expiredDateResult,
+                tokenInfo.address,
+                networkId
+              ).then((data) => {
+                setFinalLink(data.linkKey);
+                setExpired(setExpiredDate());
+                setLoading(false);
+              });
+
+              setStepStatus(stepStatus + 1);
+              onClose();
+
+              clearInterval(interval);
+            }
+          })
+          .catch((err) => {
+            // 존재하지 않는 hash 값일 경우 (+ pending이 길게 되어 tx가 사라진 경우)
+            console.log(err);
+            setLoading(false);
+            setFailed(true);
+            clearInterval(interval);
+          });
+      }, 1000);
     }
   }, [transactionHash]);
 
@@ -235,7 +235,58 @@ const LoginModalInner = (
               setEscrowId("1234"); // 현재는 escrow로 관리하지 않으므로 일단 임의의 값
               setExpiredDateResult(setExpiredDate());
               setTransactionHash(escrowHash);
-              getReceiptWithTrxsHash();
+              const interval = setInterval(async () => {
+                await fetch(rpcURL, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    jsonrpc: "2.0",
+                    id: 1,
+                    method: "eth_getTransactionByHash",
+                    params: [transaction],
+                  }),
+                })
+                  .then(async (receipt) => {
+                    setLoading(true);
+                    if (receipt == null) {
+                      console.log("pending");
+                      setTransactionStatus("pending");
+                    } else {
+                      setTransactionStatus("mined");
+                      await sendTrxs(
+                        address,
+                        "metamask",
+                        "google",
+                        receiver,
+                        currency,
+                        amount,
+                        transaction,
+                        escrowId,
+                        expiredDateResult,
+                        tokenInfo.address,
+                        networkId
+                      ).then((data) => {
+                        setFinalLink(data.linkKey);
+                        setExpired(setExpiredDate());
+                        setLoading(false);
+                      });
+
+                      setStepStatus(stepStatus + 1);
+                      onClose();
+
+                      clearInterval(interval);
+                    }
+                  })
+                  .catch((err) => {
+                    // 존재하지 않는 hash 값일 경우 (+ pending이 길게 되어 tx가 사라진 경우)
+                    console.log(err);
+                    setLoading(false);
+                    setFailed(true);
+                    clearInterval(interval);
+                  });
+              }, 1000);
             })
             .catch((error) => {
               alert(JSON.stringify(error));
@@ -310,6 +361,7 @@ const LoginModalInner = (
                   to: process.env.REACT_APP_3TREE_ADDRESS, // Required except during contract publications.
                   from: address, // must match user's active address.
                   gas: 60000,
+                  // maxPriorityFee: (Math.pow(10, 8) * 0.1).toString(16),
                   value: (Math.pow(10, 18) * amount).toString(16), // Only required to send ether to the recipient from the initiating external account.
                   data: "0x7f7465737432000000000000000000000000000000000000000000000000000000600057", // Optional, but used for defining smart contract creation and interaction.
                   chainId: networkId.toString(16), // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
@@ -317,10 +369,14 @@ const LoginModalInner = (
               ],
             })
             .then(async (txHash) => {
+              console.log(txHash);
+              // escrow hash와 id 생성 (with escrow Contract)
+
               const escrowHash = txHash;
               setEscrowId("1234"); // 현재는 escrow로 관리하지 않으므로 일단 임의의 값
               setExpiredDateResult(setExpiredDate());
               setTransactionHash(escrowHash);
+              // alert(escrowHash);
             })
             .catch((error) => {
               console.log(error);
@@ -340,6 +396,7 @@ const LoginModalInner = (
             from: fromAddress,
             value: web3.utils.toWei(`${amount}`, "ether"),
           });
+          console.log(gasAmount);
           return gasAmount;
         };
 
@@ -348,8 +405,14 @@ const LoginModalInner = (
           address,
           process.env.REACT_APP_3TREE_ADDRESS,
           amount
+          // web3.utils.toHex((Math.pow(10, 18) * amount).toString(16))
         );
+        console.log(gasPrice);
+        console.log(gasAmount);
         const fee = Number(gasPrice) * gasAmount;
+        // const fee = Number(gasPrice) / 100;
+        // const fee = gasAmount;
+        // const fee = 20000000;
 
         await metamaskProvider
           .request({
@@ -357,9 +420,15 @@ const LoginModalInner = (
             params: [
               {
                 nonce: "0x00", // ignored by MetaMask
+                // gasPrice: (Math.pow(10, 8) * 0.1).toString(16), // customizable by user during MetaMask confirmation.
+                // gas: (Math.pow(10, 6) * 0.1).toString(16), // customizable by user during MetaMask confirmation.
+                // gas: String(fee), //이거임
                 to: process.env.REACT_APP_3TREE_ADDRESS, // Required except during contract publications.
                 from: address, // must match user's active address.
+                // maxPriorityFeePerGas: (Math.pow(10, 8) * 0.1).toString(16),
+                // maxPriorityFee: (Math.pow(10, 8) * 0.1).toString(16),
                 maxPriorityFee: String(fee),
+                // maxFeePerGas: (Math.pow(10, 8) * 0.1).toString(16),
                 value: (Math.pow(10, 18) * amount).toString(16), // Only required to send ether to the recipient from the initiating external account.
                 data: "0x7f7465737432000000000000000000000000000000000000000000000000000000600057", // Optional, but used for defining smart contract creation and interaction.
                 chainId: networkId.toString(16), // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
@@ -367,6 +436,8 @@ const LoginModalInner = (
             ],
           })
           .then(async (txHash) => {
+            // escrow hash와 id 생성 (with escrow Contract)
+
             const escrowHash = txHash;
             setEscrowId("1234"); // 현재는 escrow로 관리하지 않으므로 일단 임의의 값
             setExpiredDateResult(setExpiredDate());
