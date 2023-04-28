@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { sendTrxs } from "utils/api/trxs";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
+import { minABI } from "../data/minABI";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -116,7 +117,6 @@ const LoginModalInner = (
 ) => {
   const { t } = useTranslation();
   const [transactionHash, setTransactionHash] = useState();
-  const [transactionStatus, setTransactionStatus] = useState(null);
   const [escrowId, setEscrowId] = useState();
   const [expiredDateResult, setExpiredDateResult] = useState();
   const { library } = useWeb3React();
@@ -166,9 +166,6 @@ const LoginModalInner = (
           setLoading(true);
           if (receipt == null) {
             console.log("pending");
-            setTransactionStatus("pending");
-          } else {
-            setTransactionStatus("mined");
             await sendTrxs(
               address,
               "metamask",
@@ -213,37 +210,6 @@ const LoginModalInner = (
     document.body.style.overflow = "auto";
 
     if (currency == "USDC" || currency == "USDT") {
-      let minABI = [
-        // balanceOf
-        {
-          constant: true,
-          inputs: [{ name: "_owner", type: "address" }],
-          name: "balanceOf",
-          outputs: [{ name: "balance", type: "uint256" }],
-          type: "function",
-        },
-        // decimals
-        {
-          constant: true,
-          inputs: [],
-          name: "decimals",
-          outputs: [{ name: "", type: "uint8" }],
-          type: "function",
-        },
-        //transfer
-        {
-          constant: false,
-          inputs: [
-            { name: "_to", type: "address" },
-            { name: "_value", type: "uint256" },
-          ],
-          name: "transfer",
-          outputs: [{ name: "", type: "bool" }],
-          payable: false,
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-      ];
       let tempProvider = metamaskProvider;
 
       isMobileDevice()
