@@ -100,7 +100,7 @@ const IntroPage = () => {
       {!isSignup ? (
         <FullContainer>
           <LoginHeader onVisible={setLoginModalVisible} />
-          {loginModalVisible ? (
+          {loginModalVisible && (
             <LoginModal
               visible={loginModalVisible}
               closable={true}
@@ -108,20 +108,17 @@ const IntroPage = () => {
               onClose={closeLoginModal}
               setStatus={setIsSignup}
             />
-          ) : (
-            <>
-              {loginAlertModalVisible && (
-                <SingleModal
-                  visible={setLoginAlertModalVisible}
-                  closable={true}
-                  maskClosable={true}
-                  onClose={closeLoginAlertModal}
-                  text={<>{t("introPageAlert1")}</>}
-                  setStatus={setLoginModalVisible}
-                  buttonText={t("introPageAlert2")}
-                />
-              )}
-            </>
+          )}
+          {loginAlertModalVisible && (
+            <SingleModal
+              visible={setLoginAlertModalVisible}
+              closable={true}
+              maskClosable={true}
+              onClose={closeLoginAlertModal}
+              text={<>{t("introPageAlert1")}</>}
+              setStatus={setLoginModalVisible}
+              buttonText={t("introPageAlert2")}
+            />
           )}
           <Swiper
             className="banner"

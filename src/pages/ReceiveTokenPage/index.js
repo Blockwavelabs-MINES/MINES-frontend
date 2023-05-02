@@ -17,11 +17,9 @@ import { SelectWallet } from "./components";
 
 const FullContainer = styled.div`
   width: 100%;
-  //   height: 100%;
   min-height: 100vh;
   position: relative;
   padding: auto 50px;
-  // padding-top: 75px;
 `;
 
 const ContentContainer = styled.div`
@@ -149,10 +147,6 @@ const ComplainLink = styled.a`
   color: ${palette.grey_4};
 `;
 
-function pad(n) {
-  return n < 10 ? "0" + n : n;
-}
-
 const convertDateFormat = (date, a, b, c, d) => {
   let dateString = date.replaceAll("-", "").replaceAll("T", "");
   let monthNames = {
@@ -228,8 +222,6 @@ function convert(n) {
 }
 
 const ReceiveTokenPage = () => {
-  const [stepStatus, setStepStatus] = useState(1);
-  const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [linkInfo, setLinkInfo] = useState(null);
   const [senderUser, setSenderUser] = useState("");
@@ -275,33 +267,10 @@ const ReceiveTokenPage = () => {
 
   useEffect(() => {
     if (!loginModalVisible) {
-      console.log("auto");
       document.body.style.overflow = "auto";
     }
   }, [loginModalVisible]);
 
-  const closeLoginModal = () => {
-    setLoginModalVisible(false);
-  };
-
-  const leftOnClick = () => {
-    if (stepStatus == 1) {
-      window.location.href = "/";
-    } else {
-      setStepStatus(stepStatus - 1);
-    }
-  };
-
-  const headerRightOnClick = () => {
-    setCancelModalOpen(true);
-    console.log(cancelModalOpen);
-  };
-
-  const notiOnClose = () => {
-    setIconClicked(false);
-  };
-
-  console.log(linkInfo);
   return (
     <>
       <FullContainer>
@@ -321,7 +290,7 @@ const ReceiveTokenPage = () => {
                 visible={loginModalVisible}
                 closable={true}
                 maskClosable={true}
-                onClose={closeLoginModal}
+                onClose={() => setLoginModalVisible(false)}
                 type="receive"
                 setStatus={setLoginDone}
               />
@@ -378,7 +347,7 @@ const ReceiveTokenPage = () => {
                           text={TooltipText}
                           closable={true}
                           maskClosable={true}
-                          onClose={notiOnClose}
+                          onClose={() => setIconClicked(false)}
                         />
                       )}
                     </NoticeIcon>
