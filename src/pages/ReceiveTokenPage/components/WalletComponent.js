@@ -116,32 +116,6 @@ const WalletComponent = ({
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (transactionHash || resend) {
-  //     const interval = setInterval(() => {
-  //       web3.eth
-  //         .getTransactionReceipt(transactionHash)
-  //         .then((receipt) => {
-  //           if (!receipt && !failed) {
-  //             console.log("pending");
-  //             setLoading(true);
-  //           } else {
-  //             setLoading(false);
-  //             setComplete(true);
-  //             clearInterval(interval);
-  //           }
-  //         })
-  //         .catch((err) => {
-  //           // 존재하지 않는 hash 값일 경우 (+ pending이 길게 되어 tx가 사라진 경우)
-  //           console.log(err);
-  //           setLoading(false);
-  //           setFailed(true);
-  //           clearInterval(interval);
-  //         });
-  //     }, 1000);
-  //   }
-  // }, [transactionHash, checkStatus]);
-
   useEffect(() => {
     if (realDelete) {
       deleteWallet(walletList[deleteIdx].index).then(() => {
