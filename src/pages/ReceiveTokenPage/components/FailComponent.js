@@ -46,13 +46,12 @@ const ComplainLink = styled.a`
   color: ${palette.grey_4};
 `;
 
-const FailComponent = ({ buttonOnClick, setFailed, setResend }) => {
+const FailComponent = ({ setFailed, setResend }) => {
   const { t } = useTranslation();
   useEffect(() => {
     setFailed(true);
   }, []);
 
-  console.log(buttonOnClick);
   return (
     <>
       <ContentContainer>

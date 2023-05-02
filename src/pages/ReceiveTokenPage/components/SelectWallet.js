@@ -36,7 +36,6 @@ const SelectWallet = ({ linkInfo, walletData }) => {
   const [receiveInfo, setReceiveInfo] = useState({});
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [sendOnClick, setSendOnClick] = useState(null);
   const [resend, setResend] = useState(false);
   const [select, setSelect] = useState(0);
   const { t } = useTranslation();
@@ -56,11 +55,7 @@ const SelectWallet = ({ linkInfo, walletData }) => {
           ) : (
             <>
               {failed ? (
-                <FailComponent
-                  buttonOnClick={sendOnClick}
-                  setFailed={setFailed}
-                  setResend={setResend}
-                />
+                <FailComponent setFailed={setFailed} setResend={setResend} />
               ) : (
                 <>
                   <>
@@ -84,7 +79,6 @@ const SelectWallet = ({ linkInfo, walletData }) => {
                       setLoading={setLoading}
                       setFailed={setFailed}
                       failed={failed}
-                      setSendOnClick={setSendOnClick}
                       resend={resend}
                       select={select}
                       setSelect={setSelect}
