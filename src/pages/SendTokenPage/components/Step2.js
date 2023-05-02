@@ -2,6 +2,7 @@ import { DropIcon, InputError, InputHelp, MetamaskIcon } from "assets/icons";
 import { ContainedButton } from "components/button";
 import { Tooltip } from "components/card";
 import { ConfirmModal } from "components/modal";
+import { minABI } from "data/minABI";
 import { bignumber, subtract } from "mathjs";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -377,26 +378,6 @@ const Step2 = ({
 
     let tokenAddress = tokenInfo.address;
     let walletAddress = address;
-
-    // The minimum ABI to get ERC20 Token balance
-    let minABI = [
-      // balanceOf
-      {
-        constant: true,
-        inputs: [{ name: "_owner", type: "address" }],
-        name: "balanceOf",
-        outputs: [{ name: "balance", type: "uint256" }],
-        type: "function",
-      },
-      // decimals
-      {
-        constant: true,
-        inputs: [],
-        name: "decimals",
-        outputs: [{ name: "", type: "uint8" }],
-        type: "function",
-      },
-    ];
 
     let contract = new web3.eth.Contract(minABI, tokenAddress);
     const getBalance = async () => {
