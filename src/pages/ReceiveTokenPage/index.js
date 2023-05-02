@@ -3,14 +3,17 @@ import { CheckImage, CloudImage, PigImage, TimerImage } from "assets/images";
 import { ContainedButton } from "components/button";
 import { Tooltip } from "components/card";
 import { LoginHeader } from "components/header";
-import { LoginModal } from "components/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { getUserInfo, getUserInfoAndProfileDeco } from "utils/api/auth";
 import { getTrxsLinkInfo } from "utils/api/trxs";
-import { loginState } from "utils/atoms/login";
+import {
+  loginDoneState,
+  loginModalVisibleState,
+  loginState,
+} from "utils/atoms/login";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 import { SelectWallet } from "./components";
@@ -222,15 +225,17 @@ function convert(n) {
 }
 
 const ReceiveTokenPage = () => {
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [linkInfo, setLinkInfo] = useState(null);
   const [senderUser, setSenderUser] = useState("");
   const [iconClicked, setIconClicked] = useState(false);
   const [iconHovering, setIconHovering] = useState(false);
-  const [loginDone, setLoginDone] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [walletData, setWalletData] = useState(null);
   const isLoggedIn = useRecoilValue(loginState);
+  const loginDone = useRecoilValue(loginDoneState);
+  const [loginModalVisible, setLoginModalVisible] = useRecoilState(
+    loginModalVisibleState
+  );
   const { t } = useTranslation();
 
   const TooltipText = (
@@ -284,17 +289,7 @@ const ReceiveTokenPage = () => {
           />
         ) : (
           <>
-            <LoginHeader onVisible={setLoginModalVisible} />
-            {loginModalVisible && (
-              <LoginModal
-                visible={loginModalVisible}
-                closable={true}
-                maskClosable={true}
-                onClose={() => setLoginModalVisible(false)}
-                type="receive"
-                setStatus={setLoginDone}
-              />
-            )}
+            <LoginHeader />
             <ContentContainer>
               {linkInfo?.isValid && !isLoggedIn ? (
                 <>

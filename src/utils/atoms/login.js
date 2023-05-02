@@ -13,3 +13,13 @@ export const signupState = atom({
   key: "signupState",
   default: false,
 });
+
+export const loginDoneState = atom({
+  key: "loginDoneState",
+  default: false,
+});
+
+export const loginModalVisibleState = atom({
+  key: "loginModalVisibleState",
+  default: false,
+});

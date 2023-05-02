@@ -1,11 +1,16 @@
 import { ProfileDefault } from "assets/icons";
 import axios from "axios";
+import { LoginModal } from "components/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { handleTokenExpired } from "utils/api/base";
-import { loginState } from "utils/atoms/login";
+import {
+  loginDoneState,
+  loginModalVisibleState,
+  loginState,
+} from "utils/atoms/login";
 import i18n from "utils/lang/i18n";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typograpy from "utils/style/Typography";
@@ -21,7 +26,7 @@ const HeaderContainer = styled.div`
   background-color: ${palette.white};
   position: fixed;
   top: 0px;
-  z-index: 10;
+  z-index: 101;
 `;
 
 const InnerContainer = styled.div`
@@ -50,15 +55,15 @@ const ProfileButton = styled.button`
   background-color: transparent;
 `;
 
-const LoginHeader = ({ onVisible }) => {
+const LoginHeader = () => {
   const [dropBoxOn, setDropBoxOn] = useState(false);
   const [userInfo, setUserInfo] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+  const [loginModalVisible, setLoginModalVisible] = useRecoilState(
+    loginModalVisibleState
+  );
+  const setLoginDone = useSetRecoilState(loginDoneState);
   const { t } = useTranslation();
-
-  const loginOnClick = () => {
-    onVisible(true);
-  };
 
   const profileImgOnClick = () => {
     setDropBoxOn(!dropBoxOn);
@@ -127,10 +132,19 @@ const LoginHeader = ({ onVisible }) => {
             states="default"
             size="medium"
             label={t("introPageHeader1")}
-            onClick={loginOnClick}
+            onClick={() => setLoginModalVisible(true)}
           />
         )}
       </InnerContainer>
+      {loginModalVisible && (
+        <LoginModal
+          visible={loginModalVisible}
+          closable={true}
+          maskClosable={true}
+          onClose={() => setLoginModalVisible(false)}
+          setStatus={() => setLoginDone(true)}
+        />
+      )}
     </HeaderContainer>
   );
 };

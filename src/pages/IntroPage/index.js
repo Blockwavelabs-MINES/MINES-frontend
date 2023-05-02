@@ -1,18 +1,22 @@
 import { MainImage1, MainImage2, MainImage3 } from "assets/images";
 import { ContainedButton } from "components/button";
 import { LoginHeader } from "components/header";
-import { LoginModal, SingleModal } from "components/modal";
+import { SingleModal } from "components/modal";
 import CreateLinkPage from "pages/CreateLinkPage";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import SwiperCore, { Autoplay, Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { loginState, signupState } from "utils/atoms/login";
+import {
+  loginModalVisibleState,
+  loginState,
+  signupState,
+} from "utils/atoms/login";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 
@@ -68,15 +72,11 @@ const BannerBottom = styled.div`
 `;
 
 const IntroPage = () => {
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [loginAlertModalVisible, setLoginAlertModalVisible] = useState(false);
   const [isSignup, setIsSignup] = useRecoilState(signupState);
   const isLoggedIn = useRecoilValue(loginState);
+  const setLoginModalVisible = useSetRecoilState(loginModalVisibleState);
   const { t } = useTranslation();
-
-  const closeLoginModal = () => {
-    setLoginModalVisible(false);
-  };
 
   const closeLoginAlertModal = () => {
     setLoginAlertModalVisible(false);
@@ -99,16 +99,7 @@ const IntroPage = () => {
     <>
       {!isSignup ? (
         <FullContainer>
-          <LoginHeader onVisible={setLoginModalVisible} />
-          {loginModalVisible && (
-            <LoginModal
-              visible={loginModalVisible}
-              closable={true}
-              maskClosable={true}
-              onClose={closeLoginModal}
-              setStatus={setIsSignup}
-            />
-          )}
+          <LoginHeader />
           {loginAlertModalVisible && (
             <SingleModal
               visible={setLoginAlertModalVisible}
@@ -116,7 +107,7 @@ const IntroPage = () => {
               maskClosable={true}
               onClose={closeLoginAlertModal}
               text={<>{t("introPageAlert1")}</>}
-              setStatus={setLoginModalVisible}
+              setStatus={() => setLoginModalVisible(true)}
               buttonText={t("introPageAlert2")}
             />
           )}
