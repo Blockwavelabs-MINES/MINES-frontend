@@ -62,11 +62,7 @@ const CreateLinkPage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (linkId.length > 0) {
-      setState("typing");
-    } else {
-      setState("inactive");
-    }
+    linkId.length > 0 ? setState("typing") : setState("inactive");
 
     let regExp = /^[a-zA-Z0-9_]+[a-zA-Z0-9_]{4,18}$/g;
     let testResult = regExp.test(linkId);
@@ -81,10 +77,6 @@ const CreateLinkPage = () => {
       setErrorComment("");
     }
   }, [linkId]);
-
-  const linkIdOnChange = (e) => {
-    setLinkId(e.target.value);
-  };
 
   const createOnClick = () => {
     checkUserId(linkId)
@@ -139,7 +131,7 @@ const CreateLinkPage = () => {
               fixedMentSize={"93px"}
               value={linkId}
               onChange={(e) => {
-                linkIdOnChange(e);
+                setLinkId(e.target.value);
               }}
             />
           </InputContainer>

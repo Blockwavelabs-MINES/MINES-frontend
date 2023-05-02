@@ -41,11 +41,7 @@ const ChangeID = () => {
   }, []);
 
   useEffect(() => {
-    if (linkId.length > 0) {
-      setState("typing");
-    } else {
-      setState("inactive");
-    }
+    linkId.length > 0 ? setState("typing") : setState("inactive");
 
     var regExp = /^[a-zA-Z0-9_]+[a-zA-Z0-9_]{4,18}$/g;
     var testResult = regExp.test(linkId);
@@ -60,10 +56,6 @@ const ChangeID = () => {
       setErrorComment("");
     }
   }, [linkId]);
-
-  const linkIdOnChange = (e) => {
-    setLinkId(e.target.value);
-  };
 
   const clickSwitch = () => {
     setIsModalOpen(true);
@@ -96,7 +88,7 @@ const ChangeID = () => {
           fixedMent={"3tree.io/@"}
           fixedMentSize={"93px"}
           onChange={(e) => {
-            linkIdOnChange(e);
+            setLinkId(e.target.value);
           }}
         />
       </InputContainer>

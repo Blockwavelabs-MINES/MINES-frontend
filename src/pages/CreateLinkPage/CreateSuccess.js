@@ -60,7 +60,6 @@ const CreateSuccess = ({ linkId }) => {
       document.body.appendChild(textarea);
       textarea.select();
       textarea.setSelectionRange(0, 9999); // For IOS
-      document.execCommand("copy");
       document.body.removeChild(textarea);
 
       if (myRef.current) {
@@ -71,10 +70,6 @@ const CreateSuccess = ({ linkId }) => {
     };
 
     handleCopyClipBoard(`https://3tree.io/@${linkId}`);
-  };
-
-  const copyOnClose = () => {
-    setCopyPivotVisible(false);
   };
 
   return (
@@ -112,7 +107,7 @@ const CreateSuccess = ({ linkId }) => {
             visible={copyPivotVisible}
             closable={true}
             maskClosable={true}
-            onClose={copyOnClose}
+            onClose={() => setCopyPivotVisible(false)}
             label={t("createLinkDone5")}
             type={"up"}
             x={`calc(${clickX}px - 70px)`}
