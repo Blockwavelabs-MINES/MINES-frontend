@@ -342,11 +342,12 @@ const WalletComponent = ({
             walletList[select].walletAddress,
             toFixed(Number(linkInfo.tokenAmount))
           );
+          const fee = gasAmount;
           const txObj = {
             value: web3.utils.toHex(
               toFixed(Number(linkInfo.tokenAmount) * Math.pow(10, 18))
             ),
-            gas: gasAmount,
+            gas: fee,
             to: walletList[select].walletAddress,
             from: account.address,
           };
