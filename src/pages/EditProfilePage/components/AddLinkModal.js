@@ -69,14 +69,6 @@ function AddLinkModalInner(saveAction, onClose, original) {
     setUrl(original?.linkUrl);
   }, [original]);
 
-  const titleOnChange = (e) => {
-    setTitle(e.target.value);
-  };
-
-  const urlOnChange = (e) => {
-    setUrl(e.target.value);
-  };
-
   const saveOnClick = () => {
     saveAction({ linkId: linkId, title: title, url: url });
     document.body.style.overflow = "auto";
@@ -93,14 +85,18 @@ function AddLinkModalInner(saveAction, onClose, original) {
             isRequired={true}
             placeholder={t("editLinkModal3")}
             value={title || ""}
-            onChange={(e) => titleOnChange(e)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
           />
           <InputBox
             label={t("editLinkModal4")}
             isRequired={true}
             placeholder={t("editLinkModal5")}
             value={url || ""}
-            onChange={(e) => urlOnChange(e)}
+            onChange={(e) => {
+              setUrl(e.target.value);
+            }}
             message={errorComment}
             state={linkInputState}
           />

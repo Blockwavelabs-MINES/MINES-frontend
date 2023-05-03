@@ -3,6 +3,7 @@ import { ContainedButton } from "components/button";
 import { EditableCard, EmptyCard } from "components/card";
 import { ConfirmModal, DeleteModal } from "components/modal";
 import AddWalletAddress from "components/modal/AddWalletAddress";
+import { minABI } from "data/minABI";
 import Chainlist from "pages/SendTokenPage/data/SimpleTokenList";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -115,32 +116,6 @@ const WalletComponent = ({
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (transactionHash || resend) {
-  //     const interval = setInterval(() => {
-  //       web3.eth
-  //         .getTransactionReceipt(transactionHash)
-  //         .then((receipt) => {
-  //           if (!receipt && !failed) {
-  //             console.log("pending");
-  //             setLoading(true);
-  //           } else {
-  //             setLoading(false);
-  //             setComplete(true);
-  //             clearInterval(interval);
-  //           }
-  //         })
-  //         .catch((err) => {
-  //           // 존재하지 않는 hash 값일 경우 (+ pending이 길게 되어 tx가 사라진 경우)
-  //           console.log(err);
-  //           setLoading(false);
-  //           setFailed(true);
-  //           clearInterval(interval);
-  //         });
-  //     }, 1000);
-  //   }
-  // }, [transactionHash, checkStatus]);
-
   useEffect(() => {
     if (realDelete) {
       deleteWallet(walletList[deleteIdx].index).then(() => {
@@ -230,63 +205,6 @@ const WalletComponent = ({
         );
 
         if (tokenInfo.symbol == "USDC" || tokenInfo.symbol == "USDT") {
-          let minABI = [
-            // balanceOf
-            {
-              constant: true,
-              inputs: [{ name: "_owner", type: "address" }],
-              name: "balanceOf",
-              outputs: [{ name: "balance", type: "uint256" }],
-              type: "function",
-            },
-            // decimals
-            {
-              constant: true,
-              inputs: [],
-              name: "decimals",
-              outputs: [{ name: "", type: "uint8" }],
-              type: "function",
-            },
-            //transfer
-            {
-              constant: false,
-              inputs: [
-                { name: "_to", type: "address" },
-                { name: "_value", type: "uint256" },
-              ],
-              name: "transfer",
-              outputs: [{ name: "", type: "bool" }],
-              payable: false,
-              stateMutability: "nonpayable",
-              type: "function",
-            },
-            //approve
-            {
-              inputs: [
-                {
-                  internalType: "address",
-                  name: "spender",
-                  type: "address",
-                },
-                {
-                  internalType: "uint256",
-                  name: "amount",
-                  type: "uint256",
-                },
-              ],
-              name: "approve",
-              outputs: [
-                {
-                  internalType: "bool",
-                  name: "",
-                  type: "bool",
-                },
-              ],
-              stateMutability: "nonpayable",
-              type: "function",
-            },
-          ];
-
           const tempContract = new web3.eth.Contract(minABI, tokenInfo.address);
 
           async function sendToken() {
@@ -363,6 +281,7 @@ const WalletComponent = ({
                         }
                       } else {
                         setTransactionHash(res); // 저장해야할 hash값
+                        console.log(signedTx.transactionHash);
 
                         if (res || resend) {
                           const interval = setInterval(() => {
@@ -465,6 +384,7 @@ const WalletComponent = ({
                       }
                     } else {
                       setTransactionHash(res); // 저장해야할 hash값
+                      console.log(signedTx.transactionHash);
 
                       if (res || resend) {
                         const interval = setInterval(() => {

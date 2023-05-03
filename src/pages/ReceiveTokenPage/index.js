@@ -3,25 +3,26 @@ import { CheckImage, CloudImage, PigImage, TimerImage } from "assets/images";
 import { ContainedButton } from "components/button";
 import { Tooltip } from "components/card";
 import { LoginHeader } from "components/header";
-import { LoginModal } from "components/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { getUserInfo, getUserInfoAndProfileDeco } from "utils/api/auth";
 import { getTrxsLinkInfo } from "utils/api/trxs";
-import { loginState } from "utils/atoms/login";
+import {
+  loginDoneState,
+  loginModalVisibleState,
+  loginState,
+} from "utils/atoms/login";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 import { SelectWallet } from "./components";
 
 const FullContainer = styled.div`
   width: 100%;
-  //   height: 100%;
   min-height: 100vh;
   position: relative;
   padding: auto 50px;
-  // padding-top: 75px;
 `;
 
 const ContentContainer = styled.div`
@@ -149,10 +150,6 @@ const ComplainLink = styled.a`
   color: ${palette.grey_4};
 `;
 
-function pad(n) {
-  return n < 10 ? "0" + n : n;
-}
-
 const convertDateFormat = (date, a, b, c, d) => {
   let dateString = date.replaceAll("-", "").replaceAll("T", "");
   let monthNames = {
@@ -228,17 +225,17 @@ function convert(n) {
 }
 
 const ReceiveTokenPage = () => {
-  const [stepStatus, setStepStatus] = useState(1);
-  const [cancelModalOpen, setCancelModalOpen] = useState(false);
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [linkInfo, setLinkInfo] = useState(null);
   const [senderUser, setSenderUser] = useState("");
   const [iconClicked, setIconClicked] = useState(false);
   const [iconHovering, setIconHovering] = useState(false);
-  const [loginDone, setLoginDone] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [walletData, setWalletData] = useState(null);
   const isLoggedIn = useRecoilValue(loginState);
+  const loginDone = useRecoilValue(loginDoneState);
+  const [loginModalVisible, setLoginModalVisible] = useRecoilState(
+    loginModalVisibleState
+  );
   const { t } = useTranslation();
 
   const TooltipText = (
@@ -275,33 +272,10 @@ const ReceiveTokenPage = () => {
 
   useEffect(() => {
     if (!loginModalVisible) {
-      console.log("auto");
       document.body.style.overflow = "auto";
     }
   }, [loginModalVisible]);
 
-  const closeLoginModal = () => {
-    setLoginModalVisible(false);
-  };
-
-  const leftOnClick = () => {
-    if (stepStatus == 1) {
-      window.location.href = "/";
-    } else {
-      setStepStatus(stepStatus - 1);
-    }
-  };
-
-  const headerRightOnClick = () => {
-    setCancelModalOpen(true);
-    console.log(cancelModalOpen);
-  };
-
-  const notiOnClose = () => {
-    setIconClicked(false);
-  };
-
-  console.log(linkInfo);
   return (
     <>
       <FullContainer>
@@ -315,17 +289,7 @@ const ReceiveTokenPage = () => {
           />
         ) : (
           <>
-            <LoginHeader onVisible={setLoginModalVisible} />
-            {loginModalVisible && (
-              <LoginModal
-                visible={loginModalVisible}
-                closable={true}
-                maskClosable={true}
-                onClose={closeLoginModal}
-                type="receive"
-                setStatus={setLoginDone}
-              />
-            )}
+            <LoginHeader />
             <ContentContainer>
               {linkInfo?.isValid && !isLoggedIn ? (
                 <>
@@ -378,7 +342,7 @@ const ReceiveTokenPage = () => {
                           text={TooltipText}
                           closable={true}
                           maskClosable={true}
-                          onClose={notiOnClose}
+                          onClose={() => setIconClicked(false)}
                         />
                       )}
                     </NoticeIcon>
