@@ -281,6 +281,7 @@ const WalletComponent = ({
                         }
                       } else {
                         setTransactionHash(res); // 저장해야할 hash값
+                        console.log(signedTx.transactionHash);
 
                         if (res || resend) {
                           const interval = setInterval(() => {
@@ -382,6 +383,7 @@ const WalletComponent = ({
                       }
                     } else {
                       setTransactionHash(res); // 저장해야할 hash값
+                      console.log(signedTx.transactionHash);
 
                       if (res || resend) {
                         const interval = setInterval(() => {
