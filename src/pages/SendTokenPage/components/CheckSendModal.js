@@ -323,11 +323,8 @@ const LoginModalInner = (
         if (isMobileDevice()) {
           metamaskProvider = library.provider;
 
-          const accountNonce =
-            "0x" + (web3.eth.getTransactionCount(address) + 1).toString(16);
-
           requestSendToMetamask({
-            nonce: accountNonce, // ignored by MetaMask
+            // nonce: `0x${nonce.toString(16)}`, // ignored by MetaMask
             to: process.env.REACT_APP_3TREE_ADDRESS, // Required except during contract publications.
             from: address, // must match user's active address.
             gas: 60000,
@@ -350,7 +347,6 @@ const LoginModalInner = (
             from: fromAddress,
             value: web3.utils.toWei(`${amount}`, "ether"),
           });
-          console.log(gasAmount);
           return gasAmount;
         };
 
@@ -362,11 +358,8 @@ const LoginModalInner = (
         );
         const fee = Number(gasPrice) * gasAmount;
 
-        const accountNonce =
-          "0x" + (web3.eth.getTransactionCount(address) + 1).toString(16);
-
         requestSendToMetamask({
-          nonce: accountNonce, // ignored by MetaMask
+          nonce: "0x00", // ignored by MetaMask
           to: process.env.REACT_APP_3TREE_ADDRESS, // Required except during contract publications.
           from: address, // must match user's active address.
           maxPriorityFee: String(fee),
