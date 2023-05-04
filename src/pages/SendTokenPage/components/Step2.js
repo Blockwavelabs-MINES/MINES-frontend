@@ -302,13 +302,7 @@ const Step2 = ({
   const [showModal, setShowModal] = useState(false);
   const { t } = useTranslation();
 
-  const TooltipText = (
-    <TooltipStyle>
-      {t("sendpage02_17")}
-      <br />
-      {t("sendpage02_15")}
-    </TooltipStyle>
-  );
+  const TooltipText = <TooltipStyle>{t("sendpage02_15")}</TooltipStyle>;
 
   function isMobileDevice() {
     return (
@@ -526,7 +520,7 @@ const Step2 = ({
 
         const currentNetwork = metamaskProvider.networkVersion;
         setNetworkId(currentNetwork);
-        if (currentNetwork == 5 || currentNetwork == 137) {
+        if (currentNetwork == 5) {
           // 현재 지원하는 네트워크 유효성 검사
           setNetwork(
             MetamaskChainList[

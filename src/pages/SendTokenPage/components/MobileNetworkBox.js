@@ -181,13 +181,7 @@ const MobileNetworkBox = ({ setNetworkId }) => {
   const [newNetworkId, setNewNetworkId] = useState(chainId);
 
   const { t } = useTranslation();
-  const TooltipText = (
-    <TooltipStyle>
-      {t("sendpage02_17")}
-      <br />
-      {t("sendpage02_15")}
-    </TooltipStyle>
-  );
+  const TooltipText = <TooltipStyle>{t("sendpage02_15")}</TooltipStyle>;
 
   useEffect(() => {
     if (chainId && chainId != newNetworkId) {
