@@ -38,7 +38,7 @@ const InputContainer = styled.input`
   border-radius: 8px;
   ${Typograpy.Headline3}
   &::-webkit-input-placeholder {
-    color: ${palette.grey_1};
+    color: ${palette.grey_5};
   }
   &:focus {
     outline: none;
