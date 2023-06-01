@@ -75,7 +75,7 @@ const ProfilePage = () => {
         />
         {userInfoData ? (
           <>
-            {linkData.length && (
+            {linkData.length !== 0 && (
               <LinkComponent
                 userLinkList={linkData}
                 profileDecorate={profileDecoData}
