@@ -247,6 +247,10 @@
   "receiveTokenUnknownLink2": "Please check the link again!",
   "receiveTokenUnknownLink3": "Is there a problem?",
 
+  "receiveWrongUserModal1": "The recipient information does not match.",
+  "receiveWrongUserModal2": "Please try a different account or ID.",
+  "receiveWrongUserModal3": "Go back to home",
+
   "selectWalletPage1": "Please select a wallet to receive token",
   "selectWalletPage2": "Tokens can be delivered to your selected wallet!",
   "selectWalletPage3": "There's no ",

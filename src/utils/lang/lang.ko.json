@@ -247,6 +247,10 @@
   "receiveTokenUnknownLink2": "링크를 다시 확인해주세요!",
   "receiveTokenUnknownLink3": "문제가 생겼나요?",
 
+  "receiveWrongUserModal1": "수령인 정보가 일치하지 않습니다.",
+  "receiveWrongUserModal2": "다른 계정 혹은 아이디로 시도해주세요.",
+  "receiveWrongUserModal3": "돌아가기",
+
   "selectWalletPage1": "송금 받을 지갑을 선택해주세요",
   "selectWalletPage2": "선택한 지갑으로 토큰을 받을 수 있어요!",
   "selectWalletPage3": "아직 연결된 ",

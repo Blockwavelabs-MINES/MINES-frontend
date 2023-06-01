@@ -3,6 +3,7 @@ import { CheckImage, CloudImage, PigImage, TimerImage } from "assets/images";
 import { ContainedButton } from "components/button";
 import { Tooltip } from "components/card";
 import { LoginHeader } from "components/header";
+import { DeleteModal } from "components/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -236,6 +237,8 @@ const ReceiveTokenPage = () => {
   const [loginModalVisible, setLoginModalVisible] = useRecoilState(
     loginModalVisibleState
   );
+  const [isWrongUser, setIsWrongUser] = useState(false);
+
   const { t } = useTranslation();
 
   const TooltipText = (
@@ -259,6 +262,8 @@ const ReceiveTokenPage = () => {
             setUserInfo(data.user);
             setWalletData(data.wallets);
           });
+          data.socialId !== convertedData.receiverSocialId &&
+            setIsWrongUser(true);
         });
       }
       convertedData.tokenAmount = convert(data.tokenAmount);
@@ -282,11 +287,34 @@ const ReceiveTokenPage = () => {
         {(loginDone || isLoggedIn) &&
         linkInfo?.isValid &&
         !linkInfo?.isExpired ? (
-          <SelectWallet
-            linkInfo={linkInfo}
-            userInfo={userInfo}
-            walletData={walletData}
-          />
+          <>
+            <DeleteModal
+              visible={isWrongUser}
+              closable={false}
+              maskClosable={true}
+              onClose={() => {
+                window.location.href = "/";
+              }}
+              text={
+                <>
+                  {t("receiveWrongUserModal1")}
+                  <br />
+                  {t("receiveWrongUserModal2")}
+                </>
+              }
+              setRealDelete={() => {
+                window.location.href = "/";
+              }}
+              buttonText={t("receiveWrongUserModal3")}
+              oneButton={true}
+              buttonColor="blue"
+            />
+            <SelectWallet
+              linkInfo={linkInfo}
+              userInfo={userInfo}
+              walletData={walletData}
+            />
+          </>
         ) : (
           <>
             <LoginHeader />

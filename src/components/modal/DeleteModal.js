@@ -32,6 +32,8 @@ function DeleteModal({
   setRealDelete,
   buttonText,
   subDeleteOnClick,
+  oneButton,
+  buttonColor,
 }) {
   const { t } = useTranslation();
 
@@ -76,17 +78,22 @@ function DeleteModal({
                     ? buttonText
                     : t("manageProfilePageAlertDeleteLink3")
                 }
-                style={{ backgroundColor: palette.red_2 }}
+                style={{
+                  backgroundColor:
+                    buttonColor === "blue" ? palette.blue_1 : palette.red_2,
+                }}
                 onClick={realDeleteOnClick}
               />
-              <ContainedButton
-                type="secondary"
-                styles="outlined"
-                states="default"
-                size="large"
-                label={t("manageProfilePageAlertDeleteLink4")}
-                onClick={cancelOnClick}
-              />
+              {!oneButton && (
+                <ContainedButton
+                  type="secondary"
+                  styles="outlined"
+                  states="default"
+                  size="large"
+                  label={t("manageProfilePageAlertDeleteLink4")}
+                  onClick={cancelOnClick}
+                />
+              )}
             </ButtonContainer>
           </InnerContainer>
         </ModalInner>
@@ -138,6 +145,7 @@ const ModalInner = styled.div`
   border: none;
   border-radius: 20px;
   background-color: rgba(255, 255, 255, 1);
+  color: ${palette.grey_2};
 `;
 
 export default DeleteModal;
