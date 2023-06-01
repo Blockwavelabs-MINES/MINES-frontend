@@ -81,7 +81,7 @@ const ProfilePage = () => {
                 profileDecorate={profileDecoData}
               />
             )}
-            {walletData.length && (
+            {walletData.length !== 0 && (
               <>
                 <WalletComponent
                   userWalletList={walletData}
