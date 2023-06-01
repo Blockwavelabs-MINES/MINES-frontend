@@ -163,9 +163,7 @@ const ReceiveComplete = ({ walletList, select }) => {
           <TxHashInfobox>
             <TxHashInfoTitle>{t("receiveTokenComplete4")}</TxHashInfoTitle>
             <TxHashAddressBox>
-              <TxHashAddress>
-                {walletConvert(receiveInfo?.transactionHash)}
-              </TxHashAddress>
+              <TxHashAddress>{walletConvert(receiveTrxHash)}</TxHashAddress>
             </TxHashAddressBox>
           </TxHashInfobox>
         </TxHashCard>

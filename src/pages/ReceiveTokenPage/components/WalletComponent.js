@@ -384,6 +384,7 @@ const WalletComponent = ({
                       }
                     } else {
                       setTransactionHash(res); // 저장해야할 hash값
+                      setReceiveTrxHash(signedTx.transactionHash);
                       console.log(signedTx.transactionHash);
 
                       if (res || resend) {
