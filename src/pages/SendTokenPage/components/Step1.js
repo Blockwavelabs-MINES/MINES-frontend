@@ -60,7 +60,7 @@ const Step1 = ({
     setEmail(e.target.value);
     let regex =
       /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{1,6}(?:\.[a-z])?)$/i;
-    if (email && regex.test(email)) {
+    if (e.target.value && regex.test(e.target.value)) {
       setEmailState("filled");
       setErrorComment("");
     } else {
