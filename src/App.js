@@ -1,5 +1,6 @@
 import "App.css";
 import {
+  AccountLinkingPage,
   ComponentTestPage,
   EditProfilePage,
   IntroPage,
@@ -52,6 +53,10 @@ function App() {
                   element={<ReceiveTokenPage />}
                 />
                 <Route path="/@:id" element={<ProfilePage />} />
+                <Route
+                  path="/accountLinking"
+                  element={<AccountLinkingPage />}
+                />
                 <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
                 <Route path="/termsOfService" element={<TermsOfService />} />
                 <Route path="/*" element={<NotFoundPage />} />
