@@ -2,6 +2,7 @@ import { MainImage1, MainImage2, MainImage3 } from "assets/images";
 import { ContainedButton } from "components/button";
 import { LoginHeader } from "components/header";
 import { SingleModal } from "components/modal";
+import { BottomNavBar } from "components/navbar";
 import CreateLinkPage from "pages/CreateLinkPage";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -46,19 +47,6 @@ const SecondIntro = styled.div`
   color: ${palette.grey_2};
   line-height: 23.8px;
   margin-top: 14px;
-`;
-
-const ButtonContainer = styled.div`
-  width: 100%;
-  max-width: 600px;
-  height: 88px;
-  padding: 16px 20px;
-  position: fixed;
-  bottom: 0px;
-  display: flex;
-  gap: 10px;
-  z-index: 100;
-  backdrop-filter: blur(15px);
 `;
 
 const MainImageBanner = styled.img`
@@ -154,38 +142,7 @@ const IntroPage = () => {
             </SwiperSlide>
           </Swiper>
           <BannerBottom />
-          <ButtonContainer>
-            <ContainedButton
-              type="secondary"
-              styles="filled"
-              states="default"
-              size="large"
-              label={
-                <div
-                  style={{
-                    whiteSpace: "nowrap",
-                    paddingLeft: "60px",
-                    paddingRight: "60px",
-                  }}
-                >
-                  {t("introPage3")}
-                </div>
-              }
-              onClick={sendOnClick}
-              style={{
-                width: "auto",
-                whiteSpace: "nowrap",
-              }}
-            />
-            <ContainedButton
-              type="primary"
-              styles="filled"
-              states="default"
-              size="large"
-              label={t("introPage4")}
-              onClick={profileSettingOnClick}
-            />
-          </ButtonContainer>
+          <BottomNavBar />
         </FullContainer>
       ) : (
         <CreateLinkPage />

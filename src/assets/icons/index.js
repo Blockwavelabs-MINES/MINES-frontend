@@ -36,3 +36,6 @@ export { default as CustomIcon } from "./custom-icon.svg";
 export { default as EthereumMainnetIcon } from "./ethereumMainnet-icon.svg";
 export { default as PolygonMainnetIcon } from "./polygonMainnet-icon.svg";
 export { default as SmileySad } from "./smiley-sad.svg";
+export { default as NavBarHome } from "./navbar-home.svg";
+export { default as NavBarLink } from "./navbar-link.svg";
+export { default as NavBarSend } from "./navbar-send.svg";
