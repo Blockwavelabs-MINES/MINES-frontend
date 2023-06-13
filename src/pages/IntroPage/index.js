@@ -1,5 +1,4 @@
-import { MainImage1, MainImage2, MainImage3 } from "assets/images";
-import { ContainedButton } from "components/button";
+import { MainImage3 } from "assets/images";
 import { LoginHeader } from "components/header";
 import { SingleModal } from "components/modal";
 import { BottomNavBar } from "components/navbar";
@@ -8,11 +7,10 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import SwiperCore, { Autoplay, Navigation, Pagination } from "swiper";
+import SwiperCore, { Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Swiper, SwiperSlide } from "swiper/react";
 import {
   loginModalVisibleState,
   loginState,
@@ -77,6 +75,7 @@ const IntroPage = () => {
       setLoginAlertModalVisible(true);
     }
   };
+
   const sendOnClick = () => {
     isLoggedIn
       ? (window.location.href = "/sendToken")
@@ -99,48 +98,15 @@ const IntroPage = () => {
               buttonText={t("introPageAlert2")}
             />
           )}
-          <Swiper
-            className="banner"
-            modules={[Navigation, Pagination, Autoplay]}
-            spaceBetween={50}
-            slidesPerView={1}
-            pagination={{ clickable: true }}
-            autoplay={{ delay: 5000 }}
-          >
-            <SwiperSlide>
-              <IntroTextBox>
-                <FirstIntro>
-                  {t("introPageMent1")}
-                  <br />
-                  {t("introPageMent2")}
-                </FirstIntro>
-                <SecondIntro>{t("introPageMent3")}</SecondIntro>
-              </IntroTextBox>
-              <MainImageBanner src={MainImage1} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <IntroTextBox>
-                <FirstIntro>
-                  {t("introPageMent4")}
-                  <br />
-                  {t("introPageMent5")}
-                </FirstIntro>
-                <SecondIntro>{t("introPageMent6")}</SecondIntro>
-              </IntroTextBox>
-              <MainImageBanner src={MainImage2} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <IntroTextBox>
-                <FirstIntro>
-                  {t("introPageMent7")}
-                  <br />
-                  {t("introPageMent8")}
-                </FirstIntro>
-                <SecondIntro>{t("introPageMent9")}</SecondIntro>
-              </IntroTextBox>
-              <MainImageBanner src={MainImage3} />
-            </SwiperSlide>
-          </Swiper>
+          <IntroTextBox>
+            <FirstIntro>
+              {t("introPageMent7")}
+              <br />
+              {t("introPageMent8")}
+            </FirstIntro>
+            <SecondIntro>{t("introPageMent9")}</SecondIntro>
+          </IntroTextBox>
+          <MainImageBanner src={MainImage3} />
           <BannerBottom />
           <BottomNavBar />
         </FullContainer>
