@@ -7,4 +7,5 @@ export { default as NotFoundPage } from "./NotFoundPage";
 export { default as ProfilePage } from "./ProfilePage";
 export { default as ReceiveTokenPage } from "./ReceiveTokenPage";
 export { default as SendTokenPage } from "./SendTokenPage";
+export { default as SendTokenStepsPage } from "./SendTokenStepsPage";
 export { default as SettingPage } from "./SettingPage";

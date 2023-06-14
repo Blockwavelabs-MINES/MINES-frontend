@@ -4,7 +4,7 @@ import { EditableCard, EmptyCard } from "components/card";
 import { ConfirmModal, DeleteModal } from "components/modal";
 import AddWalletAddress from "components/modal/AddWalletAddress";
 import { minABI } from "data/minABI";
-import Chainlist from "pages/SendTokenPage/data/SimpleTokenList";
+import Chainlist from "pages/SendTokenStepsPage/data/SimpleTokenList";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";

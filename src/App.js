@@ -8,6 +8,7 @@ import {
   ProfilePage,
   ReceiveTokenPage,
   SendTokenPage,
+  SendTokenStepsPage,
   SettingPage,
 } from "pages";
 import { PrivacyPolicy, TermsOfService } from "pages/TermsAndConditionPage";
@@ -48,6 +49,10 @@ function App() {
                 <Route path="/components" element={<ComponentTestPage />} />
                 <Route path="/editProfile" element={<EditProfilePage />} />
                 <Route path="/sendToken" element={<SendTokenPage />} />
+                <Route
+                  path="/sendTokenSteps"
+                  element={<SendTokenStepsPage />}
+                />
                 <Route
                   path="/receiveToken/:key"
                   element={<ReceiveTokenPage />}

@@ -1,9 +1,7 @@
 import { DiscordIcon, TelegramIcon, TwitterIcon } from "assets/icons";
-import { useState } from "react";
 import styled from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
-import Switch from "./Switch";
 
 const AccountListContainer = styled.div`
   min-width: 350px;
@@ -33,29 +31,13 @@ const AccountStatus = styled.div`
   color: ${palette.grey_2};
 `;
 
-const AccountList = () => {
-  const [isTwitterOn, setIsTwitterOn] = useState(false);
-
-  const handleTwitterToggle = () => {
-    setIsTwitterOn(!isTwitterOn);
-    console.log("twitter");
-    //1. 서버에 step1 요청
-
-    //2. step1응답 바탕으로 Url 생성
-    //     window.location.href = "";
-    //   };
-    // 응답 전달.
-  };
-
-  //3. step3 응답받으면
-
+const AccountListComponent = () => {
   const accountList = [
     {
       icon: TwitterIcon,
       text: "트위터",
       supported: true,
-      checked: isTwitterOn,
-      handler: handleTwitterToggle,
+      connected: true,
     },
     {
       icon: TelegramIcon,
@@ -79,7 +61,13 @@ const AccountList = () => {
               <AccountName>{account.text}</AccountName>
             </AccountInfo>
             {account.supported ? (
-              <Switch checked={account.on} handler={account.handler} />
+              account.connected ? (
+                <div>
+                  <div />
+                </div>
+              ) : (
+                <div>연결안됨</div>
+              )
             ) : (
               <AccountStatus>지원 예정입니다</AccountStatus>
             )}
@@ -90,4 +78,4 @@ const AccountList = () => {
   );
 };
 
-export default AccountList;
+export default AccountListComponent;
