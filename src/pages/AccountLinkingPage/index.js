@@ -1,4 +1,5 @@
 import { LoginHeader } from "components/header";
+import { BottomNavBar } from "components/navbar";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -36,6 +37,7 @@ const SettingPage = () => {
         />
         <RoundSlider className={isTwitterOn ? "slider checked" : "slider"} />
       </SwitchContainer>
+      <BottomNavBar />
     </FullContainer>
   );
 };

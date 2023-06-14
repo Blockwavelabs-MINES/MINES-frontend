@@ -2,6 +2,7 @@ import { ContainedButton } from "components/button";
 import { LoadingComponent } from "components/card";
 import { SendTokenHeader } from "components/header";
 import { DeleteModal } from "components/modal";
+import { BottomNavBar } from "components/navbar";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -404,6 +405,7 @@ const SendTokenPage = () => {
                           )}
                         </StepButtonContainer>
                       </ContentContainer>
+                      <BottomNavBar />
                     </FullContainer>
                   )}
                 </>

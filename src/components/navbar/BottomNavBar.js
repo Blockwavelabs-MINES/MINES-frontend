@@ -9,6 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
+import Typography from "utils/style/Typography/index";
 
 function BottomNavBar() {
   const [currentPath, setCurrentPath] = useState("");
@@ -40,13 +41,15 @@ function BottomNavBar() {
         hoveredTab={hoveredTab}
       >
         <NavBarTab>
-          <img
-            src={
-              currentPath === "home" || hoveredTab === "home"
-                ? NavBarHomeActive
-                : NavBarHome
-            }
-          />
+          {(currentPath === "home" || hoveredTab === "home") &&
+          (hoveredTab === "home" || hoveredTab === "") ? (
+            <>
+              <img src={NavBarHomeActive} />
+              <div>홈</div>
+            </>
+          ) : (
+            <img src={NavBarHome} />
+          )}
         </NavBarTab>
       </NavBarTabWrapper>
       <NavBarTabWrapper
@@ -59,13 +62,15 @@ function BottomNavBar() {
         hoveredTab={hoveredTab}
       >
         <NavBarTab>
-          <img
-            src={
-              currentPath === "send" || hoveredTab === "send"
-                ? NavBarSendActive
-                : NavBarSend
-            }
-          />
+          {(currentPath === "send" || hoveredTab === "send") &&
+          (hoveredTab === "send" || hoveredTab === "") ? (
+            <>
+              <img src={NavBarSendActive} />
+              <div>송금</div>
+            </>
+          ) : (
+            <img src={NavBarSend} />
+          )}
         </NavBarTab>
       </NavBarTabWrapper>
       <NavBarTabWrapper
@@ -78,13 +83,15 @@ function BottomNavBar() {
         hoveredTab={hoveredTab}
       >
         <NavBarTab>
-          <img
-            src={
-              currentPath === "link" || hoveredTab === "link"
-                ? NavBarLinkActive
-                : NavBarLink
-            }
-          />
+          {(currentPath === "link" || hoveredTab === "link") &&
+          (hoveredTab === "link" || hoveredTab === "") ? (
+            <>
+              <img src={NavBarLinkActive} />
+              <div>소셜 계정 연동</div>
+            </>
+          ) : (
+            <img src={NavBarLink} />
+          )}
         </NavBarTab>
       </NavBarTabWrapper>
     </NavBarContainer>
@@ -144,4 +151,10 @@ const NavBarTab = styled.div`
   border: ${palette.grey_6} 1px solid;
   border-radius: 28px;
   cursor: pointer;
+
+  & > div {
+    ${Typography.Headline3}
+    color: white;
+    margin-left: 8px;
+  }
 `;
