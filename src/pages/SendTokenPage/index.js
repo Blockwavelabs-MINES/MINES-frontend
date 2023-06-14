@@ -1,3 +1,4 @@
+import { ContainedButton } from "components/button";
 import { LoginHeader } from "components/header";
 import { BottomNavBar } from "components/navbar";
 import styled from "styled-components";
@@ -13,6 +14,7 @@ const FullContainer = styled.div`
 `;
 
 const ContentContainer = styled.div`
+  width: 100%;
   padding: 49.5px 20px 0 20px;
 `;
 
@@ -27,6 +29,14 @@ const SubText = styled.h2`
   margin-bottom: 32px;
 `;
 
+const ContainedButtonWrapper = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: 100px;
+  transform: translate(-50%, -50%);
+  width: 90%;
+`;
+
 const SendTokenPage = () => {
   return (
     <>
@@ -39,6 +49,18 @@ const SendTokenPage = () => {
           </SubText>
           <AccountListComponent />
         </ContentContainer>
+        <ContainedButtonWrapper>
+          <ContainedButton
+            type="primary"
+            styles="filled"
+            states="default"
+            size="large"
+            label="송금 시작하기"
+            onClick={() => {
+              window.location.href = "/sendTokenSteps";
+            }}
+          />
+        </ContainedButtonWrapper>
       </FullContainer>
       <BottomNavBar />
     </>
