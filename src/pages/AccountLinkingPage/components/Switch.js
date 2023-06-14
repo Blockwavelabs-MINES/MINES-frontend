@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
 
@@ -31,7 +30,7 @@ const Slider = styled.span`
   right: 0;
   bottom: 0;
   background-color: ${palette.grey_5};
-  transition: 0.4s;
+  transition: 0.2s;
 
   &:before {
     content: "";
@@ -53,29 +52,14 @@ const RoundSlider = styled(Slider)`
   }
 `;
 
-const Switch = () => {
-  const [isTwitterOn, setIsTwitterOn] = useState(false);
-  const handleToggle = () => {
-    setIsTwitterOn(!isTwitterOn);
-    console.log("twitter");
-    //1. 서버에 step1 요청
-
-    //2. step1응답 바탕으로 Url 생성
-    //     window.location.href = "";
-    //   };
-    // 응답 전달.
-  };
-
-  //3. step3 응답받으면
+const Switch = ({ checked, handler }) => {
   return (
-    <SwitchContainer>
-      <HiddenInput
-        type="checkbox"
-        checked={isTwitterOn}
-        onChange={handleToggle}
-      />
-      <RoundSlider className={isTwitterOn ? "slider checked" : "slider"} />
-    </SwitchContainer>
+    <>
+      <SwitchContainer>
+        <HiddenInput type="checkbox" checked={checked} onChange={handler} />
+        <RoundSlider className={checked ? "slider checked" : "slider"} />
+      </SwitchContainer>
+    </>
   );
 };
 

@@ -3,7 +3,7 @@ import imageCompression from "browser-image-compression";
 import { IconButton } from "components/button";
 import { EditProfileHeader } from "components/header";
 import { InputBox, TextAreaBox } from "components/input";
-import { DeleteModal, UnvalidFormatModal } from "components/modal";
+import { DeleteModal, UnvalidModal } from "components/modal";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -275,11 +275,13 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
             maxSize={100}
           />
         </InnerContainer>
-        <UnvalidFormatModal
+        <UnvalidModal
           visible={showFormatModal}
           onClickEvent={() => {
             setShowFormatModal(false);
           }}
+          mainText={t("unvalidFormatModal1")}
+          subText={t("unvalidFormatModal2")}
         />
       </FullContainer>
     </>
