@@ -249,7 +249,7 @@ const SendTokenStepsPage = () => {
 
   const leftOnClick = () => {
     if (stepStatus == 1) {
-      window.location.href = "/";
+      setCancelModalOpen(true);
     } else {
       setStepStatus(stepStatus - 1);
     }
@@ -284,7 +284,7 @@ const SendTokenStepsPage = () => {
   };
 
   const setRealDelete = () => {
-    window.location.href = "/";
+    window.location.href = "/sendToken";
   };
 
   return (

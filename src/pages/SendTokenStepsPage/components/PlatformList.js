@@ -1,9 +1,9 @@
-import { GoogleIcon } from "assets/icons";
+import { TwitterIcon } from "assets/icons";
 
 const PlatformList = [
   {
-    emailName: "Google",
-    emailIcon: GoogleIcon,
+    emailName: "Twitter",
+    emailIcon: TwitterIcon,
   },
 ];
 
