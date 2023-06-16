@@ -40,7 +40,7 @@ const AccountLinkingPage = () => {
       <FullContainer>
         <LoginHeader />
         <ContentContainer>
-          <HeaderText>소셜 계정 연동</HeaderText>
+          <HeaderText>{t("accountLinkingPage1")}</HeaderText>
           <AccountList />
         </ContentContainer>
       </FullContainer>

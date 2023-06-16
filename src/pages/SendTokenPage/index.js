@@ -57,10 +57,8 @@ const SendTokenPage = () => {
       <FullContainer>
         <LoginHeader />
         <ContentContainer>
-          <HeaderText>소셜 계정 선택하기</HeaderText>
-          <SubText>
-            3TREE에서는 선택한 계정 아이디로 사람들에게 돈을 보낼 수 있어요!
-          </SubText>
+          <HeaderText>{t("sendPage00_1")}</HeaderText>
+          <SubText>{t("sendPage00_2")}</SubText>
           <AccountListComponent />
         </ContentContainer>
         <ContainedButtonWrapper>
@@ -69,7 +67,7 @@ const SendTokenPage = () => {
             styles="filled"
             states="default"
             size="large"
-            label="송금 시작하기"
+            label={t("sendPage00_3")}
             onClick={() => {
               window.location.href = "/sendTokenSteps";
             }}

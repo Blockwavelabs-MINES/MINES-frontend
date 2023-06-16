@@ -132,6 +132,15 @@
   "profilePage4": "존재하지 않는 사용자입니다.",
   "profilePage5": "지갑 주소를 복사했어요!",
 
+  "sendPage00_1": "소셜 계정 선택하기",
+  "sendPage00_2": "3TREE에서는 선택한 계정 아이디로 사람들에게 송금할 수 있어요!",
+  "sendPage00_3": "계정연동",
+  "sendPage00_4": "트위터",
+  "sendPage00_5": "텔레그램",
+  "sendPage00_6": "디스코드",
+  "sendPage00_7": "지원 예정입니다",
+  "sendPage00_8": "송금 시작하기",
+
   "sendPage01Header1": "송금하기",
   "sendPage01Header2": "닫기",
   "sendPage01_1": "토큰을 보낼 소셜 계정을",
@@ -272,5 +281,15 @@
   "sessionError": "세션이 만료되었습니다. 다시 로그인해주세요.",
 
   "unvalidFormatModal1": "지원하지 않는 형식이에요.",
-  "unvalidFormatModal2": "JPG, PNG, GIF 형식의 파일을 업로드 해주세요."
+  "unvalidFormatModal2": "JPG, PNG, GIF 형식의 파일을 업로드 해주세요.",
+
+  "bottomNavBar1": "홈",
+  "bottomNavBar2": "송금",
+  "bottomNavBar3": "소셜 계정 연동",
+
+  "accountLinkingPage1": "소셜 계정 연동",
+  "accountLinkingPage2": "트위터",
+  "accountLinkingPage3": "텔레그램",
+  "accountLinkingPage4": "디스코드",
+  "accountLinkingPage5": "지원 예정입니다"
 }

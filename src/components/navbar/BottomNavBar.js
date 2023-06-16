@@ -7,6 +7,7 @@ import {
   NavBarSendActive,
 } from "assets/icons";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
@@ -14,6 +15,7 @@ import Typography from "utils/style/Typography/index";
 function BottomNavBar() {
   const [currentPath, setCurrentPath] = useState("");
   const [hoveredTab, setHoveredTab] = useState("");
+  const { t } = useTranslation();
 
   useEffect(() => {
     switch (window.location.pathname) {
@@ -45,7 +47,7 @@ function BottomNavBar() {
           (hoveredTab === "home" || hoveredTab === "") ? (
             <>
               <img src={NavBarHomeActive} />
-              <div>홈</div>
+              <div>{t("bottomNavBar1")}</div>
             </>
           ) : (
             <img src={NavBarHome} />
@@ -66,7 +68,7 @@ function BottomNavBar() {
           (hoveredTab === "send" || hoveredTab === "") ? (
             <>
               <img src={NavBarSendActive} />
-              <div>송금</div>
+              <div>{t("bottomNavBar2")}</div>
             </>
           ) : (
             <img src={NavBarSend} />
@@ -87,7 +89,10 @@ function BottomNavBar() {
           (hoveredTab === "link" || hoveredTab === "") ? (
             <>
               <img src={NavBarLinkActive} />
-              <div>소셜 계정 연동</div>
+              <div>
+                {" "}
+                <div>{t("bottomNavBar3")}</div>
+              </div>
             </>
           ) : (
             <img src={NavBarLink} />

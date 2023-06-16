@@ -1,5 +1,6 @@
 import { DiscordIcon, TelegramIcon, TwitterIcon } from "assets/icons";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
@@ -35,10 +36,11 @@ const AccountStatus = styled.div`
 
 const AccountList = () => {
   const [isTwitterOn, setIsTwitterOn] = useState(false);
+  const { t } = useTranslation();
+  //기본 값은 유저 정보에서 불러오기.
 
   const handleTwitterToggle = () => {
     setIsTwitterOn(!isTwitterOn);
-    console.log("twitter");
     //1. 서버에 step1 요청
 
     //2. step1응답 바탕으로 Url 생성
@@ -52,19 +54,19 @@ const AccountList = () => {
   const accountList = [
     {
       icon: TwitterIcon,
-      text: "트위터",
+      text: t("accountLinkingPage2"),
       supported: true,
       checked: isTwitterOn,
       handler: handleTwitterToggle,
     },
     {
       icon: TelegramIcon,
-      text: "텔레그램",
+      text: t("accountLinkingPage3"),
       supported: false,
     },
     {
       icon: DiscordIcon,
-      text: "디스코드",
+      text: t("accountLinkingPage4"),
       supported: false,
     },
   ];
@@ -79,9 +81,9 @@ const AccountList = () => {
               <AccountName>{account.text}</AccountName>
             </AccountInfo>
             {account.supported ? (
-              <Switch checked={account.on} handler={account.handler} />
+              <Switch checked={account.checked} handler={account.handler} />
             ) : (
-              <AccountStatus>지원 예정입니다</AccountStatus>
+              <AccountStatus>{t("accountLinkingPage5")}</AccountStatus>
             )}
           </AccountListContainer>
         );

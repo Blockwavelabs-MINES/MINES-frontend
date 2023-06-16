@@ -1,4 +1,5 @@
 import { DiscordIcon, TelegramIcon, TwitterIcon } from "assets/icons";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
@@ -61,21 +62,22 @@ const RadioButton = styled.input`
 `;
 
 const AccountListComponent = () => {
+  const { t } = useTranslation();
   const accountList = [
     {
       icon: TwitterIcon,
-      text: "트위터",
+      text: t("sendPage00_4"),
       supported: true,
       connected: false,
     },
     {
       icon: TelegramIcon,
-      text: "텔레그램",
+      text: t("sendPage00_5"),
       supported: false,
     },
     {
       icon: DiscordIcon,
-      text: "디스코드",
+      text: t("sendPage00_6"),
       supported: false,
     },
   ];
@@ -101,11 +103,11 @@ const AccountListComponent = () => {
                     window.location.href = "/accountLinking";
                   }}
                 >
-                  계정 연동
+                  {t("sendPage00_3")}
                 </LinkAccount>
               )
             ) : (
-              <AccountStatus>지원 예정입니다</AccountStatus>
+              <AccountStatus>{t("sendPage00_7")}</AccountStatus>
             )}
           </AccountListContainer>
         );
