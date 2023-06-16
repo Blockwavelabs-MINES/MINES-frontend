@@ -1,6 +1,11 @@
 import { LoginHeader } from "components/header";
+import { SingleModal } from "components/modal";
 import { BottomNavBar } from "components/navbar";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { loginModalVisibleState, loginState } from "utils/atoms/login";
 import Typography from "utils/style/Typography/index";
 import { AccountList } from "./components";
 
@@ -21,6 +26,15 @@ const HeaderText = styled.div`
 `;
 
 const AccountLinkingPage = () => {
+  const [loginAlertModalVisible, setLoginAlertModalVisible] = useState(false);
+  const setLoginModalVisible = useSetRecoilState(loginModalVisibleState);
+  const isLoggedIn = useRecoilValue(loginState);
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    !isLoggedIn && setLoginAlertModalVisible(true);
+  }, []);
+
   return (
     <>
       <FullContainer>
@@ -31,6 +45,17 @@ const AccountLinkingPage = () => {
         </ContentContainer>
       </FullContainer>
       <BottomNavBar />
+      {loginAlertModalVisible && (
+        <SingleModal
+          visible={setLoginAlertModalVisible}
+          closable={true}
+          maskClosable={true}
+          onClose={() => setLoginAlertModalVisible(false)}
+          text={<>{t("introPageAlert1")}</>}
+          setStatus={() => setLoginModalVisible(true)}
+          buttonText={t("introPageAlert2")}
+        />
+      )}
     </>
   );
 };

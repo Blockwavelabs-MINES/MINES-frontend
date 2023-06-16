@@ -5,17 +5,13 @@ import { BottomNavBar } from "components/navbar";
 import CreateLinkPage from "pages/CreateLinkPage";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import {
-  loginModalVisibleState,
-  loginState,
-  signupState,
-} from "utils/atoms/login";
+import { loginModalVisibleState, signupState } from "utils/atoms/login";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 
@@ -60,27 +56,8 @@ const BannerBottom = styled.div`
 const IntroPage = () => {
   const [loginAlertModalVisible, setLoginAlertModalVisible] = useState(false);
   const [isSignup, setIsSignup] = useRecoilState(signupState);
-  const isLoggedIn = useRecoilValue(loginState);
   const setLoginModalVisible = useSetRecoilState(loginModalVisibleState);
   const { t } = useTranslation();
-
-  const closeLoginAlertModal = () => {
-    setLoginAlertModalVisible(false);
-  };
-
-  const profileSettingOnClick = () => {
-    if (isLoggedIn) {
-      window.location.href = "/editProfile";
-    } else {
-      setLoginAlertModalVisible(true);
-    }
-  };
-
-  const sendOnClick = () => {
-    isLoggedIn
-      ? (window.location.href = "/sendToken")
-      : setLoginAlertModalVisible(true);
-  };
 
   return (
     <>
@@ -92,7 +69,7 @@ const IntroPage = () => {
               visible={setLoginAlertModalVisible}
               closable={true}
               maskClosable={true}
-              onClose={closeLoginAlertModal}
+              onClose={() => setLoginAlertModalVisible(false)}
               text={<>{t("introPageAlert1")}</>}
               setStatus={() => setLoginModalVisible(true)}
               buttonText={t("introPageAlert2")}
