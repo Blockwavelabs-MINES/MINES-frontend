@@ -40,15 +40,14 @@ const AccountList = () => {
   //기본 값은 유저 정보에서 불러오기.
 
   const handleTwitterToggle = () => {
-    setIsTwitterOn(!isTwitterOn);
+    window.location.href = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${process.env.REACT_APP_TWITTER_CLIENT_ID}&redirect_uri=http://localhost:3000/accountLinking&scope=tweet.read%20tweet.write%20users.read%20follows.read%20offline.access&state=state&code_challenge=challenge&code_challenge_method=plain`;
+    // setIsTwitterOn(!isTwitterOn);
     //1. 서버에 step1 요청
-
     //2. step1응답 바탕으로 Url 생성
     //     window.location.href = "";
     //   };
     // 응답 전달.
   };
-
   //3. step3 응답받으면
 
   const accountList = [

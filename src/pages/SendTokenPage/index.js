@@ -67,7 +67,7 @@ const SendTokenPage = () => {
             styles="filled"
             states="default"
             size="large"
-            label={t("sendPage00_3")}
+            label={t("sendPage00_8")}
             onClick={() => {
               window.location.href = "/sendTokenSteps";
             }}
