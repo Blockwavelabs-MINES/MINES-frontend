@@ -30,15 +30,22 @@ const ModalItems = styled.div`
 `;
 
 const ModalInfoText = styled.div`
-  color: ${palette.sky_3};
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  ${Typography.Headline3};
 
   & > p {
     margin: 0;
-    ${Typography.Headline3};
+    color: ${palette.sky_3};
+  }
+
+  & > p:last-of-type {
+    color: ${palette.blue_1};
   }
 `;
 
-const NoticeModal = ({ visible, onClickEvent, text }) => {
+const NoticeModal = ({ visible, onClickEvent, text, linkText }) => {
   return (
     <>
       {visible && (
@@ -46,6 +53,7 @@ const NoticeModal = ({ visible, onClickEvent, text }) => {
           <ModalItems>
             <ModalInfoText>
               <p>{text}</p>
+              <p>{linkText}</p>
             </ModalInfoText>
           </ModalItems>
         </ModalWrapper>
