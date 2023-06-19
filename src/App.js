@@ -10,6 +10,7 @@ import {
   SendTokenPage,
   SendTokenStepsPage,
   SettingPage,
+  TwitterCallbackPage,
 } from "pages";
 import { PrivacyPolicy, TermsOfService } from "pages/TermsAndConditionPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -61,6 +62,10 @@ function App() {
                 <Route
                   path="/accountLinking"
                   element={<AccountLinkingPage />}
+                />
+                <Route
+                  path="/twitter/callback"
+                  element={<TwitterCallbackPage />}
                 />
                 <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
                 <Route path="/termsOfService" element={<TermsOfService />} />

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { privateHeadersMultipart, handleTokenExpired } from "./base";
+import { privateHeaders, handleTokenExpired } from "./base";
 
 //소셜 로그인 연동.
 export const connectTwitter = async (code) => {

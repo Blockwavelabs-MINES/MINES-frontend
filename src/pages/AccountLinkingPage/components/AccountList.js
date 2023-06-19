@@ -1,5 +1,5 @@
 import { DiscordIcon, TelegramIcon, TwitterIcon } from "assets/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
@@ -37,18 +37,18 @@ const AccountStatus = styled.div`
 const AccountList = () => {
   const [isTwitterOn, setIsTwitterOn] = useState(false);
   const { t } = useTranslation();
-  //기본 값은 유저 정보에서 불러오기.
+
+  useEffect(() => {
+    //isTwitterOn 기본 값은 유저 정보에서 불러오기.
+  }, []);
 
   const handleTwitterToggle = () => {
-    window.location.href = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${process.env.REACT_APP_TWITTER_CLIENT_ID}&redirect_uri=http://localhost:3000/accountLinking&scope=tweet.read%20tweet.write%20users.read%20follows.read%20offline.access&state=state&code_challenge=challenge&code_challenge_method=plain`;
-    // setIsTwitterOn(!isTwitterOn);
-    //1. 서버에 step1 요청
-    //2. step1응답 바탕으로 Url 생성
-    //     window.location.href = "";
-    //   };
-    // 응답 전달.
+    if (isTwitterOn) {
+      //해제하시겠어요? 모달 띄우기.
+    } else {
+      window.location.href = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${process.env.REACT_APP_TWITTER_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_TWITTER_REDIRECT_URI}&scope=tweet.read%20tweet.write%20users.read%20follows.read%20offline.access&state=state&code_challenge=challenge&code_challenge_method=plain`;
+    }
   };
-  //3. step3 응답받으면
 
   const accountList = [
     {
