@@ -1,8 +1,11 @@
 import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { connectTwitter } from "utils/api/twitter";
-import { twitterJustConnectedState } from "utils/atoms/twitter";
+import {
+  receiveLinkState,
+  twitterJustConnectedState,
+} from "utils/atoms/twitter";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -12,17 +15,34 @@ const FullContainer = styled.div`
 `;
 
 const TwitterCallbackPage = () => {
+  const [receiveLink, setReceiveLink] = useRecoilState(receiveLinkState);
   const setTwitterJustConnected = useSetRecoilState(twitterJustConnectedState);
-  useEffect(async () => {
+
+  const requestConnectTwitter = async () => {
     const currentUrl = window.location.href;
     const twitterCode = currentUrl?.split("&code=")[1]?.split("&")[0];
+
+    console.log(twitterCode);
     await connectTwitter(twitterCode)
-      .then(() => {
-        setTwitterJustConnected(true);
+      .then((data) => {
+        if (receiveLink) {
+          console.log(data);
+          console.log(receiveLink);
+          window.location.href = `/receiveToken/${receiveLink}`;
+        } else {
+          setTwitterJustConnected(true);
+          window.location.href = "/accountLinking";
+        }
       })
-      .finally(() => {
+
+      .catch((e) => {
+        console.log(e);
         window.location.href = "/accountLinking";
       });
+  };
+
+  useEffect(() => {
+    requestConnectTwitter();
   }, []);
 
   return <FullContainer />;

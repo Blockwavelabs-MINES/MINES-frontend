@@ -9,3 +9,10 @@ export const twitterJustConnectedState = atom({
   default: false,
   effects_UNSTABLE: [persistAtom],
 });
+
+//수령 링크 접속 후 연동 페이지 접속했을 때 리다이렉트하기 위한 상태 관리.
+export const receiveLinkState = atom({
+  key: "receiveLinkState",
+  default: null,
+  effects_UNSTABLE: [persistAtom],
+});

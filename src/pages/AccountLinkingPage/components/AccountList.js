@@ -2,9 +2,10 @@ import { DiscordIcon, TelegramIcon, TwitterIcon } from "assets/icons";
 import { ConfirmModal, NoticeModal } from "components/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { disconnectTwitter, getSocialConnectList } from "utils/api/twitter";
+import { loginState } from "utils/atoms/login";
 import { twitterJustConnectedState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
@@ -47,16 +48,23 @@ const AccountList = () => {
     twitterJustConnectedState
   );
   const { t } = useTranslation();
+  const isLoggedIn = useRecoilValue(loginState);
 
   const getSocialList = async () => {
-    await getSocialConnectList().then((data) => {
-      console.log(data);
-      setSocialList(data);
-    });
+    await getSocialConnectList()
+      .then((data) => {
+        console.log(data);
+        setSocialList(data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   useEffect(() => {
-    getSocialList();
+    if (isLoggedIn) {
+      getSocialList();
+    }
     if (twitterJustConnected) {
       setTwitterJustConnected(false);
       setIsNoticeModalOpen(true);
@@ -64,7 +72,7 @@ const AccountList = () => {
         setIsNoticeModalOpen(false);
       }, 4000);
     }
-  }, []);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (socialList?.data[0]) {

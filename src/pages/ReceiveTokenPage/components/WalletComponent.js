@@ -297,11 +297,12 @@ const WalletComponent = ({
                                   tmpReceiveInfo.receiverWalletAddress =
                                     walletList[select].walletAddress;
                                   tmpReceiveInfo.transactionHash = res;
-                                  toggleIsValid(linkInfo.id, false);
+                                  toggleIsValid(linkInfo.id, false, "TWITTER");
                                   await receiveTrxs(
                                     walletList[select].walletAddress,
                                     "METAMASK",
                                     0.000001,
+                                    "TWITTER",
                                     linkInfo.id
                                   ).then((data) => {
                                     setReceiveInfo(data);
@@ -401,11 +402,12 @@ const WalletComponent = ({
                                 tmpReceiveInfo.receiverWalletAddress =
                                   walletList[select].walletAddress;
                                 tmpReceiveInfo.transactionHash = res;
-                                toggleIsValid(linkInfo.id, false);
+                                toggleIsValid(linkInfo.id, false, "TWITTER");
                                 await receiveTrxs(
                                   walletList[select].walletAddress,
                                   "METAMASK",
                                   0.000001,
+                                  "TWITTER",
                                   linkInfo.id
                                 ).then((data) => {
                                   setReceiveInfo(data);

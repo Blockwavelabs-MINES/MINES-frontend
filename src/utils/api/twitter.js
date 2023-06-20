@@ -1,5 +1,5 @@
 import axios from "axios";
-import { handleTokenExpired, privateHeaders } from "./base";
+import { privateHeaders } from "./base";
 
 export const getSocialConnectList = async () => {
   let returnValue;
@@ -10,9 +10,7 @@ export const getSocialConnectList = async () => {
     .then((data) => {
       returnValue = data.data;
     })
-    .catch((error) => {
-      handleTokenExpired(error);
-    });
+    .catch((error) => {});
   return returnValue;
 };
 
@@ -53,9 +51,7 @@ export const disconnectTwitter = async (code) => {
     .then((data) => {
       returnValue = data;
     })
-    .catch((error) => {
-      handleTokenExpired(error);
-    });
+    .catch(() => {});
 
   return returnValue;
 };
@@ -74,9 +70,7 @@ export const refreshTwitterToken = async () => {
     .then((data) => {
       returnValue = data.data;
     })
-    .catch((error) => {
-      handleTokenExpired(error);
-    });
+    .catch(() => {});
 
   return returnValue;
 };
@@ -89,9 +83,7 @@ export const postTweet = async (linkKey) => {
     .then((data) => {
       returnValue = data.data;
     })
-    .catch((error) => {
-      handleTokenExpired(error);
-    });
+    .catch(() => {});
 
   return returnValue;
 };

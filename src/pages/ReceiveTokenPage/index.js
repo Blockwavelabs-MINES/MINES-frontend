@@ -6,7 +6,7 @@ import { LoginHeader } from "components/header";
 import { DeleteModal } from "components/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { getUserInfo, getUserInfoAndProfileDeco } from "utils/api/auth";
 import { getTrxsLinkInfo } from "utils/api/trxs";
@@ -16,6 +16,7 @@ import {
   loginModalVisibleState,
   loginState,
 } from "utils/atoms/login";
+import { receiveLinkState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 import { SelectWallet } from "./components";
@@ -236,6 +237,8 @@ const ReceiveTokenPage = () => {
   const [socialList, setSocialList] = useState(null);
   const isLoggedIn = useRecoilValue(loginState);
   const loginDone = useRecoilValue(loginDoneState);
+  const setReceiveLink = useSetRecoilState(receiveLinkState);
+
   const [loginModalVisible, setLoginModalVisible] = useRecoilState(
     loginModalVisibleState
   );
@@ -258,9 +261,11 @@ const ReceiveTokenPage = () => {
     });
   };
 
+  const pathname = window.location.pathname.split("/");
+  const trxsLink = pathname[pathname.length - 1];
+
   useEffect(() => {
-    const pathname = window.location.pathname.split("/");
-    const trxsLink = pathname[pathname.length - 1];
+    getSocialList();
     getTrxsLinkInfo(trxsLink).then(async (data) => {
       let convertedData = data;
       setSenderUser(data.senderUserId);
@@ -274,8 +279,7 @@ const ReceiveTokenPage = () => {
       }
 
       if (socialList) {
-        if (!socialList.data.length) {
-          console.log("hi");
+        if (socialList.data.length === 0) {
           window.location.href = "/accountLinking";
         } else {
           socialList.data[0]?.socialId !== convertedData.receiverSocialId
@@ -291,7 +295,7 @@ const ReceiveTokenPage = () => {
 
   useEffect(() => {
     document.body.style.overflow = "auto";
-    getSocialList();
+    setReceiveLink(trxsLink);
   }, []);
 
   useEffect(() => {
