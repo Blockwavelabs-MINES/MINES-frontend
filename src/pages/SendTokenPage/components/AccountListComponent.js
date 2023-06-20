@@ -1,6 +1,8 @@
 import { DiscordIcon, TelegramIcon, TwitterIcon } from "assets/icons";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { getSocialConnectList } from "utils/api/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 
@@ -61,14 +63,18 @@ const RadioButton = styled.input`
   }
 `;
 
-const AccountListComponent = () => {
+const AccountListComponent = ({ twitterConnected, setTwitterConnected }) => {
+  const [socialList, setSocialList] = useState(null);
+
   const { t } = useTranslation();
   const accountList = [
     {
       icon: TwitterIcon,
-      text: t("sendPage00_4"),
+      text: socialList?.data[0]
+        ? "@" + socialList?.data[0]?.socialId
+        : t("sendPage00_4"),
       supported: true,
-      connected: false,
+      connected: twitterConnected,
     },
     {
       icon: TelegramIcon,
@@ -81,6 +87,23 @@ const AccountListComponent = () => {
       supported: false,
     },
   ];
+
+  const getSocialList = async () => {
+    await getSocialConnectList().then((data) => {
+      console.log(data);
+      setSocialList(data);
+    });
+  };
+
+  useEffect(() => {
+    getSocialList();
+  }, []);
+
+  useEffect(() => {
+    socialList?.data[0]
+      ? setTwitterConnected(true)
+      : setTwitterConnected(false);
+  }, [socialList]);
 
   return (
     <>

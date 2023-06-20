@@ -44,6 +44,7 @@ const ContainedButtonWrapper = styled.div`
 
 const SendTokenPage = () => {
   const [loginAlertModalVisible, setLoginAlertModalVisible] = useState(false);
+  const [twitterConnected, setTwitterConnected] = useState(false);
   const setLoginModalVisible = useSetRecoilState(loginModalVisibleState);
   const isLoggedIn = useRecoilValue(loginState);
   const { t } = useTranslation();
@@ -59,13 +60,16 @@ const SendTokenPage = () => {
         <ContentContainer>
           <HeaderText>{t("sendPage00_1")}</HeaderText>
           <SubText>{t("sendPage00_2")}</SubText>
-          <AccountListComponent />
+          <AccountListComponent
+            twitterConnected={twitterConnected}
+            setTwitterConnected={setTwitterConnected}
+          />
         </ContentContainer>
         <ContainedButtonWrapper>
           <ContainedButton
             type="primary"
             styles="filled"
-            states="default"
+            states={twitterConnected ? "defualt" : "disabled"}
             size="large"
             label={t("sendPage00_8")}
             onClick={() => {
