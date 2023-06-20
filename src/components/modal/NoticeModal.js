@@ -8,7 +8,6 @@ const ModalWrapper = styled.div`
   bottom: 0;
   width: calc(100% - 40px);
   max-width: 560px;
-  margin-left: 20px;
 `;
 
 const ModalItems = styled.div`

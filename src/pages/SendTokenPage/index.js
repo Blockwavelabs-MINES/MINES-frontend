@@ -73,7 +73,7 @@ const SendTokenPage = () => {
             size="large"
             label={t("sendPage00_8")}
             onClick={() => {
-              window.location.href = "/sendTokenSteps";
+              if (twitterConnected) window.location.href = "/sendTokenSteps";
             }}
           />
         </ContainedButtonWrapper>

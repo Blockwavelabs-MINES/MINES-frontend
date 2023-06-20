@@ -1,9 +1,11 @@
 import { DiscordIcon, TelegramIcon, TwitterIcon } from "assets/icons";
-import { ConfirmModal } from "components/modal";
+import { ConfirmModal, NoticeModal } from "components/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { disconnectTwitter, getSocialConnectList } from "utils/api/twitter";
+import { twitterJustConnectedState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 import Switch from "./Switch";
@@ -40,6 +42,9 @@ const AccountList = () => {
   const [socialList, setSocialList] = useState(null);
   const [isTwitterOn, setIsTwitterOn] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [twitterJustConnected, setTwitterJustConnected] = useRecoilState(
+    twitterJustConnectedState
+  );
   const { t } = useTranslation();
 
   const getSocialList = async () => {
@@ -51,6 +56,11 @@ const AccountList = () => {
 
   useEffect(() => {
     getSocialList();
+    if (twitterJustConnected) {
+      setTimeout(() => {
+        setTwitterJustConnected(false);
+      }, 4000);
+    }
   }, []);
 
   useEffect(() => {
@@ -101,22 +111,25 @@ const AccountList = () => {
             ) : (
               <AccountStatus>{t("accountLinkingPage5")}</AccountStatus>
             )}
-            {isModalOpen && (
-              <ConfirmModal
-                visible={isModalOpen}
-                closable={true}
-                maskClosable={true}
-                onClose={() => setIsModalOpen(false)}
-                text="연동을 정말 해제하시겠어요?"
-                buttonText="연결해제"
-                subActionOnClick={async () => {
-                  await disconnectTwitter().then((data) => {
-                    console.log(data);
-                    setIsTwitterOn(false);
-                  });
-                }}
-              />
-            )}
+            <ConfirmModal
+              visible={isModalOpen}
+              closable={true}
+              maskClosable={true}
+              onClose={() => setIsModalOpen(false)}
+              text="연동을 정말 해제하시겠어요?"
+              buttonText="연결해제"
+              subActionOnClick={async () => {
+                await disconnectTwitter().then((data) => {
+                  console.log(data);
+                  setIsTwitterOn(false);
+                });
+              }}
+            />
+
+            <NoticeModal
+              visible={twitterJustConnected}
+              text="연동되었습니다."
+            />
           </AccountListContainer>
         );
       })}
