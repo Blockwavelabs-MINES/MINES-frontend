@@ -13,7 +13,7 @@ const TwitterCallbackPage = () => {
   useEffect(async () => {
     const currentUrl = window.location.href;
     const twitterCode = currentUrl?.split("&code=")[1]?.split("&")[0];
-    await connectTwitter(twitterCode).then(() => {
+    await connectTwitter(twitterCode).finally(() => {
       window.location.href = "/accountLinking";
     });
   }, []);

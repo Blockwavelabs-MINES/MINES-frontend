@@ -1,7 +1,9 @@
 import { DiscordIcon, TelegramIcon, TwitterIcon } from "assets/icons";
+import { ConfirmModal } from "components/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { disconnectTwitter, getSocialConnectList } from "utils/api/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 import Switch from "./Switch";
@@ -35,16 +37,31 @@ const AccountStatus = styled.div`
 `;
 
 const AccountList = () => {
+  const [socialList, setSocialList] = useState(null);
   const [isTwitterOn, setIsTwitterOn] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { t } = useTranslation();
 
+  const getSocialList = async () => {
+    await getSocialConnectList().then((data) => {
+      console.log(data);
+      setSocialList(data);
+    });
+  };
+
   useEffect(() => {
-    //isTwitterOn 기본 값은 유저 정보에서 불러오기.
+    getSocialList();
   }, []);
+
+  useEffect(() => {
+    if (socialList?.data[0]) {
+      setIsTwitterOn(true);
+    }
+  }, [socialList]);
 
   const handleTwitterToggle = () => {
     if (isTwitterOn) {
-      //해제하시겠어요? 모달 띄우기.
+      setIsModalOpen(true);
     } else {
       window.location.href = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${process.env.REACT_APP_TWITTER_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_TWITTER_REDIRECT_URI}&scope=tweet.read%20tweet.write%20users.read%20follows.read%20offline.access&state=state&code_challenge=challenge&code_challenge_method=plain`;
     }
@@ -83,6 +100,22 @@ const AccountList = () => {
               <Switch checked={account.checked} handler={account.handler} />
             ) : (
               <AccountStatus>{t("accountLinkingPage5")}</AccountStatus>
+            )}
+            {isModalOpen && (
+              <ConfirmModal
+                visible={isModalOpen}
+                closable={true}
+                maskClosable={true}
+                onClose={() => setIsModalOpen(false)}
+                text="연동을 정말 해제하시겠어요?"
+                buttonText="연결해제"
+                subActionOnClick={async () => {
+                  await disconnectTwitter().then((data) => {
+                    console.log(data);
+                    setIsTwitterOn(false);
+                  });
+                }}
+              />
             )}
           </AccountListContainer>
         );

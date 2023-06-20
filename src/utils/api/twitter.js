@@ -1,5 +1,20 @@
 import axios from "axios";
-import { privateHeaders, handleTokenExpired } from "./base";
+import { handleTokenExpired, privateHeaders } from "./base";
+
+export const getSocialConnectList = async () => {
+  let returnValue;
+  await axios
+    .get(`/profile/social`, {
+      headers: privateHeaders,
+    })
+    .then((data) => {
+      returnValue = data.data;
+    })
+    .catch((error) => {
+      handleTokenExpired(error);
+    });
+  return returnValue;
+};
 
 //소셜 로그인 연동.
 export const connectTwitter = async (code) => {
@@ -17,9 +32,6 @@ export const connectTwitter = async (code) => {
     )
     .then((data) => {
       returnValue = data.data;
-    })
-    .catch((error) => {
-      handleTokenExpired(error);
     });
 
   return returnValue;
@@ -39,7 +51,7 @@ export const disconnectTwitter = async (code) => {
       }
     )
     .then((data) => {
-      returnValue = data.code;
+      returnValue = data;
     })
     .catch((error) => {
       handleTokenExpired(error);
