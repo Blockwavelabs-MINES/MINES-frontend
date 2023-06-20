@@ -5,7 +5,9 @@ export const getSocialConnectList = async () => {
   let returnValue;
   await axios
     .get(`/profile/social`, {
-      headers: privateHeaders,
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
+      },
     })
     .then((data) => {
       returnValue = data.data;

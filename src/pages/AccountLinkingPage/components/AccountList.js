@@ -64,13 +64,14 @@ const AccountList = () => {
   useEffect(() => {
     if (isLoggedIn) {
       getSocialList();
-    }
-    if (twitterJustConnected) {
-      setTwitterJustConnected(false);
-      setIsNoticeModalOpen(true);
-      setTimeout(() => {
-        setIsNoticeModalOpen(false);
-      }, 4000);
+
+      if (twitterJustConnected) {
+        setTwitterJustConnected(false);
+        setIsNoticeModalOpen(true);
+        setTimeout(() => {
+          setIsNoticeModalOpen(false);
+        }, 4000);
+      }
     }
   }, [isLoggedIn]);
 
@@ -112,7 +113,7 @@ const AccountList = () => {
     <>
       {accountList.map((account) => {
         return (
-          <AccountListContainer>
+          <AccountListContainer key={account.icon}>
             <AccountInfo>
               <AccountIcon src={account.icon} alt={account.text} />
               <AccountName>{account.text}</AccountName>
