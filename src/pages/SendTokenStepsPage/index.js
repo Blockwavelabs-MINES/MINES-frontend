@@ -130,7 +130,7 @@ function isMobileDevice() {
 const SendTokenStepsPage = () => {
   const [userInfo, setUserInfo] = useState();
   const [stepStatus, setStepStatus] = useState(1);
-  const [platform, setPlatform] = useState("google");
+  const [platform, setPlatform] = useState("TWITTER");
   const [email, setEmail] = useState("");
   const [emailState, setEmailState] = useState("unvalid");
   const [platformIcon, setPlatformIcon] = useState("");

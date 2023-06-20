@@ -42,6 +42,7 @@ const AccountList = () => {
   const [socialList, setSocialList] = useState(null);
   const [isTwitterOn, setIsTwitterOn] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
   const [twitterJustConnected, setTwitterJustConnected] = useRecoilState(
     twitterJustConnectedState
   );
@@ -57,8 +58,10 @@ const AccountList = () => {
   useEffect(() => {
     getSocialList();
     if (twitterJustConnected) {
+      setTwitterJustConnected(false);
+      setIsNoticeModalOpen(true);
       setTimeout(() => {
-        setTwitterJustConnected(false);
+        setIsNoticeModalOpen(false);
       }, 4000);
     }
   }, []);
@@ -125,11 +128,7 @@ const AccountList = () => {
                 });
               }}
             />
-
-            <NoticeModal
-              visible={twitterJustConnected}
-              text="연동되었습니다."
-            />
+            <NoticeModal visible={isNoticeModalOpen} text="연동되었습니다." />
           </AccountListContainer>
         );
       })}

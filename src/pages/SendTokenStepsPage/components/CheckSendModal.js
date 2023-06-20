@@ -173,7 +173,7 @@ const LoginModalInner = (
             await sendTrxs(
               address,
               "metamask",
-              "google",
+              "TWITTER",
               receiver,
               currency,
               amount,
@@ -286,7 +286,7 @@ const LoginModalInner = (
                   await sendTrxs(
                     address,
                     "metamask",
-                    "google",
+                    "TWITTER",
                     receiver,
                     currency,
                     amount,
@@ -392,7 +392,7 @@ const LoginModalInner = (
           <PersonInfoLine>
             <PersonCategory>{t("sendConfirmModal4")}</PersonCategory>
             <PersonInfo>
-              <PersonId>{receiver}</PersonId>
+              <PersonId>@{receiver}</PersonId>
               <PersonIcon src={platform} />
             </PersonInfo>
           </PersonInfoLine>

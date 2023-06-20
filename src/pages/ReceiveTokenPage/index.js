@@ -10,6 +10,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { getUserInfo, getUserInfoAndProfileDeco } from "utils/api/auth";
 import { getTrxsLinkInfo } from "utils/api/trxs";
+import { getSocialConnectList } from "utils/api/twitter";
 import {
   loginDoneState,
   loginModalVisibleState,
@@ -232,6 +233,7 @@ const ReceiveTokenPage = () => {
   const [iconHovering, setIconHovering] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [walletData, setWalletData] = useState(null);
+  const [socialList, setSocialList] = useState(null);
   const isLoggedIn = useRecoilValue(loginState);
   const loginDone = useRecoilValue(loginDoneState);
   const [loginModalVisible, setLoginModalVisible] = useRecoilState(
@@ -250,6 +252,12 @@ const ReceiveTokenPage = () => {
     </TooltipStyle>
   );
 
+  const getSocialList = async () => {
+    await getSocialConnectList().then((data) => {
+      setSocialList(data);
+    });
+  };
+
   useEffect(() => {
     const pathname = window.location.pathname.split("/");
     const trxsLink = pathname[pathname.length - 1];
@@ -262,17 +270,28 @@ const ReceiveTokenPage = () => {
             setUserInfo(data.user);
             setWalletData(data.wallets);
           });
-          data.socialId !== convertedData.receiverSocialId &&
-            setIsWrongUser(true);
         });
       }
+
+      if (socialList) {
+        if (!socialList.data.length) {
+          console.log("hi");
+          window.location.href = "/accountLinking";
+        } else {
+          socialList.data[0]?.socialId !== convertedData.receiverSocialId
+            ? setIsWrongUser(true)
+            : setIsWrongUser(false);
+        }
+      }
+
       convertedData.tokenAmount = convert(data.tokenAmount);
       setLinkInfo(convertedData);
     });
-  }, [isLoggedIn]);
+  }, [isLoggedIn, socialList]);
 
   useEffect(() => {
     document.body.style.overflow = "auto";
+    getSocialList();
   }, []);
 
   useEffect(() => {

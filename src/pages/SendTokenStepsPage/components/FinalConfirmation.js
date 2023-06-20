@@ -1,4 +1,4 @@
-import { GoogleIcon, MetamaskIcon } from "assets/icons";
+import { GoogleIcon, MetamaskIcon, TwitterIcon } from "assets/icons";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
@@ -254,8 +254,8 @@ const FinalConfirmation = ({
   const { t } = useTranslation();
 
   const platformIconList = {
-    google: GoogleIcon,
-    twitter: "https://upload.wikimedia.org/wikipedia/commons/4/4f/",
+    GOOGLE: GoogleIcon,
+    TWITTER: TwitterIcon,
   };
 
   const SendTransaction = async () => {
@@ -302,7 +302,7 @@ const FinalConfirmation = ({
             <PlatformIcon src={platformIconList[platform]} />
             <PlatformText>{platform}</PlatformText>
           </PlatformBox>
-          <EmailBox>{email}</EmailBox>
+          <EmailBox>@{email}</EmailBox>
         </ToContentBox>
       </InfoSingleContainer>
       <InfoSingleContainer>
