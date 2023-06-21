@@ -23,14 +23,15 @@ const TwitterCallbackPage = () => {
     const twitterCode = currentUrl?.split("&code=")[1]?.split("&")[0];
 
     console.log(twitterCode);
+    setTwitterJustConnected(true);
     await connectTwitter(twitterCode)
       .then((data) => {
         if (receiveLink) {
           console.log(data);
-          console.log(receiveLink);
-          window.location.href = `/receiveToken/${receiveLink}`;
+          const linkKey = receiveLink;
+          setReceiveLink("");
+          window.location.href = `/receiveToken/${linkKey}`;
         } else {
-          setTwitterJustConnected(true);
           window.location.href = "/accountLinking";
         }
       })

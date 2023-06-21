@@ -1,12 +1,15 @@
 import { DiscordIcon, TelegramIcon, TwitterIcon } from "assets/icons";
-import { ConfirmModal, NoticeModal } from "components/modal";
+import { ConfirmModal, NoticeModal, UnvalidModal } from "components/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { disconnectTwitter, getSocialConnectList } from "utils/api/twitter";
 import { loginState } from "utils/atoms/login";
-import { twitterJustConnectedState } from "utils/atoms/twitter";
+import {
+  receiveLinkState,
+  twitterJustConnectedState,
+} from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 import Switch from "./Switch";
@@ -43,10 +46,16 @@ const AccountList = () => {
   const [socialList, setSocialList] = useState(null);
   const [isTwitterOn, setIsTwitterOn] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
+  const [isDisconnectNoticeModalOpen, setIsDisconnectNoticeModalOpen] =
+    useState(false);
   const [twitterJustConnected, setTwitterJustConnected] = useRecoilState(
     twitterJustConnectedState
   );
+  const [isConnectNoticeModalOpen, setIsConnectNoticeModalOpen] =
+    useState(false);
+  const receiveLink = useRecoilValue(receiveLinkState);
   const { t } = useTranslation();
   const isLoggedIn = useRecoilValue(loginState);
 
@@ -62,14 +71,35 @@ const AccountList = () => {
   };
 
   useEffect(() => {
+    if (receiveLink) {
+      setIsConnectNoticeModalOpen(true);
+      setTimeout(() => {
+        setIsConnectNoticeModalOpen(false);
+      }, 4000);
+    }
+  }, []);
+
+  useEffect(() => {
     if (isLoggedIn) {
       getSocialList();
 
-      if (twitterJustConnected) {
+      if (twitterJustConnected && isTwitterOn) {
         setTwitterJustConnected(false);
         setIsNoticeModalOpen(true);
         setTimeout(() => {
           setIsNoticeModalOpen(false);
+        }, 4000);
+      }
+
+      console.log(twitterJustConnected);
+      console.log(isTwitterOn);
+
+      if (twitterJustConnected && !isTwitterOn) {
+        console.log("hey");
+        setTwitterJustConnected(false);
+        setIsErrorModalOpen(true);
+        setTimeout(() => {
+          setIsErrorModalOpen(false);
         }, 4000);
       }
     }
@@ -134,10 +164,27 @@ const AccountList = () => {
                 await disconnectTwitter().then((data) => {
                   console.log(data);
                   setIsTwitterOn(false);
+                  setIsDisconnectNoticeModalOpen(true);
+                  setTimeout(() => {
+                    setIsDisconnectNoticeModalOpen(false);
+                  }, 4000);
                 });
               }}
             />
             <NoticeModal visible={isNoticeModalOpen} text="연동되었습니다." />
+            <NoticeModal
+              visible={isConnectNoticeModalOpen}
+              text="3TREE에 트위터 계정을 연동해주세요"
+            />
+            <NoticeModal
+              visible={isDisconnectNoticeModalOpen}
+              text="연동 해제되었습니다."
+            />
+            <UnvalidModal
+              visible={isErrorModalOpen}
+              mainText="오류가 발생했어요"
+              subText="잠시 후 다시 시도해주세요."
+            />
           </AccountListContainer>
         );
       })}

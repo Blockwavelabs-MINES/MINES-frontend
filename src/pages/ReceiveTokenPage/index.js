@@ -255,17 +255,10 @@ const ReceiveTokenPage = () => {
     </TooltipStyle>
   );
 
-  const getSocialList = async () => {
-    await getSocialConnectList().then((data) => {
-      setSocialList(data);
-    });
-  };
-
   const pathname = window.location.pathname.split("/");
   const trxsLink = pathname[pathname.length - 1];
 
   useEffect(() => {
-    getSocialList();
     getTrxsLinkInfo(trxsLink).then(async (data) => {
       let convertedData = data;
       setSenderUser(data.senderUserId);
@@ -278,20 +271,25 @@ const ReceiveTokenPage = () => {
         });
       }
 
-      if (socialList) {
-        if (socialList.data.length === 0) {
-          window.location.href = "/accountLinking";
-        } else {
-          socialList.data[0]?.socialId !== convertedData.receiverSocialId
-            ? setIsWrongUser(true)
-            : setIsWrongUser(false);
-        }
+      if (isLoggedIn) {
+        getSocialConnectList().then((socialList) => {
+          setSocialList(socialList);
+          console.log(socialList?.data[0]?.socialId);
+          console.log(convertedData?.receiverSocialId);
+          if (socialList?.data.length === 0) {
+            window.location.href = "/accountLinking";
+          } else {
+            socialList?.data[0]?.socialId !== convertedData?.receiverSocialId
+              ? setIsWrongUser(true)
+              : setIsWrongUser(false);
+          }
+        });
       }
 
       convertedData.tokenAmount = convert(data.tokenAmount);
       setLinkInfo(convertedData);
     });
-  }, [isLoggedIn, socialList]);
+  }, [isLoggedIn, loginDone]);
 
   useEffect(() => {
     document.body.style.overflow = "auto";
@@ -413,6 +411,7 @@ const ReceiveTokenPage = () => {
                 <>
                   {linkInfo ? (
                     <>
+                      {/* 유효하지만 만료 됐음 */}
                       {linkInfo.isExpired && linkInfo.isValid ? (
                         <>
                           <ImageContainer src={CloudImage} />

@@ -1,8 +1,10 @@
 import { DiscordIcon, TelegramIcon, TwitterIcon } from "assets/icons";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { getSocialConnectList } from "utils/api/twitter";
+import { loginState } from "utils/atoms/login";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 
@@ -65,6 +67,7 @@ const RadioButton = styled.input`
 
 const AccountListComponent = ({ twitterConnected, setTwitterConnected }) => {
   const [socialList, setSocialList] = useState(null);
+  const isLoggedIn = useRecoilValue(loginState);
 
   const { t } = useTranslation();
   const accountList = [
@@ -96,8 +99,8 @@ const AccountListComponent = ({ twitterConnected, setTwitterConnected }) => {
   };
 
   useEffect(() => {
-    getSocialList();
-  }, []);
+    isLoggedIn && getSocialList(isLoggedIn);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     socialList?.data[0]

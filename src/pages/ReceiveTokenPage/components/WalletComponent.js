@@ -304,7 +304,7 @@ const WalletComponent = ({
                                     0.000001,
                                     "TWITTER",
                                     linkInfo.id
-                                  ).then((data) => {
+                                  ).then(async (data) => {
                                     setReceiveInfo(data);
                                     setLoading(false);
                                     setComplete(true);

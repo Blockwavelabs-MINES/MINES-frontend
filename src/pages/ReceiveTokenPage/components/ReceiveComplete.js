@@ -8,6 +8,7 @@ import Lottie from "react-lottie-player";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { getTrxsLinkInfo } from "utils/api/trxs";
+import { postTweet } from "utils/api/twitter";
 import { receiveTrxHashState } from "utils/atoms/trxs";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
@@ -127,6 +128,18 @@ const ReceiveComplete = ({ walletList, select }) => {
       window.open(`https://polygonscan.com/tx/${receiveTrxHash}`);
     }
   };
+
+  const pathname = window.location.pathname.split("/");
+  const linkKey = pathname[pathname.length - 1];
+  const requestPostTweet = async () => {
+    await postTweet(linkKey).then((data) => {
+      console.log(data);
+    });
+  };
+
+  useEffect(() => {
+    requestPostTweet();
+  }, []);
 
   useEffect(() => {
     const pathname = window.location.pathname.split("/");

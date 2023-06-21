@@ -59,7 +59,7 @@ export const disconnectTwitter = async (code) => {
 };
 
 //트위터 토큰 재발급.
-export const refreshTwitterToken = async () => {
+export const refreshTwitterToken = async (linkKey) => {
   let returnValue = 0;
   await axios
     .put(
@@ -70,9 +70,14 @@ export const refreshTwitterToken = async () => {
       }
     )
     .then((data) => {
+      console.log("트위터 토큰 재발급 성공");
       returnValue = data.data;
+      postTweet(linkKey);
     })
-    .catch(() => {});
+    .catch((e) => {
+      console.log("트위터 토큰 재발급 실패");
+      console.log(e);
+    });
 
   return returnValue;
 };
@@ -81,11 +86,19 @@ export const refreshTwitterToken = async () => {
 export const postTweet = async (linkKey) => {
   let returnValue;
   await axios
-    .get(`/trxs/post/tweet?link-key=${linkKey}`)
+    .get(`/trxs/post/tweet?link-key=${linkKey}`, {
+      headers: privateHeaders,
+    })
     .then((data) => {
       returnValue = data.data;
+      console.log("포스팅 성공");
     })
-    .catch(() => {});
+    .catch((e) => {
+      console.log(e);
+      // error.response.status이 xxx면
+      // refreshTwitterToken(linkKey);
+      console.log("포스팅 실패");
+    });
 
   return returnValue;
 };
