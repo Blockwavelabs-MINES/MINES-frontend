@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { getTrxsLinkInfo, receiveTrxs, toggleIsValid } from "utils/api/trxs";
+import { postTweet } from "utils/api/twitter";
 import { addWallet, deleteWallet } from "utils/api/wallets";
 import { receiveTrxHashState } from "utils/atoms/trxs";
 import { COLORS as palette } from "utils/style/Color/colors";
@@ -308,6 +309,7 @@ const WalletComponent = ({
                                     setReceiveInfo(data);
                                     setLoading(false);
                                     setComplete(true);
+                                    requestPostTweet();
                                   });
                                   setCheckStatus(!checkStatus);
                                 }
@@ -413,6 +415,7 @@ const WalletComponent = ({
                                   setReceiveInfo(data);
                                   setLoading(false);
                                   setComplete(true);
+                                  requestPostTweet();
                                 });
                                 setCheckStatus(!checkStatus);
                               }
@@ -437,6 +440,84 @@ const WalletComponent = ({
         alert(t("receiveTokenAlreadyReceived1"));
         window.location.href = "/";
       }
+    });
+  };
+
+  const convertDateFormatTwitter = (date) => {
+    const dateArr = date.substring(4, 33).split(" ");
+    let monthNamesEn = {
+      Jan: "January",
+      Feb: "February",
+      Mar: "March",
+      Apr: "April",
+      May: "May",
+      Jun: "June",
+      Jul: "July",
+      Aug: "August",
+      Sep: "September",
+      Oct: "October",
+      Nov: "November",
+      Dec: "December",
+    };
+
+    let monthNamesKo = {
+      Jan: "1",
+      Feb: "2",
+      Mar: "3",
+      Apr: "4",
+      May: "5",
+      Jun: "6",
+      Jul: "7",
+      Aug: "8",
+      Sep: "9",
+      Oct: "10",
+      Nov: "11",
+      Dec: "12",
+    };
+
+    if (localStorage.getItem("language") === "en") {
+      return (
+        dateArr[3].substring(0, 5) +
+        " on " +
+        monthNamesEn[date[0]] +
+        " " +
+        dateArr[1] +
+        ", " +
+        dateArr[2] +
+        " (" +
+        dateArr[4].substring(0, 6) +
+        ":" +
+        dateArr[4].substring(6, 8) +
+        ")" +
+        "\n"
+      );
+    } else {
+      return (
+        dateArr[2] +
+        "년 " +
+        monthNamesKo[dateArr[0]] +
+        "월 " +
+        dateArr[1] +
+        "일 " +
+        dateArr[3].substring(0, 5) +
+        " (" +
+        dateArr[4].substring(0, 6) +
+        ":" +
+        dateArr[4].substring(6, 8) +
+        ")" +
+        "\n"
+      );
+    }
+  };
+
+  const pathname = window.location.pathname.split("/");
+  const linkKey = pathname[pathname.length - 1];
+  const requestPostTweet = async () => {
+    const date = new Date().toString();
+    const dateInFormat = convertDateFormatTwitter(date);
+
+    await postTweet(linkKey, dateInFormat).then((data) => {
+      console.log(data);
     });
   };
 
