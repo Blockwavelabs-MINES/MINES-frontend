@@ -1,5 +1,5 @@
 import { DiscordIcon, TelegramIcon, TwitterIcon } from "assets/icons";
-import { ConfirmModal, NoticeModal, UnvalidModal } from "components/modal";
+import { ConfirmModal, NoticeModal } from "components/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -179,11 +179,6 @@ const AccountList = () => {
             <NoticeModal
               visible={isDisconnectNoticeModalOpen}
               text="연동 해제되었습니다."
-            />
-            <UnvalidModal
-              visible={isErrorModalOpen}
-              mainText="오류가 발생했어요"
-              subText="잠시 후 다시 시도해주세요."
             />
           </AccountListContainer>
         );

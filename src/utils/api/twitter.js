@@ -83,20 +83,25 @@ export const refreshTwitterToken = async (linkKey) => {
 };
 
 //트위터 포스팅.
-export const postTweet = async (linkKey) => {
+export const postTweet = async (linkKey, dateInFormat) => {
   let returnValue;
   await axios
-    .get(`/trxs/post/tweet?link-key=${linkKey}`, {
-      headers: privateHeaders,
-    })
+    .post(
+      `/trxs/post/tweet?link-key=${linkKey}`,
+      {
+        receivedTime: dateInFormat,
+      },
+      {
+        headers: privateHeaders,
+      }
+    )
     .then((data) => {
       returnValue = data.data;
       console.log("포스팅 성공");
     })
     .catch((e) => {
       console.log(e);
-      // error.response.status이 xxx면
-      // refreshTwitterToken(linkKey);
+      refreshTwitterToken(linkKey);
       console.log("포스팅 실패");
     });
 
