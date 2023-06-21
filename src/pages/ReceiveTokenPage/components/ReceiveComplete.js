@@ -166,7 +166,8 @@ const ReceiveComplete = ({ walletList, select }) => {
         dateArr[4].substring(0, 6) +
         ":" +
         dateArr[4].substring(6, 8) +
-        ")"
+        ")" +
+        "\n"
       );
     } else {
       return (
@@ -181,7 +182,8 @@ const ReceiveComplete = ({ walletList, select }) => {
         dateArr[4].substring(0, 6) +
         ":" +
         dateArr[4].substring(6, 8) +
-        ")"
+        ")" +
+        "\n"
       );
     }
   };
