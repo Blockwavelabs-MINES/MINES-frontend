@@ -291,5 +291,13 @@
   "accountLinkingPage2": "Twitter",
   "accountLinkingPage3": "Telegram",
   "accountLinkingPage4": "Discord",
-  "accountLinkingPage5": "Comming Soon"
+  "accountLinkingPage5": "Comming Soon",
+
+  "noticeModal1": "Link your Twitter account to 3TREE",
+  "noticeModal2": "Linked successfully",
+  "noticeModal3": "Unlinked successfully",
+  "noticeModal4": "Would you really like to unlink?",
+  "noticeModal5": "Disconnect",
+  "noticeModal6": "I shared it on Twitter!",
+  "noticeModal7": "Go to Twitter"
 }

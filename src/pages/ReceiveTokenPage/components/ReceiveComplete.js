@@ -2,17 +2,17 @@ import { ChevronRight, GreenCheck, MetamaskIcon } from "assets/icons";
 import { CompasImage } from "assets/images";
 import animation from "assets/lottie/check-lottie.json";
 import { EditableCard } from "components/card";
+import { NoticeModal } from "components/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Lottie from "react-lottie-player";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { getTrxsLinkInfo } from "utils/api/trxs";
 import { receiveTrxHashState } from "utils/atoms/trxs";
+import { twitterLinkState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
-import { twitterLinkState } from "utils/atoms/twitter";
-import { NoticeModal } from "components/modal";
 
 const ContentContainer = styled.div`
   padding-left: 20px;
@@ -189,8 +189,8 @@ const ReceiveComplete = ({ walletList, select }) => {
         </ComplainLink>
         <NoticeModal
           visible={isNoticeModalOpen}
-          text="트위터로 내역을 공유했어요!."
-          linkText="트위터로 이동"
+          text={t("noticeModal6")}
+          linkText={t("noticeModal7")}
           onClickEvent={() => {
             window.location.href = twitterLink;
           }}

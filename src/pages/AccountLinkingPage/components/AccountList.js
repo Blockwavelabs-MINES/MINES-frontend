@@ -158,8 +158,8 @@ const AccountList = () => {
               closable={true}
               maskClosable={true}
               onClose={() => setIsModalOpen(false)}
-              text="연동을 정말 해제하시겠어요?"
-              buttonText="연결해제"
+              text={t("noticeModal4")}
+              buttonText={t("noticeModal5")}
               subActionOnClick={async () => {
                 await disconnectTwitter().then((data) => {
                   console.log(data);
@@ -171,14 +171,14 @@ const AccountList = () => {
                 });
               }}
             />
-            <NoticeModal visible={isNoticeModalOpen} text="연동되었습니다." />
+            <NoticeModal visible={isNoticeModalOpen} text={t("noticeModal2")} />
             <NoticeModal
               visible={isConnectNoticeModalOpen}
-              text="3TREE에 트위터 계정을 연동해주세요"
+              text={t("noticeModal1")}
             />
             <NoticeModal
               visible={isDisconnectNoticeModalOpen}
-              text="연동 해제되었습니다."
+              text={t("noticeModal3")}
             />
           </AccountListContainer>
         );

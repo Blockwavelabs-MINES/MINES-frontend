@@ -291,5 +291,13 @@
   "accountLinkingPage2": "트위터",
   "accountLinkingPage3": "텔레그램",
   "accountLinkingPage4": "디스코드",
-  "accountLinkingPage5": "지원 예정입니다"
+  "accountLinkingPage5": "지원 예정입니다",
+
+  "noticeModal1": "3TREE에 트위터 계정을 연동해주세요",
+  "noticeModal2": "연동되었습니다.",
+  "noticeModal3": "연동 해제되었습니다.",
+  "noticeModal4": "연동을 정말 해제하시겠어요?",
+  "noticeModal5": "연결해제",
+  "noticeModal6": "트위터로 공유했어요!",
+  "noticeModal7": "트위터로 이동"
 }

@@ -1,1 +1,1 @@
-export { default as AccountListComponent } from "./AccountListComponent.js";
+export { default as AccountListComponent } from "./AccountListComponent";
