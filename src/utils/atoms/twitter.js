@@ -16,3 +16,9 @@ export const receiveLinkState = atom({
   default: null,
   effects_UNSTABLE: [persistAtom],
 });
+
+//게시된 트위터 링크.
+export const twitterLinkState = atom({
+  key: "twitterLInkState",
+  default: null,
+});

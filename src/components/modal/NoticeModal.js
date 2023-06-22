@@ -48,11 +48,11 @@ const NoticeModal = ({ visible, onClickEvent, text, linkText }) => {
   return (
     <>
       {visible && (
-        <ModalWrapper onClick={onClickEvent}>
+        <ModalWrapper>
           <ModalItems>
             <ModalInfoText>
               <p>{text}</p>
-              <p>{linkText}</p>
+              <p onClick={onClickEvent}>{linkText}</p>
             </ModalInfoText>
           </ModalItems>
         </ModalWrapper>

@@ -71,6 +71,7 @@ export const refreshTwitterToken = async (linkKey) => {
     )
     .then((data) => {
       console.log("트위터 토큰 재발급 성공");
+      console.log(data);
       returnValue = data.data;
       postTweet(linkKey);
     })

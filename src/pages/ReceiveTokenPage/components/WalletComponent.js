@@ -15,6 +15,7 @@ import { addWallet, deleteWallet } from "utils/api/wallets";
 import { receiveTrxHashState } from "utils/atoms/trxs";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
+import { twitterLinkState } from "utils/atoms/twitter";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -96,6 +97,7 @@ const WalletComponent = ({
   const [checkStatus, setCheckStatus] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const setTwitterLink = useSetRecoilState(twitterLinkState);
   const setReceiveTrxHash = useSetRecoilState(receiveTrxHashState);
   const { t } = useTranslation();
 
@@ -512,12 +514,11 @@ const WalletComponent = ({
 
   const pathname = window.location.pathname.split("/");
   const linkKey = pathname[pathname.length - 1];
+  const date = new Date().toString();
+  const dateInFormat = convertDateFormatTwitter(date);
   const requestPostTweet = async () => {
-    const date = new Date().toString();
-    const dateInFormat = convertDateFormatTwitter(date);
-
     await postTweet(linkKey, dateInFormat).then((data) => {
-      console.log(data);
+      setTwitterLink(data?.data?.tweetLink);
     });
   };
 

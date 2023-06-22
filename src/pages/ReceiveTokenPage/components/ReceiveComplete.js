@@ -5,12 +5,14 @@ import { EditableCard } from "components/card";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Lottie from "react-lottie-player";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import styled from "styled-components";
 import { getTrxsLinkInfo } from "utils/api/trxs";
 import { receiveTrxHashState } from "utils/atoms/trxs";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
+import { twitterLinkState } from "utils/atoms/twitter";
+import { NoticeModal } from "components/modal";
 
 const ContentContainer = styled.div`
   padding-left: 20px;
@@ -118,7 +120,9 @@ const walletConvert = (walletAddress) => {
 const ReceiveComplete = ({ walletList, select }) => {
   const { t } = useTranslation();
   const [receiveInfo, setReceiveInfo] = useState(null);
+  const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
   const receiveTrxHash = useRecoilValue(receiveTrxHashState);
+  const [twitterLink, setTwitterLink] = useRecoilState(twitterLinkState);
 
   const txHashExplorerOnClick = () => {
     if (Number(receiveInfo.networkId) == 5) {
@@ -135,6 +139,16 @@ const ReceiveComplete = ({ walletList, select }) => {
       setReceiveInfo(data);
     });
   }, []);
+
+  useEffect(() => {
+    if (twitterLink) {
+      setIsNoticeModalOpen(true);
+      setTimeout(() => {
+        setIsNoticeModalOpen(false);
+        setTwitterLink(null);
+      }, 4000);
+    }
+  }, [twitterLink]);
 
   return (
     <>
@@ -173,6 +187,14 @@ const ReceiveComplete = ({ walletList, select }) => {
         >
           {t("receiveTokenComplete5")}
         </ComplainLink>
+        <NoticeModal
+          visible={isNoticeModalOpen}
+          text="트위터로 내역을 공유했어요!."
+          linkText="트위터로 이동"
+          onClickEvent={() => {
+            window.location.href = twitterLink;
+          }}
+        />
       </ContentContainer>
     </>
   );
