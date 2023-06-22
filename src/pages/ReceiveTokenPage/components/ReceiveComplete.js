@@ -141,14 +141,12 @@ const ReceiveComplete = ({ walletList, select }) => {
   }, []);
 
   useEffect(() => {
-    if (twitterLink) {
-      setIsNoticeModalOpen(true);
-      setTimeout(() => {
-        setIsNoticeModalOpen(false);
-        setTwitterLink(null);
-      }, 4000);
-    }
-  }, [twitterLink]);
+    setIsNoticeModalOpen(true);
+    setTimeout(() => {
+      setIsNoticeModalOpen(false);
+      setTwitterLink(null);
+    }, 4000);
+  }, []);
 
   return (
     <>
@@ -187,14 +185,16 @@ const ReceiveComplete = ({ walletList, select }) => {
         >
           {t("receiveTokenComplete5")}
         </ComplainLink>
-        <NoticeModal
-          visible={isNoticeModalOpen}
-          text={t("noticeModal6")}
-          linkText={t("noticeModal7")}
-          onClickEvent={() => {
-            window.location.href = twitterLink;
-          }}
-        />
+        {twitterLink && (
+          <NoticeModal
+            visible={isNoticeModalOpen}
+            text={t("noticeModal6")}
+            linkText={t("noticeModal7")}
+            onClickEvent={() => {
+              window.location.href = twitterLink;
+            }}
+          />
+        )}
       </ContentContainer>
     </>
   );

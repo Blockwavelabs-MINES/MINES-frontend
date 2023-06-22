@@ -13,9 +13,9 @@ import { getTrxsLinkInfo, receiveTrxs, toggleIsValid } from "utils/api/trxs";
 import { postTweet } from "utils/api/twitter";
 import { addWallet, deleteWallet } from "utils/api/wallets";
 import { receiveTrxHashState } from "utils/atoms/trxs";
+import { twitterLinkState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
-import { twitterLinkState } from "utils/atoms/twitter";
 
 const FullContainer = styled.div`
   width: 100%;
