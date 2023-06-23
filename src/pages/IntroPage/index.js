@@ -62,31 +62,33 @@ const IntroPage = () => {
   return (
     <>
       {!isSignup ? (
-        <FullContainer>
-          <LoginHeader />
-          {loginAlertModalVisible && (
-            <SingleModal
-              visible={setLoginAlertModalVisible}
-              closable={true}
-              maskClosable={true}
-              onClose={() => setLoginAlertModalVisible(false)}
-              text={<>{t("introPageAlert1")}</>}
-              setStatus={() => setLoginModalVisible(true)}
-              buttonText={t("introPageAlert2")}
-            />
-          )}
-          <IntroTextBox>
-            <FirstIntro>
-              {t("introPageMent7")}
-              <br />
-              {t("introPageMent8")}
-            </FirstIntro>
-            <SecondIntro>{t("introPageMent9")}</SecondIntro>
-          </IntroTextBox>
-          <MainImageBanner src={MainImage3} />
-          <BannerBottom />
+        <>
+          <FullContainer>
+            <LoginHeader />
+            {loginAlertModalVisible && (
+              <SingleModal
+                visible={setLoginAlertModalVisible}
+                closable={true}
+                maskClosable={true}
+                onClose={() => setLoginAlertModalVisible(false)}
+                text={<>{t("introPageAlert1")}</>}
+                setStatus={() => setLoginModalVisible(true)}
+                buttonText={t("introPageAlert2")}
+              />
+            )}
+            <IntroTextBox>
+              <FirstIntro>
+                {t("introPageMent7")}
+                <br />
+                {t("introPageMent8")}
+              </FirstIntro>
+              <SecondIntro>{t("introPageMent9")}</SecondIntro>
+            </IntroTextBox>
+            <MainImageBanner src={MainImage3} />
+            <BannerBottom />
+          </FullContainer>
           <BottomNavBar />
-        </FullContainer>
+        </>
       ) : (
         <CreateLinkPage />
       )}
