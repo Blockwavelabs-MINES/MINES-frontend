@@ -81,7 +81,7 @@ const AccountList = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      getSocialList();
+      if (isTwitterOn) getSocialList();
 
       if (twitterJustConnected && isTwitterOn) {
         setTwitterJustConnected(false);
@@ -99,7 +99,7 @@ const AccountList = () => {
         }, 4000);
       }
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, isTwitterOn]);
 
   useEffect(() => {
     if (socialList?.data[0]) {
