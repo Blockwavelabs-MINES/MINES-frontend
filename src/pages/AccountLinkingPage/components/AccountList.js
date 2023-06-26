@@ -91,11 +91,7 @@ const AccountList = () => {
         }, 4000);
       }
 
-      console.log(twitterJustConnected);
-      console.log(isTwitterOn);
-
       if (twitterJustConnected && !isTwitterOn) {
-        console.log("hey");
         setTwitterJustConnected(false);
         setIsErrorModalOpen(true);
         setTimeout(() => {
@@ -122,7 +118,7 @@ const AccountList = () => {
   const accountList = [
     {
       icon: TwitterIcon,
-      text: t("accountLinkingPage2"),
+      text: isTwitterOn ? socialList?.data[0].socialId : "accountLinkingPage2",
       supported: true,
       checked: isTwitterOn,
       handler: handleTwitterToggle,
