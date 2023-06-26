@@ -83,7 +83,7 @@ const AccountList = () => {
     if (isLoggedIn) {
       getSocialList();
 
-      if (twitterJustConnected && isTwitterOn) {
+      if (twitterJustConnected) {
         setTwitterJustConnected(false);
         setIsNoticeModalOpen(true);
         setTimeout(() => {
@@ -99,7 +99,7 @@ const AccountList = () => {
         }, 4000);
       }
     }
-  }, [isLoggedIn, isTwitterOn]);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (socialList?.data[0]) {
