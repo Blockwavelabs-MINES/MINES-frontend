@@ -22,3 +22,10 @@ export const twitterLinkState = atom({
   key: "twitterLInkState",
   default: null,
 });
+
+//CheckSendModal에서 아이디 보여주기.
+export const twitterIdState = atom({
+  key: "twitterIdState",
+  default: null,
+  effects_UNSTABLE: [persistAtom],
+});
