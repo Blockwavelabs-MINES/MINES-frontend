@@ -118,7 +118,9 @@ const AccountList = () => {
   const accountList = [
     {
       icon: TwitterIcon,
-      text: isTwitterOn ? socialList?.data[0].socialId : "accountLinkingPage2",
+      text: isTwitterOn
+        ? socialList?.data[0].socialId
+        : t("accountLinkingPage2"),
       supported: true,
       checked: isTwitterOn,
       handler: handleTwitterToggle,
@@ -149,36 +151,36 @@ const AccountList = () => {
             ) : (
               <AccountStatus>{t("accountLinkingPage5")}</AccountStatus>
             )}
-            <ConfirmModal
-              visible={isModalOpen}
-              closable={true}
-              maskClosable={true}
-              onClose={() => setIsModalOpen(false)}
-              text={t("noticeModal4")}
-              buttonText={t("noticeModal5")}
-              subActionOnClick={async () => {
-                await disconnectTwitter().then((data) => {
-                  console.log(data);
-                  setIsTwitterOn(false);
-                  setIsDisconnectNoticeModalOpen(true);
-                  setTimeout(() => {
-                    setIsDisconnectNoticeModalOpen(false);
-                  }, 4000);
-                });
-              }}
-            />
-            <NoticeModal visible={isNoticeModalOpen} text={t("noticeModal2")} />
-            <NoticeModal
-              visible={!isTwitterOn && isConnectNoticeModalOpen}
-              text={t("noticeModal1")}
-            />
-            <NoticeModal
-              visible={isDisconnectNoticeModalOpen}
-              text={t("noticeModal3")}
-            />
           </AccountListContainer>
         );
       })}
+      <ConfirmModal
+        visible={isModalOpen}
+        closable={true}
+        maskClosable={true}
+        onClose={() => setIsModalOpen(false)}
+        text={t("noticeModal4")}
+        buttonText={t("noticeModal5")}
+        subActionOnClick={async () => {
+          await disconnectTwitter().then((data) => {
+            console.log(data);
+            setIsTwitterOn(false);
+            setIsDisconnectNoticeModalOpen(true);
+            setTimeout(() => {
+              setIsDisconnectNoticeModalOpen(false);
+            }, 4000);
+          });
+        }}
+      />
+      <NoticeModal visible={isNoticeModalOpen} text={t("noticeModal2")} />
+      <NoticeModal
+        visible={!isTwitterOn && isConnectNoticeModalOpen}
+        text={t("noticeModal1")}
+      />
+      <NoticeModal
+        visible={isDisconnectNoticeModalOpen}
+        text={t("noticeModal3")}
+      />
     </>
   );
 };
