@@ -1,8 +1,7 @@
-import { CreateSuccess as SuccessImg } from "assets/icons";
+import confettiLottie from "assets/lottie/confetti-lottie.json";
 import { ContainedButton } from "components/button";
-import { CopyPivot } from "components/modal";
-import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import Lottie from "react-lottie-player";
 import styled from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
@@ -36,53 +35,32 @@ const ButtonContainer = styled.div`
   grid-template-columns: repeat(1, 1fr);
 `;
 
-const SuccessImage = styled.img`
-  width: 200px;
-  height: 200px;
-  margin-top: 63px;
+const LottieContainer = styled.div`
+  width: 280px;
+  height: 280px;
+  margin: 72px auto 0 auto;
 `;
 
-const CreateSuccess = ({ linkId }) => {
-  const [copyPivotVisible, setCopyPivotVisible] = useState(false);
-  const [clickX, setClickX] = useState(0);
-
-  const myRef = useRef(null);
+const CreateSuccess = () => {
   const { t } = useTranslation();
 
-  const settingOnClick = () => {
-    window.location.href = "/editProfile";
-  };
-
-  const copyOnClick = () => {
-    const handleCopyClipBoard = async (text) => {
-      var textarea = document.createElement("textarea");
-      textarea.value = text; // 복사할 메시지
-      document.body.appendChild(textarea);
-      textarea.select();
-      textarea.setSelectionRange(0, 9999); // For IOS
-      document.body.removeChild(textarea);
-
-      if (myRef.current) {
-        let tmpX = myRef.current.getBoundingClientRect().top;
-        setClickX(tmpX);
-      }
-      setCopyPivotVisible(true);
-    };
-
-    handleCopyClipBoard(`https://3tree.io/@${linkId}`);
+  const accountLinkOnClick = () => {
+    window.location.href = "/accountLinking";
   };
 
   return (
     <>
       <IntroTextBox>
-        <FirstIntro>{t("createLinkDone1")}</FirstIntro>
+        <FirstIntro>{t("createLinkDone1")} </FirstIntro>
         <SecondIntro>
           {t("createLinkDone2")}
           <br />
           {t("createLinkDone2_2")}
         </SecondIntro>
       </IntroTextBox>
-      <SuccessImage src={SuccessImg} />
+      <LottieContainer>
+        <Lottie animationData={confettiLottie} play />
+      </LottieContainer>
       <ButtonContainer>
         <ContainedButton
           type="primary"
@@ -90,30 +68,8 @@ const CreateSuccess = ({ linkId }) => {
           states="default"
           size="large"
           label={t("createLinkDone3")}
-          onClick={settingOnClick}
+          onClick={accountLinkOnClick}
         />
-        <div ref={myRef}>
-          <ContainedButton
-            type="primary"
-            styles="outlined"
-            states="default"
-            size="large"
-            label={t("createLinkDone4")}
-            onClick={copyOnClick}
-          />
-        </div>
-        {copyPivotVisible && (
-          <CopyPivot
-            visible={copyPivotVisible}
-            closable={true}
-            maskClosable={true}
-            onClose={() => setCopyPivotVisible(false)}
-            label={t("createLinkDone5")}
-            type={"up"}
-            x={`calc(${clickX}px - 70px)`}
-            y={"calc(50% - 90px)"}
-          />
-        )}
       </ButtonContainer>
     </>
   );
