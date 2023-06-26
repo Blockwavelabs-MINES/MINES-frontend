@@ -83,7 +83,7 @@ const AccountList = () => {
     if (isLoggedIn) {
       getSocialList();
 
-      if (twitterJustConnected) {
+      if (twitterJustConnected && isTwitterOn) {
         setTwitterJustConnected(false);
         setIsNoticeModalOpen(true);
         setTimeout(() => {
