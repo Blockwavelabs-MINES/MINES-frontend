@@ -84,13 +84,14 @@ export const refreshTwitterToken = async (linkKey) => {
 };
 
 //트위터 포스팅.
-export const postTweet = async (linkKey, dateInFormat) => {
+export const postTweet = async (linkKey, dateInFormat, tokenAmount) => {
   let returnValue;
   await axios
     .post(
       `/trxs/post/tweet?link-key=${linkKey}`,
       {
         receivedTime: dateInFormat,
+        tokenAmount: tokenAmount,
       },
       {
         headers: privateHeaders,

@@ -148,6 +148,32 @@ const ReceiveComplete = ({ walletList, select }) => {
     }, 4000);
   }, []);
 
+  function convert(n) {
+    if (n) {
+      var sign = +n < 0 ? "-" : "",
+        toStr = n.toString();
+      if (!/e/i.test(toStr)) {
+        return n;
+      }
+      var [lead, decimal, pow] = n
+        .toString()
+        .replace(/^-/, "")
+        .replace(/^([0-9]+)(e.*)/, "$1.$2")
+        .split(/e|\./);
+      return +pow < 0
+        ? sign +
+            "0." +
+            "0".repeat(Math.max(Math.abs(pow) - 1 || 0, 0)) +
+            lead +
+            decimal
+        : sign +
+            lead +
+            (+pow >= decimal.length
+              ? decimal + "0".repeat(Math.max(+pow - decimal.length || 0, 0))
+              : decimal.slice(0, +pow) + "." + decimal.slice(+pow));
+    }
+  }
+
   return (
     <>
       <ContentContainer>
@@ -155,7 +181,7 @@ const ReceiveComplete = ({ walletList, select }) => {
           <Lottie animationData={animation} loop={false} play />
         </LottieContainer>
         <TextLine>
-          {receiveInfo?.tokenAmount} {receiveInfo?.tokenUdenom}
+          {convert(receiveInfo?.tokenAmount)} {receiveInfo?.tokenUdenom}
           <br />
           {t("receiveTokenComplete2")}
         </TextLine>

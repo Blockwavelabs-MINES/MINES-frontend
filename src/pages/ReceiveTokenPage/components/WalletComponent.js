@@ -512,14 +512,43 @@ const WalletComponent = ({
     }
   };
 
+  function convert(n) {
+    if (n) {
+      var sign = +n < 0 ? "-" : "",
+        toStr = n.toString();
+      if (!/e/i.test(toStr)) {
+        return n;
+      }
+      var [lead, decimal, pow] = n
+        .toString()
+        .replace(/^-/, "")
+        .replace(/^([0-9]+)(e.*)/, "$1.$2")
+        .split(/e|\./);
+      return +pow < 0
+        ? sign +
+            "0." +
+            "0".repeat(Math.max(Math.abs(pow) - 1 || 0, 0)) +
+            lead +
+            decimal
+        : sign +
+            lead +
+            (+pow >= decimal.length
+              ? decimal + "0".repeat(Math.max(+pow - decimal.length || 0, 0))
+              : decimal.slice(0, +pow) + "." + decimal.slice(+pow));
+    }
+  }
+
   const pathname = window.location.pathname.split("/");
   const linkKey = pathname[pathname.length - 1];
   const date = new Date().toString();
   const dateInFormat = convertDateFormatTwitter(date);
   const requestPostTweet = async () => {
-    await postTweet(linkKey, dateInFormat).then((data) => {
-      setTwitterLink(data?.data?.tweetLink);
-    });
+    const convertedTokenAmount = String(convert(linkInfo.tokenAmount));
+    await postTweet(linkKey, dateInFormat, convertedTokenAmount).then(
+      (data) => {
+        setTwitterLink(data?.data?.tweetLink);
+      }
+    );
   };
 
   return (
