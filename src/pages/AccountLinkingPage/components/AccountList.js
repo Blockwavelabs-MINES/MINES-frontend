@@ -81,7 +81,7 @@ const AccountList = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      if (isTwitterOn) getSocialList();
+      getSocialList();
 
       if (twitterJustConnected && isTwitterOn) {
         setTwitterJustConnected(false);
