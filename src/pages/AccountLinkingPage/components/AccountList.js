@@ -173,7 +173,7 @@ const AccountList = () => {
             />
             <NoticeModal visible={isNoticeModalOpen} text={t("noticeModal2")} />
             <NoticeModal
-              visible={isConnectNoticeModalOpen}
+              visible={!isTwitterOn && isConnectNoticeModalOpen}
               text={t("noticeModal1")}
             />
             <NoticeModal

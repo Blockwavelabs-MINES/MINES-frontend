@@ -16,6 +16,7 @@ export { default as DropboxBubbleTail } from "./dropbox-bubbleTail.svg";
 export { default as DropboxFeedback } from "./dropbox-feedback.svg";
 export { default as DropboxLogout } from "./dropbox-logout.svg";
 export { default as DropboxSettings } from "./dropbox-settings.svg";
+export { default as DropIconUp } from "./dropicon-up.svg";
 export { default as EmptyLink } from "./empty-link.svg";
 export { default as EmptyWallet } from "./empty-wallet.svg";
 export { default as EthereumMainnetIcon } from "./ethereumMainnet-icon.svg";
