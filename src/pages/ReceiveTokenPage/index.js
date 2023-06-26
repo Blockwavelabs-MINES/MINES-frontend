@@ -6,15 +6,17 @@ import { LoginHeader } from "components/header";
 import { DeleteModal } from "components/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { getUserInfo, getUserInfoAndProfileDeco } from "utils/api/auth";
 import { getTrxsLinkInfo } from "utils/api/trxs";
+import { getSocialConnectList } from "utils/api/twitter";
 import {
   loginDoneState,
   loginModalVisibleState,
   loginState,
 } from "utils/atoms/login";
+import { receiveLinkState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 import { SelectWallet } from "./components";
@@ -232,8 +234,11 @@ const ReceiveTokenPage = () => {
   const [iconHovering, setIconHovering] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [walletData, setWalletData] = useState(null);
+  const [socialList, setSocialList] = useState(null);
   const isLoggedIn = useRecoilValue(loginState);
   const loginDone = useRecoilValue(loginDoneState);
+  const setReceiveLink = useSetRecoilState(receiveLinkState);
+
   const [loginModalVisible, setLoginModalVisible] = useRecoilState(
     loginModalVisibleState
   );
@@ -250,9 +255,10 @@ const ReceiveTokenPage = () => {
     </TooltipStyle>
   );
 
+  const pathname = window.location.pathname.split("/");
+  const trxsLink = pathname[pathname.length - 1];
+
   useEffect(() => {
-    const pathname = window.location.pathname.split("/");
-    const trxsLink = pathname[pathname.length - 1];
     getTrxsLinkInfo(trxsLink).then(async (data) => {
       let convertedData = data;
       setSenderUser(data.senderUserId);
@@ -262,17 +268,32 @@ const ReceiveTokenPage = () => {
             setUserInfo(data.user);
             setWalletData(data.wallets);
           });
-          data.socialId !== convertedData.receiverSocialId &&
-            setIsWrongUser(true);
         });
       }
+
+      if (isLoggedIn) {
+        getSocialConnectList().then((socialList) => {
+          setSocialList(socialList);
+          console.log(socialList?.data[0]?.socialId);
+          console.log(convertedData?.receiverSocialId);
+          if (socialList?.data.length === 0) {
+            window.location.href = "/accountLinking";
+          } else {
+            socialList?.data[0]?.socialId !== convertedData?.receiverSocialId
+              ? setIsWrongUser(true)
+              : setIsWrongUser(false);
+          }
+        });
+      }
+
       convertedData.tokenAmount = convert(data.tokenAmount);
       setLinkInfo(convertedData);
     });
-  }, [isLoggedIn]);
+  }, [isLoggedIn, loginDone]);
 
   useEffect(() => {
     document.body.style.overflow = "auto";
+    setReceiveLink(trxsLink);
   }, []);
 
   useEffect(() => {
@@ -390,6 +411,7 @@ const ReceiveTokenPage = () => {
                 <>
                   {linkInfo ? (
                     <>
+                      {/* 유효하지만 만료 됐음 */}
                       {linkInfo.isExpired && linkInfo.isValid ? (
                         <>
                           <ImageContainer src={CloudImage} />

@@ -58,8 +58,7 @@ const Step1 = ({
 
   const emailOnChange = (e) => {
     setEmail(e.target.value);
-    let regex =
-      /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{1,6}(?:\.[a-z])?)$/i;
+    let regex = /^[a-zA-Z0-9_]{4,15}$/;
     if (e.target.value && regex.test(e.target.value)) {
       setEmailState("filled");
       setErrorComment("");

@@ -50,7 +50,7 @@ const ModalInfoText = styled.div`
   }
 `;
 
-const UnvalidFormatModal = ({ visible, onClickEvent }) => {
+const UnvalidModal = ({ visible, onClickEvent, mainText, subText }) => {
   const { t } = useTranslation();
 
   return (
@@ -60,8 +60,8 @@ const UnvalidFormatModal = ({ visible, onClickEvent }) => {
           <ModalItems>
             <SmileySadIcon src={SmileySad} />
             <ModalInfoText>
-              <p>{t("unvalidFormatModal1")}</p>
-              <p>{t("unvalidFormatModal2")}</p>
+              <p>{mainText}</p>
+              <p>{subText}</p>
             </ModalInfoText>
           </ModalItems>
         </ModalWrapper>
@@ -70,4 +70,4 @@ const UnvalidFormatModal = ({ visible, onClickEvent }) => {
   );
 };
 
-export default UnvalidFormatModal;
+export default UnvalidModal;

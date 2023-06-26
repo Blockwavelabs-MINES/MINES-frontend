@@ -1,13 +1,14 @@
 import { useWeb3React } from "@web3-react/core";
-import { Sender3TreeIcon } from "assets/icons";
 import { ContainedButton } from "components/button";
 import { BottomModal } from "components/modal";
 import { minABI } from "data/minABI";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { sendTrxs } from "utils/api/trxs";
+import { twitterIdState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 
@@ -120,6 +121,7 @@ const LoginModalInner = (
   const [transactionStatus, setTransactionStatus] = useState(null);
   const [escrowId, setEscrowId] = useState();
   const [expiredDateResult, setExpiredDateResult] = useState();
+  const twitterId = useRecoilValue(twitterIdState);
   const { library } = useWeb3React();
 
   const Web3 = require("web3");
@@ -173,7 +175,7 @@ const LoginModalInner = (
             await sendTrxs(
               address,
               "metamask",
-              "google",
+              "TWITTER",
               receiver,
               currency,
               amount,
@@ -286,7 +288,7 @@ const LoginModalInner = (
                   await sendTrxs(
                     address,
                     "metamask",
-                    "google",
+                    "TWITTER",
                     receiver,
                     currency,
                     amount,
@@ -392,15 +394,15 @@ const LoginModalInner = (
           <PersonInfoLine>
             <PersonCategory>{t("sendConfirmModal4")}</PersonCategory>
             <PersonInfo>
-              <PersonId>{receiver}</PersonId>
+              <PersonId>@{receiver}</PersonId>
               <PersonIcon src={platform} />
             </PersonInfo>
           </PersonInfoLine>
           <PersonInfoLine>
             <PersonCategory>{t("sendConfirmModal5")}</PersonCategory>
             <PersonInfo>
-              <PersonId>@{sender}</PersonId>
-              <PersonIcon src={Sender3TreeIcon} />
+              <PersonId>@{twitterId}</PersonId>
+              <PersonIcon src={platform} />
             </PersonInfo>
           </PersonInfoLine>
         </PersonInfoBox>

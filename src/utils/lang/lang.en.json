@@ -138,7 +138,7 @@
   "sendPage01_2": "to which tokens should be sent.",
   "sendPage01_3": "Platform",
   "sendPage01_4": "Social Media Account",
-  "sendPage01_5": "0x3tree@gmail.com",
+  "sendPage01_5": "0x3tree",
   "sendPage01_6": "Connect Wallet",
   "sendPage01_7": "Unvalid account!",
   "sendPage01Alert1": "All information entered will be reset. Would you like to reset it?",
@@ -196,6 +196,15 @@
   "previewPage9": "Please note",
   "previewPage10": "Receipt can be received by verifying with the corresponding social media account within 3 days from the date of transmission, and will be returned if not received within the due date.",
   "previewPage11": "In case of return due to non-receipt, the token will be automatically returned with a limit of 0.5% of the sent token.",
+
+  "sendPage00_1": "Select a social account",
+  "sendPage00_2": "With 3TREE, you can send money to people with the account ID you want!",
+  "sendPage00_3": "Linking accounts",
+  "sendPage00_4": "Twitter",
+  "sendPage00_5": "Telegram",
+  "sendPage00_6": "Discord",
+  "sendPage00_7": "Comming Soon",
+  "sendPage00_8": "Start Sending Tokens",
 
   "sendPage03Pending1": "I'm sending a token",
   "sendPage03Pending2": "The time it takes depends on the network environment.",
@@ -272,5 +281,23 @@
   "sessionError": "Your session has expired. Please sign in again.",
 
   "unvalidFormatModal1": "File format not supported",
-  "unvalidFormatModal2": "Please upload files in JPG, PNG, or GIF format."
+  "unvalidFormatModal2": "Please upload files in JPG, PNG, or GIF format.",
+
+  "bottomNavBar1": "Home",
+  "bottomNavBar2": "Send",
+  "bottomNavBar3": "Social connect",
+
+  "accountLinkingPage1": "Social account linking",
+  "accountLinkingPage2": "Twitter",
+  "accountLinkingPage3": "Telegram",
+  "accountLinkingPage4": "Discord",
+  "accountLinkingPage5": "Comming Soon",
+
+  "noticeModal1": "Link your Twitter account to 3TREE",
+  "noticeModal2": "Linked successfully",
+  "noticeModal3": "Unlinked successfully",
+  "noticeModal4": "Would you really like to unlink?",
+  "noticeModal5": "Disconnect",
+  "noticeModal6": "I shared it on Twitter!",
+  "noticeModal7": "Go to Twitter"
 }

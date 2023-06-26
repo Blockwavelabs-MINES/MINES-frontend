@@ -2,7 +2,7 @@ import { CustomIcon } from "assets/icons";
 import imageCompression from "browser-image-compression";
 import { ContainedButton } from "components/button";
 import { EditProfileHeader } from "components/header";
-import { UnvalidFormatModal } from "components/modal";
+import { UnvalidModal } from "components/modal";
 import { useEffect, useRef, useState } from "react";
 import { SketchPicker } from "react-color";
 import { useTranslation } from "react-i18next";
@@ -572,11 +572,13 @@ const CustomizeMyInfo = ({ userId, setCustomizeMyInfo, setInfoChange }) => {
                 </ColorBar>
               </ComponentBox>
             </ContentBox>
-            <UnvalidFormatModal
+            <UnvalidModal
               visible={showFormatModal}
               onClickEvent={() => {
                 setShowFormatModal(false);
               }}
+              mainText={t("unvalidFormatModal1")}
+              subText={t("unvalidFormatModal2")}
             />
           </FullContainer>
           <ButtonContainer>

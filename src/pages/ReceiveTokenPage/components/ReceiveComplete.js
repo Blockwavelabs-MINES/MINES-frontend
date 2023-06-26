@@ -2,13 +2,15 @@ import { ChevronRight, GreenCheck, MetamaskIcon } from "assets/icons";
 import { CompasImage } from "assets/images";
 import animation from "assets/lottie/check-lottie.json";
 import { EditableCard } from "components/card";
+import { NoticeModal } from "components/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Lottie from "react-lottie-player";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { getTrxsLinkInfo } from "utils/api/trxs";
 import { receiveTrxHashState } from "utils/atoms/trxs";
+import { twitterLinkState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 
@@ -118,7 +120,9 @@ const walletConvert = (walletAddress) => {
 const ReceiveComplete = ({ walletList, select }) => {
   const { t } = useTranslation();
   const [receiveInfo, setReceiveInfo] = useState(null);
+  const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
   const receiveTrxHash = useRecoilValue(receiveTrxHashState);
+  const [twitterLink, setTwitterLink] = useRecoilState(twitterLinkState);
 
   const txHashExplorerOnClick = () => {
     if (Number(receiveInfo.networkId) == 5) {
@@ -136,6 +140,40 @@ const ReceiveComplete = ({ walletList, select }) => {
     });
   }, []);
 
+  useEffect(() => {
+    setIsNoticeModalOpen(true);
+    setTimeout(() => {
+      setIsNoticeModalOpen(false);
+      setTwitterLink(null);
+    }, 4000);
+  }, []);
+
+  function convert(n) {
+    if (n) {
+      var sign = +n < 0 ? "-" : "",
+        toStr = n.toString();
+      if (!/e/i.test(toStr)) {
+        return n;
+      }
+      var [lead, decimal, pow] = n
+        .toString()
+        .replace(/^-/, "")
+        .replace(/^([0-9]+)(e.*)/, "$1.$2")
+        .split(/e|\./);
+      return +pow < 0
+        ? sign +
+            "0." +
+            "0".repeat(Math.max(Math.abs(pow) - 1 || 0, 0)) +
+            lead +
+            decimal
+        : sign +
+            lead +
+            (+pow >= decimal.length
+              ? decimal + "0".repeat(Math.max(+pow - decimal.length || 0, 0))
+              : decimal.slice(0, +pow) + "." + decimal.slice(+pow));
+    }
+  }
+
   return (
     <>
       <ContentContainer>
@@ -143,7 +181,7 @@ const ReceiveComplete = ({ walletList, select }) => {
           <Lottie animationData={animation} loop={false} play />
         </LottieContainer>
         <TextLine>
-          {receiveInfo?.tokenAmount} {receiveInfo?.tokenUdenom}
+          {convert(receiveInfo?.tokenAmount)} {receiveInfo?.tokenUdenom}
           <br />
           {t("receiveTokenComplete2")}
         </TextLine>
@@ -173,6 +211,16 @@ const ReceiveComplete = ({ walletList, select }) => {
         >
           {t("receiveTokenComplete5")}
         </ComplainLink>
+        {twitterLink && (
+          <NoticeModal
+            visible={isNoticeModalOpen}
+            text={t("noticeModal6")}
+            linkText={t("noticeModal7")}
+            onClickEvent={() => {
+              window.location.href = twitterLink;
+            }}
+          />
+        )}
       </ContentContainer>
     </>
   );

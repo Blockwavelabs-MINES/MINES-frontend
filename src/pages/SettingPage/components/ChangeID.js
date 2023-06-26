@@ -85,8 +85,8 @@ const ChangeID = () => {
           state={state}
           placeholder={userId}
           message={errorComment}
-          fixedMent={"3tree.io/@"}
-          fixedMentSize={"93px"}
+          fixedMent={"@"}
+          fixedMentSize={"33px"}
           onChange={(e) => {
             setLinkId(e.target.value);
           }}

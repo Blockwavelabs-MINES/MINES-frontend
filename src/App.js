@@ -1,5 +1,6 @@
 import "App.css";
 import {
+  AccountLinkingPage,
   ComponentTestPage,
   EditProfilePage,
   IntroPage,
@@ -7,7 +8,9 @@ import {
   ProfilePage,
   ReceiveTokenPage,
   SendTokenPage,
+  SendTokenStepsPage,
   SettingPage,
+  TwitterCallbackPage,
 } from "pages";
 import { PrivacyPolicy, TermsOfService } from "pages/TermsAndConditionPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -48,10 +51,22 @@ function App() {
                 <Route path="/editProfile" element={<EditProfilePage />} />
                 <Route path="/sendToken" element={<SendTokenPage />} />
                 <Route
+                  path="/sendTokenSteps"
+                  element={<SendTokenStepsPage />}
+                />
+                <Route
                   path="/receiveToken/:key"
                   element={<ReceiveTokenPage />}
                 />
                 <Route path="/@:id" element={<ProfilePage />} />
+                <Route
+                  path="/accountLinking"
+                  element={<AccountLinkingPage />}
+                />
+                <Route
+                  path="/twitter/callback"
+                  element={<TwitterCallbackPage />}
+                />
                 <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
                 <Route path="/termsOfService" element={<TermsOfService />} />
                 <Route path="/*" element={<NotFoundPage />} />

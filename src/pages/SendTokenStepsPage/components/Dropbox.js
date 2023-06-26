@@ -1,4 +1,4 @@
-import { DropIcon } from "assets/icons";
+import { DropIcon, DropIconUp } from "assets/icons";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
@@ -117,7 +117,7 @@ const DropBox = (props) => {
               <EmailName>{itemList[selectIndex]?.emailName}</EmailName>
             </SideBox>
             <SideBox>
-              <DropIconBox src={DropIcon} />
+              <DropIconBox src={open ? DropIconUp : DropIcon} />
             </SideBox>
           </Container>
           {open && (

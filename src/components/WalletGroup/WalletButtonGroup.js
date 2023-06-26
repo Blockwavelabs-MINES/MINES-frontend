@@ -2,7 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import WalletList from "data/WalletListData";
 import WalletListMobile from "data/WalletListDataMobile";
-import NetworkList from "pages/SendTokenPage/components/NetworkList";
+import NetworkList from "pages/SendTokenStepsPage/components/NetworkList";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import useWindowDimensions from "utils/functions/useWindowDimensions";

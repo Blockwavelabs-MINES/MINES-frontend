@@ -626,7 +626,7 @@ const Step2 = ({
       <EmailCheckBox>
         <EmailInfo>
           <EmailIcon src={platformIcon} />
-          <EmailBox>{email}</EmailBox>
+          <EmailBox>@{email}</EmailBox>
         </EmailInfo>
         <EmailBoxText>{t("sendpage02_1")}</EmailBoxText>
       </EmailCheckBox>

@@ -47,6 +47,7 @@ export const receiveTrxs = async (
   receiverWalletAddress,
   receiveTokenWalletType,
   transactionGasFee,
+  receiverSocialPlatformType,
   trxIndex
 ) => {
   let returnValue = 0;
@@ -57,6 +58,7 @@ export const receiveTrxs = async (
         receiverWalletAddress: receiverWalletAddress,
         receiveTokenWaleltType: receiveTokenWalletType,
         transactionGasFee: transactionGasFee,
+        receiverSocialPlatformType: receiverSocialPlatformType,
       },
       {
         headers: {
@@ -86,7 +88,11 @@ export const getTrxsLinkInfo = async (linkKey) => {
   return returnValue;
 };
 
-export const toggleIsValid = async (sendTrxIndex, isValid) => {
+export const toggleIsValid = async (
+  sendTrxIndex,
+  isValid,
+  socialPlatformType
+) => {
   let returnValue;
   await axios
     .patch(
@@ -94,6 +100,7 @@ export const toggleIsValid = async (sendTrxIndex, isValid) => {
       {
         sendTrxIndex: sendTrxIndex,
         isValid: isValid,
+        socialPlatformType: socialPlatformType,
       },
       {
         headers: {
