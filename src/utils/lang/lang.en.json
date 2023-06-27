@@ -42,12 +42,10 @@
   "createLink7_2": "is already taken",
   "createLink8": "Create",
 
-  "createLinkDone1": "Page created!",
-  "createLinkDone2": "Customize your profile",
-  "createLinkDone2_2": "and expand your digital identity!",
-  "createLinkDone3": "Manage Profile",
-  "createLinkDone4": "Copy Profile Link",
-  "createLinkDone5": "Link copied!",
+  "createLinkDone1": "ID creation complete!",
+  "createLinkDone2": "When you connect your social media account to 3TREE,",
+  "createLinkDone2_2": "you can send tokens without knowing a wallet address",
+  "createLinkDone3": "Link Social Account",
 
   "notFoundPage1": "404 Error",
   "notFoundPage2": "We can't find the page you want.",
