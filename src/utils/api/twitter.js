@@ -59,7 +59,11 @@ export const disconnectTwitter = async (code) => {
 };
 
 //트위터 토큰 재발급.
-export const refreshTwitterToken = async (linkKey) => {
+export const refreshTwitterToken = async (
+  linkKey,
+  dateInFormat,
+  tokenAmount
+) => {
   let returnValue = 0;
   await axios
     .put(
@@ -73,7 +77,7 @@ export const refreshTwitterToken = async (linkKey) => {
       console.log("트위터 토큰 재발급 성공");
       console.log(data);
       returnValue = data.data;
-      postTweet(linkKey);
+      postTweet(linkKey, dateInFormat, tokenAmount);
     })
     .catch((e) => {
       console.log("트위터 토큰 재발급 실패");
@@ -103,7 +107,7 @@ export const postTweet = async (linkKey, dateInFormat, tokenAmount) => {
     })
     .catch((e) => {
       console.log(e);
-      refreshTwitterToken(linkKey);
+      refreshTwitterToken(linkKey, dateInFormat, tokenAmount);
       console.log("포스팅 실패");
     });
 

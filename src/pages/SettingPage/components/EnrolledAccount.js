@@ -2,7 +2,7 @@ import PlatformList from "pages/SendTokenStepsPage/components/PlatformList";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { getUserInfo } from "utils/api/auth";
+import { getSocialConnectList } from "utils/api/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 
@@ -48,13 +48,13 @@ const Header = styled.div`
 `;
 
 const EnrolledAccount = () => {
-  const [userInfo, setUserInfo] = useState();
+  const [accountList, setAccountList] = useState();
 
   const { t } = useTranslation();
 
   useEffect(() => {
-    getUserInfo().then((data) => {
-      setUserInfo(data);
+    getSocialConnectList().then((data) => {
+      setAccountList(data);
     });
   }, []);
 
@@ -68,12 +68,12 @@ const EnrolledAccount = () => {
               PlatformList.findIndex(
                 (v) =>
                   v.emailName.toLowerCase ==
-                  userInfo?.socialPlatform.toLowerCase
+                  accountList?.data[0].socialPlatformType?.toLowerCase
               )
             ]?.emailIcon
           }
         />
-        <EmailName>{userInfo?.socialId}</EmailName>
+        <EmailName>{accountList?.data[0].socialId}</EmailName>
       </OpenBoxItem>
     </Container>
   );
