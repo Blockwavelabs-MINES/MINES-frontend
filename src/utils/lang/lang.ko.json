@@ -182,6 +182,11 @@
   "selectTokenModalTitle": "토큰 선택",
   "selectNetworkModalTitle": "네트워크 변경",
 
+  "sendNoteModal_1": "메모 쓰기",
+  "sendNoteModal_2": "메모",
+  "sendNoteModal_3": "받는분께 전달할 메모를 작성해주세요 :)",
+  "sendNoteModal_4": "다음",
+
   "sendConfirmModal1": "송금 확인",
   "sendConfirmModal2": "",
   "sendConfirmModal3": "를 보냅니다.",

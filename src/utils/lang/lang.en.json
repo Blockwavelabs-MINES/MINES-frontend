@@ -173,6 +173,11 @@
   "selectTokenModalTitle": "Select Token",
   "selectNetworkModalTitle": "Switch Network",
 
+  "sendNoteModal_1": "Writing notes",
+  "sendNoteModal_2": "Notes",
+  "sendNoteModal_3": "Please write a note for the recipient :)",
+  "sendNoteModal_4": "Next",
+
   "sendConfirmModal1": "Send Confirmation",
   "sendConfirmModal2": "Send ",
   "sendConfirmModal3": "",
