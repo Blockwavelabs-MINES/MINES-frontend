@@ -1,7 +1,11 @@
 import { BottomModalX } from "assets/icons";
+import { ChevronLeft } from "assets/icons";
+
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import styled from "styled-components";
+
+import { IconButton } from "components/button";
 
 function BottomModal({
   className,
@@ -9,6 +13,8 @@ function BottomModal({
   maskClosable,
   visible,
   renderInput,
+  backBtn = false,
+  onBtnClick,
 }) {
   useEffect(() => {
     visible
@@ -44,6 +50,23 @@ function BottomModal({
         visible={visible}
       >
         <ModalInner tabIndex="0" className="modal-inner">
+          {backBtn && (
+            <IconButton
+              type="secondary"
+              styles="outlined"
+              states="default"
+              size="xs"
+              onClick={onBtnClick}
+              icon={ChevronLeft}
+              style={{
+                margin: "0 auto",
+                position: "absolute",
+                top: "37px",
+                left: "20px",
+                cursor: "pointer",
+              }}
+            />
+          )}
           <CloseButton onClick={closeOnClick} />
           {_renderInput()}
         </ModalInner>
