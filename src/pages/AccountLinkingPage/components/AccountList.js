@@ -81,23 +81,23 @@ const AccountList = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      getSocialList();
+      getSocialList().then(() => {
+        if (twitterJustConnected && isTwitterOn) {
+          setTwitterJustConnected(false);
+          setIsNoticeModalOpen(true);
+          setTimeout(() => {
+            setIsNoticeModalOpen(false);
+          }, 4000);
+        }
 
-      if (twitterJustConnected && isTwitterOn) {
-        setTwitterJustConnected(false);
-        setIsNoticeModalOpen(true);
-        setTimeout(() => {
-          setIsNoticeModalOpen(false);
-        }, 4000);
-      }
-
-      if (twitterJustConnected && !isTwitterOn) {
-        setTwitterJustConnected(false);
-        setIsErrorModalOpen(true);
-        setTimeout(() => {
-          setIsErrorModalOpen(false);
-        }, 4000);
-      }
+        if (twitterJustConnected && !isTwitterOn) {
+          setTwitterJustConnected(false);
+          setIsErrorModalOpen(true);
+          setTimeout(() => {
+            setIsErrorModalOpen(false);
+          }, 4000);
+        }
+      });
     }
   }, [isLoggedIn]);
 
