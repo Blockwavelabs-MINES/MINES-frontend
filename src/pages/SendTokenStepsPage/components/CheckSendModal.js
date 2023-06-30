@@ -11,6 +11,7 @@ import { sendTrxs } from "utils/api/trxs";
 import { twitterIdState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
+import { TextAreaBox } from "components/input";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -114,13 +115,16 @@ const LoginModalInner = (
   tokenInfo,
   setLoading,
   setFailed,
-  resend
+  resend,
+  setSendModalStep,
+  sendModalStep,
 ) => {
   const { t } = useTranslation();
   const [transactionHash, setTransactionHash] = useState();
   const [transactionStatus, setTransactionStatus] = useState(null);
   const [escrowId, setEscrowId] = useState();
   const [expiredDateResult, setExpiredDateResult] = useState();
+
   const twitterId = useRecoilValue(twitterIdState);
   const { library } = useWeb3React();
 
@@ -238,7 +242,7 @@ const LoginModalInner = (
       isMobileDevice()
         ? (tempProvider = new Web3(new Web3.providers.HttpProvider(rpcURL)))
         : (tempProvider = new ethers.providers.Web3Provider(metamaskProvider));
-
+      
       async function sendToken() {
         if (isMobileDevice()) {
           const contract = new web3.eth.Contract(minABI, tokenInfo.address);
@@ -419,6 +423,55 @@ const LoginModalInner = (
   );
 };
 
+const NoteModalInner = (
+  setSendModalStep,
+  sendModalStep,
+) => {
+  const { t } = useTranslation();
+
+  const [noteValue, setNoteValue] = useState('');
+
+  const noteOnChange = (e) => {
+    if (e.target.value.length < 101) {
+      setNoteValue(e.target.value);
+    } else {
+      setNoteValue(e.target.value.substr(0, 140));
+    }
+  };
+
+  const BtnOnClick = () => {
+    console.log(noteValue);
+    setSendModalStep(sendModalStep + 1);
+  }
+
+  return(
+    <FullContainer>
+      <IntroTextBox>
+        <FirstIntro>{t("sendNoteModal_1")}</FirstIntro> {/* 메모 쓰기 */}
+      </IntroTextBox>
+      <MainInfoBox>
+        <div>
+          <TextAreaBox
+            label={t("sendNoteModal_2")}  /* 메모 */
+            placeholder={t("sendNoteModal_3")} /* 받는분께 전달한~ */ 
+            value={noteValue}
+            onChange={(e) => noteOnChange(e)}
+            maxSize={140}
+          />
+        </div>
+        <ContainedButton
+            type="primary"
+            styles="filled"
+            states="default"
+            size="large"
+            label={t("sendNoteModal_4")} /* 다음 */
+            onClick={BtnOnClick} /* 메모 백엔드에 전송 api 호출 ? */
+          />
+        </MainInfoBox>
+    </FullContainer>
+  )
+}
+
 const CheckSendModal = ({
   visible,
   closable,
@@ -440,35 +493,60 @@ const CheckSendModal = ({
   setLoading,
   setFailed,
   resend,
+  setSendModalStep,
+  sendModalStep,
+  //onBtnClick,
 }) => {
   return (
-    <BottomModal
-      visible={visible}
-      closable={closable}
-      maskClosable={maskClosable}
-      onClose={onClose}
-      renderInput={() =>
-        LoginModalInner(
-          amount,
-          currency,
-          sender,
-          platform,
-          receiver,
-          stepStatus,
-          setStepStatus,
-          onClose,
-          networkId,
-          userIdx,
-          address,
-          setExpired,
-          setFinalLink,
-          tokenInfo,
-          setLoading,
-          setFailed,
-          resend
-        )
-      }
-    />
+    <>
+    {(sendModalStep === 1) && (
+      <BottomModal
+        visible={visible}
+        closable={closable}
+        maskClosable={maskClosable}
+        onClose={onClose}
+        renderInput={() =>
+          NoteModalInner(
+            setSendModalStep,
+            sendModalStep,
+          )
+        }
+      />
+    )}
+    {(sendModalStep === 2) && (
+      <BottomModal
+        visible={visible}
+        closable={closable}
+        maskClosable={maskClosable}
+        onClose={onClose}
+        backBtn
+        //onBtnClick={onBtnClick}
+        renderInput={() =>
+          LoginModalInner(
+            amount,
+            currency,
+            sender,
+            platform,
+            receiver,
+            stepStatus,
+            setStepStatus,
+            onClose,
+            networkId,
+            userIdx,
+            address,
+            setExpired,
+            setFinalLink,
+            tokenInfo,
+            setLoading,
+            setFailed,
+            resend,
+            setSendModalStep,
+            sendModalStep,
+          )
+        }
+      />
+    )}
+    </>
   );
 };
 

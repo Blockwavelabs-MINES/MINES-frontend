@@ -155,6 +155,8 @@ const SendTokenStepsPage = () => {
   const [finalModalVisible, setFinalModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
+  const [sendModalStep, setSendModalStep] = useState(1);
+
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -228,6 +230,9 @@ const SendTokenStepsPage = () => {
         balance: balance,
         setRealBalance: setRealBalance,
         realBalance: realBalance,
+        setSendModalStep: setSendModalStep,
+        sendModalStep: sendModalStep,
+        //onBtnClick: onBtnClick,
       }),
     },
     {
@@ -286,6 +291,10 @@ const SendTokenStepsPage = () => {
   const setRealDelete = () => {
     window.location.href = "/sendToken";
   };
+
+  const onBtnClick = () => {
+    setSendModalStep(sendModalStep - 1);
+  }
 
   return (
     <>

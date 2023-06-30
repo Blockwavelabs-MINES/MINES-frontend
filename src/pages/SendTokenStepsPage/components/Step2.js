@@ -290,6 +290,9 @@ const Step2 = ({
   balance,
   setRealBalance,
   realBalance,
+  setSendModalStep,
+  sendModalStep,
+  //onBtnClick,
 }) => {
   const [amount, setAmount] = useState();
   const [errorMessage, setErrorMessage] = useState("");
@@ -619,6 +622,9 @@ const Step2 = ({
               setLoading={setLoading}
               setFailed={setFailed}
               resend={resend}
+              setSendModalStep={setSendModalStep}
+              sendModalStep={sendModalStep}
+              //onBtnClick={onBtnClick}
             />
           )}
         </>
