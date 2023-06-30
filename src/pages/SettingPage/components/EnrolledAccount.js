@@ -1,8 +1,8 @@
-import PlatformList from "pages/SendTokenStepsPage/components/PlatformList";
+import { GoogleIcon } from "assets/icons";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { getSocialConnectList } from "utils/api/twitter";
+import { getUserInfo } from "utils/api/auth";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 
@@ -48,13 +48,13 @@ const Header = styled.div`
 `;
 
 const EnrolledAccount = () => {
-  const [accountList, setAccountList] = useState();
+  const [userInfo, setUserInfo] = useState();
 
   const { t } = useTranslation();
 
   useEffect(() => {
-    getSocialConnectList().then((data) => {
-      setAccountList(data);
+    getUserInfo().then((data) => {
+      setUserInfo(data);
     });
   }, []);
 
@@ -62,18 +62,8 @@ const EnrolledAccount = () => {
     <Container>
       <Header>{t("socialAccountInfo1")}</Header>
       <OpenBoxItem>
-        <EmailIconBox
-          src={
-            PlatformList[
-              PlatformList.findIndex(
-                (v) =>
-                  v.emailName.toLowerCase ==
-                  accountList?.data[0].socialPlatformType?.toLowerCase
-              )
-            ]?.emailIcon
-          }
-        />
-        <EmailName>{accountList?.data[0].socialId}</EmailName>
+        <EmailIconBox src={GoogleIcon} />
+        <EmailName>{userInfo?.socialId}</EmailName>
       </OpenBoxItem>
     </Container>
   );
