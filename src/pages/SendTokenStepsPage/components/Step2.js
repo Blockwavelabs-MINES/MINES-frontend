@@ -292,7 +292,6 @@ const Step2 = ({
   realBalance,
   setSendModalStep,
   sendModalStep,
-  //onBtnClick,
 }) => {
   const [amount, setAmount] = useState();
   const [errorMessage, setErrorMessage] = useState("");
@@ -571,6 +570,10 @@ const Step2 = ({
     setIconClicked(false);
   };
 
+  const btnOnClick = () => {
+    setSendModalStep(sendModalStep - 1);
+  }
+
   const navigation = useNavigate();
 
   return (
@@ -624,7 +627,7 @@ const Step2 = ({
               resend={resend}
               setSendModalStep={setSendModalStep}
               sendModalStep={sendModalStep}
-              //onBtnClick={onBtnClick}
+              btnOnClick={btnOnClick}
             />
           )}
         </>

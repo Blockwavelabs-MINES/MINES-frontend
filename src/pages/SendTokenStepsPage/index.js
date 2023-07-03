@@ -232,7 +232,6 @@ const SendTokenStepsPage = () => {
         realBalance: realBalance,
         setSendModalStep: setSendModalStep,
         sendModalStep: sendModalStep,
-        //onBtnClick: onBtnClick,
       }),
     },
     {
@@ -291,10 +290,6 @@ const SendTokenStepsPage = () => {
   const setRealDelete = () => {
     window.location.href = "/sendToken";
   };
-
-  const onBtnClick = () => {
-    setSendModalStep(sendModalStep - 1);
-  }
 
   return (
     <>

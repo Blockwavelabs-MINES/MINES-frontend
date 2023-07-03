@@ -118,6 +118,8 @@ const LoginModalInner = (
   resend,
   setSendModalStep,
   sendModalStep,
+  noteValue,
+  noteOnChange,
 ) => {
   const { t } = useTranslation();
   const [transactionHash, setTransactionHash] = useState();
@@ -154,6 +156,10 @@ const LoginModalInner = (
       sendOnClick();
     }
   }, []);
+
+  useEffect(() => {
+    console.log(sendModalStep);
+  }, [])
 
   const getReceiptWithTrxsHash = () => {
     const interval = setInterval(async () => {
@@ -410,6 +416,11 @@ const LoginModalInner = (
             </PersonInfo>
           </PersonInfoLine>
         </PersonInfoBox>
+        <TextAreaBox
+          label={t("sendNoteModal_2")}  /* 메모 */
+          isReadOnly={true}
+          value={noteValue}
+        />
         <ContainedButton
           type="primary"
           styles="filled"
@@ -426,23 +437,26 @@ const LoginModalInner = (
 const NoteModalInner = (
   setSendModalStep,
   sendModalStep,
+  noteValue,
+  setNoteValue,
 ) => {
   const { t } = useTranslation();
 
-  const [noteValue, setNoteValue] = useState('');
+  const noteBtnOnClick = () => {
+    setSendModalStep(sendModalStep + 1);
+  }
 
   const noteOnChange = (e) => {
-    if (e.target.value.length < 101) {
+    if (e.target.value.length < 141) {
       setNoteValue(e.target.value);
     } else {
       setNoteValue(e.target.value.substr(0, 140));
     }
   };
 
-  const BtnOnClick = () => {
-    console.log(noteValue);
-    setSendModalStep(sendModalStep + 1);
-  }
+  useEffect(() => {
+    console.log(sendModalStep);
+  }, [])
 
   return(
     <FullContainer>
@@ -465,7 +479,7 @@ const NoteModalInner = (
             states="default"
             size="large"
             label={t("sendNoteModal_4")} /* 다음 */
-            onClick={BtnOnClick} /* 메모 백엔드에 전송 api 호출 ? */
+            onClick={noteBtnOnClick} /* 메모 백엔드에 전송 api 호출 ? */
           />
         </MainInfoBox>
     </FullContainer>
@@ -495,8 +509,10 @@ const CheckSendModal = ({
   resend,
   setSendModalStep,
   sendModalStep,
-  //onBtnClick,
+  btnOnClick,
 }) => {
+  const [noteValue, setNoteValue] = useState('');
+  
   return (
     <>
     {(sendModalStep === 1) && (
@@ -509,6 +525,8 @@ const CheckSendModal = ({
           NoteModalInner(
             setSendModalStep,
             sendModalStep,
+            noteValue,
+            setNoteValue,
           )
         }
       />
@@ -520,7 +538,7 @@ const CheckSendModal = ({
         maskClosable={maskClosable}
         onClose={onClose}
         backBtn
-        //onBtnClick={onBtnClick}
+        btnOnClick={btnOnClick}
         renderInput={() =>
           LoginModalInner(
             amount,
@@ -542,6 +560,7 @@ const CheckSendModal = ({
             resend,
             setSendModalStep,
             sendModalStep,
+            noteValue,
           )
         }
       />
