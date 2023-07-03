@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typograpy from "utils/style/Typography";
 
@@ -40,6 +40,17 @@ const TextareaContainer = styled.textarea`
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
   }
+  ${props =>
+    props.readOnly &&
+    css`
+      background-color: ${palette.sky_4};
+      border: 1px solid ${palette.sky_3};
+      color: ${palette.grey_3};
+      &:focus {
+        border: none
+      }
+    `
+  }
 `;
 
 const TypeNumber = styled.div`
@@ -62,6 +73,7 @@ const TextAreaBox = ({
   maxSize,
   value,
   onChange,
+  isReadOnly,
 }) => {
   return (
     <InputBoxContainer>
@@ -74,10 +86,13 @@ const TextAreaBox = ({
           value={value}
           placeholder={placeholder}
           onChange={onChange}
+          readOnly={isReadOnly}
         />
-        <TypeNumber>
-          {value?.length}/{maxSize}
-        </TypeNumber>
+        {!isReadOnly && (
+          <TypeNumber>
+            {value?.length}/{maxSize}
+          </TypeNumber>
+        )}
       </InputFullBox>
     </InputBoxContainer>
   );
