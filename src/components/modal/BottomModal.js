@@ -14,7 +14,7 @@ function BottomModal({
   visible,
   renderInput,
   backBtn = false,
-  onBtnClick,
+  btnOnClick,
 }) {
   useEffect(() => {
     visible
@@ -56,15 +56,16 @@ function BottomModal({
               styles="outlined"
               states="default"
               size="xs"
-              onClick={onBtnClick}
+              sendModal
+              onClick={btnOnClick}
               icon={ChevronLeft}
+              /*
               style={{
-                margin: "0 auto",
                 position: "absolute",
                 top: "37px",
                 left: "20px",
-                cursor: "pointer",
               }}
+              */
             />
           )}
           <CloseButton onClick={closeOnClick} />
