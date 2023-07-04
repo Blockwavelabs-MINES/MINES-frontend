@@ -178,14 +178,15 @@
   "sendpage02Alert1": "지금까지 입력한 정보가 모두 초기화됩니다. 초기화 하시겠어요?",
   "sendpage02Alert2": "초기화하기",
   "sendpage02Alert3": "취소",
+  "sendpage02NoteModal_1": "메모 쓰기",
+  "sendpage02NoteModal_2": "메모",
+  "sendpage02NoteModal_3": "받는분께 전달할 메모를 작성해주세요 :)",
+  "sendpage02NoteModal_4": "다음",
+  "sendpage02NoteModal_5": "메모를 작성하고, 송금완료하면",
+  "sendpage02NoteModal_6": "작성한 메모는 내 트위터 피드에 포스팅 돼요!",
 
   "selectTokenModalTitle": "토큰 선택",
   "selectNetworkModalTitle": "네트워크 변경",
-
-  "sendNoteModal_1": "메모 쓰기",
-  "sendNoteModal_2": "메모",
-  "sendNoteModal_3": "받는분께 전달할 메모를 작성해주세요 :)",
-  "sendNoteModal_4": "다음",
 
   "sendConfirmModal1": "송금 확인",
   "sendConfirmModal2": "",
@@ -232,6 +233,7 @@
   "sendPage03_12": "송금을 완료했어요!",
   "sendPage03_13": "복사한 링크는 받는 분께 전달해주세요",
   "sendPage03_14": "링크 복사하고 닫기",
+  "sendPage03StatusSuccess": "수령링크는 수신자의 DM으로 자동 전송됩니다. 차단과 같은 특정 경우 전송이 불가할 수 있으니 DM 전송이 완료됐는지 확인해주세요!",
 
   "receiveTokenPage1": "송금받기",
   "receiveTokenPage2": "님이 ",

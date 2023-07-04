@@ -169,14 +169,15 @@
   "sendpage02Alert1": "All information entered will be reset. Would you like to reset it?",
   "sendpage02Alert2": "Confirm",
   "sendpage02Alert3": "Cancel",
+  "sendpage02NoteModal_1": "Writing notes",
+  "sendpage02NoteModal_2": "Notes",
+  "sendpage02NoteModal_3": "Please write a note for the recipient :)",
+  "sendpage02NoteModal_4": "Next",
+  "sendpage02NoteModal_5": "Write a note, send the money",
+  "sendpage02NoteModal_6": "And it will be posted to your Twitter feed!",
 
   "selectTokenModalTitle": "Select Token",
   "selectNetworkModalTitle": "Switch Network",
-
-  "sendNoteModal_1": "Writing notes",
-  "sendNoteModal_2": "Notes",
-  "sendNoteModal_3": "Please write a note for the recipient :)",
-  "sendNoteModal_4": "Next",
 
   "sendConfirmModal1": "Send Confirmation",
   "sendConfirmModal2": "Send ",
@@ -232,6 +233,7 @@
   "sendPage03_12": "completed the remittance!",
   "sendPage03_13": "Please forward the copied link to the recipient",
   "sendPage03_14": "Copy the link and close",
+  "sendPage03StatusSuccess": "The tracking link will be automatically sent to the recipient's DM. Please make sure to check if the DM has been successfully sent as there may be certain cases where the delivery is not possible!",
 
   "receiveTokenPage1": "Receive Token",
   "receiveTokenPage2": " sent ",
