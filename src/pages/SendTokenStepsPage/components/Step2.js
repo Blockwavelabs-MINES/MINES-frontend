@@ -292,6 +292,8 @@ const Step2 = ({
   realBalance,
   setSendModalStep,
   sendModalStep,
+  noteValue,
+  setNoteValue,
 }) => {
   const [amount, setAmount] = useState();
   const [errorMessage, setErrorMessage] = useState("");
@@ -302,6 +304,7 @@ const Step2 = ({
   const [tokenInfo, setTokenInfo] = useState({});
   const [isFinalCheck, setIsFinalCheck] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
   const { t } = useTranslation();
 
   const TooltipText = <TooltipStyle>{t("sendpage02_15")}</TooltipStyle>;
@@ -628,6 +631,8 @@ const Step2 = ({
               setSendModalStep={setSendModalStep}
               sendModalStep={sendModalStep}
               btnOnClick={btnOnClick}
+              noteValue={noteValue}
+              setNoteValue={setNoteValue}
             />
           )}
         </>

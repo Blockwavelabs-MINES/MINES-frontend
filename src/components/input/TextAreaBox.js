@@ -74,6 +74,8 @@ const TextAreaBox = ({
   value,
   onChange,
   isReadOnly,
+  isByte,
+  count,
 }) => {
   return (
     <InputBoxContainer>
@@ -88,9 +90,14 @@ const TextAreaBox = ({
           onChange={onChange}
           readOnly={isReadOnly}
         />
-        {!isReadOnly && (
+        {!isReadOnly && !isByte && (
           <TypeNumber>
             {value?.length}/{maxSize}
+          </TypeNumber>
+        )}
+        {!isReadOnly && isByte && (
+          <TypeNumber>
+            {count}/{maxSize}Byte
           </TypeNumber>
         )}
       </InputFullBox>

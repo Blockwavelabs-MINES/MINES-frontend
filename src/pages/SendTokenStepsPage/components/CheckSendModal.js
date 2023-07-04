@@ -119,7 +119,6 @@ const LoginModalInner = (
   setSendModalStep,
   sendModalStep,
   noteValue,
-  noteOnChange,
 ) => {
   const { t } = useTranslation();
   const [transactionHash, setTransactionHash] = useState();
@@ -156,10 +155,6 @@ const LoginModalInner = (
       sendOnClick();
     }
   }, []);
-
-  useEffect(() => {
-    console.log(sendModalStep);
-  }, [])
 
   const getReceiptWithTrxsHash = () => {
     const interval = setInterval(async () => {
@@ -440,23 +435,37 @@ const NoteModalInner = (
   noteValue,
   setNoteValue,
 ) => {
+  const [byteCount, setByteCount] = useState(0);
+
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setByteCount(byteCountInUtf8Bytes(noteValue));
+  }, [noteValue])
 
   const noteBtnOnClick = () => {
     setSendModalStep(sendModalStep + 1);
   }
 
   const noteOnChange = (e) => {
-    if (e.target.value.length < 141) {
+    if (byteCountInUtf8Bytes(e.target.value) <= 140) {
       setNoteValue(e.target.value);
-    } else {
-      setNoteValue(e.target.value.substr(0, 140));
+      setByteCount(byteCountInUtf8Bytes(e.target.value));
     }
-  };
+  }
 
-  useEffect(() => {
-    console.log(sendModalStep);
-  }, [])
+  const byteCountInUtf8Bytes = (text) => {
+    let count = 0;
+    for (let i = 0; i < text.length; i++) {
+      const charCode = text.charCodeAt(i);
+      if (charCode < 0x007f) {
+        count += 1;
+      } else if (charCode >= 0x0080 && charCode <= 0xffff) {
+        count += 2;
+      }
+    }
+    return count;
+  }
 
   return(
     <FullContainer>
@@ -469,8 +478,10 @@ const NoteModalInner = (
             label={t("sendNoteModal_2")}  /* 메모 */
             placeholder={t("sendNoteModal_3")} /* 받는분께 전달한~ */ 
             value={noteValue}
-            onChange={(e) => noteOnChange(e)}
+            onChange={noteOnChange}
             maxSize={140}
+            isByte
+            count={byteCount}
           />
         </div>
         <ContainedButton
@@ -510,9 +521,9 @@ const CheckSendModal = ({
   setSendModalStep,
   sendModalStep,
   btnOnClick,
+  noteValue,
+  setNoteValue
 }) => {
-  const [noteValue, setNoteValue] = useState('');
-  
   return (
     <>
     {(sendModalStep === 1) && (
