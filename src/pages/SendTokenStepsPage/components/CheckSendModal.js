@@ -12,6 +12,8 @@ import { twitterIdState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 import { TextAreaBox } from "components/input";
+import ImageBanner from "components/banner/ImageBanner";
+import { TwitterImage } from "assets/images";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -470,26 +472,29 @@ const NoteModalInner = (
   return(
     <FullContainer>
       <IntroTextBox>
-        <FirstIntro>{t("sendNoteModal_1")}</FirstIntro> {/* 메모 쓰기 */}
+        <FirstIntro>{t("sendpage02NoteModal_1")}</FirstIntro> {/* 메모 쓰기 */}
       </IntroTextBox>
       <MainInfoBox>
-        <div>
-          <TextAreaBox
-            label={t("sendNoteModal_2")}  /* 메모 */
-            placeholder={t("sendNoteModal_3")} /* 받는분께 전달한~ */ 
-            value={noteValue}
-            onChange={noteOnChange}
-            maxSize={140}
-            isByte
-            count={byteCount}
-          />
-        </div>
+        <ImageBanner 
+          description={t("sendpage02NoteModal_5")}
+          title={t("sendpage02NoteModal_6")}
+          image={TwitterImage}
+        />
+        <TextAreaBox
+          label={t("sendpage02NoteModal_2")}  /* 메모 */
+          placeholder={t("sesendpage02NoteModal_3ndNoteModal_3")} /* 받는분께 전달한~ */ 
+          value={noteValue}
+          onChange={noteOnChange}
+          maxSize={140}
+          isByte
+          count={byteCount}
+        />
         <ContainedButton
             type="primary"
             styles="filled"
             states="default"
             size="large"
-            label={t("sendNoteModal_4")} /* 다음 */
+            label={t("sendpage02NoteModal_4")} /* 다음 */
             onClick={noteBtnOnClick} /* 메모 백엔드에 전송 api 호출 ? */
           />
         </MainInfoBox>
