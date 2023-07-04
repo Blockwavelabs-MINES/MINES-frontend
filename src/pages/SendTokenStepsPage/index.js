@@ -156,6 +156,7 @@ const SendTokenStepsPage = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const [sendModalStep, setSendModalStep] = useState(1);
+  const [noteValue, setNoteValue] = useState('');
 
   const { t } = useTranslation();
 
@@ -232,6 +233,8 @@ const SendTokenStepsPage = () => {
         realBalance: realBalance,
         setSendModalStep: setSendModalStep,
         sendModalStep: sendModalStep,
+        noteValue: noteValue,
+        setNoteValue: setNoteValue,
       }),
     },
     {
@@ -276,6 +279,14 @@ const SendTokenStepsPage = () => {
       } else {
         setFinalModalVisible(true);
       }
+    }
+  };
+
+  function noteOnChange(e) {
+    if (e.target.value.length < 141) {
+      setNoteValue(e.target.value);
+    } else {
+      setNoteValue(e.target.value.substr(0, 140));
     }
   };
 

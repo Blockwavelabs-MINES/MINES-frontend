@@ -56,11 +56,18 @@ const TextareaContainer = styled.textarea`
 const TypeNumber = styled.div`
   width: 100%;
   display: flex;
+  justify-content: flex-end;
   ${Typograpy.Caption2}
   text-align: right;
   color: ${palette.grey_3};
   margin-top: 4px;
+  font-size: 12px;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
 `;
+
 const InputFullBox = styled.div`
   position: relative;
 `;
@@ -74,6 +81,8 @@ const TextAreaBox = ({
   value,
   onChange,
   isReadOnly,
+  isByte,
+  count,
 }) => {
   return (
     <InputBoxContainer>
@@ -88,9 +97,14 @@ const TextAreaBox = ({
           onChange={onChange}
           readOnly={isReadOnly}
         />
-        {!isReadOnly && (
+        {!isReadOnly && !isByte && (
           <TypeNumber>
             {value?.length}/{maxSize}
+          </TypeNumber>
+        )}
+        {!isReadOnly && isByte && (
+          <TypeNumber>
+            {count}/{maxSize}Byte
           </TypeNumber>
         )}
       </InputFullBox>

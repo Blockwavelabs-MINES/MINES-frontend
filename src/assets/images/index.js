@@ -9,3 +9,4 @@ export { default as MainImage2 } from "./main-image2.svg";
 export { default as MainImage3 } from "./main-image3.svg";
 export { default as CrossImage } from "./cross-image.svg";
 export { default as SorryImage } from "./sorry-image.svg";
+export { default as TwitterImage } from "./twitterfeed-image.svg";
