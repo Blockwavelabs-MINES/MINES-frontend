@@ -385,6 +385,7 @@ const LoginModalInner = (
       <IntroTextBox>
         <FirstIntro>{t("sendConfirmModal1")}</FirstIntro>
       </IntroTextBox>
+      <hr style={{ background: `${palette.grey_7}`, height: '1px', border: '0' }} />
       <MainInfoBox>
         <SendAmountInfo>
           <SendAmountBox>
@@ -474,6 +475,7 @@ const NoteModalInner = (
       <IntroTextBox>
         <FirstIntro>{t("sendpage02NoteModal_1")}</FirstIntro> {/* 메모 쓰기 */}
       </IntroTextBox>
+      <hr style={{ background: `${palette.grey_7}`, height: '1px', border: '0' }} />
       <MainInfoBox>
         <ImageBanner 
           description={t("sendpage02NoteModal_5")}
