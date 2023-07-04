@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
 
 const PrimaryButton = styled.button`
@@ -114,6 +114,13 @@ const SecondaryButton = styled.button`
   background-size: calc(100% - 12px);
   background-repeat: no-repeat;
   background-position: center;
+
+  ${props =>
+    props.zIndex && 
+    css`
+      z-index: 904;
+    `
+  }
 `;
 
 // type="primary";
@@ -122,7 +129,7 @@ const SecondaryButton = styled.button`
 // size="large";
 // Show icon=false;
 
-const IconButton = ({ type, styles, states, size, icon, onClick, style }) => {
+const IconButton = ({ type, styles, states, size, icon, onClick, style, zIndex, }) => {
   return (
     <>
       {type === "primary" ? (
@@ -144,6 +151,7 @@ const IconButton = ({ type, styles, states, size, icon, onClick, style }) => {
           icon={icon}
           onClick={onClick}
           style={style}
+          zIndex={zIndex}
         />
       )}
     </>

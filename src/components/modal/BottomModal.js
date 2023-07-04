@@ -51,22 +51,21 @@ function BottomModal({
       >
         <ModalInner tabIndex="0" className="modal-inner">
           {backBtn && (
-            <IconButton
-              type="secondary"
-              styles="outlined"
-              states="default"
-              size="xs"
-              sendModal
-              onClick={btnOnClick}
-              icon={ChevronLeft}
-              /*
-              style={{
-                position: "absolute",
-                top: "37px",
-                left: "20px",
-              }}
-              */
-            />
+              <IconButton
+                type="secondary"
+                styles="outlined"
+                states="default"
+                size="xs"
+                sendModal
+                onClick={btnOnClick}
+                icon={ChevronLeft}
+                zIndex
+                style={{
+                  position: 'absolute',
+                  top: '37px',
+                  left: '20px',
+                }}
+              />
           )}
           <CloseButton onClick={closeOnClick} />
           {_renderInput()}
