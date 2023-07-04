@@ -415,7 +415,7 @@ const LoginModalInner = (
           </PersonInfoLine>
         </PersonInfoBox>
         <TextAreaBox
-          label={t("sendNoteModal_2")}  /* 메모 */
+          label={t("sendpage02NoteModal_2")}  /* 메모 */
           isReadOnly={true}
           value={noteValue}
         />
@@ -484,7 +484,7 @@ const NoteModalInner = (
         />
         <TextAreaBox
           label={t("sendpage02NoteModal_2")}  /* 메모 */
-          placeholder={t("sesendpage02NoteModal_3ndNoteModal_3")} /* 받는분께 전달한~ */ 
+          placeholder={t("sendpage02NoteModal_3")} /* 받는분께 전달한~ */ 
           value={noteValue}
           onChange={noteOnChange}
           maxSize={140}
