@@ -53,11 +53,12 @@ const SendAmountBox = styled.div`
 
 const MainInfoBox = styled.div`
   padding: 22px 20px;
+  height: 60%;
 `;
 
 const PersonInfoBox = styled.div`
   margin-top: 30px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   width: 100%;
 `;
 
@@ -414,11 +415,13 @@ const LoginModalInner = (
             </PersonInfo>
           </PersonInfoLine>
         </PersonInfoBox>
-        <TextAreaBox
-          label={t("sendpage02NoteModal_2")}  /* 메모 */
-          isReadOnly={true}
-          value={noteValue}
-        />
+        <div style={{ marginBottom: "20px" }}>
+          <TextAreaBox
+            label={t("sendpage02NoteModal_2")}  /* 메모 */
+            isReadOnly={true}
+            value={noteValue}
+          />
+        </div>
         <ContainedButton
           type="primary"
           styles="filled"
@@ -482,15 +485,17 @@ const NoteModalInner = (
           title={t("sendpage02NoteModal_6")}
           image={TwitterImage}
         />
-        <TextAreaBox
-          label={t("sendpage02NoteModal_2")}  /* 메모 */
-          placeholder={t("sendpage02NoteModal_3")} /* 받는분께 전달한~ */ 
-          value={noteValue}
-          onChange={noteOnChange}
-          maxSize={140}
-          isByte
-          count={byteCount}
-        />
+        <div style={{ marginTop: "20px", marginBottom: "80px" }}>
+          <TextAreaBox
+            label={t("sendpage02NoteModal_2")}  /* 메모 */
+            placeholder={t("sendpage02NoteModal_3")} /* 받는분께 전달한~ */ 
+            value={noteValue}
+            onChange={noteOnChange}
+            maxSize={140}
+            isByte
+            count={byteCount}
+          />
+        </div>
         <ContainedButton
             type="primary"
             styles="filled"

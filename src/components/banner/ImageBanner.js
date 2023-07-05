@@ -11,7 +11,6 @@ const FullContainer = styled.div`
   border-radius: 8px;
   gap: 8px;
   box-sizing: border-box;
-  margin-bottom: 18px;
 `;
 
 const TextWrapper = styled.div`
