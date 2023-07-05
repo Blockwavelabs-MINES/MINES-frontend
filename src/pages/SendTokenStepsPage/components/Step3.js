@@ -109,7 +109,6 @@ const CopyBox = styled.button`
   border: 1px solid ${palette.grey_6};
   align-items: center;
   padding: 18px 16px;
-  margin-bottom: 100px;
 `;
 
 const LinkText = styled.div`
@@ -133,6 +132,13 @@ const CopyButton = styled.button`
   background-repeat: no-repeat;
   background-position: center;
   border: hidden;
+`;
+
+const NoticeText = styled.div`
+  ${Typography.Caption2}
+  color: ${palette.grey_1};
+  margin-top: 10px;
+  margin-bottom: 90px;
 `;
 
 function pad(n) {
@@ -293,6 +299,9 @@ const Step3 = ({ expired, finalLink }) => {
           <CopyButton />
         </CopyBox>
       </div>
+      <NoticeText>
+        {t("sendPage03StatusSuccess")}
+      </NoticeText>
       {copyPivotVisible && (
         <CopyPivot
           visible={copyPivotVisible}
