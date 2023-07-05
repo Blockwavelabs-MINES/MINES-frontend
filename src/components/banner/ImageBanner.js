@@ -31,7 +31,8 @@ const BannerTitle = styled.div`
 const BannerImage = styled.img`
   width: 62px;
   height: 62px;
-  margin: -16px;
+  margin-top: -16px;
+  margin-bottom: -16px;
 `;
 
 const ImageBanner = ({ image, description, title }) => {
