@@ -191,7 +191,8 @@ const LoginModalInner = (
               escrowId,
               expiredDateResult,
               tokenInfo.address,
-              networkId
+              networkId,
+              noteValue
             ).then((data) => {
               setFinalLink(data.linkKey);
               setExpired(setExpiredDate());
@@ -304,7 +305,8 @@ const LoginModalInner = (
                     1234,
                     setExpiredDate(),
                     tokenInfo.address,
-                    networkId
+                    networkId,
+                    noteValue
                   ).then((data) => {
                     setFinalLink(data.linkKey);
                     setExpired(data.expiredAt);
@@ -454,7 +456,7 @@ const NoteModalInner = (
   }
 
   const noteOnChange = (e) => {
-    if (byteCountInUtf8Bytes(e.target.value) <= 140) {
+    if (byteCountInUtf8Bytes(e.target.value) <= 180) {
       setNoteValue(e.target.value);
       setByteCount(byteCountInUtf8Bytes(e.target.value));
     }
@@ -491,7 +493,7 @@ const NoteModalInner = (
             placeholder={t("sendpage02NoteModal_3")} /* 받는분께 전달한~ */ 
             value={noteValue}
             onChange={noteOnChange}
-            maxSize={140}
+            maxSize={180}
             isByte
             count={byteCount}
           />
