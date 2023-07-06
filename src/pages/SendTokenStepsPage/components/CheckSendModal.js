@@ -159,6 +159,11 @@ const LoginModalInner = (
     }
   }, []);
 
+  /* 
+  * web3API로 (트랜잭션 hash)를 통해 트랜잭션을 받아옴. (아직 트랜잭션 생성이 완료 안됨(receipt: null)이면 interval)
+  * -> 서버에 (트랜잭션에 관한 정보)들을 POST요청하고, response로 링크키(수금하기 위한 url키)를 받아옴
+  * -> interval 종료. 다음 단계로
+  */
   const getReceiptWithTrxsHash = () => {
     const interval = setInterval(async () => {
       await fetch(rpcURL, {
