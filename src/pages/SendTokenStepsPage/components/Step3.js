@@ -308,7 +308,7 @@ const Step3 = ({ expired, finalLink }) => {
           closable={true}
           maskClosable={true}
           onClose={copyOnClose}
-          label={t("createLinkDone5")}
+          label={t("sendPage03_10")}
           type={"up"}
           x={`calc(${clickX}px - 70px)`}
           y={"calc(50% - 90px)"}

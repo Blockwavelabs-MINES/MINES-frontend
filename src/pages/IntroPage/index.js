@@ -3,7 +3,7 @@ import { LoginHeader } from "components/header";
 import { SingleModal } from "components/modal";
 import { BottomNavBar } from "components/navbar";
 import CreateLinkPage from "pages/CreateLinkPage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -12,6 +12,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { loginModalVisibleState, signupState } from "utils/atoms/login";
+import { receiveLinkState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 
@@ -57,7 +58,13 @@ const IntroPage = () => {
   const [loginAlertModalVisible, setLoginAlertModalVisible] = useState(false);
   const [isSignup, setIsSignup] = useRecoilState(signupState);
   const setLoginModalVisible = useSetRecoilState(loginModalVisibleState);
+  const setReceiveLink = useSetRecoilState(receiveLinkState);
+
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setReceiveLink("");
+  }, [])
 
   return (
     <>

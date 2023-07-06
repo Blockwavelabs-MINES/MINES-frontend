@@ -11,7 +11,8 @@ export const sendTrxs = async (
   transactionEscrowId,
   expiredAt,
   tokenContractAddress,
-  networkId
+  networkId,
+  comment
 ) => {
   let returnValue = 0;
   await axios
@@ -29,6 +30,7 @@ export const sendTrxs = async (
         expiredAt: expiredAt,
         tokenContractAddress: tokenContractAddress,
         networkId: networkId,
+        comment: comment
       },
       {
         headers: {
