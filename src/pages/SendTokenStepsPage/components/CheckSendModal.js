@@ -176,7 +176,6 @@ const LoginModalInner = (
         .then(async (receipt) => {
           setLoading(true);
           if (receipt == null) {
-            console.log("pending");
             setTransactionStatus("pending");
           } else {
             setTransactionStatus("mined");
@@ -212,7 +211,7 @@ const LoginModalInner = (
           setFailed(true);
           clearInterval(interval);
         });
-    }, 1000);
+    }, 2000);
   };
 
   const requestSendToMetamask = async (params) => {
