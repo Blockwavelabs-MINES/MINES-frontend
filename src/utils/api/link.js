@@ -1,6 +1,8 @@
 import axios from "axios";
 import { privateHeaders, handleTokenExpired } from "./base";
 
+/* 
+ param으로 userId를 받지만, 모든 호출의 userId는 자기 자신임
 export const getLink = async (userId) => {
   let resultValue = 0;
   await axios.get(`/public/link/all?user_id=${userId}`).then((data) => {
@@ -9,6 +11,20 @@ export const getLink = async (userId) => {
 
   return resultValue;
 };
+*/
+// 링크 전체 조회
+export const getLink = async() => {
+  let resultValue = 0;
+
+  await axios.get('/link', {
+    headers: privateHeaders,
+  })
+    .then((res) => {
+      resultValue = res.data.data;
+    })
+    
+    return resultValue;
+}
 
 export const addLink = async (title, url) => {
   let returnValue = 0;
