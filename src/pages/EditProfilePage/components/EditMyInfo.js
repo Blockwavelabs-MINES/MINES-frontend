@@ -159,13 +159,12 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
     if (!name) {
       return;
     }
+    
     const formData = new FormData();
-    const formJson = {
-      profile_name: name,
-      profile_description: introduction,
-    };
+
     formData.append("image", profileImageChange ? newProfileImage : null);
-    formData.append("profile", JSON.stringify(formJson));
+    formData.append("profileName", name);
+    formData.append("profileBio", introduction);
 
     await editProfile(formData).then(() => {
       setEditMyInfo();

@@ -93,14 +93,17 @@ export const createUserId = async (userId) => {
   return returnValue;
 };
 
+// 유저 프로필 업데이트
 export const editProfile = async (formData) => {
   let returnValue = {};
-  await axios
-    .put(`/users/edit/profile`, formData, {
-      headers: privateHeadersMultipart,
-    })
-    .then((result) => {
-      returnValue = result.data.resultData;
+  await axios.put(`/user/profile/edit`, 
+      formData, 
+      {
+        headers: privateHeadersMultipart,
+      }
+    )
+    .then((res) => {
+      returnValue = res.data.resultData;
     })
     .catch((error) => {
       handleTokenExpired(error);
