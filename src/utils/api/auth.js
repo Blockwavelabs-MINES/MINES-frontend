@@ -74,21 +74,20 @@ export const checkUserId = async (userID) => {
   return returnValue;
 };
 
-export const createUserId = async (newId) => {
+// 유저 아이디 등록 & 변경
+export const createUserId = async (userId) => {
   let returnValue;
-  await axios
-    .put(
-      `/users/edit/userid?new_id=${newId}`,
+  await axios.put(`/user/id/edit?user_id=${userId}`,
       {},
       {
         headers: privateHeaders,
       }
     )
-    .then((response) => {
-      returnValue = response.data;
+    .then((res) => {
+      returnValue = res.data;
     })
     .catch((error) => {
-      console.log(error);
+      console.error(error);
     });
 
   return returnValue;
