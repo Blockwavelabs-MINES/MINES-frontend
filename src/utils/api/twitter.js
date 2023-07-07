@@ -58,30 +58,33 @@ export const disconnectSocial = async (socialType) => {
   return returnValue;
 };
 
-//트위터 토큰 재발급.
-export const refreshTwitterToken = async (
+// 소셜 OAuth2.0 토큰 재발급
+export const refreshSocialToken = async (
+  socialType,
   linkKey,
   dateInFormat,
   tokenAmount
 ) => {
   let returnValue = 0;
-  await axios
-    .put(
-      "/auth/twitter/refresh",
-      {},
+
+  await axios.put("/social/refresh",
+      {
+        socialType: socialType,
+      },
       {
         headers: privateHeaders,
       }
     )
-    .then((data) => {
-      console.log("트위터 토큰 재발급 성공");
-      console.log(data);
-      returnValue = data.data;
+    .then((res) => {
+      console.log("소셜 토큰 재발급 성공");
+      console.log(res);
+      returnValue = res.data;
+      // 일단 보류.. (아직 트위터만)
       postTweet(linkKey, dateInFormat, tokenAmount);
     })
-    .catch((e) => {
-      console.log("트위터 토큰 재발급 실패");
-      console.log(e);
+    .catch((error) => {
+      console.log("소셜 토큰 재발급 실패");
+      console.log(error);
     });
 
   return returnValue;
@@ -107,7 +110,7 @@ export const postTweet = async (linkKey, dateInFormat, tokenAmount) => {
     })
     .catch((e) => {
       console.log(e);
-      refreshTwitterToken(linkKey, dateInFormat, tokenAmount);
+      refreshSocialToken("TWITTER", linkKey, dateInFormat, tokenAmount);
       console.log("포스팅 실패");
     });
 
