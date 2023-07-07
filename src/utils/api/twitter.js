@@ -36,23 +36,24 @@ export const connectSocial = async (code, socialType) => {
   return returnValue;
 };
 
-//소셜 로그인 연동 해제.
-export const disconnectTwitter = async (code) => {
+//소셜 계정 연동 해제
+export const disconnectSocial = async (socialType) => {
   let returnValue;
-  await axios
-    .put(
-      "/auth/disconnect",
-      {
-        socialPlatformType: "TWITTER",
-      },
-      {
-        headers: privateHeaders,
-      }
-    )
-    .then((data) => {
-      returnValue = data;
-    })
-    .catch(() => {});
+
+  await axios.put("/social/disconnect",
+    {
+      socialType: socialType,
+    },
+    {
+      headers: privateHeaders,
+    }
+  )
+  .then((res) => {
+    returnValue = res;
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 
   return returnValue;
 };
