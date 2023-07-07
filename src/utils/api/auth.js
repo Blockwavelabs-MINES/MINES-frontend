@@ -60,11 +60,16 @@ export const requestRefreshToken = async () => {
   return returnValue;
 };
 
+// 유저 아이디 중복 확인
 export const checkUserId = async (userID) => {
   let returnValue;
-  await axios.get(`/public/users/id/check?user_id=${userID}`).then((data) => {
-    returnValue = data.data;
-  });
+  await axios.get(`/user/id/check?user_id=${userID}`)
+    .then((res) => {
+      returnValue = res.data;
+    })
+    .catch((error) => {
+      console.error("checkUserId" + error);
+    });
 
   return returnValue;
 };
