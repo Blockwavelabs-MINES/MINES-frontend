@@ -112,14 +112,14 @@ export const editProfile = async (formData) => {
   return returnValue;
 };
 
+// 유저(자신) 정보 조회
 export const getUserInfo = async () => {
   let returnValue;
-  await axios
-    .get(`/users/my/info`, {
+  await axios.get(`/user`, {
       headers: privateHeaders,
     })
-    .then((data) => {
-      returnValue = data.data.resultData;
+    .then((res) => {
+      returnValue = res.data.data;
     })
     .catch((error) => {
       console.log(error);
