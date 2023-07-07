@@ -26,11 +26,11 @@ export const getLink = async() => {
     return resultValue;
 }
 
+// 링크 생성
 export const addLink = async (title, url) => {
   let returnValue = 0;
-  await axios
-    .post(
-      "/link/add",
+
+  await axios.post("/link/add",
       {
         linkTitle: title,
         linkUrl: url,
@@ -39,8 +39,8 @@ export const addLink = async (title, url) => {
         headers: privateHeaders,
       }
     )
-    .then((data) => {
-      returnValue = data.data;
+    .then((res) => {
+      returnValue = res.data;
     })
     .catch((error) => {
       handleTokenExpired(error);
