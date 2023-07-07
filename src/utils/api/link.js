@@ -49,14 +49,15 @@ export const addLink = async (title, url) => {
   return returnValue;
 };
 
+// 링크 삭제
 export const deleteLink = async (linkId) => {
   let returnValue = 0;
-  await axios
-    .delete(`/link/remove?link_id=${linkId}`, {
+
+  await axios.delete(`/link/:${linkId}`, {
       headers: privateHeaders,
     })
-    .then((data) => {
-      returnValue = data.data;
+    .then((res) => {
+      returnValue = res.data;
     })
     .catch((error) => {
       handleTokenExpired(error);
