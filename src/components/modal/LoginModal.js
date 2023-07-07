@@ -54,12 +54,12 @@ const LoginModalInner = (type, setStatus, onClose) => {
   const setIsSignup = useSetRecoilState(signupState);
   const { t } = useTranslation();
 
-  const responseGoogle = async (code) => {
-    await requestLogin(code).then((data) => {
-      if (type == "receive" || data === "SIGNUP") {
+  const responseGoogle = async (code, socialType) => {
+    await requestLogin(code, socialType).then((res) => {
+      if (type == "receive" || res === "SIGNUP") {
         setStatus(true);
         setIsSignup(true);
-      } else if (data === "LOGIN") {
+      } else if (res === "LOGIN") {
         setStatus(false);
       }
       setIsLoggedIn(true);
@@ -69,7 +69,7 @@ const LoginModalInner = (type, setStatus, onClose) => {
 
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => {
-      responseGoogle(codeResponse.access_token);
+      responseGoogle(codeResponse.access_token, "GOOGLE");
     },
   });
 

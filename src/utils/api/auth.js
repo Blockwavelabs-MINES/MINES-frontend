@@ -5,21 +5,26 @@ import {
   privateHeadersMultipart,
 } from "./base";
 
-export const requestLogin = async (code) => {
+// 소셜 로그인
+export const requestLogin = async (code, socialType) => {
   let returnValue;
   await axios
-    .get(`/public/users/login/google?code=${code}`)
-    .then((data) => {
+    .post(`/auth/login?code=${code}`, 
+      {
+        socialType: socialType
+      }
+    )
+    .then((res) => {
       localStorage.setItem(
         "accessToken",
-        data.data.resultData.tokenDto.access_token
+        res.data.data.token.accessToken
       );
       localStorage.setItem(
         "refreshToken",
-        data.data.resultData.tokenDto.refresh_token
+        res.data.data.token.refreshToken
       );
       //회원가입 및 로그인 여부.
-      returnValue = data.data.resultData.socialLoginResponse.status;
+      returnValue = res.data.data.isSignup ? "SIGNUP" : "LOGIN";
     })
     .catch((error) => {
       console.log(error);
@@ -28,6 +33,7 @@ export const requestLogin = async (code) => {
   return returnValue;
 };
 
+// Access 토큰 재발급
 export const requestRefreshToken = async () => {
   let returnValue;
   await axios
