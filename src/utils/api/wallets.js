@@ -34,18 +34,19 @@ export const addWallet = async (walletType, walletAddress) => {
   return returnValue;
 };
 
-export const deleteWallet = async (userWalletIndex) => {
+// 지갑 삭제
+export const deleteWallet = async (walletId) => {
   let returnValue = 0;
-  await axios
-    .delete(`/wallets?user_wallet_index=${userWalletIndex}`, {
+
+  await axios.delete(`/wallet/:${walletId}`, {
       headers: privateHeaders,
     })
-    .then((data) => {
-      returnValue = data.data.resultData;
-    })
-    .catch((error) => {
-      handleTokenExpired(error);
-    });
+  .then((res) => {
+    returnValue = res.data;
+  })
+  .catch((error) => {
+    handleTokenExpired(error);
+  });
 
   return returnValue;
 };

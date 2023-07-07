@@ -73,7 +73,8 @@ const WalletComponent = ({ userId, setInfoChange, infoChange }) => {
     (async () => {
       if (realDelete) {
         // 지우는 action
-        await deleteWallet(walletList[deleteIdx].index).then((data) => {
+        await deleteWallet(walletList[deleteIdx].index)
+        .then(() => {
           setDeleteIdx(-1);
           setRealDelete(false);
           setInfoChange(!infoChange);
