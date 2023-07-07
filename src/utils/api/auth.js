@@ -129,6 +129,7 @@ export const getUserInfo = async () => {
   return returnValue;
 };
 
+// 보류
 export const getUserInfoAndProfileDeco = async (userId) => {
   let returnValue;
   await axios
@@ -143,18 +144,18 @@ export const getUserInfoAndProfileDeco = async (userId) => {
   return returnValue;
 };
 
+// 유저 언어 업데이트
 export const changeUserLanguage = async (newLanguage) => {
   let returnValue;
-  await axios
-    .put(
-      `users/edit/language?language=${newLanguage}`,
+  // newLanguage: "KOR" or "ENG"
+  await axios.put(`user/language?language=${newLanguage}`,
       {},
       {
         headers: privateHeaders,
       }
     )
-    .then((data) => {
-      returnValue = data.data;
+    .then((res) => {
+      returnValue = res.data;
     });
   return returnValue;
 };
