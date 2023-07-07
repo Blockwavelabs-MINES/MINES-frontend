@@ -16,18 +16,22 @@ export const getProfileDeco = async (userId) => {
   return returnValue;
 };
 
+// 프로필 꾸미기 정보 업데이트
 export const editProfileDeco = async (formData) => {
   let returnValue;
-  await axios
-    .put(`/profile/edit`, formData, {
+
+  await axios.put(`/user/profile/decorate/edit`, 
+    formData, 
+    {
       headers: privateHeadersMultipart,
-    })
-    .then((data) => {
-      returnValue = data.data.resultData;
-    })
-    .catch((error) => {
-      handleTokenExpired(error);
-    });
+    }
+  )
+  .then((res) => {
+    returnValue = res.data;
+  })
+  .catch((error) => {
+    handleTokenExpired(error);
+  });
 
   return returnValue;
 };

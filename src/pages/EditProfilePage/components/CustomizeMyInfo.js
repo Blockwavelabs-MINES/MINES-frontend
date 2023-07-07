@@ -299,19 +299,19 @@ const CustomizeMyInfo = ({ userId, setCustomizeMyInfo, setInfoChange }) => {
       setHexCodeError(true);
       return;
     }
+
     const formData = new FormData();
-    const formJson = {
-      background_color: backgroundColor,
-      button_color: buttonColor,
-      button_font_color: buttonFontColor,
-      font_color: fontColor,
-    };
+
     if (backTypeIsColor) {
       formData.append("image", "");
     } else {
       formData.append("image", backImage.file);
     }
-    formData.append("data", JSON.stringify(formJson));
+
+    formData.append("backgroundColor", backgroundColor);
+    formData.append("buttonColor", buttonColor);
+    formData.append("buttonFontColor", buttonFontColor);
+    formData.append("fontColor", fontColor);
 
     editProfileDeco(formData).then(() => {
       setInfoChange(true);
