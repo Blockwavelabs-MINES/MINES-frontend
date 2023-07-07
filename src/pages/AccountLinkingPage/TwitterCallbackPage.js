@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { connectTwitter } from "utils/api/twitter";
+import { connectSocial } from "utils/api/twitter";
 import {
   receiveLinkState,
   twitterJustConnectedState,
@@ -22,24 +22,23 @@ const TwitterCallbackPage = () => {
     const currentUrl = window.location.href;
     const twitterCode = currentUrl?.split("&code=")[1]?.split("&")[0];
 
-    console.log(twitterCode);
     setTwitterJustConnected(true);
-    await connectTwitter(twitterCode)
-      .then((data) => {
-        if (receiveLink) {
-          console.log(data);
-          const linkKey = receiveLink;
-          setReceiveLink("");
-          window.location.href = `/receiveToken/${linkKey}`;
-        } else {
-          window.location.href = "/accountLinking";
-        }
-      })
 
-      .catch((e) => {
-        console.log(e);
+    await connectSocial(twitterCode, "TWITTER")
+    .then((data) => {
+      if (receiveLink) {
+        console.log(data);
+        const linkKey = receiveLink;
+        setReceiveLink("");
+        window.location.href = `/receiveToken/${linkKey}`;
+      } else {
         window.location.href = "/accountLinking";
-      });
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+      window.location.href = "/accountLinking";
+    });
   };
 
   useEffect(() => {

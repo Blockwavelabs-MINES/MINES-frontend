@@ -1,6 +1,7 @@
 import axios from "axios";
 import { privateHeaders } from "./base";
 
+// 보류
 export const getSocialConnectList = async () => {
   let returnValue;
   await axios
@@ -16,23 +17,21 @@ export const getSocialConnectList = async () => {
   return returnValue;
 };
 
-//소셜 로그인 연동.
-export const connectTwitter = async (code) => {
+// 소셜 계정 연동
+export const connectSocial = async (code, socialType) => {
   let returnValue;
-  await axios
-    .post(
-      "/auth/connect",
-      {
-        code: code,
-        socialPlatformType: "TWITTER",
-      },
-      {
-        headers: privateHeaders,
-      }
-    )
-    .then((data) => {
-      returnValue = data.data;
-    });
+
+  await axios.post(`/social/connect?code=${code}`,
+    {
+      socialType: socialType,
+    },
+    {
+      headers: privateHeaders,
+    }
+  )
+  .then((res) => {
+    returnValue = res.data.data;
+  });
 
   return returnValue;
 };
