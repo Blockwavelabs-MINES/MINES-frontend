@@ -141,7 +141,8 @@ const WalletComponent = ({
         });
         if (notDuplicated) {
           // 추가하는 action
-          await addWallet("METAMASK", addedWallet).then(() => {
+          await addWallet("METAMASK", addedWallet)
+          .then(() => {
             var tmpWalletList = walletList;
             tmpWalletList.push({
               walletAddress: addedWallet,

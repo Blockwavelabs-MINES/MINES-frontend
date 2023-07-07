@@ -103,8 +103,8 @@ const WalletComponent = ({ userId, setInfoChange, infoChange }) => {
         });
         if (notDuplicated) {
           // 추가하는 action
-          await addWallet("METAMASK", addedWallet).then((data) => {
-            console.log(data);
+          await addWallet("METAMASK", addedWallet)
+          .then(() => {
             var tmpWalletList = walletList;
             tmpWalletList.push({
               // type: "Metamask",
