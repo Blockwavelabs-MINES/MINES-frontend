@@ -66,26 +66,25 @@ export const deleteLink = async (linkId) => {
   return returnValue;
 };
 
+// 링크 업데이트
 export const editLink = async (linkId, title, url) => {
   let returnValue;
-  await axios
-    .put(
-      "/link/edit",
-      {
-        id: linkId,
-        title: title,
-        url: url,
-      },
-      {
-        headers: privateHeaders,
-      }
-    )
-    .then((response) => {
-      returnValue = response.data;
-    })
-    .catch((error) => {
-      handleTokenExpired(error);
-    });
+  
+  await axios.put(`/link/edit/:${linkId}`,
+    {
+      linkTitle: title,
+      linkUrl: url,
+    },
+    {
+      headers: privateHeaders,
+    }
+  )
+  .then((res) => {
+    returnValue = res.data;
+  })
+  .catch((error) => {
+    handleTokenExpired(error);
+  });
 
   return returnValue;
 };
