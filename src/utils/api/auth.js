@@ -37,16 +37,16 @@ export const requestLogin = async (code, socialType) => {
 export const requestRefreshToken = async () => {
   let returnValue;
   await axios
-    .post(`/public/users/reissue`, {
-      grant_type: "Bearer",
-      access_token: localStorage.getItem("accessToken"),
-      refresh_token: localStorage.getItem("refreshToken"),
+    .get(`/auth/refresh`, {
+      header: {
+       refresh_token: localStorage.getItem("refreshToken"),
+      }
     })
     //리프레쉬 토큰이 만료되었을 때.
-    .then((data) => {
-      returnValue = data;
-      localStorage.setItem("accessToken", data.data.resultData.access_token);
-      localStorage.setItem("refreshToken", data.data.resultData.refresh_token);
+    .then((res) => {
+      returnValue = res;
+      localStorage.setItem("accessToken", res.data.data.accessToken);
+      localStorage.setItem("refreshToken", res.data.data.refreshToken);
       window.location.reload();
     })
     .catch((error) => {
