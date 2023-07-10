@@ -83,7 +83,7 @@ const CreateLinkPage = () => {
       .then(async () => {
         await axios
           .put(
-            `/users/edit/userid?new_id=${linkId}`,
+            `/user/id/edit?user_id=${linkId}`,
             {},
             {
               headers: {
