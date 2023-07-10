@@ -148,7 +148,7 @@ export const getUserInfoAndProfileDeco = async (userId) => {
 export const changeUserLanguage = async (newLanguage) => {
   let returnValue;
   // newLanguage: "KOR" or "ENG"
-  await axios.put(`user/language?language=${newLanguage}`,
+  await axios.put(`/user/language?language=${newLanguage}`,
       {},
       {
         headers: privateHeaders,
