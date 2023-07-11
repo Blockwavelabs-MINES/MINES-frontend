@@ -10,6 +10,7 @@ import { loginModalVisibleState, loginState } from "utils/atoms/login";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography";
 import { AccountListComponent } from "./components";
+import { sendSocialConnectState } from "utils/atoms/twitter";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -46,11 +47,17 @@ const SendTokenPage = () => {
   const [loginAlertModalVisible, setLoginAlertModalVisible] = useState(false);
   const [twitterConnected, setTwitterConnected] = useState(false);
   const setLoginModalVisible = useSetRecoilState(loginModalVisibleState);
+  const setSendSocialConnect = useSetRecoilState(sendSocialConnectState);
   const isLoggedIn = useRecoilValue(loginState);
+
   const { t } = useTranslation();
 
   useEffect(() => {
     !isLoggedIn && setLoginAlertModalVisible(true);
+  }, []);
+
+  useEffect(() => {
+    setSendSocialConnect(false);
   }, []);
 
   return (
