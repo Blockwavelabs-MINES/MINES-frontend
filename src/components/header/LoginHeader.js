@@ -82,7 +82,7 @@ const LoginHeader = () => {
         },
       })
       .then((data) => {
-        returnValue = data.data.resultData;
+        returnValue = data.data.data;
         setUserInfo(returnValue);
         const userLanguage = returnValue?.language.toLowerCase().slice(0, 2);
         userLanguage === "en"
