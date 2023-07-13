@@ -59,7 +59,8 @@ const MessageIcon = styled.img.attrs((props) => ({
       : props.state === "error"
       ? InputError
       : InputHelp,
-}))`
+}))
+`
   width: 11px;
   height: 11px;
   margin: 3px;
@@ -86,7 +87,7 @@ const FixedMentBox = styled.div`
   top: 16px;
   ${Typograpy.Headline3}
   color: ${(props) =>
-    props.state === "typing" ? `${palette.black}` : `${palette.grey_1}`}
+    props.state === "typing" ? `${palette.black}` : `${palette.grey_1}`};
 `;
 
 // state = ["inactive", "filled", "typing", "verified", "error", "help"]
