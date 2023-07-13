@@ -63,7 +63,7 @@ const EnrolledAccount = () => {
       <Header>{t("socialAccountInfo1")}</Header>
       <OpenBoxItem>
         <EmailIconBox src={GoogleIcon} />
-        <EmailName>{userInfo?.socialId}</EmailName>
+        <EmailName>{userInfo?.email}</EmailName>
       </OpenBoxItem>
     </Container>
   );

@@ -303,7 +303,7 @@ const CustomizeMyInfo = ({ userId, setCustomizeMyInfo, setInfoChange }) => {
     const formData = new FormData();
 
     if (backTypeIsColor) {
-      formData.append("image", "");
+      formData.append("image", null);
     } else {
       formData.append("image", backImage.file);
     }

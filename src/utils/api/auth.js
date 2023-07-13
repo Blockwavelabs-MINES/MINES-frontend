@@ -5,11 +5,12 @@ import {
   privateHeadersMultipart,
 } from "./base";
 
-// 소셜 로그인
+// 구글 로그인
 export const requestLogin = async (code, socialType) => {
   let returnValue;
+  console.log(code);
   await axios
-    .post(`/auth/login?code=${code}`, 
+    .post(`/public/auth/login?code=${code}`, 
       {
         socialType: socialType
       }
@@ -37,7 +38,7 @@ export const requestLogin = async (code, socialType) => {
 export const requestRefreshToken = async () => {
   let returnValue;
   await axios
-    .get(`/auth/refresh`, {
+    .get(`/public/auth/refresh`, {
       header: {
        refresh_token: localStorage.getItem("refreshToken"),
       }
@@ -63,7 +64,7 @@ export const requestRefreshToken = async () => {
 // 유저 아이디 중복 확인
 export const checkUserId = async (userID) => {
   let returnValue;
-  await axios.get(`/user/id/check?user_id=${userID}`)
+  await axios.get(`/public/user/id/check?user_id=${userID}`)
     .then((res) => {
       returnValue = res.data;
     })
