@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { sendTrxs } from "utils/api/trxs";
+import { generateReceiveLink } from "utils/api/trxs";
 import { twitterIdState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
@@ -105,6 +105,7 @@ const LoginModalInner = (
   amount,
   currency,
   sender,
+  platformIcon,
   platform,
   receiver,
   stepStatus,
@@ -184,19 +185,17 @@ const LoginModalInner = (
             setTransactionStatus("pending");
           } else {
             setTransactionStatus("mined");
-            await sendTrxs(
+            await generateReceiveLink(
+              sender,
+              platform,
               address,
-              "metamask",
-              "TWITTER",
               receiver,
+              "TWITTER",
               currency,
               amount,
               transactionHash,
-              escrowId,
-              expiredDateResult,
               tokenInfo.address,
-              networkId,
-              noteValue
+              networkId
             ).then((data) => {
               setFinalLink(data.linkKey);
               setExpired(setExpiredDate());
@@ -298,19 +297,17 @@ const LoginModalInner = (
               await transaction.wait().then(async (receipt) => {
                 console.log("Transaction receipt:", receipt);
                 if (receipt.status === 1) {
-                  await sendTrxs(
+                  await generateReceiveLink(
+                    sender,
+                    platform,
                     address,
-                    "metamask",
-                    "TWITTER",
                     receiver,
+                    "TWITTER",
                     currency,
                     amount,
                     transaction.hash,
-                    1234,
-                    setExpiredDate(),
                     tokenInfo.address,
-                    networkId,
-                    noteValue
+                    networkId
                   ).then((data) => {
                     setFinalLink(data.linkKey);
                     setExpired(data.expiredAt);
@@ -523,6 +520,7 @@ const CheckSendModal = ({
   amount,
   currency,
   sender,
+  platformIcon,
   platform,
   receiver,
   stepStatus,
@@ -573,6 +571,7 @@ const CheckSendModal = ({
             amount,
             currency,
             sender,
+            platformIcon,
             platform,
             receiver,
             stepStatus,

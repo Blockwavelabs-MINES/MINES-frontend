@@ -277,6 +277,7 @@ const Step2 = ({
   networkId,
   currency,
   email,
+  platform,
   platformIcon,
   userId,
   stepStatus,
@@ -615,7 +616,8 @@ const Step2 = ({
               amount={amount}
               currency={tokenInfo.symbol}
               sender={userId}
-              platform={platformIcon}
+              platformIcon={platformIcon}
+              platform={platform}
               receiver={email}
               stepStatus={stepStatus}
               setStepStatus={setStepStatus}

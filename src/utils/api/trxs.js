@@ -1,36 +1,33 @@
 import axios from "axios";
 
-export const sendTrxs = async (
+// 토큰 수령 링크 생성 API
+export const generateReceiveLink = async (
+  senderSocialName,
+  senderSocialType,
   senderWalletAddress,
-  senderTokenWalletType,
-  receiverSocialPlatform,
-  receiverSocialId,
-  tokenUdenom,
+  receiverSocialName,
+  receiverSocialType,
+  tokenTicker,
   tokenAmount,
   transactionHash,
-  transactionEscrowId,
-  expiredAt,
   tokenContractAddress,
-  networkId,
-  comment
+  networkId
 ) => {
   let returnValue = 0;
   await axios
     .post(
-      `/trxs/send`,
+      `/send`,
       {
+        senderSocialName: senderSocialName,
+        senderSocialType: senderSocialType,
         senderWalletAddress: senderWalletAddress,
-        senderTokenWalletType: senderTokenWalletType.toUpperCase(),
-        receiverSocialPlatform: receiverSocialPlatform.toUpperCase(),
-        receiverSocialId: receiverSocialId,
-        tokenUdenom: tokenUdenom,
+        receiverSocialName: receiverSocialName,
+        receiverSocialType: receiverSocialType,
+        tokenTicker: tokenTicker,
         tokenAmount: tokenAmount,
         transactionHash: transactionHash,
-        transactionEscrowId: transactionEscrowId,
-        expiredAt: expiredAt,
         tokenContractAddress: tokenContractAddress,
-        networkId: networkId,
-        comment: comment
+        networkId: networkId
       },
       {
         headers: {
@@ -38,8 +35,8 @@ export const sendTrxs = async (
         },
       }
     )
-    .then((data) => {
-      returnValue = data.data.resultData;
+    .then((res) => {
+      returnValue = res.data.data;
     });
 
   return returnValue;
