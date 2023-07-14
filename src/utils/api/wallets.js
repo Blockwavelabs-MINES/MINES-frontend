@@ -1,11 +1,12 @@
 import axios from "axios";
 import { handleTokenExpired, privateHeaders } from "./base";
 
-// 보류
+// 지갑 전체 조회
 export const getWallet = async (userId) => {
   let resultValue = 0;
-  await axios.get(`/public/wallets/all?userId=${userId}`).then((data) => {
-    resultValue = data.data.resultData;
+  await axios.get(`/public/wallet?userId=${userId}`)
+  .then((res) => {
+    resultValue = res.data.data;
   });
 
   return resultValue;
