@@ -121,7 +121,7 @@ const WalletComponent = ({
 
   useEffect(() => {
     if (realDelete) {
-      deleteWallet(walletList[deleteIdx].index)
+      deleteWallet(walletList[deleteIdx].walletId)
       .then(() => {
         setDeleteIdx(-1);
         setRealDelete(false);
