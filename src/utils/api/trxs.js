@@ -11,7 +11,6 @@ export const generateReceiveLink = async (
   tokenTicker,
   tokenAmount,
   transactionHash,
-  tokenContractAddress,
   networkId
 ) => {
   let returnValue = 0;
@@ -28,7 +27,6 @@ export const generateReceiveLink = async (
         tokenTicker: tokenTicker,
         tokenAmount: tokenAmount,
         transactionHash: transactionHash,
-        tokenContractAddress: tokenContractAddress,
         networkId: networkId
       },
       {

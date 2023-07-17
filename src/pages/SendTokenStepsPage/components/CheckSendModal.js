@@ -195,7 +195,6 @@ const LoginModalInner = (
               currency,
               amount,
               transactionHash,
-              tokenInfo.address,
               networkId
             ).then((data) => {
               setFinalLink(data.linkKey);
@@ -308,7 +307,6 @@ const LoginModalInner = (
                     currency,
                     amount,
                     transaction.hash,
-                    tokenInfo.address,
                     networkId
                   ).then((data) => {
                     setFinalLink(data.linkKey);
