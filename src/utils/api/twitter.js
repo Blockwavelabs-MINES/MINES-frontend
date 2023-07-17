@@ -1,19 +1,21 @@
 import axios from "axios";
 import { privateHeaders } from "./base";
 
-// 보류
+// 연동된 소셜 계정 리스트 조회
 export const getSocialConnectList = async () => {
   let returnValue;
   await axios
-    .get(`/profile/social`, {
+    .get('/social', {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },
     })
-    .then((data) => {
-      returnValue = data.data;
+    .then((res) => {
+      returnValue = res.data;
     })
-    .catch((error) => {});
+    .catch((error) => {
+      console.log(error);
+    });
   return returnValue;
 };
 
@@ -32,6 +34,7 @@ export const connectSocial = async (code, socialType) => {
   .then((res) => {
     returnValue = res.data.data;
   });
+
 
   return returnValue;
 };

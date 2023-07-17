@@ -15,6 +15,7 @@ export const privateHeadersMultipart = {
 
 export const handleTokenExpired = (error) => {
   if (error.response.status === 401) {
+    console.log('refresh access');
     requestRefreshToken();
   }
 

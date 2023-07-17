@@ -274,12 +274,12 @@ const ReceiveTokenPage = () => {
       if (isLoggedIn) {
         getSocialConnectList().then((socialList) => {
           setSocialList(socialList);
-          console.log(socialList?.data[0]?.socialId);
+          console.log(socialList?.data[0]?.username);
           console.log(convertedData?.receiverSocialId);
           if (socialList?.data.length === 0) {
             window.location.href = "/accountLinking";
           } else {
-            socialList?.data[0]?.socialId !== convertedData?.receiverSocialId
+            socialList?.data[0]?.username !== convertedData?.receiverSocialId
               ? setIsWrongUser(true)
               : setIsWrongUser(false);
           }
