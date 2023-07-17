@@ -546,8 +546,9 @@ const WalletComponent = ({
   const dateInFormat = convertDateFormatTwitter(date);
   const requestPostTweet = async () => {
     const convertedTokenAmount = String(convert(linkInfo.tokenAmount));
-    await postTweet(linkKey, dateInFormat, convertedTokenAmount).then(
-      (data) => {
+    // 실제 서비스시, GoerliETH를 변수로 바꾸기
+    await postTweet("RECEIVER", '', "GoerliETH", convertedTokenAmount, dateInFormat)
+    .then((data) => {
         setTwitterLink(data?.data?.tweetLink);
       }
     );

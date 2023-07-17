@@ -3,9 +3,11 @@ import { TimerImage } from "assets/images";
 import { ContainedButton } from "components/button";
 import { Tooltip } from "components/card";
 import { ConfirmModal, CopyPivot } from "components/modal";
+import { useEffect } from "react";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { postTweet } from "utils/api/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 
@@ -211,6 +213,11 @@ const Step3 = ({ expired, finalLink }) => {
       {t("sendPage03_3")}
     </TooltipStyle>
   );
+
+  // (해당 페이지로 이동됨 == 송금완료) => 트위터 포스팅
+  useEffect(() => {
+    postTweet("SENDER")
+  }, [])
 
   const notiOnClose = () => {
     setIconClicked(false);
