@@ -261,7 +261,7 @@ const ReceiveTokenPage = () => {
   useEffect(() => {
     getTrxsLinkInfo(trxsLink).then(async (data) => {
       let convertedData = data;
-      setSenderUser(data.senderUserId);
+      setSenderUser(data.senderUsername);
       if (data.isValid && isLoggedIn) {
         await getUserInfo().then((data) => {
           getUserInfoAndProfileDeco(data.userId).then((data) => {
@@ -275,11 +275,11 @@ const ReceiveTokenPage = () => {
         getSocialConnectList().then((socialList) => {
           setSocialList(socialList);
           console.log(socialList?.data[0]?.username);
-          console.log(convertedData?.receiverSocialId);
+          console.log(convertedData?.receiverUsername);
           if (socialList?.data.length === 0) {
             window.location.href = "/accountLinking";
           } else {
-            socialList?.data[0]?.username !== convertedData?.receiverSocialId
+            socialList?.data[0]?.username !== convertedData?.receiverUsername
               ? setIsWrongUser(true)
               : setIsWrongUser(false);
           }

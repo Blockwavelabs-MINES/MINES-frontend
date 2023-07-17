@@ -75,12 +75,13 @@ export const receiveTrxs = async (
   return returnValue;
 };
 
+// 송신 정보 확인
 export const getTrxsLinkInfo = async (linkKey) => {
   let returnValue = 0;
   await axios
-    .get(`public/trxs?link_key=${linkKey}`)
-    .then((data) => {
-      returnValue = data.data.resultData;
+    .get(`/public/send?link_key=${linkKey}`)
+    .then((res) => {
+      returnValue = res.data.data;
     })
     .catch((error) => {
       console.log(error);
