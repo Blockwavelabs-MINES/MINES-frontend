@@ -407,14 +407,14 @@ const LoginModalInner = (
             <PersonCategory>{t("sendConfirmModal4")}</PersonCategory>
             <PersonInfo>
               <PersonId>@{receiver}</PersonId>
-              <PersonIcon src={platform} />
+              <PersonIcon src={platformIcon} />
             </PersonInfo>
           </PersonInfoLine>
           <PersonInfoLine>
             <PersonCategory>{t("sendConfirmModal5")}</PersonCategory>
             <PersonInfo>
               <PersonId>@{twitterId}</PersonId>
-              <PersonIcon src={platform} />
+              <PersonIcon src={platformIcon} />
             </PersonInfo>
           </PersonInfoLine>
         </PersonInfoBox>
