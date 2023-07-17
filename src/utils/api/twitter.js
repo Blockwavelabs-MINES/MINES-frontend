@@ -62,12 +62,7 @@ export const disconnectSocial = async (socialType) => {
 };
 
 // 소셜 OAuth2.0 토큰 재발급
-export const refreshSocialToken = async (
-  socialType,
-  linkKey,
-  dateInFormat,
-  tokenAmount
-) => {
+export const refreshSocialToken = async (socialType) => {
   let returnValue = 0;
 
   await axios.put("/social/refresh",
@@ -82,8 +77,6 @@ export const refreshSocialToken = async (
       console.log("소셜 토큰 재발급 성공");
       console.log(res);
       returnValue = res.data;
-      // 일단 보류.. (아직 트위터만)
-      postTweet(linkKey, dateInFormat, tokenAmount);
     })
     .catch((error) => {
       console.log("소셜 토큰 재발급 실패");
