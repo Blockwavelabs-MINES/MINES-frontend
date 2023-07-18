@@ -14,6 +14,8 @@ import { postTweet } from "utils/api/twitter";
 import { addWallet, deleteWallet } from "utils/api/wallets";
 import { receiveTrxHashState } from "utils/atoms/trxs";
 import { twitterLinkState } from "utils/atoms/twitter";
+import getFormattedDate from "utils/functions/getFormattedDate";
+import setConvertedData from "utils/functions/setConvertedData";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 
@@ -313,7 +315,14 @@ const WalletComponent = ({
                                     setReceiveInfo(data);
                                     setLoading(false);
                                     setComplete(true);
-                                    requestPostTweet();
+                                    requestPostTweet(
+                                      "RECEIVER",
+                                      '',
+                                      infoRes.tokenTicker,
+                                      infoRes.tokenAmount,
+                                      infoRes.senderUsername,
+                                      infoRes.receiverUsername
+                                    );
                                   });
                                   setCheckStatus(!checkStatus);
                                 }
@@ -419,7 +428,14 @@ const WalletComponent = ({
                                   setReceiveInfo(data);
                                   setLoading(false);
                                   setComplete(true);
-                                  requestPostTweet();
+                                  requestPostTweet(
+                                    "RECEIVER",
+                                    '',
+                                    infoRes.tokenTicker,
+                                    infoRes.tokenAmount,
+                                    infoRes.senderUsername,
+                                    infoRes.receiverUsername
+                                  );
                                 });
                                 setCheckStatus(!checkStatus);
                               }
@@ -447,111 +463,29 @@ const WalletComponent = ({
     });
   };
 
-  const convertDateFormatTwitter = (date) => {
-    const dateArr = date.substring(4, 33).split(" ");
-    let monthNamesEn = {
-      Jan: "January",
-      Feb: "February",
-      Mar: "March",
-      Apr: "April",
-      May: "May",
-      Jun: "June",
-      Jul: "July",
-      Aug: "August",
-      Sep: "September",
-      Oct: "October",
-      Nov: "November",
-      Dec: "December",
-    };
+  const requestPostTweet = async (
+    type,
+    comment,
+    tokenTicker,
+    tokenAmount,
+    senderUsername,
+    receiverUsername
+  ) => {
+    const convertedTokenAmount = setConvertedData(tokenAmount);
+    const date = getFormattedDate();
 
-    let monthNamesKo = {
-      Jan: "1",
-      Feb: "2",
-      Mar: "3",
-      Apr: "4",
-      May: "5",
-      Jun: "6",
-      Jul: "7",
-      Aug: "8",
-      Sep: "9",
-      Oct: "10",
-      Nov: "11",
-      Dec: "12",
-    };
-
-    if (localStorage.getItem("language") === "en") {
-      return (
-        dateArr[3].substring(0, 5) +
-        " on " +
-        monthNamesEn[date[0]] +
-        " " +
-        dateArr[1] +
-        ", " +
-        dateArr[2] +
-        " (" +
-        dateArr[4].substring(0, 6) +
-        ":" +
-        dateArr[4].substring(6, 8) +
-        ")" +
-        "\n"
-      );
-    } else {
-      return (
-        dateArr[2] +
-        "년 " +
-        monthNamesKo[dateArr[0]] +
-        "월 " +
-        dateArr[1] +
-        "일 " +
-        dateArr[3].substring(0, 5) +
-        " (" +
-        dateArr[4].substring(0, 6) +
-        ":" +
-        dateArr[4].substring(6, 8) +
-        ")" +
-        "\n"
-      );
-    }
-  };
-
-  function convert(n) {
-    if (n) {
-      var sign = +n < 0 ? "-" : "",
-        toStr = n.toString();
-      if (!/e/i.test(toStr)) {
-        return n;
-      }
-      var [lead, decimal, pow] = n
-        .toString()
-        .replace(/^-/, "")
-        .replace(/^([0-9]+)(e.*)/, "$1.$2")
-        .split(/e|\./);
-      return +pow < 0
-        ? sign +
-            "0." +
-            "0".repeat(Math.max(Math.abs(pow) - 1 || 0, 0)) +
-            lead +
-            decimal
-        : sign +
-            lead +
-            (+pow >= decimal.length
-              ? decimal + "0".repeat(Math.max(+pow - decimal.length || 0, 0))
-              : decimal.slice(0, +pow) + "." + decimal.slice(+pow));
-    }
-  }
-
-  const pathname = window.location.pathname.split("/");
-  const linkKey = pathname[pathname.length - 1];
-  const date = new Date().toString();
-  const dateInFormat = convertDateFormatTwitter(date);
-  const requestPostTweet = async () => {
-    const convertedTokenAmount = String(convert(linkInfo.tokenAmount));
-    // 실제 서비스시, GoerliETH를 변수로 바꾸기
-    await postTweet("RECEIVER", '', "GoerliETH", convertedTokenAmount, dateInFormat)
+    await postTweet(
+      type,
+      comment,
+      tokenTicker,  // 실제 서비스시, GoerliETH를 tokenTicker변수로 바꾸기
+      convertedTokenAmount,
+      date,
+      senderUsername,
+      receiverUsername
+    )
     .then((data) => {
-        setTwitterLink(data?.data?.tweetLink);
-      }
-    );
+      setTwitterLink(data?.data?.link);
+    });
   };
 
   return (

@@ -87,31 +87,52 @@ export const refreshSocialToken = async (socialType) => {
 };
 
 //트위터 포스팅.
-export const postTweet = async (tweetType, comment, tokenTicker, tokenAmount, time) => {
+export const postTweet = async (
+  tweetType,
+  comment,
+  tokenTicker,
+  tokenAmount,
+  time,
+  senderUsername,
+  receiverUsername
+) => {
   let returnValue;
-  await axios
-    .post('/tweet',
-      {
-        tweetType: tweetType,
-        comment: comment,
-        tokenTicker: tokenTicker,
-        tokenAmount: tokenAmount,
-        time: time
-      },
-      {
-        headers: privateHeaders,
-      }
-    )
-    .then((res) => {
-      returnValue = res.data;
-      console.log("포스팅 성공");
-    })
-    .catch((e) => {
-      console.log(e);
+  await axios.post('/tweet',
+    {
+      tweetType: tweetType,
+      comment: comment,
+      tokenTicker: tokenTicker,
+      tokenAmount: tokenAmount,
+      time: time,
+      senderUsername: senderUsername,
+      receiverUsername: receiverUsername
+    },
+    {
+      headers: privateHeaders,
+    }
+  )
+  .then((res) => {
+    returnValue = res.data;
+    console.log("포스팅 성공");
+  })
+  .catch((e) => {
+    console.log(e);
+    if (e.code === 401) { 
       refreshSocialToken("TWITTER");
-      postTweet(tweetType, comment, tokenTicker, tokenAmount, time);
+      postTweet(
+        tweetType,
+        comment,
+        tokenTicker,
+        tokenAmount,
+        time,
+        senderUsername,
+        receiverUsername
+      );
+    }
+    else {
       console.log("포스팅 실패");
-    });
+    }
+  });
 
   return returnValue;
 };

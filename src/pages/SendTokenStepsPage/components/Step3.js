@@ -214,11 +214,6 @@ const Step3 = ({ expired, finalLink }) => {
     </TooltipStyle>
   );
 
-  // (해당 페이지로 이동됨 == 송금완료) => 트위터 포스팅
-  useEffect(() => {
-    postTweet("SENDER")
-  }, [])
-
   const notiOnClose = () => {
     setIconClicked(false);
   };

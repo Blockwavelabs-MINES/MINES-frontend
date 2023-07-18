@@ -14,6 +14,10 @@ import Typography from "utils/style/Typography/index";
 import { TextAreaBox } from "components/input";
 import ImageBanner from "components/banner/ImageBanner";
 import { TwitterImage } from "assets/images";
+import { postTweet } from "utils/api/twitter";
+import useConvertedData from "utils/functions/setConvertedData";
+import setConvertedData from "utils/functions/setConvertedData";
+import getFormattedDate from "utils/functions/getFormattedDate";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -160,6 +164,31 @@ const LoginModalInner = (
     }
   }, []);
 
+  const requestPostTweet = async (
+    type,
+    comment,
+    tokenTicker,
+    tokenAmount,
+    senderUsername,
+    receiverUsername
+  ) => {
+    const convertedTokenAmount = setConvertedData(tokenAmount);
+    const date = getFormattedDate();
+
+    await postTweet(
+      type,
+      comment,
+      tokenTicker,  // 실제 서비스시, GoerliETH를 tokenTicker변수로 바꾸기
+      convertedTokenAmount,
+      date,
+      senderUsername,
+      receiverUsername
+    )
+    .then(() => {
+      console.log("post tweet complete")
+    });
+  };
+
   /* 
   * web3API로 (트랜잭션 hash)를 통해 트랜잭션을 받아옴. (아직 트랜잭션 생성이 완료 안됨(receipt: null)이면 interval)
   * -> 서버에 (트랜잭션에 관한 정보)들을 POST요청하고, response로 링크키(수금하기 위한 url키)를 받아옴
@@ -199,9 +228,19 @@ const LoginModalInner = (
             ).then((data) => {
               setFinalLink(data.linkKey);
               setExpired(setExpiredDate());
+              const date = getFormattedDate();
+              requestPostTweet(
+                "SENDER",
+                noteValue,
+                currency,
+                amount,
+                date,
+                sender,
+                receiver
+              )
               setLoading(false);
             });
-
+            
             setStepStatus(stepStatus + 1);
             onClose();
 
@@ -311,6 +350,16 @@ const LoginModalInner = (
                   ).then((data) => {
                     setFinalLink(data.linkKey);
                     setExpired(data.expiredAt);
+                    const date = getFormattedDate();
+                    requestPostTweet(
+                      "SENDER",
+                      noteValue,
+                      currency,
+                      amount,
+                      date,
+                      sender,
+                      receiver
+                    )
                     setLoading(false);
                   });
                   setStepStatus(stepStatus + 1);
