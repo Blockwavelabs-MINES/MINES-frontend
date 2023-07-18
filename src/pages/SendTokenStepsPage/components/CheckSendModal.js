@@ -15,7 +15,6 @@ import { TextAreaBox } from "components/input";
 import ImageBanner from "components/banner/ImageBanner";
 import { TwitterImage } from "assets/images";
 import { postTweet } from "utils/api/twitter";
-import useConvertedData from "utils/functions/setConvertedData";
 import setConvertedData from "utils/functions/setConvertedData";
 import getFormattedDate from "utils/functions/getFormattedDate";
 
@@ -178,7 +177,7 @@ const LoginModalInner = (
     await postTweet(
       type,
       comment,
-      tokenTicker,  // 실제 서비스시, GoerliETH를 tokenTicker변수로 바꾸기
+      tokenTicker,
       convertedTokenAmount,
       date,
       senderUsername,
@@ -215,7 +214,7 @@ const LoginModalInner = (
           } else {
             setTransactionStatus("mined");
             await generateReceiveLink(
-              sender,
+              twitterId,
               platform,
               address,
               "METAMASK",
@@ -228,14 +227,12 @@ const LoginModalInner = (
             ).then((data) => {
               setFinalLink(data.linkKey);
               setExpired(setExpiredDate());
-              const date = getFormattedDate();
               requestPostTweet(
                 "SENDER",
                 noteValue,
                 currency,
                 amount,
-                date,
-                sender,
+                twitterId,
                 receiver
               )
               setLoading(false);
@@ -337,7 +334,7 @@ const LoginModalInner = (
                 console.log("Transaction receipt:", receipt);
                 if (receipt.status === 1) {
                   await generateReceiveLink(
-                    sender,
+                    twitterId,
                     platform,
                     address,
                     "METAMASK",
@@ -350,14 +347,12 @@ const LoginModalInner = (
                   ).then((data) => {
                     setFinalLink(data.linkKey);
                     setExpired(data.expiredAt);
-                    const date = getFormattedDate();
                     requestPostTweet(
                       "SENDER",
                       noteValue,
                       currency,
                       amount,
-                      date,
-                      sender,
+                      twitterId,
                       receiver
                     )
                     setLoading(false);

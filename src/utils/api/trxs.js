@@ -27,6 +27,7 @@ export const generateReceiveLink = async (
         tokenTicker: tokenTicker,
         tokenAmount: tokenAmount,
         transactionHash: transactionHash,
+        tokenContractAddress: "asdasdasd",
         networkId: networkId
       },
       {
