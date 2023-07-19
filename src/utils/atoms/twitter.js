@@ -29,3 +29,10 @@ export const twitterIdState = atom({
   default: null,
   effects_UNSTABLE: [persistAtom],
 });
+
+// 송금->소셜연동->송금 리다이렉트 플로우를 위한 state
+export const sendSocialConnectState = atom({
+  key: "sendSocialConnectState",
+  default: false,
+  effects_UNSTABLE: [persistAtom]
+})

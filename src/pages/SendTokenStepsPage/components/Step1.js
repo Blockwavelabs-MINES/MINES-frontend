@@ -109,6 +109,8 @@ const Step1 = ({
           height={51}
           onChange={(e) => emailOnChange(e)}
           message={errorComment}
+          fixedMent={"@"}
+          fixedMentSize={'33px'}
         />
       </EmailBox>
     </Container>
