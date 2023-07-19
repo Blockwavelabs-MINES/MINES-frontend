@@ -104,7 +104,7 @@ const WalletComponent = ({
 
   const Web3 = require("web3");
   let web3 = "";
-  if (Number(linkInfo.networkId) == 137) {
+  if (Number(linkInfo.networkId) === 137) {
     web3 = new Web3(
       new Web3.providers.HttpProvider(process.env.REACT_APP_POLYGON_URL)
     );
@@ -198,11 +198,11 @@ const WalletComponent = ({
           setLoading(true);
         }
         const chainIndex = Chainlist.findIndex(
-          (v) => v.chainId == Number(linkInfo.networkId) // 지금은 goerli 밖에 없으니까..
+          (v) => v.chainId === Number(linkInfo.networkId) // 지금은 goerli 밖에 없으니까..
         );
         const chainInfo = Chainlist[chainIndex]?.tokenList;
         const tokenIndex = chainInfo.findIndex(
-          (v) => v.symbol == linkInfo.tokenUdenom
+          (v) => v.symbol === linkInfo.tokenTicker
         );
         const tokenInfo = chainInfo[tokenIndex];
 
@@ -303,14 +303,13 @@ const WalletComponent = ({
                                   tmpReceiveInfo.receiverWalletAddress =
                                     walletList[select].walletAddress;
                                   tmpReceiveInfo.transactionHash = res;
-                                  toggleIsValid(linkInfo.id, false, "TWITTER");
+                                  // toggleIsValid(linkInfo.transactionId, false, "TWITTER");
                                   await receiveTrxs(
+                                    linkInfo.transactionId,
                                     walletList[select].walletAddress,
-                                    "METAMASK",
-                                    0.000001,
-                                    "TWITTER",
-                                    linkInfo.id
-                                  ).then(async () => {
+                                    "METAMASK"
+                                  )
+                                  .then(async () => {
                                     setLoading(false);
                                     setComplete(true);
                                     requestPostTweet(
@@ -415,12 +414,13 @@ const WalletComponent = ({
                                 tmpReceiveInfo.receiverWalletAddress =
                                   walletList[select].walletAddress;
                                 tmpReceiveInfo.transactionHash = res;
-                                toggleIsValid(linkInfo.id, false, "TWITTER");
+                                // toggleIsValid(linkInfo.id, false, "TWITTER");
                                 await receiveTrxs(
-                                  linkInfo.id,
+                                  linkInfo.transactionId,
                                   walletList[select].walletAddress,
                                   "METAMASK"
-                                ).then(() => {
+                                )
+                                .then(() => {
                                   setLoading(false);
                                   setComplete(true);
                                   requestPostTweet(

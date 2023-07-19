@@ -4,18 +4,18 @@ import { privateHeaders } from "./base";
 // 연동된 소셜 계정 리스트 조회
 export const getSocialConnectList = async () => {
   let returnValue;
-  await axios
-    .get('/social', {
+  await axios.get('/social', {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },
     })
-    .then((res) => {
-      returnValue = res.data;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  .then((res) => {
+    returnValue = res.data;
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+  
   return returnValue;
 };
 
@@ -79,7 +79,11 @@ export const refreshSocialToken = async (socialType) => {
       returnValue = res.data;
     })
     .catch((error) => {
-      console.log("소셜 토큰 재발급 실패");
+      if (error.response.status === 401) {
+        console.log("refresh토큰이 만료되어 재 연동이 필요합니다.");
+        
+        returnValue = false;
+      }
       console.log(error);
     });
 
@@ -117,16 +121,23 @@ export const postTweet = async (
   })
   .catch((e) => {
     if (e.response.status === 401) { 
-      refreshSocialToken("TWITTER");
-      postTweet(
-        tweetType,
-        comment,
-        tokenTicker,
-        tokenAmount,
-        time,
-        senderUsername,
-        receiverUsername
-      );
+      refreshSocialToken("TWITTER")
+      .then((res) => {
+        if (res) {
+          postTweet(
+            tweetType,
+            comment,
+            tokenTicker,
+            tokenAmount,
+            time,
+            senderUsername,
+            receiverUsername
+          );
+        }
+        else {
+          console.log("포스팅 실패");
+        }
+      })
     }
     else {
       console.log("포스팅 실패");
