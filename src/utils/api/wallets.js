@@ -4,10 +4,10 @@ import { handleTokenExpired, privateHeaders } from "./base";
 // 지갑 전체 조회
 export const getWallet = async (userId) => {
   let resultValue = 0;
-  await axios.get(`/public/wallet?userId=${userId}`)
-  .then((res) => {
-    resultValue = res.data.data;
-  });
+  await axios.get(`/public/wallet?user_id=${userId}`)
+    .then((res) => {
+      resultValue = res.data.data;
+    });
 
   return resultValue;
 };
