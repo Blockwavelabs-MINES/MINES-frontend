@@ -325,7 +325,7 @@ const ReceiveTokenPage = () => {
                   </InfoLine>
                   <InfoLine>
                     <InfoText>
-                      {linkInfo?.tokenAmount} {linkInfo?.tokenUdenom}
+                      {linkInfo?.tokenAmount} {linkInfo?.tokenTicker}
                     </InfoText>
                     <BodyText>{t("receiveTokenPage3")}</BodyText>
                   </InfoLine>
