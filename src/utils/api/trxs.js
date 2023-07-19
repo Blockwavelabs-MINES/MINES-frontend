@@ -43,32 +43,27 @@ export const generateReceiveLink = async (
   return returnValue;
 };
 
+// 토큰 수령 정보 업데이트
 export const receiveTrxs = async (
+  transactionId,
   receiverWalletAddress,
-  receiveTokenWalletType,
-  transactionGasFee,
-  receiverSocialPlatformType,
-  trxIndex
+  receiverWalletType
 ) => {
   let returnValue = 0;
-  await axios
-    .post(
-      `/trxs/send/receive?trx_index=${trxIndex}`,
-      {
-        receiverWalletAddress: receiverWalletAddress,
-        receiveTokenWaleltType: receiveTokenWalletType,
-        transactionGasFee: transactionGasFee,
-        receiverSocialPlatformType: receiverSocialPlatformType,
+  await axios.post(`/send/${transactionId}`,
+    {
+      receiverWalletAddress: receiverWalletAddress,
+      receiverWaleltType: receiverWalletType,
+    },
+    {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },
-      {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
-      }
-    )
-    .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.resultData;
+    }
+  )
+    .then((res) => {
+      console.log(res.data);
+      returnValue = res.data.resultData;
     });
 
   return returnValue;

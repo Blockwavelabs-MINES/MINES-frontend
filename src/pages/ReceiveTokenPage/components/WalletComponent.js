@@ -82,7 +82,6 @@ const WalletComponent = ({
   setInfoChange,
   infoChange,
   setComplete,
-  setReceiveInfo,
   linkInfo,
   setLoading,
   setFailed,
@@ -311,8 +310,7 @@ const WalletComponent = ({
                                     0.000001,
                                     "TWITTER",
                                     linkInfo.id
-                                  ).then(async (data) => {
-                                    setReceiveInfo(data);
+                                  ).then(async () => {
                                     setLoading(false);
                                     setComplete(true);
                                     requestPostTweet(
@@ -419,13 +417,10 @@ const WalletComponent = ({
                                 tmpReceiveInfo.transactionHash = res;
                                 toggleIsValid(linkInfo.id, false, "TWITTER");
                                 await receiveTrxs(
+                                  linkInfo.id,
                                   walletList[select].walletAddress,
-                                  "METAMASK",
-                                  0.000001,
-                                  "TWITTER",
-                                  linkInfo.id
-                                ).then((data) => {
-                                  setReceiveInfo(data);
+                                  "METAMASK"
+                                ).then(() => {
                                   setLoading(false);
                                   setComplete(true);
                                   requestPostTweet(
