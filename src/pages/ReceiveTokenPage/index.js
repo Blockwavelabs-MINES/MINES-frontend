@@ -20,6 +20,8 @@ import { receiveLinkState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 import { SelectWallet } from "./components";
+import { getWallet } from "utils/api/wallets";
+import setConvertedData from "utils/functions/setConvertedData";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -165,9 +167,9 @@ const convertDateFormat = (date, a, b, c, d) => {
     "07": "July",
     "08": "August",
     "09": "September",
-    10: "October",
-    11: "November",
-    12: "December",
+    "10": "October",
+    "11": "November",
+    "12": "December",
   };
   let convertedDate;
   if (localStorage.getItem("language") === "en") {
@@ -201,32 +203,6 @@ const convertDateFormat = (date, a, b, c, d) => {
   return convertedDate;
 };
 
-function convert(n) {
-  if (n) {
-    var sign = +n < 0 ? "-" : "",
-      toStr = n.toString();
-    if (!/e/i.test(toStr)) {
-      return n;
-    }
-    var [lead, decimal, pow] = n
-      .toString()
-      .replace(/^-/, "")
-      .replace(/^([0-9]+)(e.*)/, "$1.$2")
-      .split(/e|\./);
-    return +pow < 0
-      ? sign +
-          "0." +
-          "0".repeat(Math.max(Math.abs(pow) - 1 || 0, 0)) +
-          lead +
-          decimal
-      : sign +
-          lead +
-          (+pow >= decimal.length
-            ? decimal + "0".repeat(Math.max(+pow - decimal.length || 0, 0))
-            : decimal.slice(0, +pow) + "." + decimal.slice(+pow));
-  }
-}
-
 const ReceiveTokenPage = () => {
   const [linkInfo, setLinkInfo] = useState(null);
   const [senderUser, setSenderUser] = useState("");
@@ -259,15 +235,15 @@ const ReceiveTokenPage = () => {
   const trxsLink = pathname[pathname.length - 1];
 
   useEffect(() => {
-    getTrxsLinkInfo(trxsLink).then(async (data) => {
-      let convertedData = data;
-      setSenderUser(data.senderUsername);
-      if (data.isValid && isLoggedIn) {
-        await getUserInfo().then((data) => {
-          getUserInfoAndProfileDeco(data.userId).then((data) => {
-            setUserInfo(data.user);
-            setWalletData(data.wallets);
-          });
+    getTrxsLinkInfo(trxsLink).then(async (trxsData) => {
+      let convertedData = trxsData;
+      setSenderUser(trxsData.senderUsername);
+      if (trxsData.isValid && isLoggedIn) {
+        await getUserInfo().then(async (userData) => {
+          setUserInfo(userData);
+          getWallet(userData.userId).then((walletData) => {
+            setWalletData(walletData);
+          })
         });
       }
 
@@ -286,7 +262,7 @@ const ReceiveTokenPage = () => {
         });
       }
 
-      convertedData.tokenAmount = convert(data.tokenAmount);
+      convertedData.tokenAmount = setConvertedData(trxsData.tokenAmount);
       setLinkInfo(convertedData);
     });
   }, [isLoggedIn, loginDone]);

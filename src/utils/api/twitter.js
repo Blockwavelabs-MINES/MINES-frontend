@@ -116,8 +116,7 @@ export const postTweet = async (
     console.log("포스팅 성공");
   })
   .catch((e) => {
-    console.log(e);
-    if (e.code === 401) { 
+    if (e.response.status === 401) { 
       refreshSocialToken("TWITTER");
       postTweet(
         tweetType,
