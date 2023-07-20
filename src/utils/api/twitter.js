@@ -112,7 +112,9 @@ export const postTweet = async (
       receiverUsername: receiverUsername
     },
     {
-      headers: privateHeaders,
+      headers: {
+        'Authorization': "Bearer " + localStorage.getItem("accessToken")
+      },
     }
   )
   .then((res) => {
