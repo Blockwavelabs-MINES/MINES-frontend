@@ -1,11 +1,11 @@
 import { DiscordIcon, TelegramIcon, TwitterIcon } from "assets/icons";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { getSocialConnectList } from "utils/api/twitter";
 import { loginState } from "utils/atoms/login";
-import { twitterIdState } from "utils/atoms/twitter";
+import { sendSocialConnectState, twitterIdState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 
@@ -70,6 +70,7 @@ const AccountListComponent = ({ twitterConnected, setTwitterConnected }) => {
   const [socialList, setSocialList] = useState(null);
   const isLoggedIn = useRecoilValue(loginState);
   const setTwitterId = useSetRecoilState(twitterIdState);
+  const [sendSocialConnect, setSendSocialConnect] = useRecoilState(sendSocialConnectState);
 
   const { t } = useTranslation();
   const accountList = [
@@ -101,6 +102,11 @@ const AccountListComponent = ({ twitterConnected, setTwitterConnected }) => {
     });
   };
 
+  const onClick = () => {
+    setSendSocialConnect(true);
+    window.location.href = "/accountLinking";
+  }
+
   useEffect(() => {
     isLoggedIn && getSocialList(isLoggedIn);
   }, [isLoggedIn]);
@@ -127,11 +133,7 @@ const AccountListComponent = ({ twitterConnected, setTwitterConnected }) => {
                   <RadioButtonLabel />
                 </>
               ) : (
-                <LinkAccount
-                  onClick={() => {
-                    window.location.href = "/accountLinking";
-                  }}
-                >
+                <LinkAccount onClick={onClick}>
                   {t("sendPage00_3")}
                 </LinkAccount>
               )

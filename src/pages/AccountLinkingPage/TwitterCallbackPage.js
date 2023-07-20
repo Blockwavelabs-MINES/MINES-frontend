@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { connectSocial } from "utils/api/twitter";
 import {
   receiveLinkState,
+  sendSocialConnectState,
   twitterJustConnectedState,
 } from "utils/atoms/twitter";
 
@@ -16,6 +17,7 @@ const FullContainer = styled.div`
 
 const TwitterCallbackPage = () => {
   const [receiveLink, setReceiveLink] = useRecoilState(receiveLinkState);
+  const [sendSocialConnect, setSendSocialConnect] = useRecoilState(sendSocialConnectState);
   const setTwitterJustConnected = useSetRecoilState(twitterJustConnectedState);
 
   const requestConnectTwitter = async () => {
