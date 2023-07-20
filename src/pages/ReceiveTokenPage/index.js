@@ -235,13 +235,16 @@ const ReceiveTokenPage = () => {
   const trxsLink = pathname[pathname.length - 1];
 
   useEffect(() => {
-    getTrxsLinkInfo(trxsLink).then(async (trxsData) => {
+    getTrxsLinkInfo(trxsLink).then((trxsData) => {
       let convertedData = trxsData;
       setSenderUser(trxsData.senderUsername);
       if (trxsData.isValid && isLoggedIn) {
-        await getUserInfo().then(async (userData) => {
+        console.log(localStorage.getItem('accessToken'));
+        console.log('getUserInfo start');
+        getUserInfo().then((userData) => {
+          console.log('getUserInfo end');
           setUserInfo(userData);
-          getWallet(userData.userId).then((walletData) => {
+          getWallet(userData?.userId).then((walletData) => {
             setWalletData(walletData);
           })
         });
@@ -265,7 +268,7 @@ const ReceiveTokenPage = () => {
       convertedData.tokenAmount = setConvertedData(trxsData.tokenAmount);
       setLinkInfo(convertedData);
     });
-  }, [isLoggedIn, loginDone]);
+  }, [isLoggedIn, loginDone, trxsLink]);
 
   useEffect(() => {
     document.body.style.overflow = "auto";

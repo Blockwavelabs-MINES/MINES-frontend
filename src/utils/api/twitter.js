@@ -79,7 +79,7 @@ export const refreshSocialToken = async (socialType) => {
       returnValue = res.data;
     })
     .catch((error) => {
-      if (error.response.status === 401) {
+      if (error.response.status === 401 || error.response.status === 400) {
         console.log("refresh토큰이 만료되어 재 연동이 필요합니다.");
         
         returnValue = false;

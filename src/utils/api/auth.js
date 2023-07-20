@@ -8,7 +8,7 @@ import {
 // 구글 로그인
 export const requestLogin = async (code, socialType) => {
   let returnValue;
-  console.log(code);
+
   await axios
     .post(`/public/auth/login?code=${code}`, 
       {
@@ -37,8 +37,8 @@ export const requestLogin = async (code, socialType) => {
 // Access 토큰 재발급
 export const requestRefreshToken = async () => {
   let returnValue;
-  await axios
-    .get(`/public/auth/refresh`, {
+
+  await axios.get(`/public/auth/refresh`, {
       header: {
        refresh_token: localStorage.getItem("refreshToken"),
       }
@@ -64,6 +64,7 @@ export const requestRefreshToken = async () => {
 // 유저 아이디 중복 확인
 export const checkUserId = async (userID) => {
   let returnValue;
+
   await axios.get(`/public/user/id/check?user_id=${userID}`)
     .then((res) => {
       returnValue = res.data;
@@ -78,6 +79,7 @@ export const checkUserId = async (userID) => {
 // 유저 아이디 등록 & 변경
 export const createUserId = async (userId) => {
   let returnValue;
+  
   await axios.put(`/user/id/edit?user_id=${userId}`,
       {},
       {
@@ -116,15 +118,20 @@ export const editProfile = async (formData) => {
 // 유저(자신) 정보 조회
 export const getUserInfo = async () => {
   let returnValue;
+
   await axios.get(`/user`, {
-      headers: privateHeaders,
+      headers: {
+        'Authorization': "Bearer " + localStorage.getItem("accessToken")
+      },
     })
     .then((res) => {
       returnValue = res.data.data;
     })
     .catch((error) => {
       console.log(error);
-      handleTokenExpired(error);
+      if (error.response.status === 401) {
+        handleTokenExpired(error);
+      }
     });
 
   return returnValue;
