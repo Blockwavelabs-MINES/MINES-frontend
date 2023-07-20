@@ -73,7 +73,8 @@ const WalletComponent = ({ userId, setInfoChange, infoChange }) => {
     (async () => {
       if (realDelete) {
         // 지우는 action
-        await deleteWallet(walletList[deleteIdx].index).then((data) => {
+        await deleteWallet(walletList[deleteIdx].walletId)
+        .then(() => {
           setDeleteIdx(-1);
           setRealDelete(false);
           setInfoChange(!infoChange);
@@ -103,8 +104,8 @@ const WalletComponent = ({ userId, setInfoChange, infoChange }) => {
         });
         if (notDuplicated) {
           // 추가하는 action
-          await addWallet("METAMASK", addedWallet).then((data) => {
-            console.log(data);
+          await addWallet("METAMASK", addedWallet)
+          .then(() => {
             var tmpWalletList = walletList;
             tmpWalletList.push({
               // type: "Metamask",

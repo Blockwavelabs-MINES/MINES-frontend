@@ -2,7 +2,7 @@ import { TwitterIcon } from "assets/icons";
 
 const PlatformList = [
   {
-    emailName: "Twitter",
+    emailName: "TWITTER",
     emailIcon: TwitterIcon,
   },
 ];

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { disconnectTwitter, getSocialConnectList } from "utils/api/twitter";
+import { disconnectSocial, getSocialConnectList } from "utils/api/twitter";
 import { loginState } from "utils/atoms/login";
 import {
   receiveLinkState,
@@ -119,7 +119,7 @@ const AccountList = () => {
     {
       icon: TwitterIcon,
       text: isTwitterOn
-        ? socialList?.data[0].socialId
+        ? socialList?.data[0].username
         : t("accountLinkingPage2"),
       supported: true,
       checked: isTwitterOn,
@@ -162,7 +162,7 @@ const AccountList = () => {
         text={t("noticeModal4")}
         buttonText={t("noticeModal5")}
         subActionOnClick={async () => {
-          await disconnectTwitter().then((data) => {
+          await disconnectSocial("TWITTER").then((data) => {
             console.log(data);
             setIsTwitterOn(false);
             setIsDisconnectNoticeModalOpen(true);

@@ -77,7 +77,7 @@ const AccountListComponent = ({ twitterConnected, setTwitterConnected }) => {
     {
       icon: TwitterIcon,
       text: socialList?.data[0]
-        ? "@" + socialList?.data[0]?.socialId
+        ? "@" + socialList?.data[0]?.username
         : t("sendPage00_4"),
       supported: true,
       connected: twitterConnected,
@@ -98,7 +98,7 @@ const AccountListComponent = ({ twitterConnected, setTwitterConnected }) => {
     await getSocialConnectList().then((data) => {
       console.log(data);
       setSocialList(data);
-      setTwitterId(data.data[0].socialId);
+      setTwitterId(data.data[0].username);
     });
   };
 

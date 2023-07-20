@@ -33,7 +33,6 @@ const SubtextBox = styled.div`
 const SelectWallet = ({ linkInfo, walletData }) => {
   const [infoChange, setInfoChange] = useState(false);
   const [complete, setComplete] = useState(false);
-  const [receiveInfo, setReceiveInfo] = useState({});
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
   const [resend, setResend] = useState(false);
@@ -74,7 +73,6 @@ const SelectWallet = ({ linkInfo, walletData }) => {
                       setInfoChange={setInfoChange}
                       infoChange={infoChange}
                       setComplete={setComplete}
-                      setReceiveInfo={setReceiveInfo}
                       linkInfo={linkInfo}
                       setLoading={setLoading}
                       setFailed={setFailed}

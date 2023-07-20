@@ -7,13 +7,16 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { sendTrxs } from "utils/api/trxs";
+import { generateReceiveLink } from "utils/api/trxs";
 import { twitterIdState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 import { TextAreaBox } from "components/input";
 import ImageBanner from "components/banner/ImageBanner";
 import { TwitterImage } from "assets/images";
+import { postTweet } from "utils/api/twitter";
+import setConvertedData from "utils/functions/setConvertedData";
+import getFormattedDate from "utils/functions/getFormattedDate";
 
 const FullContainer = styled.div`
   width: 100%;
@@ -105,6 +108,7 @@ const LoginModalInner = (
   amount,
   currency,
   sender,
+  platformIcon,
   platform,
   receiver,
   stepStatus,
@@ -159,6 +163,31 @@ const LoginModalInner = (
     }
   }, []);
 
+  const requestPostTweet = async (
+    type,
+    comment,
+    tokenTicker,
+    tokenAmount,
+    senderUsername,
+    receiverUsername
+  ) => {
+    const convertedTokenAmount = setConvertedData(tokenAmount);
+    const date = getFormattedDate();
+
+    await postTweet(
+      type,
+      comment,
+      tokenTicker,
+      convertedTokenAmount,
+      date,
+      senderUsername,
+      receiverUsername
+    )
+    .then(() => {
+      console.log("post tweet complete")
+    });
+  };
+
   /* 
   * web3API로 (트랜잭션 hash)를 통해 트랜잭션을 받아옴. (아직 트랜잭션 생성이 완료 안됨(receipt: null)이면 interval)
   * -> 서버에 (트랜잭션에 관한 정보)들을 POST요청하고, response로 링크키(수금하기 위한 url키)를 받아옴
@@ -184,25 +213,31 @@ const LoginModalInner = (
             setTransactionStatus("pending");
           } else {
             setTransactionStatus("mined");
-            await sendTrxs(
+            await generateReceiveLink(
+              twitterId,
+              platform,
               address,
-              "metamask",
-              "TWITTER",
+              "METAMASK",
               receiver,
+              "TWITTER",
               currency,
               amount,
               transactionHash,
-              escrowId,
-              expiredDateResult,
-              tokenInfo.address,
-              networkId,
-              noteValue
+              networkId
             ).then((data) => {
               setFinalLink(data.linkKey);
               setExpired(setExpiredDate());
+              requestPostTweet(
+                "SENDER",
+                noteValue,
+                currency,
+                amount,
+                twitterId,
+                receiver
+              )
               setLoading(false);
             });
-
+            
             setStepStatus(stepStatus + 1);
             onClose();
 
@@ -298,22 +333,28 @@ const LoginModalInner = (
               await transaction.wait().then(async (receipt) => {
                 console.log("Transaction receipt:", receipt);
                 if (receipt.status === 1) {
-                  await sendTrxs(
+                  await generateReceiveLink(
+                    twitterId,
+                    platform,
                     address,
-                    "metamask",
-                    "TWITTER",
+                    "METAMASK",
                     receiver,
+                    "TWITTER",
                     currency,
                     amount,
                     transaction.hash,
-                    1234,
-                    setExpiredDate(),
-                    tokenInfo.address,
-                    networkId,
-                    noteValue
+                    networkId
                   ).then((data) => {
                     setFinalLink(data.linkKey);
                     setExpired(data.expiredAt);
+                    requestPostTweet(
+                      "SENDER",
+                      noteValue,
+                      currency,
+                      amount,
+                      twitterId,
+                      receiver
+                    )
                     setLoading(false);
                   });
                   setStepStatus(stepStatus + 1);
@@ -410,14 +451,14 @@ const LoginModalInner = (
             <PersonCategory>{t("sendConfirmModal4")}</PersonCategory>
             <PersonInfo>
               <PersonId>@{receiver}</PersonId>
-              <PersonIcon src={platform} />
+              <PersonIcon src={platformIcon} />
             </PersonInfo>
           </PersonInfoLine>
           <PersonInfoLine>
             <PersonCategory>{t("sendConfirmModal5")}</PersonCategory>
             <PersonInfo>
               <PersonId>@{twitterId}</PersonId>
-              <PersonIcon src={platform} />
+              <PersonIcon src={platformIcon} />
             </PersonInfo>
           </PersonInfoLine>
         </PersonInfoBox>
@@ -523,6 +564,7 @@ const CheckSendModal = ({
   amount,
   currency,
   sender,
+  platformIcon,
   platform,
   receiver,
   stepStatus,
@@ -573,6 +615,7 @@ const CheckSendModal = ({
             amount,
             currency,
             sender,
+            platformIcon,
             platform,
             receiver,
             stepStatus,

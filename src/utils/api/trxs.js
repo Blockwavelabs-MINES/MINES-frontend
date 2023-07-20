@@ -1,36 +1,34 @@
 import axios from "axios";
 
-export const sendTrxs = async (
+// 토큰 수령 링크 생성 API
+export const generateReceiveLink = async (
+  senderSocialName,
+  senderSocialType,
   senderWalletAddress,
-  senderTokenWalletType,
-  receiverSocialPlatform,
-  receiverSocialId,
-  tokenUdenom,
+  senderWalletType,
+  receiverSocialName,
+  receiverSocialType,
+  tokenTicker,
   tokenAmount,
   transactionHash,
-  transactionEscrowId,
-  expiredAt,
-  tokenContractAddress,
-  networkId,
-  comment
+  networkId
 ) => {
   let returnValue = 0;
   await axios
     .post(
-      `/trxs/send`,
+      `/send`,
       {
+        senderSocialName: senderSocialName,
+        senderSocialType: senderSocialType,
         senderWalletAddress: senderWalletAddress,
-        senderTokenWalletType: senderTokenWalletType.toUpperCase(),
-        receiverSocialPlatform: receiverSocialPlatform.toUpperCase(),
-        receiverSocialId: receiverSocialId,
-        tokenUdenom: tokenUdenom,
+        senderWalletType: senderWalletType,
+        receiverSocialName: receiverSocialName,
+        receiverSocialType: receiverSocialType,
+        tokenTicker: tokenTicker,
         tokenAmount: tokenAmount,
         transactionHash: transactionHash,
-        transactionEscrowId: transactionEscrowId,
-        expiredAt: expiredAt,
-        tokenContractAddress: tokenContractAddress,
-        networkId: networkId,
-        comment: comment
+        tokenContractAddress: "asdasdasd",
+        networkId: networkId
       },
       {
         headers: {
@@ -38,50 +36,46 @@ export const sendTrxs = async (
         },
       }
     )
-    .then((data) => {
-      returnValue = data.data.resultData;
+    .then((res) => {
+      returnValue = res.data.data;
     });
 
   return returnValue;
 };
 
+// 토큰 수령 정보 업데이트
 export const receiveTrxs = async (
+  transactionId,
   receiverWalletAddress,
-  receiveTokenWalletType,
-  transactionGasFee,
-  receiverSocialPlatformType,
-  trxIndex
+  receiverWalletType
 ) => {
   let returnValue = 0;
-  await axios
-    .post(
-      `/trxs/send/receive?trx_index=${trxIndex}`,
-      {
-        receiverWalletAddress: receiverWalletAddress,
-        receiveTokenWaleltType: receiveTokenWalletType,
-        transactionGasFee: transactionGasFee,
-        receiverSocialPlatformType: receiverSocialPlatformType,
+  await axios.put(`/send/${transactionId}`,
+    {
+      receiverWalletAddress: receiverWalletAddress,
+      receiverWalletType: receiverWalletType,
+    },
+    {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },
-      {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
-      }
-    )
-    .then((data) => {
-      console.log(data.data);
-      returnValue = data.data.resultData;
+    }
+  )
+    .then((res) => {
+      console.log(res.data);
+      returnValue = res.data.resultData;
     });
 
   return returnValue;
 };
 
+// 송신 정보 확인
 export const getTrxsLinkInfo = async (linkKey) => {
   let returnValue = 0;
   await axios
-    .get(`public/trxs?link_key=${linkKey}`)
-    .then((data) => {
-      returnValue = data.data.resultData;
+    .get(`/public/send?link_key=${linkKey}`)
+    .then((res) => {
+      returnValue = res.data.data;
     })
     .catch((error) => {
       console.log(error);

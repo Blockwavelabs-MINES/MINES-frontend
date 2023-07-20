@@ -3,9 +3,11 @@ import { TimerImage } from "assets/images";
 import { ContainedButton } from "components/button";
 import { Tooltip } from "components/card";
 import { ConfirmModal, CopyPivot } from "components/modal";
+import { useEffect } from "react";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { postTweet } from "utils/api/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
 

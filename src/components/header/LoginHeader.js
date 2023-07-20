@@ -76,13 +76,13 @@ const LoginHeader = () => {
   const getUserData = async () => {
     let returnValue;
     await axios
-      .get(`/users/my/info`, {
+      .get(`/user`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("accessToken"),
         },
       })
       .then((data) => {
-        returnValue = data.data.resultData;
+        returnValue = data.data.data;
         setUserInfo(returnValue);
         const userLanguage = returnValue?.language.toLowerCase().slice(0, 2);
         userLanguage === "en"

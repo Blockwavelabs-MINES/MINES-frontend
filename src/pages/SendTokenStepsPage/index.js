@@ -219,6 +219,7 @@ const SendTokenStepsPage = () => {
         networkId: networkId,
         currency: currency,
         email: email,
+        platform: platform,
         platformIcon: platformIcon,
         userId: userInfo?.userId,
         stepStatus: stepStatus,
