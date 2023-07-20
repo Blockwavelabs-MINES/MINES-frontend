@@ -50,10 +50,10 @@ export const receiveTrxs = async (
   receiverWalletType
 ) => {
   let returnValue = 0;
-  await axios.post(`/send/${transactionId}`,
+  await axios.put(`/send/${transactionId}`,
     {
       receiverWalletAddress: receiverWalletAddress,
-      receiverWaleltType: receiverWalletType,
+      receiverWalletType: receiverWalletType,
     },
     {
       headers: {
