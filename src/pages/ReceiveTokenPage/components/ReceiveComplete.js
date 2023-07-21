@@ -2,8 +2,8 @@ import { ChevronRight, GreenCheck, MetamaskIcon } from "assets/icons";
 import { CompasImage } from "assets/images";
 import animation from "assets/lottie/check-lottie.json";
 import { EditableCard } from "components/card";
-import { NoticeModal } from "components/modal";
-import { useEffect, useState } from "react";
+import { CopyPivot, NoticeModal } from "components/modal";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Lottie from "react-lottie-player";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -121,8 +121,12 @@ const ReceiveComplete = ({ walletList, select }) => {
   const { t } = useTranslation();
   const [receiveInfo, setReceiveInfo] = useState(null);
   const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
+  const [copyPivotVisible, setCopyPivotVisible] = useState(false);
+  const [clickX, setClickX] = useState(0);
   const receiveTrxHash = useRecoilValue(receiveTrxHashState);
   const [twitterLink, setTwitterLink] = useRecoilState(twitterLinkState);
+
+  const textRef = useRef(null);
 
   const txHashExplorerOnClick = () => {
     if (Number(receiveInfo.networkId) == 5) {
@@ -174,6 +178,32 @@ const ReceiveComplete = ({ walletList, select }) => {
     }
   }
 
+  const hashOnClick = () => {
+
+    const onClick = async (text) => {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+    
+      if (textRef.current) {
+        let tmpX = textRef.current.getBoundingClientRect().top;
+        setClickX(tmpX);
+      }
+
+      setCopyPivotVisible(true);
+    }
+    
+    onClick(receiveTrxHash);
+  }
+
+  const copyOnClose = () => {
+    setCopyPivotVisible(false);
+  };
+
+
   return (
     <>
       <ContentContainer>
@@ -195,16 +225,30 @@ const ReceiveComplete = ({ walletList, select }) => {
           />
         </WalletBox>
         <CheckTxTitle>{t("receiveTokenComplete3")}</CheckTxTitle>
-        <TxHashCard onClick={txHashExplorerOnClick}>
-          <RightArrow src={ChevronRight} />
-          <TimerBox src={CompasImage} />
-          <TxHashInfobox>
-            <TxHashInfoTitle>{t("receiveTokenComplete4")}</TxHashInfoTitle>
-            <TxHashAddressBox>
-              <TxHashAddress>{walletConvert(receiveTrxHash)}</TxHashAddress>
-            </TxHashAddressBox>
-          </TxHashInfobox>
-        </TxHashCard>
+        <div ref={textRef}>
+          <TxHashCard onClick={hashOnClick}>
+            <RightArrow src={ChevronRight} />
+            <TimerBox src={CompasImage} />
+            <TxHashInfobox>
+              <TxHashInfoTitle>{t("receiveTokenComplete4")}</TxHashInfoTitle>
+              <TxHashAddressBox>
+                <TxHashAddress>{walletConvert(receiveTrxHash)}</TxHashAddress>
+              </TxHashAddressBox>
+            </TxHashInfobox>
+          </TxHashCard>
+        </div>
+        {copyPivotVisible && (
+          <CopyPivot
+            visible={copyPivotVisible}
+            closable={true}
+            maskClosable={true}
+            onClose={copyOnClose}
+            label={t("sendPage03_10")}
+            type={"up"}
+            x={`calc(${clickX}px - 70px)`}
+            y={"calc(50% - 90px)"}
+          />
+        )}
         <ComplainLink
           href="https://forms.gle/4CGoKQAWzJVG2dd69"
           target="_blank"
