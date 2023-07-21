@@ -54,7 +54,18 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "sitemap": "babel-node ./src/sitemapGenerator.js",
-    "predeploy": "npm run sitemap"
+    "predeploy": "npm run sitemap",
+    "postbuild": "react-snap"
+  },
+  "reactSnap": {
+    "include": [
+      "/",
+      "/sendme"
+    ],
+    "puppeteerArgs": [
+      "--no-sandbox",
+      "--disable-setuid-sandbox"
+    ]
   },
   "eslintConfig": {
     "extends": [
@@ -78,6 +89,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "babel-register": "^6.26.0"
+    "babel-register": "^6.26.0",
+    "react-snap": "^1.23.0"
   }
 }
