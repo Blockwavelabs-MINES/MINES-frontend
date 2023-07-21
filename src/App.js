@@ -62,7 +62,7 @@ function App() {
                     path="/receiveToken/:key"
                     element={<ReceiveTokenPage />}
                   />
-                  <Route path="/@:id" element={<ProfilePage />} />
+                  <Route path="/profile/:id" element={<ProfilePage />} />
                   <Route
                     path="/accountLinking"
                     element={<AccountLinkingPage />}

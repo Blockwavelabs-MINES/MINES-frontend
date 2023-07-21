@@ -42,7 +42,7 @@ const SettingProfileHeader = ({
   };
 
   const externalOnClick = () => {
-    window.open("/@" + userId);
+    window.open("/profile/" + userId);
   };
 
   return (
