@@ -32,6 +32,7 @@
     "react-global-state": "^0.1.2",
     "react-google-login": "^5.2.2",
     "react-helmet-async": "^1.3.0",
+    "react-hydratable": "^1.2.1",
     "react-i18next": "^12.2.0",
     "react-lottie-player": "^1.5.4",
     "react-router-dom": "^6.4.3",
@@ -55,17 +56,7 @@
     "eject": "react-scripts eject",
     "sitemap": "babel-node ./src/sitemapGenerator.js",
     "predeploy": "npm run sitemap",
-    "postbuild": "react-snap"
-  },
-  "reactSnap": {
-    "include": [
-      "/",
-      "/sendme"
-    ],
-    "puppeteerArgs": [
-      "--no-sandbox",
-      "--disable-setuid-sandbox"
-    ]
+    "postbuild": "react-hydratable"
   },
   "eslintConfig": {
     "extends": [
@@ -89,7 +80,6 @@
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "babel-register": "^6.26.0",
-    "react-snap": "^1.23.0"
+    "babel-register": "^6.26.0"
   }
 }
