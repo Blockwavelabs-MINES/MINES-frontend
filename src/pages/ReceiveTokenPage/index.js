@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { getUserInfo, getUserInfoAndProfileDeco } from "utils/api/auth";
+import { getUserInfo } from "utils/api/auth";
 import { getTrxsLinkInfo } from "utils/api/trxs";
 import { getSocialConnectList } from "utils/api/twitter";
 import {

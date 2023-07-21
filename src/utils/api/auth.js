@@ -137,21 +137,6 @@ export const getUserInfo = async () => {
   return returnValue;
 };
 
-// 보류
-export const getUserInfoAndProfileDeco = async (userId) => {
-  let returnValue;
-  await axios
-    .get(`/public/users/info?user_id=${userId}`)
-    .then((data) => {
-      returnValue = data.data.resultData;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-  return returnValue;
-};
-
 // 유저 언어 업데이트
 export const changeUserLanguage = async (newLanguage) => {
   let returnValue;

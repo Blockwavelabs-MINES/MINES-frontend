@@ -3,9 +3,12 @@ import { ProfileHeader } from "components/header";
 import { LinkComponent, WalletComponent } from "pages/ProfilePage/components";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { getUserInfoAndProfileDeco } from "utils/api/auth";
+import { getUserInfo } from "utils/api/auth";
+import { getLink } from "utils/api/link";
+import { getProfileDeco } from "utils/api/profile";
+import { getWallet } from "utils/api/wallets";
 import { COLORS as palette } from "utils/style/Color/colors";
 
 const FullContainer = styled.div`
@@ -32,20 +35,31 @@ const ProfilePage = () => {
   const [linkData, setLinkData] = useState([]);
   const [walletData, setWalletData] = useState([]);
   const { t } = useTranslation();
-  const location = useLocation();
+
+  const currentPageUser = useParams()
 
   const getUserData = async (currentPageUserId) => {
-    await getUserInfoAndProfileDeco(currentPageUserId).then((data) => {
-      setUserInfoData(data.user);
-      setProfileDecoData(data.profileDecorate);
-      setLinkData(data.links);
-      setWalletData(data.wallets);
-    });
+
+    await getUserInfo(currentPageUserId)
+      .then((data) => {
+        setUserInfoData(data);
+      })
+    await getProfileDeco(currentPageUserId)
+      .then((data) => {
+        setProfileDecoData(data);
+      })
+    await getLink(currentPageUserId)
+      .then((data) => {
+        setLinkData(data);
+      })
+    await getWallet(currentPageUserId)
+      .then((data) => {
+        setWalletData(data);
+      })
   };
 
   useEffect(() => {
-    const currentPageUserId = location.pathname.split("/")[1].replace("@", "");
-    getUserData(currentPageUserId);
+    getUserData(currentPageUser.id);
   }, []);
 
   return (
