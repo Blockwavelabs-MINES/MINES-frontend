@@ -6,6 +6,7 @@ import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import App from "App";
 import "index.css";
 import ReactDOM from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
 import reportWebVitals from "reportWebVitals";
 
 const injected = new InjectedConnector({
@@ -40,15 +41,17 @@ window.Buffer = require("buffer/").Buffer;
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
-  <Web3ReactProvider
-    // connectors={{ some: () => {} }}
-    // connectors={{ walletConnect: walletconnect }}
-    getLibrary={getLibrary}
-  >
-    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID}>
-      <App />
-    </GoogleOAuthProvider>
-  </Web3ReactProvider>
+  <HelmetProvider>
+    <Web3ReactProvider
+      // connectors={{ some: () => {} }}
+      // connectors={{ walletConnect: walletconnect }}
+      getLibrary={getLibrary}
+    >
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID}>
+        <App />
+      </GoogleOAuthProvider>
+    </Web3ReactProvider>
+  </HelmetProvider>
   // </React.StrictMode>
 );
 

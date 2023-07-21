@@ -1,5 +1,6 @@
 import { MainImage3 } from "assets/images";
 import { LoginHeader } from "components/header";
+import TwitterCard from "components/metatags/TwitterCard";
 import { SingleModal } from "components/modal";
 import { BottomNavBar } from "components/navbar";
 import CreateLinkPage from "pages/CreateLinkPage";
@@ -68,6 +69,12 @@ const IntroPage = () => {
 
   return (
     <>
+      <TwitterCard
+        title={"3TREE"}
+        description={"소셜계정만으로 간편하게 송금하기"}
+        image={"https://i.ibb.co/yWJBwgv/twitterCard.png"}
+      />
+
       {!isSignup ? (
         <>
           <FullContainer>
