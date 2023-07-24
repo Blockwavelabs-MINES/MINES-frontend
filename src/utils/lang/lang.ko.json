@@ -109,6 +109,7 @@
   "editLinkModal5": "https://3tree.io",
   "editLinkModal6": "저장하기",
   "editLinkModal7": "유효하지 않은 링크입니다.",
+  "editLinkModal8": "링크 타이틀을 입력해 주세요",
 
   "addWalletModalTitle": "지갑 주소 추가하기",
   "addWalletModalAlert": "연결할 수 있는 지갑이 없어요!",
