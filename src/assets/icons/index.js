@@ -46,3 +46,4 @@ export { default as TooltipBubbleTailGray } from "./tooltip-bubbleTail-gray.svg"
 export { default as TooltipBubbleTailGrayDown } from "./tooltip-bubbleTail-grayDown.svg";
 export { default as TooltipBubbleTail } from "./tooltip-bubbleTail.svg";
 export { default as TwitterIcon } from "./twitter-icon.svg";
+export { default as HomeIcon } from "./home-04.svg";
