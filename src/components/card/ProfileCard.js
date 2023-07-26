@@ -9,7 +9,7 @@ const FullContainer = styled.div`
   width: 100%;
   padding: 60px 20px;
   background: ${(props) =>
-    props.color
+    props.backgroundColor
       ? "transparent"
       : "linear-gradient(180deg, #edf2fd 0%, rgba(255, 255, 255, 0) 100%)"};
 `;
@@ -62,12 +62,13 @@ const ProfileCard = ({
   onClickRight,
   isEditable,
   style,
+  backgroundColor,
   color,
 }) => {
   const { t } = useTranslation();
 
   return (
-    <FullContainer color={color} style={style}>
+    <FullContainer backgroundColor={backgroundColor} style={style}>
       <InnerContainer>
         <ProfileImageBox profileImg={profileImg} />
         <UserNameBox color={color}>{userName}</UserNameBox>
