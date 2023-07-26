@@ -1,1 +1,1 @@
-export { default as SEO } from "./TwitterCard";
+export { default as TwitterCard } from "./TwitterCard";

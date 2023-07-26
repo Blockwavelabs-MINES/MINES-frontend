@@ -1,5 +1,6 @@
 import TwitterCard from "components/metatags/TwitterCard";
 import { useEffect } from "react";
+
 const TwtMetaTagPage = () => {
 
   useEffect(() => {
