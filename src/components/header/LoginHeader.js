@@ -119,7 +119,7 @@ const LoginHeader = () => {
         />
       )}
       <InnerContainer>
-        <LogoContainer>3TREE</LogoContainer>
+        <LogoContainer>MINES</LogoContainer>
         {isLoggedIn ? (
           <ProfileButton
             img={userInfo?.profileImg}

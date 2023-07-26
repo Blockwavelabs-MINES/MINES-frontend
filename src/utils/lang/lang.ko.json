@@ -21,7 +21,7 @@
   "introPageMent8": "토큰을 전송할 수 있어요",
   "introPageMent9": "이제 토큰을 보낼 때 상대방의 지갑 주소를 알 필요 없어요. 소셜 계정으로 간단하게 보내보세요!",
 
-  "loginModal1": "3TREE 시작하기",
+  "loginModal1": "MINES 시작하기",
   "loginModal2": "나만의 페이지를 생성하고",
   "loginModal2_2": "디지털 아이덴티티를 확장해보세요",
   "loginModal3": "구글로 시작하기",
@@ -31,8 +31,8 @@
   "loginModal7": "서비스 약관",
   "loginModal8": "에 동의하는 것을 의미하며, 이용을 위해 이메일과 이름, 프로필 이미지를 수집합니다.",
 
-  "createLink1": "3TREE 아이디를 만들어요",
-  "createLink2": "유저 아이디를 생성하고 3TREE에서",
+  "createLink1": "MINES 아이디를 만들어요",
+  "createLink2": "유저 아이디를 생성하고 MINES에서",
   "createLink2_2": "소셜 송금을 시작해보세요",
   "createLink3": "유저 아이디",
   "createLink4": "@UserID",
@@ -43,7 +43,7 @@
   "createLink8": "생성하기",
 
   "createLinkDone1": "아이디 생성완료!",
-  "createLinkDone2": "3TREE에 소셜미디어 계정을 연결하면",
+  "createLinkDone2": "MINES에 소셜미디어 계정을 연결하면",
   "createLinkDone2_2": "지갑주소를 몰라도 토큰을 보낼 수 있어요",
   "createLinkDone3": "소셜 계정 연동하기",
 
@@ -59,7 +59,7 @@
   "settingsPage5": "서비스 이용약관",
   "settingsPage6": "개인정보 이용 방침",
 
-  "changeUserIdHeader": "3TREE 아이디",
+  "changeUserIdHeader": "MINES 아이디",
   "changeUserId1": "아이디",
   "changeUserId2": "3tree.io/@UserID",
   "changeUserId3": "User ID는 문자, 숫자 및 '_'만 포함할 수 있습니다",
@@ -104,7 +104,7 @@
 
   "editLinkModal1": "링크",
   "editLinkModal2": "링크 타이틀",
-  "editLinkModal3": "3Tree",
+  "editLinkModal3": "MINES",
   "editLinkModal4": "링크 URL",
   "editLinkModal5": "https://3tree.io",
   "editLinkModal6": "저장하기",
@@ -132,7 +132,7 @@
   "profilePage5": "지갑 주소를 복사했어요!",
 
   "sendPage00_1": "소셜 계정 선택하기",
-  "sendPage00_2": "3TREE에서는 선택한 계정 아이디로 사람들에게 송금할 수 있어요!",
+  "sendPage00_2": "MINES에서는 선택한 계정 아이디로 사람들에게 송금할 수 있어요!",
   "sendPage00_3": "계정연동",
   "sendPage00_4": "트위터",
   "sendPage00_5": "텔레그램",
@@ -299,7 +299,7 @@
   "accountLinkingPage4": "디스코드",
   "accountLinkingPage5": "지원 예정입니다",
 
-  "noticeModal1": "3TREE에 트위터 계정을 연동해주세요",
+  "noticeModal1": "MINES에 트위터 계정을 연동해주세요",
   "noticeModal2": "연동되었습니다.",
   "noticeModal3": "연동 해제되었습니다.",
   "noticeModal4": "연동을 정말 해제하시겠어요?",
