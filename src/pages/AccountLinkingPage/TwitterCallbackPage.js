@@ -33,7 +33,12 @@ const TwitterCallbackPage = () => {
         const linkKey = receiveLink;
         setReceiveLink("");
         window.location.href = `/receiveToken/${linkKey}`;
-      } else {
+      }
+      else if (sendSocialConnect) {
+        setSendSocialConnect(false);
+        window.location.href = "/sendToken";
+      }
+      else {
         window.location.href = "/accountLinking";
       }
     })
