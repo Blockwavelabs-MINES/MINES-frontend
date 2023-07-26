@@ -30,7 +30,14 @@ const SubtextBox = styled.div`
   color: ${palette.grey_2};
 `;
 
-const SelectWallet = ({ linkInfo, walletData }) => {
+const SelectWallet = ({ 
+  linkInfo,
+  walletData, 
+  tokenAmount,
+  setTokenAmount,
+  tokenTicker,
+  setTokenTicker,
+}) => {
   const [infoChange, setInfoChange] = useState(false);
   const [complete, setComplete] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -46,7 +53,12 @@ const SelectWallet = ({ linkInfo, walletData }) => {
   return (
     <>
       {complete ? (
-        <ReceiveComplete walletList={walletData} select={select} />
+        <ReceiveComplete 
+          walletList={walletData}
+          select={select}
+          tokenAmount={tokenAmount}
+          tokenTicker={tokenTicker}
+        />
       ) : (
         <>
           {loading ? (
@@ -80,6 +92,8 @@ const SelectWallet = ({ linkInfo, walletData }) => {
                       resend={resend}
                       select={select}
                       setSelect={setSelect}
+                      setTokenAmount={setTokenAmount}
+                      setTokenTicker={setTokenTicker}
                     />
                   </>
                 </>

@@ -118,7 +118,12 @@ const walletConvert = (walletAddress) => {
   return returnAddress;
 };
 
-const ReceiveComplete = ({ walletList, select }) => {
+const ReceiveComplete = ({ 
+  walletList,
+  select,
+  tokenAmount,
+  tokenTicker 
+}) => {
   const { t } = useTranslation();
   const [receiveInfo, setReceiveInfo] = useState(null);
   const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
@@ -220,7 +225,7 @@ const ReceiveComplete = ({ walletList, select }) => {
           <Lottie animationData={animation} loop={false} play />
         </LottieContainer>
         <TextLine>
-          {convert(receiveInfo?.tokenAmount)} {receiveInfo?.tokenUdenom}
+          {convert(tokenAmount)} {tokenTicker}
           <br />
           {t("receiveTokenComplete2")}
         </TextLine>

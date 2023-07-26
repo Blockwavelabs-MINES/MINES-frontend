@@ -211,6 +211,8 @@ const ReceiveTokenPage = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [walletData, setWalletData] = useState(null);
   const [socialList, setSocialList] = useState(null);
+  const [tokenAmount, setTokenAmount] = useState(null);
+  const [tokenTicker, setTokenTicker] = useState(null);
   const isLoggedIn = useRecoilValue(loginState);
   const loginDone = useRecoilValue(loginDoneState);
   const setReceiveLink = useSetRecoilState(receiveLinkState);
@@ -311,8 +313,11 @@ const ReceiveTokenPage = () => {
             />
             <SelectWallet
               linkInfo={linkInfo}
-              userInfo={userInfo}
               walletData={walletData}
+              tokenAmount={tokenAmount}
+              setTokenAmount={setTokenAmount}
+              tokenTicker={tokenTicker}
+              setTokenTicker={setTokenTicker}
             />
           </>
         ) : (
