@@ -305,5 +305,16 @@
   "noticeModal4": "연동을 정말 해제하시겠어요?",
   "noticeModal5": "연결해제",
   "noticeModal6": "트위터로 공유했어요!",
-  "noticeModal7": "트위터로 이동"
+  "noticeModal7": "트위터로 이동",
+
+  "customizeProfilePage1": "배경",
+  "customizeProfilePage2": "색상",
+  "customizeProfilePage3": "이미지",
+  "customizeProfilePage4": "배경 색상",
+  "customizeProfilePage5": "버튼",
+  "customizeProfilePage6": "버튼 색상",
+  "customizeProfilePage7": "버튼 폰트 색상",
+  "customizeProfilePage8": "폰트",
+  "customizeProfilePage9": "폰트 색상",
+  "customizeProfilePage10": "미리보기"
 }

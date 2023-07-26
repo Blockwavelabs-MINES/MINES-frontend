@@ -305,5 +305,16 @@
   "noticeModal4": "Would you really like to unlink?",
   "noticeModal5": "Disconnect",
   "noticeModal6": "I shared it on Twitter!",
-  "noticeModal7": "Go to Twitter"
+  "noticeModal7": "Go to Twitter",
+
+  "customizeProfilePage1": "Background",
+  "customizeProfilePage2": "Color",
+  "customizeProfilePage3": "Image",
+  "customizeProfilePage4": "Background color",
+  "customizeProfilePage5": "Button",
+  "customizeProfilePage6": "Button color",
+  "customizeProfilePage7": "Button font color",
+  "customizeProfilePage8": "Font",
+  "customizeProfilePage9": "Font color",
+  "customizeProfilePage10": "Preview"
 }
