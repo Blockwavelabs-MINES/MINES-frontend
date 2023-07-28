@@ -10,4 +10,5 @@ export { default as SendTokenPage } from "./SendTokenPage";
 export { default as SendTokenStepsPage } from "./SendTokenStepsPage";
 export { default as SettingPage } from "./SettingPage";
 export { default as TwitterCallbackPage } from "./AccountLinkingPage/TwitterCallbackPage";
-export { default as TwtMetaTagPage } from "./TwtMetaTagPage";
+export { default as TwtMetaTagReceivePage } from "./TwtMetaTagReceivePage";
+export { default as TwtMetaTagSendPage } from "./TwtMetaTagSendPage";
