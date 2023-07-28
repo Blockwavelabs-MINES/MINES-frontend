@@ -39,7 +39,7 @@ export const addWallet = async (walletType, walletAddress) => {
 export const deleteWallet = async (walletId) => {
   let returnValue = 0;
 
-  await axios.delete(`/wallet/:${walletId}`, {
+  await axios.delete(`/wallet/${walletId}`, {
       headers: privateHeaders,
     })
   .then((res) => {
