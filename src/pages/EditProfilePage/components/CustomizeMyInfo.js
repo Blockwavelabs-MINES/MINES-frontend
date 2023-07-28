@@ -306,7 +306,7 @@ const CustomizeMyInfo = ({ userId, setCustomizeMyInfo, setInfoChange }) => {
       formData.append("image", backImage.file);
     }
 
-    formData.append("backgroundColor", backgroundColor);
+    formData.append("backgroundColor", backTypeIsColor ? backgroundColor : '');
     formData.append("buttonColor", buttonColor);
     formData.append("buttonFontColor", buttonFontColor);
     formData.append("fontColor", fontColor);
