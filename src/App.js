@@ -76,7 +76,7 @@ function App() {
                   <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
                   <Route path="/termsOfService" element={<TermsOfService />} />
                   <Route path="/send" element={<TwtMetaTagSendPage />} />
-                  <Route path="/receive" element={<TwtMetaTagReceivePage /> } />
+                  <Route path="/receive" element={<TwtMetaTagReceivePage />} />
                   <Route path="/test" element={<TestPage />} />
                   <Route path="/*" element={<NotFoundPage />} />
                 </Routes>

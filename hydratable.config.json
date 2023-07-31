@@ -1,3 +1,4 @@
 {
-  "crawlingUrls": ["/send", "/receive"]
+  "crawlingUrls": ["/receive", "send"],
+  "delay": 2000
 }

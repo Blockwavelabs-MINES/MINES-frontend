@@ -4,7 +4,7 @@ import { useEffect } from "react";
 /*
 *   송금피드 메타태그 페이지
 */
-const TwtMetaTagPage = () => {
+const TwtMetaTagSendPage = () => {
 
   useEffect(() => {
     window.location.href = "/";
@@ -21,4 +21,4 @@ const TwtMetaTagPage = () => {
   );
 }
  
-export default TwtMetaTagPage;
+export default TwtMetaTagSendPage;
