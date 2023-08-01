@@ -3,6 +3,7 @@ import {
   DropboxFeedback,
   DropboxLogout,
   DropboxSettings,
+  EditProfile,
 } from "assets/icons";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
@@ -12,8 +13,8 @@ import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography";
 
 const DropBoxContainer = styled.div`
-  min-width: 92px;
-  height: 128px;
+  min-width: 114px;
+  height: 169px;
   border-radius: 8px;
   background-color: ${palette.white};
   position: absolute;
@@ -98,6 +99,10 @@ const ProfileDropbox = ({ className, onClose, maskClosable, visible }) => {
     window.open("https://forms.gle/PvgL1PV8tKcNkzmy5");
   };
 
+  const editProfileOnClick = () => {
+    window.location.href = "/editProfile";
+  };
+
   return (
     <>
       <ModalOverlay visible={visible} />
@@ -118,6 +123,11 @@ const ProfileDropbox = ({ className, onClose, maskClosable, visible }) => {
             <TapButton onClick={settingOnClick}>
               <TapText>{t("introPageHeader2")}</TapText>
               <TapIcon src={DropboxSettings} />
+            </TapButton>
+            <Divider />
+            <TapButton onClick={editProfileOnClick}>
+              <TapText>{t("introPageHeader5")}</TapText>
+              <TapIcon src={EditProfile} />
             </TapButton>
             <Divider />
             <TapButton onClick={feedbackOnClick}>
