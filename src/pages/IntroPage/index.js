@@ -16,7 +16,7 @@ import { loginModalVisibleState, loginState, signupState } from "utils/atoms/log
 import { receiveLinkState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
-import { Dashboard } from "./component";
+import { Dashboard } from "./components";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -36,7 +36,7 @@ const DashboardContainer = styled.div`
   width: 100%;
   min-height: 100vh;
   position: relative;
-  padding-top: 75px;
+  padding-top: 35px;
   align-items: center;
   background-color: #FAFAFA;
 `;
