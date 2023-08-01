@@ -5,6 +5,7 @@ import { InjectedConnector } from "@web3-react/injected-connector";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import App from "App";
 import "index.css";
+import { hydrate } from "react-dom";
 import ReactDOM from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import reportWebVitals from "reportWebVitals";
@@ -38,9 +39,7 @@ if (process.env.NODE_ENV === "production") {
 
 window.Buffer = require("buffer/").Buffer;
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  // <React.StrictMode>
+const element = (
   <HelmetProvider>
     <Web3ReactProvider
       // connectors={{ some: () => {} }}
@@ -52,8 +51,18 @@ root.render(
       </GoogleOAuthProvider>
     </Web3ReactProvider>
   </HelmetProvider>
-  // </React.StrictMode>
-);
+)
+
+const rootElement = document.getElementById("root");
+
+if (rootElement.hasChildNodes()) {
+  const root = ReactDOM.hydrateRoot(document.getElementById("root"), element);
+  console.log(root);
+} 
+else {
+  const root = ReactDOM.createRoot(document.getElementById("root"));
+  root.render(element);
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

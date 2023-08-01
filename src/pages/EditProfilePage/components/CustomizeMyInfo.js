@@ -302,13 +302,11 @@ const CustomizeMyInfo = ({ userId, setCustomizeMyInfo, setInfoChange }) => {
 
     const formData = new FormData();
 
-    if (backTypeIsColor) {
-      formData.append("image", null);
-    } else {
+    if (!backTypeIsColor) {
       formData.append("image", backImage.file);
     }
 
-    formData.append("backgroundColor", backgroundColor);
+    formData.append("backgroundColor", backTypeIsColor ? backgroundColor : '');
     formData.append("buttonColor", buttonColor);
     formData.append("buttonFontColor", buttonFontColor);
     formData.append("fontColor", fontColor);
@@ -386,7 +384,7 @@ const CustomizeMyInfo = ({ userId, setCustomizeMyInfo, setInfoChange }) => {
               rightOnClick={saveProfileDecoEdited}
             />
             <ContentBox>
-              <ComponentTitle>배경</ComponentTitle>
+              <ComponentTitle>{t("customizeProfilePage1")}</ComponentTitle>
               <ComponentBox>
                 <SelectBackTypeBox>
                   <BackTypeBox>
@@ -395,7 +393,7 @@ const CustomizeMyInfo = ({ userId, setCustomizeMyInfo, setInfoChange }) => {
                       color={backgroundColor}
                       onClick={() => setBackTypeIsColor(true)}
                     />
-                    <BackTypeTextBox>색상</BackTypeTextBox>
+                    <BackTypeTextBox>{t("customizeProfilePage2")}</BackTypeTextBox>
                   </BackTypeBox>
                   <BackTypeBox>
                     <BackTypeColorBox
@@ -423,10 +421,10 @@ const CustomizeMyInfo = ({ userId, setCustomizeMyInfo, setInfoChange }) => {
                         style={{ display: "none" }}
                       />
                     </BackTypeColorBox>
-                    <BackTypeTextBox>이미지</BackTypeTextBox>
+                    <BackTypeTextBox>{t("customizeProfilePage3")}</BackTypeTextBox>
                   </BackTypeBox>
                 </SelectBackTypeBox>
-                <SubTitleBox>배경 색상</SubTitleBox>
+                <SubTitleBox>{t("customizeProfilePage4")}</SubTitleBox>
                 <ColorBar>
                   {backgroundColorPicker && (
                     <PickerBox>
@@ -461,9 +459,9 @@ const CustomizeMyInfo = ({ userId, setCustomizeMyInfo, setInfoChange }) => {
                   />
                 </ColorBar>
               </ComponentBox>
-              <ComponentTitle>버튼</ComponentTitle>
+              <ComponentTitle>{t("customizeProfilePage5")}</ComponentTitle>
               <ComponentBox>
-                <SubTitleBox>버튼 색상</SubTitleBox>
+                <SubTitleBox>{t("customizeProfilePage6")}</SubTitleBox>
                 <ColorBar>
                   {buttonColorPicker && (
                     <PickerBox>
@@ -498,7 +496,7 @@ const CustomizeMyInfo = ({ userId, setCustomizeMyInfo, setInfoChange }) => {
                   />
                 </ColorBar>
                 <SubTitleBox style={{ marginTop: "24px" }}>
-                  버튼 폰트 색상
+                  {t("customizeProfilePage7")}
                 </SubTitleBox>
                 <ColorBar>
                   {buttonFontColorPicker && (
@@ -534,9 +532,9 @@ const CustomizeMyInfo = ({ userId, setCustomizeMyInfo, setInfoChange }) => {
                   />
                 </ColorBar>
               </ComponentBox>
-              <ComponentTitle>폰트</ComponentTitle>
+              <ComponentTitle>{t("customizeProfilePage8")}</ComponentTitle>
               <ComponentBox style={{ marginBottom: "350px" }}>
-                <SubTitleBox>폰트 색상</SubTitleBox>
+                <SubTitleBox>{t("customizeProfilePage9")}</SubTitleBox>
                 <ColorBar>
                   {fontColorPicker && (
                     <PickerBox>
@@ -587,7 +585,7 @@ const CustomizeMyInfo = ({ userId, setCustomizeMyInfo, setInfoChange }) => {
               styles="filled"
               states="default"
               size="large"
-              label="미리보기"
+              label={t("customizeProfilePage10")}
               onClick={() => setPreviewOn(true)}
             />
           </ButtonContainer>

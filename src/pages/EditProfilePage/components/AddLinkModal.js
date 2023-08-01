@@ -37,29 +37,47 @@ const InputContainer = styled.div`
 `;
 
 function AddLinkModalInner(saveAction, onClose, original) {
-  const [linkId, setLinkId] = useState(original && original.link_id);
-  const [title, setTitle] = useState(original && original.linkTitle);
-  const [url, setUrl] = useState(original && original.linkUrl);
+  const [linkId, setLinkId] = useState(original?.link_id);
+  const [title, setTitle] = useState(original?.linkTitle);
+  const [url, setUrl] = useState(original?.linkUrl);
   const [canSave, setCanSave] = useState(false);
-  const [errorComment, setErrorComment] = useState("");
-  const [linkInputState, setLinkInputState] = useState("typing");
+  const [linkInputState, setLinkInputState] = useState("filled");
+  const [linkErrorComment, setLinkErrorComment] = useState("");
+  const [titleInputState, setTitleInputState] = useState("filled")
+  const [titleErrorComment, setTitleErrorComment] = useState("");
+
   const { t } = useTranslation();
 
   useEffect(() => {
-    let regex =
-      /http(s)?[:\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i;
-    if (title && url && regex.test(url)) {
+    let regex = /http(s)?[:\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i;
+    
+    if (url && regex.test(url)) {
       setCanSave(true);
-      setErrorComment("");
+      setLinkErrorComment("");
       setLinkInputState("filled");
-    } else if (!url) {
+    } 
+    else if (!url) {
       setCanSave(false);
-      setErrorComment("");
+      setLinkErrorComment("");
       setLinkInputState("filled");
-    } else {
+    } 
+    else {
       setCanSave(false);
-      setErrorComment(t("editLinkModal7"));
+      setLinkErrorComment(t("editLinkModal7"));
       setLinkInputState("error");
+    }
+  }, [url]);
+
+  useEffect(() => {
+    if (title) {
+      setCanSave(true);
+      setTitleErrorComment("");
+      setTitleInputState("filled");
+    } 
+    else if (url && !title) {
+      setCanSave(false);
+      setTitleErrorComment(t("editLinkModal8"));
+      setTitleInputState("error");
     }
   }, [title, url]);
 
@@ -81,13 +99,14 @@ function AddLinkModalInner(saveAction, onClose, original) {
         <InputContainer>
           <InputBox
             label={t("editLinkModal2")}
-            state="filled"
             isRequired={true}
             placeholder={t("editLinkModal3")}
             value={title || ""}
             onChange={(e) => {
               setTitle(e.target.value);
             }}
+            message={titleErrorComment}
+            state={titleInputState}
           />
           <InputBox
             label={t("editLinkModal4")}
@@ -97,7 +116,7 @@ function AddLinkModalInner(saveAction, onClose, original) {
             onChange={(e) => {
               setUrl(e.target.value);
             }}
-            message={errorComment}
+            message={linkErrorComment}
             state={linkInputState}
           />
         </InputContainer>

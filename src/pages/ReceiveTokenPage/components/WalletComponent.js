@@ -89,6 +89,8 @@ const WalletComponent = ({
   resend,
   select,
   setSelect,
+  setTokenAmount,
+  setTokenTicker
 }) => {
   const [deleteModalOn, setDeleteModalOn] = useState(false);
   const [realDelete, setRealDelete] = useState(false);
@@ -312,6 +314,9 @@ const WalletComponent = ({
                                   .then(async () => {
                                     setLoading(false);
                                     setComplete(true);
+                                    setTokenAmount(infoRes.tokenAmount);
+                                    setTokenTicker(infoRes.tokenTicker);
+                                    
                                     requestPostTweet(
                                       "RECEIVER",
                                       '',
@@ -423,6 +428,9 @@ const WalletComponent = ({
                                 .then(() => {
                                   setLoading(false);
                                   setComplete(true);
+                                  setTokenAmount(infoRes.tokenAmount);
+                                  setTokenTicker(infoRes.tokenTicker);
+                                  
                                   requestPostTweet(
                                     "RECEIVER",
                                     '',

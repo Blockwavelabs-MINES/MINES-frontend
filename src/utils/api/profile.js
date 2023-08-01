@@ -5,7 +5,7 @@ import { privateHeadersMultipart, handleTokenExpired } from "./base";
 export const getProfileDeco = async (userId) => {
   let returnValue = 0;
   
-  await axios.get(`/public/user/profile/decorate/${userId}`)
+  await axios.get(`/public/user/profile/decorate?user_id=${userId}`)
   .then((res) => {
     returnValue = res.data.data;
   })

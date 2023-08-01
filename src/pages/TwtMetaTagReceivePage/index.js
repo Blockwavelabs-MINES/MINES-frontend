@@ -1,9 +1,13 @@
 import TwitterCard from "components/metatags/TwitterCard";
 import { useEffect } from "react";
-const TwtMetaTagPage = () => {
+
+/*
+*   수금피드 메타태그 페이지
+*/
+const TwtMetaTagReceivePage = () => {
 
   useEffect(() => {
-    //window.location.href = "/";
+    window.location.href = "/";
   }, [])
 
   return (  
@@ -11,10 +15,10 @@ const TwtMetaTagPage = () => {
       <TwitterCard
         title={"3TREE."}
         description={"소셜계정만으로 간편하게 송금하기."}
-        image={"https://i.ibb.co/RSPsgsm/Twitter-Receive.png?1234"}
+        image={"https://i.ibb.co/RSPsgsm/Twitter-Receive.png?124"}
       />
     </>
   );
 }
  
-export default TwtMetaTagPage;
+export default TwtMetaTagReceivePage;

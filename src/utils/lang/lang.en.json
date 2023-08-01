@@ -21,7 +21,7 @@
   "introPageMent8": "",
   "introPageMent9": "For sending tokens to someone, All you need is their social media account, not their wallet address.",
 
-  "loginModal1": "Start 3TREE",
+  "loginModal1": "Start MINES",
   "loginModal2": "Create Your Profile Page",
   "loginModal2_2": "and Extend Your Digital Identity",
   "loginModal3": "Continue with Google",
@@ -43,7 +43,7 @@
   "createLink8": "Create",
 
   "createLinkDone1": "ID creation complete!",
-  "createLinkDone2": "When you connect your social media account to 3TREE,",
+  "createLinkDone2": "When you connect your social media account to MINES,",
   "createLinkDone2_2": "you can send tokens without knowing a wallet address",
   "createLinkDone3": "Link Social Account",
 
@@ -59,7 +59,7 @@
   "settingsPage5": "Terms and Conditions of Service",
   "settingsPage6": "Personal Information Utilization Policy",
 
-  "changeUserIdHeader": "3TREE ID",
+  "changeUserIdHeader": "MINES ID",
   "changeUserId1": "ID",
   "changeUserId2": "3tree.io/@UserID",
   "changeUserId3": "User ID can only contain letters, numbers and ‘_’",
@@ -103,17 +103,18 @@
   "manageProfilePageAlertDeleteWallet3": "Cancel",
 
   "addWalletModalTitle": "Add Wallet Address",
-  "addWalletModalAlert": "You don't have a wallet to connect to 3TREE",
+  "addWalletModalAlert": "You don't have a wallet to connect to MINES",
   "addWalletModalAlertButton": "Install Metamask",
   "addWalletModalAlertButton2": "Cancel",
 
   "editLinkModal1": "Link",
   "editLinkModal2": "Link Title",
-  "editLinkModal3": "3Tree",
+  "editLinkModal3": "MINES",
   "editLinkModal4": "Link URL",
   "editLinkModal5": "https://3tree.io",
   "editLinkModal6": "Save",
   "editLinkModal7": "Unvalid link!",
+  "editLinkModal8": "Enter your title",
 
   "editProfilePageHeader": "Edit Profile",
   "editProfilePage1": "Save",
@@ -202,7 +203,7 @@
   "previewPage11": "In case of return due to non-receipt, the token will be automatically returned with a limit of 0.5% of the sent token.",
 
   "sendPage00_1": "Select a social account",
-  "sendPage00_2": "With 3TREE, you can send money to people with the account ID you want!",
+  "sendPage00_2": "With MINES, you can send money to people with the account ID you want!",
   "sendPage00_3": "Linking accounts",
   "sendPage00_4": "Twitter",
   "sendPage00_5": "Telegram",
@@ -298,11 +299,22 @@
   "accountLinkingPage4": "Discord",
   "accountLinkingPage5": "Comming Soon",
 
-  "noticeModal1": "Link your Twitter account to 3TREE",
+  "noticeModal1": "Link your Twitter account to MINES",
   "noticeModal2": "Linked successfully",
   "noticeModal3": "Unlinked successfully",
   "noticeModal4": "Would you really like to unlink?",
   "noticeModal5": "Disconnect",
   "noticeModal6": "I shared it on Twitter!",
-  "noticeModal7": "Go to Twitter"
+  "noticeModal7": "Go to Twitter",
+
+  "customizeProfilePage1": "Background",
+  "customizeProfilePage2": "Color",
+  "customizeProfilePage3": "Image",
+  "customizeProfilePage4": "Background color",
+  "customizeProfilePage5": "Button",
+  "customizeProfilePage6": "Button color",
+  "customizeProfilePage7": "Button font color",
+  "customizeProfilePage8": "Font",
+  "customizeProfilePage9": "Font color",
+  "customizeProfilePage10": "Preview"
 }

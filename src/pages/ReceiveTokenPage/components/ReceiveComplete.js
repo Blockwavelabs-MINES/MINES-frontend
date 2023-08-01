@@ -2,6 +2,7 @@ import { ChevronRight, GreenCheck, MetamaskIcon } from "assets/icons";
 import { CompasImage } from "assets/images";
 import animation from "assets/lottie/check-lottie.json";
 import { EditableCard } from "components/card";
+import { SendTokenHeader } from "components/header";
 import { CopyPivot, NoticeModal } from "components/modal";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -117,7 +118,12 @@ const walletConvert = (walletAddress) => {
   return returnAddress;
 };
 
-const ReceiveComplete = ({ walletList, select }) => {
+const ReceiveComplete = ({ 
+  walletList,
+  select,
+  tokenAmount,
+  tokenTicker 
+}) => {
   const { t } = useTranslation();
   const [receiveInfo, setReceiveInfo] = useState(null);
   const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
@@ -203,15 +209,23 @@ const ReceiveComplete = ({ walletList, select }) => {
     setCopyPivotVisible(false);
   };
 
+  const leftOnClick = () => {
+    window.location.href = "/";
+  };
 
   return (
     <>
+      <SendTokenHeader
+        title={t("receiveTokenPage1")}
+        iconHome
+        leftOnClick={leftOnClick}
+      />
       <ContentContainer>
         <LottieContainer>
           <Lottie animationData={animation} loop={false} play />
         </LottieContainer>
         <TextLine>
-          {convert(receiveInfo?.tokenAmount)} {receiveInfo?.tokenUdenom}
+          {convert(tokenAmount)} {tokenTicker}
           <br />
           {t("receiveTokenComplete2")}
         </TextLine>

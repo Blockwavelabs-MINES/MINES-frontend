@@ -35,10 +35,11 @@ const convertDateFormatTwitter = (date) => {
   };
 
   if (localStorage.getItem("language") === "en") {
+    console.log(dateArr);
     return (
       dateArr[3].substring(0, 5) +
       " on " +
-      monthNamesEn[date[0]] +
+      monthNamesEn[dateArr[0]] +
       " " +
       dateArr[1] +
       ", " +

@@ -110,6 +110,7 @@ const Preview = ({
           userName={userInfo.profileName}
           introduction={userInfo.profileBio}
           isEditable={false}
+          backgroundColor={backgroundColor}
           color={fontColor}
         />
         {linkList.map((link) => (

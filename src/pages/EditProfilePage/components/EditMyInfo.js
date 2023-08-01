@@ -162,7 +162,9 @@ const EditMyInfo = ({ userInfo, setEditMyInfo, setInfoChange, infoChange }) => {
     
     const formData = new FormData();
 
-    formData.append("image", profileImageChange ? newProfileImage : null);
+    if (profileImageChange){
+      formData.append("image", newProfileImage);
+    }
     formData.append("profileName", name);
     formData.append("profileBio", introduction);
 

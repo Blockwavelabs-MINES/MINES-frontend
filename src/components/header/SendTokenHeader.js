@@ -1,4 +1,4 @@
-import { ChevronLeft } from "assets/icons";
+import { ChevronLeft, HomeIcon } from "assets/icons";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { COLORS as palette } from "utils/style/Color/colors";
@@ -43,7 +43,8 @@ const OnlyTitleContainer = styled.div`
 
 const SendTokenHeader = ({
   title,
-  iconLeft = ChevronLeft,
+  iconLeft,
+  iconHome,
   leftOnClick,
   rightOnClick,
   stepStatus,
@@ -62,15 +63,27 @@ const SendTokenHeader = ({
         ) : (
           <>
             <div style={{ width: "58px" }}>
-              <IconButton
-                type="secondary"
-                styles="outlined"
-                states="default"
-                size="xs"
-                icon={iconLeft}
-                onClick={leftIconOnClick}
-              />
-            </div>
+              {iconHome ? (
+                  <IconButton
+                    type="secondary"
+                    styles="outlined"
+                    states="default"
+                    size="xs"
+                    icon={HomeIcon}
+                    onClick={leftIconOnClick}
+                  />
+                ) : (
+                  <IconButton
+                    type="secondary"
+                    styles="outlined"
+                    states="default"
+                    size="xs"
+                    icon={ChevronLeft}
+                    onClick={leftIconOnClick}
+                  />
+                )
+              }
+              </div>
             <TitleContainer>{title}</TitleContainer>
             <div style={{ width: "58px" }}>
               {rightOnClick && (

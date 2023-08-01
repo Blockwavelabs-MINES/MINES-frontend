@@ -11,7 +11,8 @@ import {
   SendTokenStepsPage,
   SettingPage,
   TwitterCallbackPage,
-  TwtMetaTagPage
+  TwtMetaTagSendPage,
+  TwtMetaTagReceivePage
 } from "pages";
 import { PrivacyPolicy, TermsOfService } from "pages/TermsAndConditionPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -22,6 +23,7 @@ import styled from "styled-components";
 import ScrollToTop from "utils/functions/ScrollTop";
 import { COLORS as palette } from "utils/style/Color/colors";
 import "utils/style/Font/font.css";
+import TestPage from "pages/TestPage";
 
 const BodyInner = styled.div`
   display: flex;
@@ -73,7 +75,9 @@ function App() {
                   />
                   <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
                   <Route path="/termsOfService" element={<TermsOfService />} />
-                  <Route path="/sendme" element={<TwtMetaTagPage />} />
+                  <Route path="/send" element={<TwtMetaTagSendPage />} />
+                  <Route path="/receive" element={<TwtMetaTagReceivePage />} />
+                  <Route path="/test" element={<TestPage />} />
                   <Route path="/*" element={<NotFoundPage />} />
                 </Routes>
               </WebAppContainer>

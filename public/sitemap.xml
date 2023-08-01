@@ -13,7 +13,11 @@
 </url>
 
 <url>
-  <loc>https://3tree.io/sendme</loc>
+  <loc>https://3tree.io/send</loc>
+</url>
+
+<url>
+  <loc>https://3tree.io/receive</loc>
 </url>
 
 </urlset>
