@@ -84,6 +84,9 @@ export const getTrxsLinkInfo = async (linkKey) => {
   return returnValue;
 };
 
+/*
+*   Migration 이전의 API. 일단 보류
+*/
 export const toggleIsValid = async (
   sendTrxIndex,
   isValid,
@@ -110,3 +113,31 @@ export const toggleIsValid = async (
 
   return returnValue;
 };
+
+// 토큰 전송 & 수령 리스트 조회
+export const getTrxsList = async (id) => {
+  let returnValue;
+
+  if (id) {
+    await axios.get(`/send/list?id=${id}`, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken")
+      }
+    })
+      .then((res) => {
+        returnValue = res.data.data;
+      })
+  }
+  else {
+    await axios.get(`/send/list`, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken")
+      }
+    })
+      .then((res) => {
+        returnValue = res.data.data;
+      })
+  }
+  
+  return returnValue;
+}
