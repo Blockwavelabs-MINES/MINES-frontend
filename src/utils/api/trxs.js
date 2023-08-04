@@ -138,6 +138,6 @@ export const getTrxsList = async (id) => {
         returnValue = res.data.data;
       })
   }
-  
+  // returnValue = { transactions: {}, lastLoadedId: number }
   return returnValue;
 }
