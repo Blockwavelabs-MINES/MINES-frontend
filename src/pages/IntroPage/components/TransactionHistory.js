@@ -125,7 +125,6 @@ const TransactionHistory = ({ userName, socialData }) => {
             <TransactionCard 
               list={lists[list]}
               socialData={socialData}
-              userName={userName}
               key={idx}
             />
           </>

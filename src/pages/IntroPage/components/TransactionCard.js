@@ -119,7 +119,7 @@ const ButtonComponent = ({ status, linkKey, isSender }) => {
   )
 }
 
-const TransactionCard = ({ list, socialData, userName }) => {
+const TransactionCard = ({ list, socialData }) => {
   return (  
     list.map((card, idx) => (
       <CardContainer key={idx}>

@@ -75,7 +75,6 @@ const DashBoard = () => {
         profileDecoData={profileDecoData}
       />
       <TransactionHistory
-        userName={userInfoData.userId}
         socialData={socialData}
       />
     </FullContainer>
