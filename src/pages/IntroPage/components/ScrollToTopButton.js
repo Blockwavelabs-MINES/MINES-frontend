@@ -8,6 +8,11 @@ const Container = styled.div`
   bottom: 110px;
   z-index: 1000;
   margin: 0px 0px 0px auto;
+  right: 40px;
+`;
+
+const StyledIconButton = styled(IconButton)`
+  box-shadow: 0px 13px 40px 0px rgba(39, 49, 70, 0.12);
 `;
 
 const scrollToTop = () => {
@@ -22,7 +27,7 @@ const scrollToTop = () => {
 const ScrollToTopButton = () => {
   return (  
     <Container>
-      <IconButton
+      <StyledIconButton
         onClick={scrollToTop}
         type="secondary"
         styles="outlined"
