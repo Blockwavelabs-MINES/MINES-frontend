@@ -10,16 +10,15 @@ import TransactionCard from "./TransactionCard";
 import animation from "assets/lottie/scroll-loading-lottie.json";
 
 import { getTrxsList } from "utils/api/trxs";
-import ScrollToTopButton from "./ScrollToTopButton";
-
 
 const FullContainer = styled.div`
   margin-bottom: 20px;
+  padding-bottom: 5px;
   gap: 24px;
   border-radius: 20px;
   background-color: ${palette.white};
   box-shadow: 0px 13px 40px 0px ${palette.grey_7};
-  min-height: 100vh;
+  min-height: 60vh;
 `;
 
 const ContainerHeader = styled.div`
@@ -59,8 +58,6 @@ const TransactionHistory = ({ userName, socialData }) => {
       fetchData();
     }
   }, [isView, hasMore])
-
-  console.log('userName: ', userName);
 
   async function fetchData() {
     console.log("fetch data");
