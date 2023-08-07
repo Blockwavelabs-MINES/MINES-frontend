@@ -42,6 +42,7 @@ const LogoContainer = styled.button`
   font-family: Montserrat;
   margin: auto 0px;
   border: none;
+  background-color: ${palette.white};
 `;
 
 const ProfileButton = styled.button`
