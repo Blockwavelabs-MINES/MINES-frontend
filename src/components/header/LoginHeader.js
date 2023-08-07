@@ -36,11 +36,12 @@ const InnerContainer = styled.div`
   justify-content: space-between;
 `;
 
-const LogoContainer = styled.div`
+const LogoContainer = styled.button`
   ${Typograpy.Headline1}
   color: #000000;
   font-family: Montserrat;
   margin: auto 0px;
+  border: none;
 `;
 
 const ProfileButton = styled.button`
@@ -96,6 +97,10 @@ const LoginHeader = () => {
       });
   };
 
+  const onClickLogo = () => {
+    window.location.href = '/';
+  }
+
   useEffect(() => {
     if (isLoggedIn && localStorage.getItem("accessToken")) {
       getUserData();
@@ -119,7 +124,7 @@ const LoginHeader = () => {
         />
       )}
       <InnerContainer>
-        <LogoContainer>MINES</LogoContainer>
+        <LogoContainer onClick={onClickLogo}>MINES</LogoContainer>
         {isLoggedIn ? (
           <ProfileButton
             img={IconMoreVertical}
