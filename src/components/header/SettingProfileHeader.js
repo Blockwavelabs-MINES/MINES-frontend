@@ -38,7 +38,7 @@ const SettingProfileHeader = ({
   iconRight = ExternalLink,
 }) => {
   const backOnClick = () => {
-    window.history.back();
+    window.location.href = '/';
   };
 
   const externalOnClick = () => {
