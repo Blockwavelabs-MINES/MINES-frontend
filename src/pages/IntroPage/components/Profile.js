@@ -10,9 +10,7 @@ import LinkComponent from "./LinkComponent";
 import WalletComponent from "./WalletComponent";
 
 const FullContainer = styled.div`
-  width: 90%;
-  padding: 0px 0px 38px 0px;
-  margin-top: 75px;
+  padding: 0px 0px 24px 0px;
   gap: 24px;
   border-radius: 20px;
   background-color: ${palette.white};
