@@ -11,8 +11,16 @@ import { getProfileDeco } from "utils/api/profile";
 import { getLink } from "utils/api/link";
 import { getWallet } from "utils/api/wallets";
 import { getUserInfo } from "utils/api/auth";
+import ScrollToTopButton from "./ScrollToTopButton";
+import { getSocialConnectList } from "utils/api/twitter";
 
 const FullContainer = styled.div`
+  display: relative;
+  width: 90%;
+  padding: 0px 0px 38px 0px;
+  margin-top: 75px;
+  gap: 24px;
+  border-radius: 20px;
 `;
 
 const DashBoard = () => {
@@ -20,6 +28,7 @@ const DashBoard = () => {
   const [profileDecoData, setProfileDecoData] = useState("");
   const [linkData, setLinkData] = useState([]);
   const [walletData, setWalletData] = useState([]);
+  const [socialData, setSocialData] = useState([]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -46,10 +55,15 @@ const DashBoard = () => {
       .then((data) => {
         setWalletData(data);
       })
+    await getSocialConnectList()
+      .then((data) => {
+        setSocialData(data.data);
+      })
   };
 
   return (  
-    <>
+    <FullContainer>
+      <ScrollToTopButton />
       <Profile 
         userName={userInfoData.userId}
         profileImg={userInfoData.profileImg}
@@ -60,8 +74,11 @@ const DashBoard = () => {
         wallet={walletData}
         profileDecoData={profileDecoData}
       />
-      <TransactionHistory />
-    </>
+      <TransactionHistory
+        userName={userInfoData.userId}
+        socialData={socialData}
+      />
+    </FullContainer>
   );
 }
  
