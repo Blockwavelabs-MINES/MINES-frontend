@@ -15,7 +15,7 @@ import ScrollToTopButton from "./ScrollToTopButton";
 import { getSocialConnectList } from "utils/api/twitter";
 
 const FullContainer = styled.div`
-  display: relative;
+  position: relative;
   width: 90%;
   padding: 0px 0px 38px 0px;
   margin-top: 75px;
@@ -63,7 +63,6 @@ const DashBoard = () => {
 
   return (  
     <FullContainer>
-      <ScrollToTopButton />
       <Profile 
         userName={userInfoData.userId}
         profileImg={userInfoData.profileImg}
@@ -77,6 +76,7 @@ const DashBoard = () => {
       <TransactionHistory
         socialData={socialData}
       />
+      <ScrollToTopButton />
     </FullContainer>
   );
 }
