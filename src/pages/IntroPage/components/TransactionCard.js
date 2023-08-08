@@ -80,36 +80,39 @@ const onReceiveClick = (linkKey) => {
   window.location.href = `/receiveToken/${linkKey}`;
 }
 
-const ButtonComponent = ({ status, linkKey, isSender }) => {
+const ButtonComponent = ({ status, linkKey, isRefund, isSender }) => {
   return (
     <ButtonWrapper>
       {
-        (status === "SUCCESS" && linkKey === "") ? (
-          <StatusButton status="complete">
-            <StatusLabel status ="complete">Complete</StatusLabel>
+        (isRefund === true) ? (
+          <StatusButton status="refund">
+            <StatusLabel status ="refund">Refund</StatusLabel>
           </StatusButton>
         ) : (
-          (status === "SUCCESS" && linkKey !== "" && !isSender) ? (
-            <StatusButton 
-              status="receive"
-              onClick={() => onReceiveClick(linkKey)}
-            >
-              <StatusLabel status="receive">Receive</StatusLabel>
+          (status === "SUCCESS" && linkKey === "") ? (
+            <StatusButton status="complete">
+              <StatusLabel status="complete">Complete</StatusLabel>
             </StatusButton>
           ) : (
-            (status === "SUCCESS" && linkKey !== "" && isSender) ? (
-              <StatusButton status="pending">
-                <StatusLabel status="pending">Pending</StatusLabel>
+            (status === "SUCCESS" && linkKey !== "" && !isSender) ? (
+              <StatusButton status="receive" onClick={() => onReceiveClick(linkKey)}>
+                <StatusLabel status="receive">Receive</StatusLabel>
               </StatusButton>
             ) : (
-              (status === "FAIL") ? (
-                <StatusButton status="fail">
-                  <StatusLabel status="fail">Fail</StatusLabel>
+              (status === "SUCCESS" && linkKey !== "" && isSender) ? (
+                <StatusButton status="pending">
+                  <StatusLabel status="pending">Pending</StatusLabel>
                 </StatusButton>
               ) : (
-                <StatusButton status="refund">
-                  <StatusLabel status="refund">Refund</StatusLabel>
-                </StatusButton>
+                (status === "PENDING") ? (
+                  <StatusButton status="pending">
+                    <StatusLabel status="pending">Pending</StatusLabel>
+                  </StatusButton>
+                ) : (
+                  <StatusButton status="fail">
+                    <StatusLabel status="fail">Fail</StatusLabel>
+                  </StatusButton>
+                )
               )
             )
           )
@@ -128,24 +131,26 @@ const TransactionCard = ({ list, socialData }) => {
         {socialData.some(item => item.username === card.senderName) ? (
           <>
             <TextWrapper>
-              <UserWrapper>@{card.senderName}</UserWrapper>
+              <UserWrapper>@{card.receiverName}</UserWrapper>
               <AmountWrapper isSender={true}>-{card.tokenAmount} ETH</AmountWrapper>
             </TextWrapper>
             <ButtonComponent 
               status={card.status}
               linkKey={card.linkKey}
+              isRefund={card.isRefund}
               isSender={true}
             />
           </>
         ) : (
           <>
             <TextWrapper>
-              <UserWrapper>@{card.senderName}</UserWrapper>
+              <UserWrapper>@{card.receiverName}</UserWrapper>
               <AmountWrapper isSender={false}>{card.tokenAmount} ETH</AmountWrapper>
             </TextWrapper>
             <ButtonComponent 
               status={card.status}
               linkKey={card.linkKey}
+              isRefund={card.isRefund}
               isSender={false}
             />
           </>
