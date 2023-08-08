@@ -10,7 +10,29 @@ const Container = styled.div`
   position: fixed;
   z-index: 50;
   bottom: 110px;
-  right: 40px;
+  right: 10%;
+
+  ${mq[0]} {  // 320
+    right: 10%;
+  }
+  ${mq[1]} { // 375
+    right: 10%;
+  }
+  ${mq[2]} { // 425
+    right: 8%;
+  }
+  ${mq[3]} { // 768
+    right: 15%;
+  }
+  ${mq[4]} { // 1024
+    right: 23.5%;
+  }
+  ${mq[5]} { // 1441
+    right: 31%;
+  }
+  ${mq[6]} { // 2560
+    right: 39.5%;
+  }
 `;
 
 const StyledIconButton = styled(IconButton)`
