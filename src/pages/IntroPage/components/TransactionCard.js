@@ -51,16 +51,13 @@ const StatusButton = styled.button`
   justify-content: center;
   gap: 2px;
   background-color: ${({ status }) =>
-    status === "complete" ? '#E3FFF5' : 
-    status === "fail" ? '#FFF3F3' : 
-    status === "receive" ? palette.blue_1 :
-    status === "refund" ? '#E3FFF5' : palette.grey_7 // : pending
+    status === "receive" ? palette.blue_1 : palette.background
   };
   border: ${({ status }) => 
-    status === "complete" ? `1px solid ${palette.green_1}` :
-    status === "fail" ? `1px solid ${palette.red_2}` :
-    status === "receive" ? `1px solid ${palette.blue_1}` :
-    status === "refund" ? `1px solid ${palette.green_1}` : `1px solid ${palette.grey_3}` // : pending
+    status === "receive" ? `1px solid ${palette.blue_1}` :  `1px solid ${palette.background}`
+  };
+  cursor: ${({ status }) =>
+    status === "receive" ? 'pointer' : 'default'
   };
 `;
 
@@ -68,10 +65,7 @@ const StatusLabel = styled.div`
   ${Typography.Headline2}
   font-size: 15px;
   color: ${({ status }) => 
-    status === "complete" ? palette.green_1 :
-    status === "fail" ? palette.red_2 :
-    status === "receive" ? palette.white :
-    status === "refund" ? palette.green_1 : palette.grey_3 // : pending
+    status === "receive" ? palette.white : palette.grey_3
   };
   margin: auto 0;
 `;
