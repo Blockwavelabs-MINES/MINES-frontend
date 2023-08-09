@@ -56,6 +56,13 @@ const PrimaryButton = styled.button`
   background-size: calc(100% - 12px);
   background-repeat: no-repeat;
   background-position: center;
+
+  ${props =>
+    props.shadow &&
+    css`
+      box-shadow: 0px 13px 40px 0px rgba(39, 49, 70, 0.12);
+    `
+  }
 `;
 
 const SecondaryButton = styled.button`
@@ -121,6 +128,12 @@ const SecondaryButton = styled.button`
       z-index: 904;
     `
   }
+  ${props =>
+    props.shadow &&
+    css`
+      box-shadow: 0px 13px 40px 0px rgba(39, 49, 70, 0.12);
+    `
+  }
 `;
 
 // type="primary";
@@ -129,7 +142,17 @@ const SecondaryButton = styled.button`
 // size="large";
 // Show icon=false;
 
-const IconButton = ({ type, styles, states, size, icon, onClick, style, zIndex, }) => {
+const IconButton = ({ 
+  type, 
+  styles, 
+  states, 
+  size, 
+  icon, 
+  onClick, 
+  style, 
+  zIndex,
+  shadow 
+}) => {
   return (
     <>
       {type === "primary" ? (
@@ -141,6 +164,7 @@ const IconButton = ({ type, styles, states, size, icon, onClick, style, zIndex, 
           icon={icon}
           onClick={onClick}
           style={style}
+          shadow={shadow}
         />
       ) : (
         <SecondaryButton
@@ -152,6 +176,7 @@ const IconButton = ({ type, styles, states, size, icon, onClick, style, zIndex, 
           onClick={onClick}
           style={style}
           zIndex={zIndex}
+          shadow={shadow}
         />
       )}
     </>
