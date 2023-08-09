@@ -24,7 +24,7 @@ const FullContainer = styled.div`
 const ContainerHeader = styled.div`
   display: flex;
   padding: 34px 16px 8px 16px;
-  margin: 37px 24px 16px 0px;
+  margin: 37px 0px 16px 0px;
   align-items: flex-start;
   ${Typography.Headline2};
   color: ${palette.Black};
