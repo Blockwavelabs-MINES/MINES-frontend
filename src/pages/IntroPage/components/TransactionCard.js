@@ -144,7 +144,7 @@ const TransactionCard = ({ list, socialData }) => {
         ) : (
           <>
             <TextWrapper>
-              <UserWrapper>@{card.receiverName}</UserWrapper>
+              <UserWrapper>@{card.senderName}</UserWrapper>
               <AmountWrapper isSender={false}>{card.tokenAmount} ETH</AmountWrapper>
             </TextWrapper>
             <ButtonComponent 
