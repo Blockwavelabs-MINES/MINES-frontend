@@ -8,11 +8,9 @@ import { useState } from "react";
 
 const CardContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
   width: 100%;
   padding: 8px 16px;
-  margin-bottom: 6px;
   align-self: stretch;
   background-color: ${palette.white};
 `;
@@ -24,7 +22,8 @@ const TickerImage = styled.img`
 `;
 
 const TextWrapper = styled.div`
-  width: 50%;
+  margin-left: 16px;
+  margin-right: auto;
 `;
 
 const UserWrapper = styled.div`
@@ -40,6 +39,7 @@ const AmountWrapper = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
+  justify-self: flex-end;
   align-self: center;
 `;
 

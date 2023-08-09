@@ -31,7 +31,9 @@ const ContainerHeader = styled.div`
 `;
 
 const TransactionContainer = styled.div`
-  gap: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 `;
 
 const DateDivider = styled.div`
