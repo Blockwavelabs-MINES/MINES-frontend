@@ -34,7 +34,7 @@ const Profile = ({
         introduction={introduction}
         backgroundColor={profileDecoData.backgroundColor}
         style={{
-          paddingBottom: "0",
+          padding: "48px 16px 0px 16px",
           backgroundColor: "transparent",
         }}
         color={profileDecoData.fontColor}

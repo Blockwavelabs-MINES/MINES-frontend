@@ -47,7 +47,6 @@ const ScrollToTopButton = () => {
           type="secondary"
           styles="outlined"
           states="default"
-          size="xs"
           icon={ArrowUpIcon}
           shadow
         />
