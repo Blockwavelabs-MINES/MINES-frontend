@@ -117,6 +117,7 @@ const ContainedButton = ({
   show_txt = true,
   onClick,
   style,
+  disabled
 }) => {
   return (
     <>
@@ -128,6 +129,7 @@ const ContainedButton = ({
           styles={styles}
           onClick={onClick}
           style={style}
+          disabled={disabled}
         >
           {icon && <IconContainer src={icon} />}
           {show_txt && (
@@ -144,6 +146,7 @@ const ContainedButton = ({
           styles={styles}
           onClick={onClick}
           style={style}
+          disabled={disabled}
         >
           {icon && <IconContainer src={icon} />}
           {show_txt && (
