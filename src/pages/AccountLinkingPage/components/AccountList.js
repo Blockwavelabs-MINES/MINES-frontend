@@ -119,7 +119,7 @@ const AccountList = () => {
     {
       icon: TwitterIcon,
       text: isTwitterOn
-        ? socialList?.data[0].username
+        ? `@${socialList?.data[0].username}`
         : t("accountLinkingPage2"),
       supported: true,
       checked: isTwitterOn,

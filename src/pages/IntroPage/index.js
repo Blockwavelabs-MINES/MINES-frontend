@@ -12,18 +12,33 @@ import SwiperCore, { Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { loginModalVisibleState, signupState } from "utils/atoms/login";
+import { loginModalVisibleState, loginState, signupState } from "utils/atoms/login";
 import { receiveLinkState } from "utils/atoms/twitter";
 import { COLORS as palette } from "utils/style/Color/colors";
 import Typography from "utils/style/Typography/index";
+import { Dashboard } from "./components";
 
 SwiperCore.use([Navigation, Pagination]);
 
 const FullContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   min-height: 100vh;
   position: relative;
   padding-top: 75px;
+  align-items: center;
+`;
+
+const DashboardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  padding-top: 35px;
+  align-items: center;
+  background-color: #FAFAFA;
 `;
 
 const IntroTextBox = styled.div`
@@ -60,6 +75,7 @@ const IntroPage = () => {
   const [isSignup, setIsSignup] = useRecoilState(signupState);
   const setLoginModalVisible = useSetRecoilState(loginModalVisibleState);
   const setReceiveLink = useSetRecoilState(receiveLinkState);
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
 
   const { t } = useTranslation();
 
@@ -77,30 +93,37 @@ const IntroPage = () => {
 
       {!isSignup ? (
         <>
-          <FullContainer>
-            <LoginHeader />
-            {loginAlertModalVisible && (
-              <SingleModal
-                visible={setLoginAlertModalVisible}
-                closable={true}
-                maskClosable={true}
-                onClose={() => setLoginAlertModalVisible(false)}
-                text={<>{t("introPageAlert1")}</>}
-                setStatus={() => setLoginModalVisible(true)}
-                buttonText={t("introPageAlert2")}
-              />
-            )}
-            <IntroTextBox>
-              <FirstIntro>
-                {t("introPageMent7")}
-                <br />
-                {t("introPageMent8")}
-              </FirstIntro>
-              <SecondIntro>{t("introPageMent9")}</SecondIntro>
-            </IntroTextBox>
-            <MainImageBanner src={MainImage3} />
-            <BannerBottom />
-          </FullContainer>
+          {!isLogin ? (
+            <FullContainer>
+              <LoginHeader />
+              {loginAlertModalVisible && (
+                <SingleModal
+                  visible={setLoginAlertModalVisible}
+                  closable={true}
+                  maskClosable={true}
+                  onClose={() => setLoginAlertModalVisible(false)}
+                  text={<>{t("introPageAlert1")}</>}
+                  setStatus={() => setLoginModalVisible(true)}
+                  buttonText={t("introPageAlert2")}
+                />
+              )}
+              <IntroTextBox>
+                  <FirstIntro>
+                    {t("introPageMent7")}
+                    <br />
+                    {t("introPageMent8")}
+                  </FirstIntro>
+                  <SecondIntro>{t("introPageMent9")}</SecondIntro>
+              </IntroTextBox>
+              <MainImageBanner src={MainImage3} />
+              <BannerBottom />
+            </FullContainer>
+          ) : (
+            <DashboardContainer>
+              <LoginHeader />
+              <Dashboard />
+            </DashboardContainer>
+          )}
           <BottomNavBar />
         </>
       ) : (

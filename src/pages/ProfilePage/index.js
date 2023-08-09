@@ -81,6 +81,7 @@ const ProfilePage = () => {
           profileImg={userInfoData.profileImg}
           userName={userInfoData.profileName}
           introduction={userInfoData.profileBio}
+          backgroundColor={profileDecoData.backgroundColor}
           style={{
             paddingTop: "135px",
             backgroundColor: "transparent",

@@ -40,7 +40,7 @@ export const requestRefreshToken = async () => {
 
   await axios.get(`/public/auth/refresh`, {
       header: {
-       refresh_token: localStorage.getItem("refreshToken"),
+       RefreshToken: localStorage.getItem("refreshToken"),
       }
     })
     //리프레쉬 토큰이 만료되었을 때.

@@ -63,6 +63,7 @@ const LoginModalInner = (type, setStatus, onClose) => {
         setStatus(false);
       }
       setIsLoggedIn(true);
+      document.body.style.overflow = "auto";
       onClose();
     });
   };

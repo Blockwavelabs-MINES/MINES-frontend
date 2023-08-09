@@ -45,7 +45,7 @@ const IntroductionBox = styled.div`
   color: ${(props) => (props.color ? props.color : palette.grey_1)};
   margin: 0px auto;
   margin-top: 14px;
-  margin-bottom: 40px;
+  margin-bottom: 48px;
   text-align: center;
 `;
 

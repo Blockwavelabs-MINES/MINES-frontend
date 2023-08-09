@@ -1,4 +1,4 @@
-import { ProfileDefault } from "assets/icons";
+import { IconMoreVertical, ProfileDefault } from "assets/icons";
 import axios from "axios";
 import { LoginModal } from "components/modal";
 import { useEffect, useState } from "react";
@@ -36,18 +36,20 @@ const InnerContainer = styled.div`
   justify-content: space-between;
 `;
 
-const LogoContainer = styled.div`
+const LogoContainer = styled.button`
   ${Typograpy.Headline1}
   color: #000000;
   font-family: Montserrat;
   margin: auto 0px;
+  border: none;
+  background-color: ${palette.white};
 `;
 
 const ProfileButton = styled.button`
-  width: 36px;
-  height: 36px;
+  width: 26px;
+  height: 26px;
   border-radius: 18px;
-  border: 1px solid ${palette.grey_7};
+  border: 1px solid ${palette.white};
   background-image: url(${({ img }) => (img ? img : ProfileDefault)});
   background-size: cover;
   background-repeat: no-repeat;
@@ -96,6 +98,10 @@ const LoginHeader = () => {
       });
   };
 
+  const onClickLogo = () => {
+    window.location.href = '/';
+  }
+
   useEffect(() => {
     if (isLoggedIn && localStorage.getItem("accessToken")) {
       getUserData();
@@ -119,10 +125,10 @@ const LoginHeader = () => {
         />
       )}
       <InnerContainer>
-        <LogoContainer>MINES</LogoContainer>
+        <LogoContainer onClick={onClickLogo}>MINES</LogoContainer>
         {isLoggedIn ? (
           <ProfileButton
-            img={userInfo?.profileImg}
+            img={IconMoreVertical}
             onClick={profileImgOnClick}
           />
         ) : (
